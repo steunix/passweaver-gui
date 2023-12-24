@@ -50,7 +50,11 @@ app.use("/public", Express.static('public'))
 
 // Login page
 app.get("/login", (req,res)=>{
-  res.render('login', { error: req.query.error })
+  var data = {
+    error: req.query.error,
+    company_name: cfg.company_name
+  }
+  res.render('login', data)
 })
 
 // Logout page
