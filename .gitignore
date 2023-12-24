@@ -1,0 +1,6 @@
+# Things to keep out of version control
+.env
+.vscode
+node_modules
+vaulted-gui.code-workspace
+sessions

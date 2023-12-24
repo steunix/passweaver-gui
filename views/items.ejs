@@ -1,0 +1,48 @@
+<%- include('partials/header.ejs') %>
+
+<div class="container-fluid">
+
+<div class="row">
+  <%- include('partials/sidebar.ejs') %>
+  <div class="col-sm p-3 min-vh-100">
+    <%# Content %>
+    <%- include('partials/toasts.ejs') %>
+    <h2>Item lists</h2>
+    <div class="row">
+    <div class="col-md-2">
+      <h3>Folders</h3>
+      <%- include('partials/folderstree.ejs') %>
+    </div>
+    <div class="col-md-auto">
+      <h3>Items</h3>
+      <button id="newitem" type="button" class="btn btn-primary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newitemdialog">New item</button>
+      <button id="newfolder" type="button" class="btn btn-secondary" disabled="disabled">New folder</button>
+      <table id="itemstable" class="table">
+        <tr id="tableheader">
+          <th>Type</th>
+          <th>Description</th>
+          <th>Created at</th>
+        </tr>
+      </table>
+    </div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/itemnew.ejs") %>
+
+</div>
+
+<script>
+  $(()=>{
+    $('#tree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: <%- JSON.stringify(tree) %> });
+    $('[role=treeitem]').on("click", folderClicked)
+    const last = localStorage.getItem("bstreeview_open_folderstree")
+    if ( last ) {
+      $('[role=treeitem][id='+last+']').click()
+    }
+  })
+</script>
+<script src="/public/js/items.js"></script>
+
+<%- include('partials/footer.ejs') %>

@@ -1,0 +1,28 @@
+<%- include('partials/header.ejs') %>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-3">
+      <h1 class="mb-4">Vaulted</h1>
+      <h3 class="mb-4">Login</h2>
+      <form class="mb-3" id="loginForm" action="access" method="post">
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="username" name="username" placeholder="User">
+          <label for="username">User</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control" id="password" name="password" placeholder="password">
+          <label for="password">Password</label>
+        </div>
+        <button type="submit" class="mb-3 btn btn-primary">Login</button>
+        <% if ( error ) { %>
+          <div class="mb-3 alert alert-danger">
+            <%= error %>
+          </div>
+        <% } %>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer.ejs') %>
