@@ -90,7 +90,8 @@
                 else
                 {
                     // Toggle the data-bs-target. Issue with Bootstrap toggle and dynamic code
-                    $($(this).attr("data-bs-target")).collapse('toggle');
+                    var bstarget = $(this).attr("data-bs-target")
+                    $($.find(bstarget)).collapse('toggle')
                     localStorage.setItem("bstreeview_expanded_"+mainid+"_"+$(this).attr("id"), $(this).attr("aria-expanded"))
                 }
             });
