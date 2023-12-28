@@ -9,11 +9,13 @@
 
 import Express from 'express'
 import compression from 'compression'
+
 import * as Config from './src/config.mjs'
 import * as Vaulted from './src/vaulted.mjs'
 import session from 'express-session'
 import FileStore from 'session-file-store'
 import jsonwebtoken from 'jsonwebtoken'
+import rateLimitMiddleware from "./src/ratelimiter.mjs"
 
 const fileStore = FileStore(session)
 export const app = Express()
@@ -47,6 +49,9 @@ app.set('view engine', 'ejs');
 
 // Static Middleware
 app.use("/public", Express.static('public'))
+
+// Rate limiter
+app.use("/access", rateLimitMiddleware)
 
 // Login page
 app.get("/login", (req,res)=>{
