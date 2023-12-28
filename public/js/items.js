@@ -5,10 +5,10 @@ function folderClicked(ev) {
   $(this).css("font-weight","bold").css("background-color","#eeeeee")
   currentFolder = this.id
   localStorage.setItem("bstreeview_open_folderstree",currentFolder)
-  $.get("/pages/itemslist/"+currentFolder,(data)=>{
+  $.get("/pages/itemslist/"+currentFolder,(resp)=>{
     $("#itemstable tr[id!=tableheader]").remove()
-    if ( data.length ) {
-      for ( const itm of data ) {
+    if ( resp.data.length ) {
+      for ( const itm of resp.data ) {
         $("#itemstable").append("<tr><td><i class='fa-solid fa-trash text-danger'></td><td>"+itm.title+"</td><td>"+itm.createdat+"</td></tr>")
       }
     }
