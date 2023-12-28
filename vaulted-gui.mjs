@@ -123,7 +123,7 @@ app.get("/pages/itemnew", (req,res)=>{
 app.post("/pages/itemnew/:folder", async (req,res)=> {
   const resp = await Vaulted.itemCreate(req.session, req.params.folder, req.body)
 
-  res.status(200).send(resp)
+  res.status(200).json(resp)
 })
 
 console.log("Listening on port "+cfg.listen_port)

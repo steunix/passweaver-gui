@@ -46,8 +46,8 @@ function createItem() {
     password: $("#newpassword").val()
   }
 
-  $.post("/pages/itemnew/"+currentFolder, itemdata, (data)=> {
-    if ( data && data.id ) {
+  $.post("/pages/itemnew/"+currentFolder, itemdata, (resp)=> {
+    if ( resp.data && resp.data.id ) {
       location.reload()
     } else {
 
