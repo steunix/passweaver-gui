@@ -14,8 +14,8 @@ function folderClicked(ev) {
     }
   })
 
-  $.get("/pages/folderinfo/"+currentFolder,(data)=>{
-    if ( data && data.permissions && data.permissions.write ) {
+  $.get("/pages/folderinfo/"+currentFolder,(resp)=>{
+    if ( resp.data && resp.data.permissions && resp.data.permissions.write ) {
       $("#newitem").removeAttr("disabled")
       $("#newfolder").removeAttr("disabled")
     } else {

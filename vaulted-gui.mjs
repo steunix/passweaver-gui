@@ -111,7 +111,7 @@ app.get("/pages/itemslist/:folder", async (req,res)=>{
 app.get("/pages/folderinfo/:folder", async (req,res)=>{
   const info = await Vaulted.getFolder(req.session, req.params.folder)
 
-  res.status(200).send(info)
+  res.status(200).json(info)
 })
 
 // New item dialog
