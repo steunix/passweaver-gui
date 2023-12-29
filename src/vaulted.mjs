@@ -131,3 +131,15 @@ export async function itemCreate(session, folder, body) {
   const resp = await vaultedAPI(session, "post", "/folders/"+folder+"/items", item)
   return resp
 }
+
+/**
+ * Delete an item
+ * @param {Object} session
+ * @param {string} folder
+ * @param {Object} body
+ * @returns
+ */
+export async function itemRemove(session, item) {
+  const resp = await vaultedAPI(session, "delete", "/items/"+item)
+  return resp
+}

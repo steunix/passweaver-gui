@@ -119,14 +119,16 @@ app.get("/pages/folderinfo/:folder", async (req,res)=>{
   res.status(200).json(info)
 })
 
-// New item dialog
-app.get("/pages/itemnew", (req,res)=>{
-  res.render("itemnew")
-})
-
 // Create item
 app.post("/pages/itemnew/:folder", async (req,res)=> {
   const resp = await Vaulted.itemCreate(req.session, req.params.folder, req.body)
+
+  res.status(200).json(resp)
+})
+
+// Create item
+app.post("/pages/itemremove/:item", async (req,res)=> {
+  const resp = await Vaulted.itemRemove(req.session, req.params.item, req.body)
 
   res.status(200).json(resp)
 })

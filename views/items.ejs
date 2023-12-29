@@ -18,9 +18,10 @@
       <button id="newitem" type="button" class="btn btn-primary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newitemdialog">New item</button>
       <button id="newfolder" type="button" class="btn btn-secondary" disabled="disabled">New folder</button>
       <hr/>
-      <table id="itemstable" class="table">
+      <table id="itemstable" class="table table-hover">
         <tr id="tableheader">
-          <th>Type</th>
+          <th></th>
+          <th></th>
           <th>Description</th>
           <th>Created at</th>
         </tr>
@@ -31,6 +32,7 @@
 </div>
 
 <%- include("partials/itemnew.ejs") %>
+<%- include("partials/itemremove.ejs") %>
 
 </div>
 
@@ -38,6 +40,8 @@
   $(()=>{
     $('#tree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: <%- JSON.stringify(tree) %> });
     $('[role=treeitem]').on("click", folderClicked)
+
+    // Open last used folder
     const last = localStorage.getItem("bstreeview_open_folderstree")
     if ( last ) {
       $('[role=treeitem][id='+last+']').click()
