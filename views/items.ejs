@@ -15,8 +15,10 @@
     </div>
     <div class="col-md-auto">
       <h3>Items</h3>
-      <button id="newitem" type="button" class="btn btn-primary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newitemdialog">New item</button>
-      <button id="newfolder" type="button" class="btn btn-secondary" disabled="disabled">New folder</button>
+      <button id="newitem" type="button" class="btn btn-sm btn-primary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newitemdialog">New item</button>
+      <button id="newfolder" type="button" class="ms-5 btn btn-sm btn-secondary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newfolderdialog">New folder</button>
+      <button id="editfolder" type="button" class="btn btn-sm btn-secondary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#editfolderdialog">Edit folder</button>
+      <button id="removefolder" type="button" class="btn btn-sm btn-danger" disabled="disabled" data-bs-toggle="modal" data-bs-target="#removefolderdialog">Delete folder</button>
       <hr/>
       <table id="itemstable" class="table table-hover">
         <thead>
@@ -38,6 +40,9 @@
 <%- include("partials/itemnew.ejs") %>
 <%- include("partials/itemremove.ejs") %>
 <%- include("partials/itemedit.ejs") %>
+<%- include("partials/foldernew.ejs") %>
+<%- include("partials/folderedit.ejs") %>
+<%- include("partials/folderremove.ejs") %>
 
 </div>
 

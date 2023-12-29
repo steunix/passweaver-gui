@@ -1,0 +1,19 @@
+<div id="newfolderdialog" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="text-light">New folder</h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control border-danger" autofocus id="newfolderdescription" name="newfolderdescription" required="required" placeholder="fake" onkeyup="javascript:folderCreateEnable()">
+          <label for="newfolderdescription" class="form-label">Description (required)</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="foldercreate" type="button" class="btn btn-primary" disabled="disabled" onclick="javascript:folderCreate()">Create folder</button>
+        <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

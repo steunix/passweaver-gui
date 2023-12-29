@@ -20,6 +20,11 @@ function fillItems() {
         $("#itemstable tbody").append(row)
       }
     }
+
+    // Folder cannot be removed if not empty
+    if ( $("#itemstable tbody tr").length ) {
+      $("#removefolder").attr("disabled","disabled")
+    }
   })
 }
 
@@ -31,7 +36,7 @@ function folderClicked(ev) {
 
 
   // Read folder info
-  $.get("/pages/folderinfo/"+currentFolder,(resp)=>{
+  $.get("/pages/folders/"+currentFolder,(resp)=>{
     if ( resp.data && resp.data.permissions ) {
       currentPermissions = resp.data.permissions
     } else {
@@ -41,9 +46,13 @@ function folderClicked(ev) {
     if ( currentPermissions.write ) {
       $("#newitem").removeAttr("disabled")
       $("#newfolder").removeAttr("disabled")
+      $("#removefolder").removeAttr("disabled")
+      $("#editfolder").removeAttr("disabled")
     } else {
       $("#newitem").attr("disabled","disabled")
       $("#newfolder").attr("disabled","disabled")
+      $("#removefolder").attr("disabled","disabled")
+      $("#editfolder").attr("disabled","disabled")
     }
 
     fillItems()
@@ -144,6 +153,70 @@ function toggleEditPassword() {
   }
 }
 
+function folderCreateEnable() {
+  if ( $("#newfolderdescription").val()=="" ) {
+    $("#foldercreate").attr("disabled","disabled")
+  } else {
+    $("#foldercreate").removeAttr("disabled")
+  }
+}
+
+function folderCreate() {
+  let itemdata = {
+    description: $("#newfolderdescription").val()
+  }
+
+  $.post("/pages/foldernew/"+currentFolder, itemdata, (resp)=> {
+    if ( resp.data && resp.data.id ) {
+      location.reload()
+    } else {
+      // TODO: handle error
+    }
+  });
+}
+
+function folderRemove() {
+  $.post("/pages/folderremove/"+$("#folderremoveid").val(), (resp)=> {
+    if ( resp.status=="success" ) {
+      location.reload()
+    } else {
+      // TODO: handle error
+    }
+  });
+}
+
+function folderEditEnable() {
+  if ( $("#foldereditdescription").val()=="" ) {
+    $("#folderedit").attr("disabled","disabled")
+  } else {
+    $("#folderedit").removeAttr("disabled")
+  }
+}
+
+function folderEditFill() {
+  $("#foldereditid").val(currentFolder)
+
+  $.get("/pages/folders/"+currentFolder, (resp)=> {
+    if ( resp.status=="success" ) {
+      $("#foldereditdescription").val(resp.data.description)
+    }
+  })
+}
+
+function folderEdit() {
+  let data = {
+    description: $("#foldereditdescription").val()
+  }
+
+  $.post("/pages/folderupdate/"+$("#foldereditid").val(), data, (resp)=> {
+    if ( resp.status=="success" ) {
+      location.reload()
+    } else {
+      // TODO: handle error
+    }
+  });
+}
+
 $(function() {
   // Reset new item dialog fields
   $("#newitemdialog").on("hidden.bs.modal", ()=> {
@@ -155,9 +228,28 @@ $(function() {
     $("#itemremoveid").val($(ev.relatedTarget).data("id"))
   })
 
-  // Get the item to be edited
+  // Get the item data to be edited
   $("#edititemdialog").on("show.bs.modal", (ev)=> {
     itemEditFill($(ev.relatedTarget).data("id"))
   })
 
+  // Reset new folder dialog fields
+  $("#newfolderdialog").on("hidden.bs.modal", ()=> {
+    $("#newfolderdialog input,textarea").val("")
+  })
+
+  // Sets the value for folder to be deleted
+  $("#removefolderdialog").on("show.bs.modal", (ev)=> {
+    $("#folderremoveid").val(currentFolder)
+  })
+
+  // Autofocus
+  $("#newitemdialog,#edititemdialog,#newfolderdialog").on("shown.bs.modal", (ev)=> {
+    $(this).find("[autofocus]").focus()
+  })
+
+  // Get the folder data to be edited
+  $("#editfolderdialog").on("show.bs.modal", (ev)=> {
+    folderEditFill($(ev.relatedTarget).data("id"))
+  })
 })

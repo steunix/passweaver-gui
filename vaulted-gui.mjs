@@ -112,7 +112,7 @@ app.get("/pages/itemslist/:folder", async (req,res)=>{
 })
 
 // Folder details
-app.get("/pages/folderinfo/:folder", async (req,res)=>{
+app.get("/pages/folders/:folder", async (req,res)=>{
   const info = await Vaulted.getFolder(req.session, req.params.folder)
   res.status(200).json(info)
 })
@@ -135,10 +135,27 @@ app.post("/pages/itemremove/:item", async (req,res)=> {
   res.status(200).json(resp)
 })
 
-
 // Update item
 app.post("/pages/itemupdate/:item", async (req,res)=> {
   const resp = await Vaulted.itemUpdate(req.session, req.params.item, req.body)
+  res.status(200).json(resp)
+})
+
+// Create folder
+app.post("/pages/foldernew/:folder", async (req,res)=> {
+  const resp = await Vaulted.folderCreate(req.session, req.params.folder, req.body)
+  res.status(200).json(resp)
+})
+
+// Delete folder
+app.post("/pages/folderremove/:folder", async (req,res)=> {
+  const resp = await Vaulted.folderRemove(req.session, req.params.folder, req.body)
+  res.status(200).json(resp)
+})
+
+// Update folder
+app.post("/pages/folderupdate/:folder", async (req,res)=> {
+  const resp = await Vaulted.folderUpdate(req.session, req.params.folder, req.body)
   res.status(200).json(resp)
 })
 

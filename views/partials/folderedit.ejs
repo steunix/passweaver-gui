@@ -1,0 +1,20 @@
+<div id="editfolderdialog" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="text-light">Edit folder</h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control border-danger" autofocus id="foldereditdescription" name="foldereditdescription" required="required" placeholder="fake" onkeyup="javascript:folderEditEnable()">
+          <label for="foldereditdescription" class="form-label">Description (required)</label>
+        </div>
+        <input type="hidden" id="foldereditid">
+      </div>
+      <div class="modal-footer">
+        <button id="folderedit" type="button" class="btn btn-primary" onclick="javascript:folderEdit()">Update folder</button>
+        <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -177,3 +177,47 @@ export async function itemUpdate(session, itemid, body) {
   const resp = await vaultedAPI(session, "patch", "/items/"+itemid, item)
   return resp
 }
+
+/**
+ * Create a new folder
+ * @param {Object} session
+ * @param {string} folder
+ * @param {Object} body
+ * @returns
+ */
+export async function folderCreate(session, folder, body) {
+  const data = {
+    description: body.description
+  }
+
+  const resp = await vaultedAPI(session, "post", "/folders/"+folder+"/folders", data)
+  return resp
+}
+
+/**
+ * Delete a folder
+ * @param {Object} session
+ * @param {string} folder
+ * @param {Object} body
+ * @returns
+ */
+export async function folderRemove(session, folder) {
+  const resp = await vaultedAPI(session, "delete", "/folders/"+folder)
+  return resp
+}
+
+/**
+ * Update a folder
+ * @param {Object} session
+ * @param {string} folder
+ * @param {Object} body
+ * @returns
+ */
+export async function folderUpdate(session, folder, body) {
+  const data = {
+    description: body.description
+  }
+
+  const resp = await vaultedAPI(session, "patch", "/folders/"+folder, data)
+  return resp
+}
