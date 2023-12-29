@@ -15,8 +15,8 @@
      */
     var pluginName = "bstreeview",
         defaults = {
-            expandIcon: 'fa fa-caret-right fa-xs fa-fw',
-            collapseIcon: 'fa fa-caret-down fa-xs fa-fw',
+            expandIcon: 'fa fa-caret-down fa-xs fa-fw',
+            collapseIcon: 'fa fa-caret-right fa-xs fa-fw',
             expandClass: 'show',
             indent: 0.25,
             parentsMarginLeft: '0.25rem',
@@ -131,6 +131,13 @@
             depth += 1;
             // Add each node and sub-nodes.
             $.each(children, function addNodes(id, node) {
+
+                // Search in localStorage for saved expanded status
+                var ls = localStorage.getItem("bstreeview_expanded_"+mainid+"_"+node.id)
+                if ( ls=="true") {
+                    node.expanded = true;
+                }
+
                 // Main node element.
                 var treeItem = $(templates.treeviewItem)
                     .attr('data-bs-target', "#" + _this.itemIdPrefix + node.nodeId)
@@ -177,11 +184,6 @@
                     parentElement.append(treeGroup);
                     _this.build(treeGroup, node.children, depth);
 
-                    // Search in localStorage for expanded status
-                    var ls = localStorage.getItem("bstreeview_expanded_"+mainid+"_"+node.id)
-                    if ( ls=="true") {
-                        node.expanded = true;
-                    }
                     if (node.expanded) {
                         treeGroup.addClass(_this.settings.expandClass);
                     }
