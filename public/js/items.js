@@ -17,7 +17,7 @@ function fillItems() {
           row += "<td></td><td></td>"
         }
         row += "<td>"+itm.title+"</td><td>"+itm.createdat+"</td></tr>"
-        $("#itemstable").append(row)
+        $("#itemstable tbody").append(row)
       }
     }
   })
