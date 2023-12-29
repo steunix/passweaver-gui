@@ -32,8 +32,8 @@ function folderClicked(ev) {
   $("[role=treeitem]").css({"font-weight":"normal","background-color":"transparent"})
   $(this).css("font-weight","bold").css("background-color","#eeeeee")
   currentFolder = this.id
-  localStorage.setItem("bstreeview_open_folderstree",currentFolder)
 
+  localStorage.setItem("bstreeview_open_folderstree",currentFolder)
 
   // Read folder info
   $.get("/pages/folders/"+currentFolder,(resp)=>{
