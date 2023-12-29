@@ -6,3 +6,8 @@ body {
 #sidebar a {
     text-decoration: none;
 }
+
+div[role=treeitem] {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+}

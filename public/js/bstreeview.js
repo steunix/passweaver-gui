@@ -15,13 +15,12 @@
      */
     var pluginName = "bstreeview",
         defaults = {
-            expandIcon: 'fa fa-angle-down fa-fw',
-            collapseIcon: 'fa fa-angle-right fa-fw',
+            expandIcon: 'fa fa-caret-right fa-xs fa-fw',
+            collapseIcon: 'fa fa-caret-down fa-xs fa-fw',
             expandClass: 'show',
-            indent: 1.25,
-            parentsMarginLeft: '1.25rem',
+            indent: 0.25,
+            parentsMarginLeft: '0.25rem',
             openNodeLinkOnNewTab: true
-
         };
     /**
      * bstreeview HTML templates.
