@@ -143,3 +143,37 @@ export async function itemRemove(session, item) {
   const resp = await vaultedAPI(session, "delete", "/items/"+item)
   return resp
 }
+
+/**
+ * Get an item
+ * @param {Object} session
+ * @param {string} folder
+ * @param {Object} body
+ * @returns
+ */
+export async function itemGet(session, item) {
+  const resp = await vaultedAPI(session, "get", "/items/"+item)
+  return resp
+}
+
+/**
+ * Update an item
+ * @param {Object} session
+ * @param {string} folder
+ * @param {Object} body
+ * @returns
+ */
+export async function itemUpdate(session, itemid, body) {
+  const item = {
+    title: body.title,
+    data: JSON.stringify({
+      description: body.description,
+      url: body.url,
+      user: body.user,
+      password: body.password
+    })
+  }
+
+  const resp = await vaultedAPI(session, "patch", "/items/"+itemid, item)
+  return resp
+}

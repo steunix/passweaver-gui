@@ -1,0 +1,41 @@
+<div id="edititemdialog" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="text-light">Edit item</h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control border-danger" id="edittitle" name="edittitle" required="required" placeholder="fake" onkeyup="javascript:itemEditEnable()">
+          <label for="edittitle" class="form-label">Title (required)</label>
+        </div>
+        <div class="form-floating mb-3">
+          <textarea type="text" class="form-control" id="editdescription" name="editdescription" rows="3" placeholder="fake" ></textarea>
+          <label for="editdescription" class="form-label">Description</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="editurl" name="editurl" placeholder="fake">
+          <label for="editurl" class="form-label">URL</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="edituser" name="edituser" placeholder="fake">
+          <label for="edituser" class="form-label">User</label>
+        </div>
+        <div class="mb-3">
+          <div class="input-group">
+            <div class="form-floating input-group">
+              <input type="password" class="form-control" id="editpassword" name="editpassword" placeholder="fake">
+              <label for="editpassword" class="form-label">Password</label>
+            </div>
+            <button id="toggleeditpassword" type="button" class="btn btn-secondary" onclick="javascript:toggleEditPassword()"><span class="fa-solid fa-eye-slash"></button>
+          </div>
+        </div>
+        <input type="hidden" id="itemeditid">
+      </div>
+      <div class="modal-footer">
+        <button id="itemedit" type="button" class="btn btn-primary" onclick="javascript:itemEdit()">Update item</button>
+        <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

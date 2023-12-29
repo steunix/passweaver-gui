@@ -5,7 +5,6 @@
         <h5 class="text-light">New item</h5>
       </div>
       <div class="modal-body">
-        <form>
         <div class="form-floating mb-3">
           <input type="text" class="form-control border-danger" id="newtitle" name="newtitle" required="required" placeholder="fake" onkeyup="javascript:itemCreateEnable()">
           <label for="newtitle" class="form-label">Title (required)</label>
@@ -28,10 +27,9 @@
               <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="fake">
               <label for="newpassword" class="form-label">Password</label>
             </div>
-            <button id="togglepassword" class="btn btn-secondary" onclick="javascript:toggleViewPassword()"><span class="fa-solid fa-eye-slash"></button>
+            <button id="togglenewpassword" class="btn btn-secondary" onclick="javascript:toggleNewPassword()"><span class="fa-solid fa-eye-slash"></button>
           </div>
         </div>
-        </form>
       </div>
       <div class="modal-footer">
         <button id="itemcreate" type="button" class="btn btn-primary" disabled="disabled" onclick="javascript:itemCreate()">Create item</button>

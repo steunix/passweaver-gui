@@ -108,28 +108,37 @@ app.get("/pages/items", async (req,res)=>{
 // Items list
 app.get("/pages/itemslist/:folder", async (req,res)=>{
   const list = await Vaulted.itemslist(req.session, req.params.folder)
-
   res.status(200).json(list)
 })
 
 // Folder details
 app.get("/pages/folderinfo/:folder", async (req,res)=>{
   const info = await Vaulted.getFolder(req.session, req.params.folder)
-
   res.status(200).json(info)
+})
+
+// Get item
+app.get("/pages/items/:item", async (req,res)=> {
+  const resp = await Vaulted.itemGet(req.session, req.params.item, req.body)
+  res.status(200).json(resp)
 })
 
 // Create item
 app.post("/pages/itemnew/:folder", async (req,res)=> {
   const resp = await Vaulted.itemCreate(req.session, req.params.folder, req.body)
-
   res.status(200).json(resp)
 })
 
-// Create item
+// Delete item
 app.post("/pages/itemremove/:item", async (req,res)=> {
   const resp = await Vaulted.itemRemove(req.session, req.params.item, req.body)
+  res.status(200).json(resp)
+})
 
+
+// Update item
+app.post("/pages/itemupdate/:item", async (req,res)=> {
+  const resp = await Vaulted.itemUpdate(req.session, req.params.item, req.body)
   res.status(200).json(resp)
 })
 
