@@ -1,18 +1,18 @@
 <div id="newitemdialog" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5>New item</h5>
-        <button type="button" id="newitemdialogclose" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header bg-dark">
+        <h5 class="text-light">New item</h5>
       </div>
       <div class="modal-body">
+        <form>
         <div class="form-floating mb-3">
-          <input type="text" class="form-control border-danger" id="newtitle" name="newtitle" required="required" placeholder="fake">
-          <label for="title" class="form-label">Title (required)</label>
+          <input type="text" class="form-control border-danger" id="newtitle" name="newtitle" required="required" placeholder="fake" onkeyup="javascript:itemCreateEnable()">
+          <label for="newtitle" class="form-label">Title (required)</label>
         </div>
         <div class="form-floating mb-3">
-          <textarea type="text" class="form-control" id="newdescription" name="newdescription" rows="5" placeholder="fake"></textarea>
-          <label for="description" class="form-label">Description</label>
+          <textarea type="text" class="form-control" id="newdescription" name="newdescription" rows="3" placeholder="fake" ></textarea>
+          <label for="newdescription" class="form-label">Description</label>
         </div>
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="newurl" name="newurl" placeholder="fake">
@@ -20,20 +20,24 @@
         </div>
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="newuser" name="newuser" placeholder="fake">
-          <label for="user" class="form-label">User</label>
+          <label for="newuser" class="form-label">User</label>
         </div>
         <div class="mb-3">
           <div class="input-group">
             <div class="form-floating input-group">
               <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="fake">
-              <label for="password" class="form-label">Password</label>
+              <label for="newpassword" class="form-label">Password</label>
             </div>
-            <button id="togglepassword" class="btn btn-secondary" onclick="javascript:toggleViewPassword()">Toggle view</button>
+            <button id="togglepassword" class="btn btn-secondary" onclick="javascript:toggleViewPassword()"><span class="fa-solid fa-eye-slash"></button>
           </div>
         </div>
+        </form>
+      </div>
+      <div id="newitemalert">
+      </div>
       <div class="modal-footer">
-        <button id="itemcreate" type="button" class="btn btn-primary" onclick="javascript:createItem()">Create item</button>
-        <button id="cancel" type="button" class="btn btn-secondary" onclick="javascript:hideNewItemModal()">Cancel</button>
+        <button id="itemcreate" type="button" class="btn btn-primary" disabled="disabled" onclick="javascript:itemCreate()">Create item</button>
+        <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>

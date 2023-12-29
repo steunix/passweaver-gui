@@ -1,0 +1,8 @@
+body {
+    background: url('/public/images/vaulted-background.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+#sidebar a {
+    text-decoration: none;
+}

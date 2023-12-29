@@ -1,3 +1,9 @@
+/**
+ * Vaulted API module
+ * @module src/vaulted
+ * @author Stefano Rivoir <rs4000@gmail.com>
+ */
+
 import Got from 'got'
 import * as Config from './config.mjs'
 

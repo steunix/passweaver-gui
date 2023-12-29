@@ -25,10 +25,6 @@ function folderClicked(ev) {
   })
 }
 
-function hideNewItemModal() {
-  $("#newitemdialogclose").click()
-}
-
 function toggleViewPassword() {
   if ( $("#newpassword").attr("type")=="password") {
     $("#newpassword").attr("type","text")
@@ -37,7 +33,7 @@ function toggleViewPassword() {
   }
 }
 
-function createItem() {
+function itemCreate() {
   let itemdata = {
     title: $("#newtitle").val(),
     description: $("#newdescription").val(),
@@ -54,3 +50,17 @@ function createItem() {
     }
   });
 }
+
+function itemCreateEnable() {
+  if ( $("#newtitle").val()=="" ) {
+    $("#itemcreate").attr("disabled","disabled")
+  } else {
+    $("#itemcreate").removeAttr("disabled")
+  }
+}
+
+$(function() {
+  $("#newitemdialog").on("hidden.bs.modal", ()=> {
+    $(this).find("form").trigger("reset")
+  })
+})
