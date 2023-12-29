@@ -7,14 +7,14 @@
   <div class="col-sm p-3 min-vh-100">
     <%# Content %>
     <%- include('partials/toasts.ejs') %>
-    <h2>Items</h2>
+    <h3>Items list</h3>
     <div class="row">
     <div class="col-md-2">
-      <h3>Folders</h3>
+      <h5>Folders</h5>
       <%- include('partials/folderstree.ejs') %>
     </div>
     <div class="col-md-auto">
-      <h3>Items</h3>
+      <h5>Items</h5>
       <button id="newitem" type="button" class="btn btn-sm btn-primary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newitemdialog">New item</button>
       <button id="newfolder" type="button" class="ms-5 btn btn-sm btn-secondary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newfolderdialog">New folder</button>
       <button id="editfolder" type="button" class="btn btn-sm btn-secondary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#editfolderdialog">Edit folder</button>
