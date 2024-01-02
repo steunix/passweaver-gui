@@ -83,7 +83,7 @@ export async function getUser(session, id) {
  * @param {Object} session Current session
  * @returns
  */
-export async function tree(session) {
+export async function foldersTree(session) {
   const resp = await vaultedAPI(session, "get", "/folders/util/tree")
   return resp
 }
@@ -100,7 +100,7 @@ export async function itemslist(session, folder) {
 }
 
 /**
- * Get permissions for folder
+ * Get folder details
  * @param {Object} session Current session
  * @param {string} folder Folder id
  * @returns
@@ -219,5 +219,81 @@ export async function folderUpdate(session, folder, body) {
   }
 
   const resp = await vaultedAPI(session, "patch", "/folders/"+folder, data)
+  return resp
+}
+
+/**
+ * Get groups tree
+ * @param {Object} session Current session
+ * @returns
+ */
+export async function groupsTree(session) {
+  const resp = await vaultedAPI(session, "get", "/groups/util/tree")
+  return resp
+}
+
+/**
+ * Get group members
+ * @param {Object} session Current session
+ * @param {string} group Group id
+ * @returns
+ */
+export async function usersList(session, group) {
+  const resp = await vaultedAPI(session, "get", "/groups/"+group+"/users")
+  return resp
+}
+
+/**
+ * Create a new group
+ * @param {Object} session
+ * @param {string} group
+ * @param {Object} body
+ * @returns
+ */
+export async function groupCreate(session, group, body) {
+  const data = {
+    description: body.description
+  }
+
+  const resp = await vaultedAPI(session, "post", "/groups/"+group+"/groups", data)
+  return resp
+}
+
+/**
+ * Get group details
+ * @param {Object} session Current session
+ * @param {string} group Group id
+ * @returns
+ */
+export async function getGroup(session, group) {
+  const resp = await vaultedAPI(session, "get", "/groups/"+group  )
+  return resp
+}
+
+/**
+ * Update a group
+ * @param {Object} session
+ * @param {string} group
+ * @param {Object} body
+ * @returns
+ */
+export async function groupUpdate(session, group, body) {
+  const data = {
+    description: body.description
+  }
+
+  const resp = await vaultedAPI(session, "patch", "/groups/"+group, data)
+  return resp
+}
+
+/**
+ * Delete a group
+ * @param {Object} session
+ * @param {string} group
+ * @param {Object} body
+ * @returns
+ */
+export async function groupRemove(session, folder) {
+  const resp = await vaultedAPI(session, "delete", "/groups/"+folder)
   return resp
 }

@@ -95,7 +95,7 @@ app.post("/access", async (req,res)=>{
 
 // Items
 app.get("/pages/items", async (req,res)=>{
-  const tree = await Vaulted.tree(req.session)
+  const tree = await Vaulted.foldersTree(req.session)
 
   var resp = { tree: tree.data || [] }
   if ( tree.status=="failed" ) {
@@ -156,6 +156,48 @@ app.post("/pages/folderremove/:folder", async (req,res)=> {
 // Update folder
 app.post("/pages/folderupdate/:folder", async (req,res)=> {
   const resp = await Vaulted.folderUpdate(req.session, req.params.folder, req.body)
+  res.status(200).json(resp)
+})
+
+// Groups
+app.get("/pages/groups", async (req,res)=>{
+  const tree = await Vaulted.groupsTree(req.session)
+
+  var resp = { tree: tree.data || [] }
+  if ( tree.status=="failed" ) {
+    resp.error = tree.message
+  }
+
+  res.render('groups', resp)
+})
+
+// Group members
+app.get("/pages/userslist/:group", async (req,res)=>{
+  const list = await Vaulted.usersList(req.session, req.params.group)
+  res.status(200).json(list)
+})
+
+// Create group
+app.post("/pages/groupnew/:group", async (req,res)=> {
+  const resp = await Vaulted.groupCreate(req.session, req.params.group, req.body)
+  res.status(200).json(resp)
+})
+
+// Group details
+app.get("/pages/groups/:group", async (req,res)=>{
+  const info = await Vaulted.getGroup(req.session, req.params.group)
+  res.status(200).json(info)
+})
+
+// Update group
+app.post("/pages/groupupdate/:group", async (req,res)=> {
+  const resp = await Vaulted.groupUpdate(req.session, req.params.group, req.body)
+  res.status(200).json(resp)
+})
+
+// Delete group
+app.post("/pages/groupremove/:folder", async (req,res)=> {
+  const resp = await Vaulted.groupRemove(req.session, req.params.folder, req.body)
   res.status(200).json(resp)
 })
 

@@ -1,0 +1,58 @@
+<%- include('partials/header.ejs') %>
+
+<div class="container-fluid">
+
+<div class="row">
+  <%- include('partials/sidebar.ejs') %>
+  <div class="col-sm p-3 min-vh-100">
+    <%# Content %>
+    <%- include('partials/toasts.ejs') %>
+    <h3>Groups</h3>
+    <div class="row">
+    <div class="col-md-2">
+      <h5>Groups</h5>
+      <button id="newgroup" type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#newgroupdialog"><span class='fa-solid fa-add'/></button>
+      <button id="editgroup" type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editgroupdialog"><span class='fa-solid fa-pen'/></button>
+      <button id="removegroup" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#removegroupdialog"><span class='fa-solid fa-trash'/></button>
+      <%- include('partials/groupstree.ejs') %>
+    </div>
+    <div class="col-md-auto">
+      <h5>Members</h5>
+      <button id="newmember" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#newitemdialog">Add member</button>
+      <table id="userstable" class="mt-3 table table-hover">
+        <thead>
+          <tr id="tableheader">
+            <th></th>
+            <th>User</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/groupnew.ejs") %>
+<%- include("partials/groupedit.ejs") %>
+<%- include("partials/groupremove.ejs") %>
+
+</div>
+
+<script>
+  $(()=>{
+    $('#groupstree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: <%- JSON.stringify(tree) %> });
+    $('[role=treeitem]').on("click", groupClicked)
+
+    // Open last used group
+    const last = localStorage.getItem("bstreeview_open_groupstree")
+    if ( last ) {
+      groupClicked(last)
+    }
+  })
+</script>
+<script src="/public/js/groups.js"></script>
+
+<%- include('partials/footer.ejs') %>

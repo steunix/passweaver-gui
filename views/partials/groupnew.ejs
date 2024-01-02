@@ -1,0 +1,19 @@
+<div id="newgroupdialog" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="text-light">New group</h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control border-danger" autofocus id="newgroupdescription" name="newgroupdescription" required="required" placeholder="fake" onkeyup="javascript:groupCreateEnable()">
+          <label for="newgroupdescription" class="form-label">Description (required)</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="groupcreate" type="button" class="btn btn-primary" disabled="disabled" onclick="javascript:groupCreate()">Create group</button>
+        <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
