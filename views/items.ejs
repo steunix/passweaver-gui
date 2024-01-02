@@ -49,7 +49,7 @@
 
 <script>
   $(()=>{
-    $('#tree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: <%- JSON.stringify(tree) %> });
+    $('#tree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: <%- JSON.stringify(tree) %> })
     $('[role=treeitem]').on("click", folderClicked)
 
     // Open last used folder

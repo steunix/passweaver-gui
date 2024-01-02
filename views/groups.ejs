@@ -43,7 +43,7 @@
 
 <script>
   $(()=>{
-    $('#groupstree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: <%- JSON.stringify(tree) %> });
+    $('#groupstree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: <%- JSON.stringify(tree) %> })
     $('[role=treeitem]').on("click", groupClicked)
 
     // Open last used group
