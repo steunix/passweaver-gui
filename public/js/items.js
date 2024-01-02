@@ -9,10 +9,11 @@ function fillItems() {
     $("#itemstable tr[id!=tableheader]").remove()
     if ( resp.data.length ) {
       for ( const itm of resp.data ) {
-        var row = "<tr>"
+        var row = `<tr ondblclick="javascript:itemShow('${itm.id}')">`
         if ( currentPermissions.write ) {
-          row += `<td><i class='fa-solid fa-trash text-danger' data-bs-toggle="modal" data-bs-target="#removeitemdialog" data-id='${itm.id}'></i></td>`
+          row += `<td><i id='view-${itm.id}' class='fa-solid fa-circle-info text-primary' data-bs-toggle="modal" data-bs-target="#viewitemdialog" data-id='${itm.id}'></i></td>`
           row += `<td><i class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i></td>`
+          row += `<td><i class='fa-solid fa-trash text-danger' data-bs-toggle="modal" data-bs-target="#removeitemdialog" data-id='${itm.id}'></i></td>`
         } else {
           row += "<td></td><td></td>"
         }
@@ -225,6 +226,33 @@ function folderEdit() {
   });
 }
 
+function toggleViewPassword() {
+  if ( $("#viewpassword").attr("type")=="password") {
+    $("#viewpassword").attr("type","text")
+  } else {
+    $("#viewpassword").attr("type","password")
+  }
+}
+
+function itemViewFill(item) {
+  $.get("/pages/items/"+item, (resp)=> {
+    if ( resp.status=="success" ) {
+      $("#viewtitle").val(resp.data.title)
+      $("#viewdescription").val(resp.data.data.description)
+      $("#viewurl").val(resp.data.data.url)
+      $("#viewuser").val(resp.data.data.user)
+      $("#viewpassword").val(resp.data.data.password)
+    }
+  })
+}
+
+function itemShow(item) {
+  if ( window.getSelection() ) {
+    window.getSelection().empty()
+  }
+  $("#view-"+item).click()
+}
+
 $(function() {
   // Reset new item dialog fields
   $("#newitemdialog").on("hidden.bs.modal", ()=> {
@@ -259,5 +287,10 @@ $(function() {
   // Get the folder data to be edited
   $("#editfolderdialog").on("show.bs.modal", (ev)=> {
     folderEditFill($(ev.relatedTarget).data("id"))
+  })
+
+  // Get the item data to be shown
+  $("#viewitemdialog").on("show.bs.modal", (ev)=> {
+    itemViewFill($(ev.relatedTarget).data("id"))
   })
 })
