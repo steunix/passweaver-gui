@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
+
 body {
     background: url('/public/images/vaulted-background.jpg') no-repeat center center fixed;
     background-size: cover;
+    font-family: "Roboto Condensed";
+    font-size: 90%;
 }
 
 #sidebar a {

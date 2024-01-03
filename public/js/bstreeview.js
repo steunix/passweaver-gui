@@ -28,7 +28,7 @@
      */
     var templates = {
         treeview: '<div class="bstreeview"></div>',
-        treeviewItem: '<div role="treeitem" class="list-group-item" xxdata-bs-toggle="collapse"></div>',
+        treeviewItem: '<div role="treeitem" class="list-group-item"></div>',
         treeviewGroupItem: '<div role="group" class="list-group collapse" id="itemid"></div>',
         treeviewItemStateIcon: '<i class="state-icon" data-bs-toggle="collapse"></i>',
         treeviewItemIcon: '<i class="item-icon"></i>',
@@ -75,7 +75,6 @@
             this.build($(this.element), this.tree, 0);
             // Update angle icon on collapse
             $(this.element).on('click', '.state-icon', function (e) {
-                debugger
                 $(this)
                     .toggleClass(_this.settings.expandIcon)
                     .toggleClass(_this.settings.collapseIcon);
