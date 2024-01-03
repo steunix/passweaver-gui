@@ -241,7 +241,7 @@ function itemViewFill(item) {
       $("#viewdescription").val(resp.data.data.description)
       $("#viewurl").val(resp.data.data.url)
       $("#viewuser").val(resp.data.data.user)
-      $("#viewpassword").val(resp.data.data.password)
+      $("#viewpassword").val(resp.data.data.password).attr("type","password")
     }
   })
 }
