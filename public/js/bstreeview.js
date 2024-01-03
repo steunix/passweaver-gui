@@ -15,21 +15,22 @@
      */
     var pluginName = "bstreeview",
         defaults = {
-            expandIcon: 'fa fa-caret-down fa-xs fa-fw',
-            collapseIcon: 'fa fa-caret-right fa-xs fa-fw',
+            expandIconClass: 'fa-caret-down',
+            collapseIconClass: 'fa-caret-right',
+            expandIcon: 'fa fa-caret-down fa-lg fa-fw',
+            collapseIcon: 'fa fa-caret-right fa-lg fa-fw',
             expandClass: 'show',
             indent: 0.25,
-            parentsMarginLeft: '0.25rem',
-            openNodeLinkOnNewTab: true
+            parentsMarginLeft: '0.25rem'
         };
     /**
      * bstreeview HTML templates.
      */
     var templates = {
         treeview: '<div class="bstreeview"></div>',
-        treeviewItem: '<div role="treeitem" class="list-group-item" data-bs-toggle="collapse"></div>',
+        treeviewItem: '<div role="treeitem" class="list-group-item" xxdata-bs-toggle="collapse"></div>',
         treeviewGroupItem: '<div role="group" class="list-group collapse" id="itemid"></div>',
-        treeviewItemStateIcon: '<i class="state-icon"></i>',
+        treeviewItemStateIcon: '<i class="state-icon" data-bs-toggle="collapse"></i>',
         treeviewItemIcon: '<i class="item-icon"></i>',
         treeviewItemEmptyIcon: '<i class="fa fa-fw fa-angle-right"></i>'
     };
@@ -73,26 +74,13 @@
             var _this = this;
             this.build($(this.element), this.tree, 0);
             // Update angle icon on collapse
-            $(this.element).on('click', '.list-group-item', function (e) {
-                $('.state-icon', this)
+            $(this.element).on('click', '.state-icon', function (e) {
+                debugger
+                $(this)
                     .toggleClass(_this.settings.expandIcon)
                     .toggleClass(_this.settings.collapseIcon);
-                // navigate to href if present
-                if (e.target.hasAttribute('href')) {
-                    if (_this.settings.openNodeLinkOnNewTab) {
-                        window.open(e.target.getAttribute('href'), '_blank');
-                    }
-                    else {
-                        window.location = e.target.getAttribute('href');
-                    }
-                }
-                else
-                {
-                    // Toggle the data-bs-target. Issue with Bootstrap toggle and dynamic code
-                    var bstarget = $(this).attr("data-bs-target")
-                    $($.find(bstarget)).collapse('toggle')
-                    localStorage.setItem("bstreeview_expanded_"+mainid+"_"+$(this).attr("id"), $(this).attr("aria-expanded"))
-                }
+
+                localStorage.setItem("bstreeview_expanded_"+mainid+"_"+$(this).parent().attr("id"), $(this).hasClass(_this.settings.expandIconClass))
             });
         },
         /**
@@ -146,6 +134,7 @@
                 // Set Expand and Collapse icones.
                 if (node.children && node.children.length) {
                     var treeItemStateIcon = $(templates.treeviewItemStateIcon)
+                        .attr('data-bs-target', "#" + _this.itemIdPrefix + node.nodeId)
                         .addClass((node.expanded) ? _this.settings.expandIcon : _this.settings.collapseIcon);
                     treeItem.append(treeItemStateIcon);
                 } else {
