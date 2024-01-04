@@ -1,16 +1,12 @@
 <%- include('partials/header.ejs') %>
 
-<div class="container-fluid">
+<div class="container-fluid v-container">
 
 <div class="row">
   <%- include('partials/sidebar.ejs') %>
   <div class="col-sm min-vh-100">
-    <%# Content %>
     <%- include('partials/toasts.ejs') %>
-    <div class="row bg-light sticky-top">
-      <h3 class="text-center m-0 p-1"><strong>Vaulted</strong></h3>
-    </div>
-    <h3>Items list</h3>
+    <%- include('partials/topbar.ejs') %>
     <div class="row">
     <div class="col-md-3">
       <h5>Folders</h5>
@@ -52,7 +48,7 @@
 
 <script>
   $(()=>{
-    $('#tree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: <%- JSON.stringify(tree) %> })
+    $('#tree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: <%- JSON.stringify(folders) %> })
     $('[role=treeitem]').on("click", folderClicked)
 
     // Open last used folder

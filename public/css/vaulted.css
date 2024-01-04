@@ -19,3 +19,39 @@ div[role=treeitem] {
 .collapsing {
     transition: none !important;
 }
+
+.v-container {
+    height: 100vh;
+}
+
+.v-topbar {
+    height: 3rem;
+}
+
+.v-pagetitle {
+    height: 2em;
+}
+
+.v-spinner {
+    height: 100vh;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.v-overlay {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    background-color:darkgray;
+    opacity: 0.5;
+}
+
+.spinner-border {
+    height: 6rem;
+    width: 6rem;
+    border-width: 1rem;
+}

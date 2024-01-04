@@ -97,12 +97,16 @@ app.post("/access", async (req,res)=>{
 app.get("/pages/items", async (req,res)=>{
   const tree = await Vaulted.foldersTree(req.session)
 
-  var resp = { tree: tree.data || [] }
-  if ( tree.status=="failed" ) {
-    resp.error = tree.message
+  var page = {
+    pagetitle: "Items",
+    folders: tree.data || []
   }
 
-  res.render('items', resp)
+  if ( tree.status=="failed" ) {
+    page.error = tree.message
+  }
+
+  res.render('items', page)
 })
 
 // Items list
@@ -163,12 +167,16 @@ app.post("/pages/folderupdate/:folder", async (req,res)=> {
 app.get("/pages/groups", async (req,res)=>{
   const tree = await Vaulted.groupsTree(req.session)
 
-  var resp = { tree: tree.data || [] }
-  if ( tree.status=="failed" ) {
-    resp.error = tree.message
+  var page = {
+    pagetitle: "Groups",
+    groups: tree.data || []
   }
 
-  res.render('groups', resp)
+  if ( tree.status=="failed" ) {
+    page.error = tree.message
+  }
+
+  res.render('groups', page)
 })
 
 // Group members
