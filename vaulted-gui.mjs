@@ -37,7 +37,7 @@ app.use(session({
 
 // Checks for valid session in pages/ subdir
 app.use("/pages", function(req,res,next) {
-  if ( !req.session.userid ) {
+  if ( !req.session.user ) {
     res.status(401).redirect("/login?error=You need to login")
     return
   }
@@ -82,7 +82,7 @@ app.post("/access", async (req,res)=>{
   req.session.jwt = resp.data.jwt
   const jwt = jsonwebtoken.decode(req.session.jwt)
 
-  req.session.userid = jwt.user
+  req.session.user = jwt.user
 
   const usr = await Vaulted.getUser(req.session, req.session.user)
 
