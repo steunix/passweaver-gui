@@ -45,9 +45,8 @@ div[role=treeitem] {
     top: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 1000;
-    background-color:darkgray;
-    opacity: 0.5;
+    z-index: 2000;
+    background-color:#eeeeeeaa;
 }
 
 .spinner-border {
