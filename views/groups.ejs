@@ -42,14 +42,16 @@
 
 <script>
   $(()=>{
-    $('#groupstree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: <%- JSON.stringify(groups) %> })
-    $('[role=treeitem]').on("click", groupClicked)
+    $.get("/pages/groupstree", (resp)=>{
+      $('#groupstree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: resp.data })
+      $('[role=treeitem]').on("click", groupClicked)
 
-    // Open last used group
-    const last = localStorage.getItem("bstreeview_open_groupstree")
-    if ( last ) {
-      groupClicked(last)
-    }
+      // Open last used group
+      const last = localStorage.getItem("bstreeview_open_groupstree")
+      if ( last ) {
+        groupClicked(last)
+      }
+    })
   })
 </script>
 <script src="/public/js/groups.js"></script>
