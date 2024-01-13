@@ -1,0 +1,49 @@
+<%- include('partials/header.ejs') %>
+
+<div class="container-fluid v-container">
+
+<div class="row">
+  <%- include('partials/sidebar.ejs') %>
+  <div class="col-sm min-vh-100">
+    <%- include('partials/toasts.ejs') %>
+    <%- include('partials/topbar.ejs') %>
+    <div class="row">
+    <div class="col-md-auto">
+      <h5>Users</h5>
+      <button id="newuser" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#newuserdialog">New user</button>
+      <table id="userstable" class="mt-3 table table-hover">
+        <thead>
+          <tr id="tableheader">
+            <th></th>
+            <th></th>
+            <th>Login</th>
+            <th>Last name</th>
+            <th>First name</th>
+            <th>Email</th>
+            <th>Locale</th>
+            <th>Auth method</th>
+            <th>Active</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/usernew.ejs") %>
+<%- include("partials/useredit.ejs") %>
+<%- include("partials/userremove.ejs") %>
+
+</div>
+
+<script>
+  $(()=>{
+    fillUsers()
+  })
+</script>
+<script src="/public/js/users.js"></script>
+
+<%- include('partials/footer.ejs') %>

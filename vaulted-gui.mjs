@@ -86,7 +86,7 @@ app.post("/access", async (req,res)=>{
 
   const usr = await Vaulted.getUser(req.session, req.session.user)
 
-  req.session.userdescription = usr.data.description
+  req.session.userdescription = (usr.data.lastname + " " + usr.data.firstname).trim()
   req.session.email = usr.data.email
   req.session.save()
 
@@ -96,7 +96,8 @@ app.post("/access", async (req,res)=>{
 // Items
 app.get("/pages/items", async (req,res)=>{
   var page = {
-    pagetitle: "Items"
+    pagetitle: "Items",
+    userdescription: req.session.userdescription
   }
   res.render('items', page)
 })
@@ -164,7 +165,8 @@ app.post("/pages/folderupdate/:folder", async (req,res)=> {
 // Groups
 app.get("/pages/groups", async (req,res)=>{
   var page = {
-    pagetitle: "Groups"
+    pagetitle: "Groups",
+    userdescription: req.session.userdescription
   }
   res.render('groups', page)
 })
@@ -202,6 +204,45 @@ app.post("/pages/groupupdate/:group", async (req,res)=> {
 // Delete group
 app.post("/pages/groupremove/:folder", async (req,res)=> {
   const resp = await Vaulted.groupRemove(req.session, req.params.folder, req.body)
+  res.status(200).json(resp)
+})
+
+// Users page
+app.get("/pages/users", async(req,res)=> {
+  var page = {
+    pagetitle: "Users",
+    userdescription: req.session.userdescription
+  }
+  res.render('users', page)
+})
+
+// Get users list
+app.get("/pages/userslist", async (req,res)=> {
+  const list = await Vaulted.usersList(req.session)
+  res.status(200).json(list)
+})
+
+// Create user
+app.post("/pages/usernew", async (req,res)=> {
+  const resp = await Vaulted.userCreate(req.session, req.body);
+  res.status(200).json(resp)
+})
+
+// Get user
+app.get("/pages/users/:item", async (req,res)=> {
+  const resp = await Vaulted.userGet(req.session, req.params.item)
+  res.status(200).json(resp)
+})
+
+// Update user
+app.post("/pages/userupdate/:item", async (req,res)=> {
+  const resp = await Vaulted.userUpdate(req.session, req.params.item, req.body)
+  res.status(200).json(resp)
+})
+
+// Delete user
+app.post("/pages/userremove/:user", async (req,res)=> {
+  const resp = await Vaulted.userRemove(req.session, req.params.user)
   res.status(200).json(resp)
 })
 

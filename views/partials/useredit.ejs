@@ -1,0 +1,57 @@
+<div id="edituserdialog" class="modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="text-light mb-0">Edit user</h5>
+      </div>
+      <div class="modal-body">
+        <div class="row g-2">
+          <div class="col-md form-floating mb-3">
+            <input type="text" class="form-control border-danger" autofocus id="editlogin" name="editlogin" required="required" placeholder="fake" onkeyup="javascript:userEditEnable()">
+            <label for="editlogin" class="form-label">Login (required)</label>
+          </div>
+          <div class="col form-floating mb-3">
+            <input type="email" class="form-control border-danger" id="editemail" required="required" name="editemail" placeholder="fake" ></textarea>
+            <label for="editemail" class="form-label">Email (required)</label>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="col-md form-floating mb-3">
+            <input type="text" class="form-control border-danger" id="editlastname" name="editlastname" required="required" placeholder="fake" onkeyup="javascript:userEditEnable()">
+            <label for="editlastname" class="form-label">Last name (required)</label>
+          </div>
+          <div class="col-md form-floating mb-3">
+            <input type="text" class="form-control" id="editfirstname" name="editfirstname" placeholder="fake">
+            <label for="editfirstname" class="form-label">First name</label>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="col form-floating mb-3">
+            <select class="form-select" id="editlocale" name="editlocale" placeholder="fake">
+              <option selected>en_US</option>
+            </select>
+            <label for="editlocale" class="form-label">Locale</label>
+          </div>
+          <div class="col form-floating mb-3">
+            <select class="form-select" id="editauthmethod" name="editauthmethod" placeholder="fake">
+              <option selected>local</option>
+              <option>LDAP</option>
+            </select>
+            <label for="editauthmethod" class="form-label">Auth method</label>
+          </div>
+          <div class="col-md mb-3">
+            <div class="form-check form-switch">
+              <input type="checkbox" class="form-check-input" id="editactive" name="editactive" checked="checked">
+              <label for="editactive" class="form-check-label">Active</label>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" id="usereditid">
+      </div>
+      <div class="modal-footer">
+        <button id="useredit" type="button" class="btn btn-primary" onclick="javascript:userEdit()">Save</button>
+        <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

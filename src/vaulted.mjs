@@ -233,13 +233,18 @@ export async function groupsTree(session) {
 }
 
 /**
- * Get group members
+ * Users list
  * @param {Object} session Current session
  * @param {string} group Group id
  * @returns
  */
 export async function usersList(session, group) {
-  const resp = await vaultedAPI(session, "get", "/groups/"+group+"/users")
+  var resp
+  if ( group ) {
+    resp = await vaultedAPI(session, "get", "/groups/"+group+"/users")
+  } else {
+    resp = await vaultedAPI(session, "get", "/users")
+  }
   return resp
 }
 
@@ -295,5 +300,62 @@ export async function groupUpdate(session, group, body) {
  */
 export async function groupRemove(session, folder) {
   const resp = await vaultedAPI(session, "delete", "/groups/"+folder)
+  return resp
+}
+
+/**
+ * Create a user
+ * @param {Object} session
+ * @param {Object} user
+ * @returns
+ */
+export async function userCreate(session, user) {
+  const resp = await vaultedAPI(session, "post", "/users", user)
+  return resp
+}
+
+/**
+ * Get a user
+ * @param {Object} session
+ * @param {Object} user
+ * @returns
+ */
+export async function userGet(session, user) {
+  const resp = await vaultedAPI(session, "get", "/users/"+user)
+  return resp
+}
+
+/**
+ * Update a user
+ * @param {Object} session
+ * @param {string} user
+ * @param {Object} body
+ * @returns
+ */
+export async function userUpdate(session, user, body) {
+  // Recalc data so it cannot be injected
+  const data = {
+    login: body.login,
+    email: body.email,
+    lastname: body.lastname,
+    firstname: body.firstname,
+    locale: body.locale,
+    authmethod: body.authmethod,
+    active: body.active=="true"
+  }
+
+  const resp = await vaultedAPI(session, "patch", "/users/"+user, data)
+  return resp
+}
+
+/**
+ * Delete an user
+ * @param {Object} session
+ * @param {string} user
+ * @param {Object} body
+ * @returns
+ */
+export async function userRemove(session, user) {
+  const resp = await vaultedAPI(session, "delete", "/users/"+user)
   return resp
 }
