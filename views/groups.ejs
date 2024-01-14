@@ -10,7 +10,7 @@
     <div class="row">
     <div class="col-md-3">
       <h5>Groups</h5>
-      <button id="newgroup" type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#newgroupdialog"><span class='fa-solid fa-add'/></button>
+      <button id="newgroup" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#newgroupdialog"><span class='fa-solid fa-add'/></button>
       <button id="editgroup" type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editgroupdialog"><span class='fa-solid fa-pen'/></button>
       <button id="removegroup" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#removegroupdialog"><span class='fa-solid fa-trash'/></button>
       <%- include('partials/groupstree.ejs') %>
@@ -18,7 +18,7 @@
     <div class="col-md-auto">
       <h5>Members</h5>
       <button id="newmember" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#newitemdialog">Add member</button>
-      <table id="userstable" class="mt-3 table table-hover">
+      <table id="userstable" class="mt-3 table table-hover shadow">
         <thead>
           <tr id="tableheader">
             <th></th>
