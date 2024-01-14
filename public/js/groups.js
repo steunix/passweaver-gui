@@ -2,7 +2,7 @@ var currentGroup = ""
 
 function fillUsers() {
   $.get("/pages/userslist/"+currentGroup,(resp)=>{
-    $("#userstable tr[id!=tableheader]").remove()
+    $("#userstable tbody tr").remove()
     if ( resp.data.length ) {
       for ( const itm of resp.data ) {
         var row = `<tr>`

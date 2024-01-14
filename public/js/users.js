@@ -1,6 +1,6 @@
 function fillUsers() {
   $.get("/pages/userslist",(resp)=>{
-    $("#userstable tr[id!=tableheader]").remove()
+    $("#userstable tbody tr").remove()
     if ( resp.data.length ) {
       for ( const itm of resp.data ) {
         var row = `<tr ondblclick="javascript:userDoubleClicked('${itm.id}')">`

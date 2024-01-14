@@ -6,7 +6,7 @@ var currentPermissions = {
 
 function fillItems() {
   $.get("/pages/itemslist/"+currentFolder,(resp)=>{
-    $("#itemstable tr[id!=tableheader]").remove()
+    $("#itemstable tbody tr").remove()
     if ( resp.data.length ) {
       for ( const itm of resp.data ) {
         var row = `<tr ondblclick="javascript:itemShow('${itm.id}')">`
