@@ -11,3 +11,13 @@ function spinnerShow() {
 function spinnerHide() {
     $("#spinner").remove()
 }
+
+function generatePassword() {
+  var resp = $.ajax({
+    type: "GET",
+    url: "/pages/generatepassword",
+    async: false
+  })
+
+  return resp.responseJSON.data.password
+}

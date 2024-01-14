@@ -246,6 +246,12 @@ app.post("/pages/userremove/:user", async (req,res)=> {
   res.status(200).json(resp)
 })
 
+// Generate random password
+app.get("/pages/generatepassword", async(req,res)=> {
+  const resp = await Vaulted.generatePassword(req.session)
+  res.status(200).json(resp)
+})
+
 console.log("Listening on port "+cfg.listen_port)
 
 app.listen(cfg.listen_port)

@@ -359,3 +359,13 @@ export async function userRemove(session, user) {
   const resp = await vaultedAPI(session, "delete", "/users/"+user)
   return resp
 }
+
+/**
+ * Generate a password
+ * @param {Object} session
+ * @returns
+ */
+export async function generatePassword(session) {
+  const resp = await vaultedAPI(session, "get", "/util/generatepassword")
+  return resp
+}
