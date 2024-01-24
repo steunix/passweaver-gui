@@ -7,7 +7,9 @@ function fillUsers() {
       for ( const itm of resp.data ) {
         var row = `<tr>`
         row += `<td><i class='fa-solid fa-trash text-danger' data-bs-toggle="modal" data-bs-target="#removeuserdialog" data-id='${itm.id}'></i></td>`
-        row += "<td>"+itm.login+"</td><td>"+itm.description+"</td></tr>"
+        row += `<td>${itm.login}</td>`
+        row += `<td>${itm.lastname}</td>`
+        row += `<td>${itm.firstname}</td>`
         $("#userstable tbody").append(row)
       }
     }

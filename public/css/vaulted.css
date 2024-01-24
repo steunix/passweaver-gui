@@ -5,9 +5,19 @@ body {
     font-size: 90%;
 }
 
+.v-themecolor {
+    color: #fab450;
+}
+
 .v-content {
     background: url('/public/images/vaulted-background.jpg') no-repeat center center fixed;
     background-size: cover;
+}
+
+.v-stickybottom {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100vh - 10rem);
 }
 
 div[role=treeitem] {
