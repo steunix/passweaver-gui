@@ -1,6 +1,7 @@
 var currentGroup = ""
 
 function fillUsers() {
+  loadingShow($("#userstable"))
   $.get("/pages/userslist/"+currentGroup,(resp)=>{
     $("#userstable tbody tr").remove()
     if ( resp.data.length ) {
@@ -20,6 +21,8 @@ function fillUsers() {
     } else {
       $("#removegroup").removeAttr("disabled")
     }
+
+    loadingHide($("#userstable"))
   })
 }
 
