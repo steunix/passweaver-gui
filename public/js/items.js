@@ -32,7 +32,6 @@ function fillItems() {
 }
 
 function folderClicked(ev) {
-  debugger
   $("[role=treeitem]").css({"font-weight":"normal","background-color":"transparent"})
 
   // If ev is a string, the call has been forced on an item just for items reload: calling an
