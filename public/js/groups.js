@@ -6,7 +6,7 @@ function fillUsers() {
     if ( resp.data.length ) {
       for ( const itm of resp.data ) {
         var row = `<tr>`
-        row += `<td><i class='fa-solid fa-trash text-danger' data-bs-toggle="modal" data-bs-target="#removeuserdialog" data-id='${itm.id}'></i></td>`
+        row += `<td><i class='fa-solid fa-trash text-danger' onclick="javascript:groupRemoveUser('${itm.id}')"></i></td>`
         row += `<td>${itm.login}</td>`
         row += `<td>${itm.lastname}</td>`
         row += `<td>${itm.firstname}</td>`
@@ -40,34 +40,6 @@ function groupClicked(ev) {
 
   // Read group members
   fillUsers()
-}
-
-function userAdd() {
-  let userdata = {
-    title: $("#newtitle").val(),
-    description: $("#newdescription").val(),
-    url: $("#newurl").val(),
-    user: $("#newuser").val(),
-    password: $("#newpassword").val()
-  }
-
-  $.post("/pages/usernew/"+currentGroup, userdata, (resp)=> {
-    if ( resp.data && resp.data.id ) {
-      location.reload()
-    } else {
-      // TODO: handle error
-    }
-  });
-}
-
-function userRemove() {
-  $.post("/pages/userremove/"+$("#userremoveid").val(), (resp)=> {
-    if ( resp.status=="success" ) {
-      location.reload()
-    } else {
-      // TODO: handle error
-    }
-  });
 }
 
 function groupCreateEnable() {
@@ -134,13 +106,25 @@ function groupEditEnable() {
   }
 }
 
-function folderRemove() {
-  $.post("/pages/folderremove/"+$("#folderremoveid").val(), (resp)=> {
+function userPickerChoosen(id) {
+  $.post("/pages/groupadduser/"+currentGroup+"/"+id, (resp)=> {
     if ( resp.status=="success" ) {
       location.reload()
     } else {
       // TODO: handle error
     }
+  })
+}
+
+function groupRemoveUser(id) {
+  confirm("Remove user from group", "Are you sure you want to remove the user?", ()=> {
+    $.post("/pages/groupremoveuser/"+currentGroup+"/"+id, (resp)=> {
+      if ( resp.status=="success" ) {
+        location.reload()
+      } else {
+        // TODO: handle error
+      }
+    })
   })
 }
 
@@ -166,7 +150,7 @@ $(function() {
   })
 
   // Autofocus
-  $("#newgroupdialog,#editgroupdialog").on("shown.bs.modal", (ev)=> {
+  $("#newgroupdialog,#editgroupdialog,#userpicker").on("shown.bs.modal", (ev)=> {
     $(this).find("[autofocus]").focus()
   })
 })

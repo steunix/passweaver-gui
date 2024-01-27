@@ -238,13 +238,18 @@ export async function groupsTree(session) {
  * @param {string} group Group id
  * @returns
  */
-export async function usersList(session, group) {
-  var resp
+export async function usersList(session, group, search) {
+  var resp, url
   if ( group ) {
-    resp = await vaultedAPI(session, "get", "/groups/"+group+"/users")
+    url = `/groups/${group}/users`
   } else {
-    resp = await vaultedAPI(session, "get", "/users")
+    url = `/users`
   }
+
+  if ( search ) {
+    url += `/?search=${search}`
+  }
+  resp = await vaultedAPI(session, "get", url)
   return resp
 }
 
@@ -298,8 +303,30 @@ export async function groupUpdate(session, group, body) {
  * @param {Object} body
  * @returns
  */
-export async function groupRemove(session, folder) {
-  const resp = await vaultedAPI(session, "delete", "/groups/"+folder)
+export async function groupRemove(session, group) {
+  const resp = await vaultedAPI(session, "delete", "/groups/"+group)
+  return resp
+}
+
+/**
+ * Add a user to group
+ * @param {*} session
+ * @param {*} group
+ * @param {*} user
+ */
+export async function groupAddUser(session, group, user) {
+  const resp = await vaultedAPI(session, "post", "/groups/"+group+"/users/"+user)
+  return resp
+}
+
+/**
+ * Delete user from group
+ * @param {*} session
+ * @param {*} group
+ * @param {*} user
+ */
+export async function groupRemoveUser(session, group, user) {
+  const resp = await vaultedAPI(session, "delete", "/groups/"+group+"/users/"+user)
   return resp
 }
 

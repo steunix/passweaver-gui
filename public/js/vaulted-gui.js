@@ -21,3 +21,11 @@ function generatePassword() {
 
   return resp.responseJSON.data.password
 }
+
+function confirm(title,text,callback) {
+  var dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("confirmdialog"), {})
+  $("#confirmdialogtitle").html(title)
+  $("#confirmdialogtext").html(text)
+  $("#confirmdialogok").off("click").on("click", callback)
+  dialog.show()
+}

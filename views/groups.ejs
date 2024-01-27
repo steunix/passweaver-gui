@@ -17,7 +17,7 @@
     </div>
     <div class="col-md-auto">
       <h5>Members</h5>
-      <button id="newmember" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#newitemdialog">Add member</button>
+      <button id="newmember" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#userpicker">Add member</button>
       <div class="mt-3 v-stickybottom shadow rounded">
       <table id="userstable" class="table table-hover">
         <thead>
@@ -40,6 +40,8 @@
 <%- include("partials/groupnew.ejs") %>
 <%- include("partials/groupedit.ejs") %>
 <%- include("partials/groupremove.ejs") %>
+<%- include("partials/userpicker.ejs") %>
+<%- include('partials/confirmdialog.ejs') %>
 
 </div>
 

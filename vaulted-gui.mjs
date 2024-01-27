@@ -177,7 +177,7 @@ app.get("/pages/groupstree", async (req,res)=> {
   res.status(200).json(resp)
 })
 
-// Group members
+// Group members list
 app.get("/pages/userslist/:group", async (req,res)=>{
   const list = await Vaulted.usersList(req.session, req.params.group)
   res.status(200).json(list)
@@ -202,8 +202,20 @@ app.post("/pages/groupupdate/:group", async (req,res)=> {
 })
 
 // Delete group
-app.post("/pages/groupremove/:folder", async (req,res)=> {
-  const resp = await Vaulted.groupRemove(req.session, req.params.folder, req.body)
+app.post("/pages/groupremove/:group", async (req,res)=> {
+  const resp = await Vaulted.groupRemove(req.session, req.params.group)
+  res.status(200).json(resp)
+})
+
+// Add user to group
+app.post("/pages/groupadduser/:group/:user", async (req,res)=> {
+  const resp = await Vaulted.groupAddUser(req.session, req.params.group, req.params.user)
+  res.status(200).json(resp)
+})
+
+// Remove user from group
+app.post("/pages/groupremoveuser/:group/:user", async (req,res)=> {
+  const resp = await Vaulted.groupRemoveUser(req.session, req.params.group, req.params.user)
   res.status(200).json(resp)
 })
 
@@ -218,7 +230,7 @@ app.get("/pages/users", async(req,res)=> {
 
 // Get users list
 app.get("/pages/userslist", async (req,res)=> {
-  const list = await Vaulted.usersList(req.session)
+  const list = await Vaulted.usersList(req.session,null,req.query?.search)
   res.status(200).json(list)
 })
 
