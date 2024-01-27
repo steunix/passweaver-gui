@@ -20,6 +20,10 @@ body {
     max-height: calc(100vh - 10rem);
 }
 
+.v-blur {
+    filter: blur(1px) grayscale(100%) opacity(50%)
+}
+
 div[role=treeitem] {
     padding-top: 0.25rem !important;
     padding-bottom: 0.25rem !important;

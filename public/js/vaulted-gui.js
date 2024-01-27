@@ -1,15 +1,23 @@
 function spinnerShow() {
-    $("body").append(`
-    <div id="spinner" class="v-overlay">
-      <div class="v-spinner">
-        <div class="spinner-border text-success"></div>
-      </div>
-    </div>`
-    );
+  $("body").append(`
+  <div id="spinner" class="v-overlay">
+    <div class="v-spinner">
+      <div class="spinner-border text-success"></div>
+    </div>
+  </div>`
+  );
 }
 
 function spinnerHide() {
-    $("#spinner").remove()
+  $("#spinner").remove()
+}
+
+function loadingShow(el) {
+  el.addClass("v-blur")
+}
+
+function loadingHide(el) {
+  el.removeClass("v-blur")
 }
 
 function generatePassword() {

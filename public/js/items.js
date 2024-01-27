@@ -5,6 +5,7 @@ var currentPermissions = {
 }
 
 function fillItems() {
+  loadingShow($("#itemstable"))
   $.get("/pages/itemslist/"+currentFolder,(resp)=>{
     $("#itemstable tbody tr").remove()
     if ( resp.data.length ) {
@@ -26,6 +27,7 @@ function fillItems() {
     if ( $("#itemstable tbody tr").length ) {
       $("#removefolder").attr("disabled","disabled")
     }
+    loadingHide($("#itemstable"))
   })
 }
 
@@ -63,9 +65,10 @@ function folderClicked(ev) {
       $("#removefolder").attr("disabled","disabled")
       $("#editfolder").attr("disabled","disabled")
     }
-
-    fillItems()
   })
+
+  // Load items
+  fillItems()
 }
 
 function toggleNewPassword() {
