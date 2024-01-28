@@ -16,6 +16,7 @@ import session from 'express-session'
 import FileStore from 'session-file-store'
 import jsonwebtoken from 'jsonwebtoken'
 import rateLimitMiddleware from "./src/ratelimiter.mjs"
+import lusca from 'lusca'
 
 const fileStore = FileStore(session)
 export const app = Express()
@@ -26,6 +27,8 @@ const cfg = Config.get()
 app.use(Express.json())
 app.use(compression())
 app.use(Express.urlencoded({ extended: true }))
+
+// Session middleware
 app.use(session({
   name: "vaultedgui",
   store: new fileStore({}),
@@ -33,6 +36,12 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 1000 * 60 * 60 * 4 }
+}))
+
+// CSFR protection
+app.use(lusca.csrf({
+  key: "_csrf",
+  secret: cfg.csfr_key_env
 }))
 
 // Checks for valid session in pages/ subdir
@@ -55,11 +64,12 @@ app.use("/access", rateLimitMiddleware)
 
 // Login page
 app.get("/login", (req,res)=>{
-  var data = {
+  req.locals = {
     error: req.query.error,
-    company_name: cfg.company_name
+    company_name: cfg.company_name,
+    csfrtoken: req.csrfToken()
   }
-  res.render('login', data)
+  res.render('login', req.locals)
 })
 
 // Logout page
@@ -95,11 +105,12 @@ app.post("/access", async (req,res)=>{
 
 // Items
 app.get("/pages/items", async (req,res)=>{
-  var page = {
+  req.locals = {
+    csfrtoken: req.csrfToken(),
     pagetitle: "Items",
     userdescription: req.session.userdescription
   }
-  res.render('items', page)
+  res.render('items', req.locals)
 })
 
 // Items list
@@ -165,6 +176,7 @@ app.post("/pages/folderupdate/:folder", async (req,res)=> {
 // Groups
 app.get("/pages/groups", async (req,res)=>{
   var page = {
+    csfrtoken: req.csrfToken(),
     pagetitle: "Groups",
     userdescription: req.session.userdescription
   }
@@ -222,6 +234,7 @@ app.post("/pages/groupremoveuser/:group/:user", async (req,res)=> {
 // Users page
 app.get("/pages/users", async(req,res)=> {
   var page = {
+    csfrtoken: req.csrfToken(),
     pagetitle: "Users",
     userdescription: req.session.userdescription
   }

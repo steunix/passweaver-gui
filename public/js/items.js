@@ -81,6 +81,7 @@ function toggleNewPassword() {
 
 function itemCreate() {
   let itemdata = {
+    _csrf: $("#_csrf").val(),
     title: $("#newtitle").val(),
     description: $("#newdescription").val(),
     url: $("#newurl").val(),
@@ -106,7 +107,7 @@ function itemCreateEnable() {
 }
 
 function itemRemove() {
-  $.post("/pages/itemremove/"+$("#itemremoveid").val(), (resp)=> {
+  $.post("/pages/itemremove/"+$("#itemremoveid").val(), {_csrf: $("#_csrf").val()}, (resp)=> {
     if ( resp.status=="success" ) {
       location.reload()
     } else {
@@ -139,6 +140,7 @@ function itemEditEnable() {
 
 function itemEdit() {
   let itemdata = {
+    _csrf: $("#_csrf").val(),
     title: $("#edittitle").val(),
     data: {
       description: $("#editdescription").val(),
@@ -175,6 +177,7 @@ function folderCreateEnable() {
 
 function folderCreate() {
   let itemdata = {
+    _csrf: $("#_csrf").val(),
     description: $("#newfolderdescription").val()
   }
 
@@ -188,7 +191,7 @@ function folderCreate() {
 }
 
 function folderRemove() {
-  $.post("/pages/folderremove/"+$("#folderremoveid").val(), (resp)=> {
+  $.post("/pages/folderremove/"+$("#folderremoveid").val(), {_csrf: $("#_csrf").val()}, (resp)=> {
     if ( resp.status=="success" ) {
       location.reload()
     } else {
@@ -217,6 +220,7 @@ function folderEditFill() {
 
 function folderEdit() {
   let data = {
+    _csrf: $("#_csrf").val(),
     description: $("#foldereditdescription").val()
   }
 

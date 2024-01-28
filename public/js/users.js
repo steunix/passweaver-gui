@@ -38,6 +38,7 @@ function toggleNewPasswordConfirm() {
 
 function userCreate() {
   let userdata = {
+    _csrf: $("#_csrf").val(),
     login: $("#newlogin").val(),
     email: $("#newemail").val(),
     lastname: $("#newlastname").val(),
@@ -68,7 +69,7 @@ function userCreateEnable() {
 }
 
 function userRemove() {
-  $.post("/pages/userremove/"+$("#userremoveid").val(), (resp)=> {
+  $.post("/pages/userremove/"+$("#userremoveid").val(), {_csrf: $("#_csrf").val()}, (resp)=> {
     if ( resp.status=="success" ) {
       location.reload()
     } else {
@@ -105,6 +106,7 @@ function userEditEnable() {
 
 function userEdit() {
   let userdata = {
+    _csrf: $("#_csrf").val(),
     login: $("#editlogin").val(),
     email: $("#editemail").val(),
     lastname: $("#editlastname").val(),

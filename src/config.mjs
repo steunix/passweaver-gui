@@ -29,8 +29,9 @@ try {
 let config = json
 
 // Retreives the master key from environment
-console.log("Reading session key from environment ("+config.session_key_env+")")
+console.log("Reading session and CSFR keys from environment ("+config.session_key_env+")")
 config.session_key_env = process.env[config.session_key_env]
+config.csfr_key_env = process.env[config.csfr_key_env]
 
 /**
  * Returns the configuration stored in config.json

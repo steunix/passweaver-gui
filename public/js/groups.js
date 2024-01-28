@@ -55,6 +55,7 @@ function groupCreateEnable() {
 
 function groupCreate() {
   let userdata = {
+    _csrf: $("#_csrf").val(),
     description: $("#newgroupdescription").val()
   }
 
@@ -68,7 +69,7 @@ function groupCreate() {
 }
 
 function groupRemove() {
-  $.post("/pages/groupremove/"+$("#groupremoveid").val(), (resp)=> {
+  $.post("/pages/groupremove/"+$("#groupremoveid").val(), {_csrf: $("#_csrf").val()}, (resp)=> {
     if ( resp.status=="success" ) {
       location.reload()
     } else {
@@ -89,6 +90,7 @@ function groupEditFill() {
 
 function groupEdit() {
   let data = {
+    _csrf: $("#_csrf").val(),
     description: $("#groupeditdescription").val()
   }
 
@@ -110,7 +112,7 @@ function groupEditEnable() {
 }
 
 function userPickerChoosen(id) {
-  $.post("/pages/groupadduser/"+currentGroup+"/"+id, (resp)=> {
+  $.post("/pages/groupadduser/"+currentGroup+"/"+id, {_csrf: $("#_csrf").val()}, (resp)=> {
     if ( resp.status=="success" ) {
       location.reload()
     } else {
@@ -121,7 +123,7 @@ function userPickerChoosen(id) {
 
 function groupRemoveUser(id) {
   confirm("Remove user from group", "Are you sure you want to remove the user?", ()=> {
-    $.post("/pages/groupremoveuser/"+currentGroup+"/"+id, (resp)=> {
+    $.post("/pages/groupremoveuser/"+currentGroup+"/"+id, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( resp.status=="success" ) {
         location.reload()
       } else {
