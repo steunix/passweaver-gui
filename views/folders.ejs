@@ -1,0 +1,59 @@
+<%- include('partials/header.ejs') %>
+
+<div class="container-fluid v-container">
+
+<div class="row">
+  <%- include('partials/sidebar.ejs') %>
+  <div class="col-sm min-vh-100">
+    <%- include('partials/toasts.ejs') %>
+    <%- include('partials/topbar.ejs') %>
+    <%- include('partials/csfr.ejs') %>
+    <div class="row">
+    <div class="col-md-3">
+      <h5>Folders</h5>
+      <%- include('partials/folderstree.ejs') %>
+    </div>
+    <div class="col-md-auto">
+      <h5>Groups</h5>
+      <button id="addgroup" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addgroup">Add group</button>
+      <div class="mt-3 v-stickybottom shadow rounded">
+        <table id="groupstable" class="table table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Permission</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/foldernew.ejs") %>
+<%- include("partials/folderedit.ejs") %>
+<%- include('partials/confirmdialog.ejs') %>
+
+</div>
+
+<script>
+  $(()=>{
+    $.get("/pages/folderstree", (resp)=>{
+      $('#tree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: resp.data })
+      $('[role=treeitem]').on("click", folderClicked)
+
+      // Open last used folder
+      const last = localStorage.getItem("bstreeview_open_folderstree")
+      if ( last ) {
+        folderClicked(last)
+      }
+    })
+  })
+</script>
+<script src="/public/js/folders.js"></script>
+
+<%- include('partials/footer.ejs') %>

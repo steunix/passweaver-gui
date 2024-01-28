@@ -376,6 +376,16 @@ export async function userUpdate(session, user, body) {
 }
 
 /**
+ * Get folder groups
+ * @param {Object} session
+ * @param {string} folder
+ */
+export async function folderGroups(session, folder) {
+  const resp = await vaultedAPI(session, "get", `/folders/${folder}/groups`)
+  return resp
+}
+
+/**
  * Delete an user
  * @param {Object} session
  * @param {string} user

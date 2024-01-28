@@ -35,7 +35,7 @@ app.use(session({
   secret: cfg.session_key_env,
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 60 * 4 }
+  cookie: { secure: false, maxAge: 1000 * 60 * 60 * 4 }
 }))
 
 // CSFR protection
@@ -46,7 +46,7 @@ app.use(lusca.csrf({
 
 // Checks for valid session in pages/ subdir
 app.use("/pages", function(req,res,next) {
-  if ( !req.session.user ) {
+  if ( req?.session?.user===undefined ) {
     res.status(401).redirect("/login?error=You need to login")
     return
   }
@@ -274,6 +274,22 @@ app.post("/pages/userremove/:user", async (req,res)=> {
 // Generate random password
 app.get("/pages/generatepassword", async(req,res)=> {
   const resp = await Vaulted.generatePassword(req.session)
+  res.status(200).json(resp)
+})
+
+// Folders
+app.get("/pages/folders", async (req,res)=>{
+  req.locals = {
+    csfrtoken: req.csrfToken(),
+    pagetitle: "Folders permissions",
+    userdescription: req.session.userdescription
+  }
+  res.render('folders', req.locals)
+})
+
+// Get folder's groups
+app.get("/pages/foldergroups/:id", async (req,res)=> {
+  const resp = await Vaulted.folderGroups(req.session, req.params.id)
   res.status(200).json(resp)
 })
 
