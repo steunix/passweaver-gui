@@ -14,7 +14,7 @@ function fillItems() {
         if ( currentPermissions.write ) {
           row += `<td><i id='view-${itm.id}' class='fa-solid fa-circle-info text-primary' data-bs-toggle="modal" data-bs-target="#viewitemdialog" data-id='${itm.id}'></i></td>`
           row += `<td><i class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i></td>`
-          row += `<td><i class='fa-solid fa-trash text-danger' data-bs-toggle="modal" data-bs-target="#removeitemdialog" data-id='${itm.id}'></i></td>`
+          row += `<td><i class='fa-solid fa-trash text-danger' onclick='javascript:itemRemove("${itm.id}")'></i></td>`
         } else {
           row += "<td></td><td></td>"
         }
@@ -106,14 +106,16 @@ function itemCreateEnable() {
   }
 }
 
-function itemRemove() {
-  $.post("/pages/itemremove/"+$("#itemremoveid").val(), {_csrf: $("#_csrf").val()}, (resp)=> {
-    if ( resp.status=="success" ) {
-      location.reload()
-    } else {
-      // TODO: handle error
-    }
-  });
+function itemRemove(itm) {
+  confirm("Remove item", "Are you sure you want to remove this item?", ()=> {
+    $.post("/pages/itemremove/"+itm, {_csrf: $("#_csrf").val()}, (resp)=> {
+      if ( resp.status=="success" ) {
+        location.reload()
+      } else {
+        // TODO: handle error
+      }
+    })
+  })
 }
 
 function itemEditFill(item) {
@@ -191,13 +193,15 @@ function folderCreate() {
 }
 
 function folderRemove() {
-  $.post("/pages/folderremove/"+$("#folderremoveid").val(), {_csrf: $("#_csrf").val()}, (resp)=> {
-    if ( resp.status=="success" ) {
-      location.reload()
-    } else {
-      // TODO: handle error
-    }
-  });
+  confirm("Remove folder", "Are you sure you want to remove this folder?", ()=> {
+    $.post("/pages/folderremove/"+currentFolder, {_csrf: $("#_csrf").val()}, (resp)=> {
+      if ( resp.status=="success" ) {
+        location.reload()
+      } else {
+        // TODO: handle error
+      }
+    })
+  })
 }
 
 function folderEditEnable() {
@@ -266,11 +270,6 @@ $(function() {
     $("#newitemdialog input,textarea").val("")
   })
 
-  // Sets the value for item to be deleted
-  $("#removeitemdialog").on("show.bs.modal", (ev)=> {
-    $("#itemremoveid").val($(ev.relatedTarget).data("id"))
-  })
-
   // Get the item data to be edited
   $("#edititemdialog").on("show.bs.modal", (ev)=> {
     itemEditFill($(ev.relatedTarget).data("id"))
@@ -279,11 +278,6 @@ $(function() {
   // Reset new folder dialog fields
   $("#newfolderdialog").on("hidden.bs.modal", ()=> {
     $("#newfolderdialog input,textarea").val("")
-  })
-
-  // Sets the value for folder to be deleted
-  $("#removefolderdialog").on("show.bs.modal", (ev)=> {
-    $("#folderremoveid").val(currentFolder)
   })
 
   // Autofocus

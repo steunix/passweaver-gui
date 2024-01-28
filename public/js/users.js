@@ -5,7 +5,7 @@ function fillUsers() {
       for ( const itm of resp.data ) {
         var row = `<tr ondblclick="javascript:userDoubleClicked('${itm.id}')">`
         row += `<td><i id='edit-${itm.id}' class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edituserdialog" data-id='${itm.id}'></i></td>`
-        row += `<td><i class='fa-solid fa-trash text-danger' data-bs-toggle="modal" data-bs-target="#removeuserdialog" data-id='${itm.id}'></i></td>`
+        row += `<td><i class='fa-solid fa-trash text-danger' onclick='javascript:userRemove("${itm.id}")'></i></td>`
         row += `<td>${itm.login}</td>`
         row += `<td>${itm.lastname}</td>`
         row += `<td>${itm.firstname}</td>`
@@ -55,7 +55,7 @@ function userCreate() {
     } else {
       // TODO: handle error
     }
-  });
+  })
 }
 
 function userCreateEnable() {
@@ -68,14 +68,16 @@ function userCreateEnable() {
   }
 }
 
-function userRemove() {
-  $.post("/pages/userremove/"+$("#userremoveid").val(), {_csrf: $("#_csrf").val()}, (resp)=> {
-    if ( resp.status=="success" ) {
-      location.reload()
-    } else {
-      // TODO: handle error
-    }
-  });
+function userRemove(usr) {
+  confirm("Remove user", "<strong><span class='text-danger'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", ()=> {
+    $.post("/pages/userremove/"+usr, {_csrf: $("#_csrf").val()}, (resp)=> {
+      if ( resp.status=="success" ) {
+        location.reload()
+      } else {
+        // TODO: handle error
+      }
+    })
+  })
 }
 
 function userEditFill(user) {
@@ -152,11 +154,6 @@ $(function() {
   // Reset new user dialog fields
   $("#newuserdialog").on("hidden.bs.modal", ()=> {
     $("#newuserdialog input,textarea").val("")
-  })
-
-  // Sets the value for user to be deleted
-  $("#removeuserdialog").on("show.bs.modal", (ev)=> {
-    $("#userremoveid").val($(ev.relatedTarget).data("id"))
   })
 
   // Get the user data to be edited

@@ -5,12 +5,12 @@ function fillUsers() {
   $.get("/pages/userslist/"+currentGroup,(resp)=>{
     $("#userstable tbody tr").remove()
     if ( resp.data.length ) {
-      for ( const itm of resp.data ) {
+      for ( const usr of resp.data ) {
         var row = `<tr>`
-        row += `<td><i class='fa-solid fa-trash text-danger' onclick="javascript:groupRemoveUser('${itm.id}')"></i></td>`
-        row += `<td>${itm.login}</td>`
-        row += `<td>${itm.lastname}</td>`
-        row += `<td>${itm.firstname}</td>`
+        row += `<td><i class='fa-solid fa-trash text-danger' onclick="javascript:groupRemoveUser('${usr.id}')"></i></td>`
+        row += `<td>${usr.login}</td>`
+        row += `<td>${usr.lastname}</td>`
+        row += `<td>${usr.firstname}</td>`
         $("#userstable tbody").append(row)
       }
     }
@@ -69,13 +69,15 @@ function groupCreate() {
 }
 
 function groupRemove() {
-  $.post("/pages/groupremove/"+$("#groupremoveid").val(), {_csrf: $("#_csrf").val()}, (resp)=> {
-    if ( resp.status=="success" ) {
-      location.reload()
-    } else {
-      // TODO: handle error
-    }
-  });
+  confirm("Remove group", "Are you sure you want to remove this group?", ()=> {
+    $.post("/pages/groupremove/"+currentGroup, {_csrf: $("#_csrf").val()}, (resp)=> {
+      if ( resp.status=="success" ) {
+        location.reload()
+      } else {
+        // TODO: handle error
+      }
+    })
+  })
 }
 
 function groupEditFill() {
@@ -147,11 +149,6 @@ $(function() {
   // Reset new group dialog fields
   $("#newgroupdialog").on("hidden.bs.modal", ()=> {
     $("#newgroupdialog input,textarea,select").val("")
-  })
-
-  // Sets the value for group to be deleted
-  $("#removegroupdialog").on("show.bs.modal", (ev)=> {
-    $("#groupremoveid").val(currentGroup)
   })
 
   // Autofocus

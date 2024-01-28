@@ -13,7 +13,7 @@
       <h5>Groups</h5>
       <button id="newgroup" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#newgroupdialog"><span class='fa-solid fa-add'/></button>
       <button id="editgroup" type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editgroupdialog"><span class='fa-solid fa-pen'/></button>
-      <button id="removegroup" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#removegroupdialog"><span class='fa-solid fa-trash'/></button>
+      <button id="removegroup" type="button" class="btn btn-sm btn-danger" onclick="javascript:groupRemove()"><span class='fa-solid fa-trash'/></button>
       <%- include('partials/groupstree.ejs') %>
     </div>
     <div class="col-md-auto">
@@ -40,7 +40,6 @@
 
 <%- include("partials/groupnew.ejs") %>
 <%- include("partials/groupedit.ejs") %>
-<%- include("partials/groupremove.ejs") %>
 <%- include("partials/userpicker.ejs") %>
 <%- include('partials/confirmdialog.ejs') %>
 

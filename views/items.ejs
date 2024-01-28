@@ -13,7 +13,7 @@
       <h5>Folders</h5>
       <button id="newfolder" type="button" class="btn btn-sm btn-primary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newfolderdialog"><span class='fa-solid fa-add'/></button>
       <button id="editfolder" type="button" class="btn btn-sm btn-secondary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#editfolderdialog"><span class='fa-solid fa-pen'/></button>
-      <button id="removefolder" type="button" class="btn btn-sm btn-danger" disabled="disabled" data-bs-toggle="modal" data-bs-target="#removefolderdialog"><span class='fa-solid fa-trash'/></button>
+      <button id="removefolder" type="button" class="btn btn-sm btn-danger" disabled="disabled" onclick="javascript:folderRemove()"><span class='fa-solid fa-trash'/></button>
       <%- include('partials/folderstree.ejs') %>
     </div>
     <div class="col-md-auto">
@@ -40,12 +40,11 @@
 </div>
 
 <%- include("partials/itemnew.ejs") %>
-<%- include("partials/itemremove.ejs") %>
 <%- include("partials/itemedit.ejs") %>
 <%- include("partials/itemview.ejs") %>
 <%- include("partials/foldernew.ejs") %>
 <%- include("partials/folderedit.ejs") %>
-<%- include("partials/folderremove.ejs") %>
+<%- include('partials/confirmdialog.ejs') %>
 
 </div>
 
