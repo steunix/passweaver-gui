@@ -293,6 +293,12 @@ app.get("/pages/foldergroups/:id", async (req,res)=> {
   res.status(200).json(resp)
 })
 
+// Get groups list
+app.get("/pages/groupslist", async (req,res)=> {
+  const list = await Vaulted.groupsList(req.session,req.query?.search)
+  res.status(200).json(list)
+})
+
 console.log("Listening on port "+cfg.listen_port)
 
 app.listen(cfg.listen_port)

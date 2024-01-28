@@ -386,6 +386,22 @@ export async function folderGroups(session, folder) {
 }
 
 /**
+ * Groups list
+ * @param {Object} session Current session
+ * @returns
+ */
+export async function groupsList(session, search) {
+  var resp
+  var url = `/groups/`
+
+  if ( search ) {
+    url += `/?search=${search}`
+  }
+  resp = await vaultedAPI(session, "get", url)
+  return resp
+}
+
+/**
  * Delete an user
  * @param {Object} session
  * @param {string} user
