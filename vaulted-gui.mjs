@@ -31,7 +31,7 @@ app.use(Express.urlencoded({ extended: true }))
 // Session middleware
 app.use(session({
   name: "vaultedgui",
-  store: new fileStore({}),
+  //store: new fileStore({}),
   secret: cfg.session_key_env,
   resave: false,
   saveUninitialized: false,
@@ -63,7 +63,7 @@ app.use("/public", Express.static('public'))
 app.use("/access", rateLimitMiddleware)
 
 // Login page
-app.get("/login", (req,res)=>{
+app.get(["/login","/"], (req,res)=>{
   req.locals = {
     error: req.query.error,
     company_name: cfg.company_name,
