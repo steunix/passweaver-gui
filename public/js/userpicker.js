@@ -14,8 +14,7 @@ function searchUsers() {
         row += `<tr ondblclick="javascript:userPickerChoosen('${usr.id}')">`
         row += `<td><i class='fa-solid fa-circle-check text-success' onclick="javascript:userPickerChoosen('${usr.id}')"></i></td>`
         row += `<td>${usr.login}</td>`
-        row += `<td>${usr.lastname}</td>`
-        row += `<td>${usr.firstname}</td>`
+        row += `<td>${usr.lastname} ${usr.firstname}</td>`
         row += "</tr>"
       }
       $("#userpickertable tbody").append(row)
