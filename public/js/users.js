@@ -53,7 +53,7 @@ function userCreate() {
     if ( resp.data && resp.data.id ) {
       location.reload()
     } else {
-      // TODO: handle error
+      errorDialog(resp.message)
     }
   })
 }
@@ -74,7 +74,7 @@ function userRemove(usr) {
       if ( resp.status=="success" ) {
         location.reload()
       } else {
-        // TODO: handle error
+        errorDialog(resp.message)
       }
     })
   })
@@ -122,7 +122,7 @@ function userEdit() {
     if ( resp.status=="success" ) {
       location.reload()
     } else {
-      // TODO: handle error
+      errorDialog(resp.message)
     }
   });
 }

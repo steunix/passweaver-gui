@@ -34,11 +34,20 @@ function confirm(title,text,callback) {
   var dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("confirmdialog"), {})
   $("#confirmdialogtitle").html(title)
   $("#confirmdialogtext").html(text)
-  $("#confirmdialogok").off("click").on("click", callback)
+  $("#confirmdialogok").off("click").on("click", ()=>{
+    dialog.hide()
+    callback()
+  })
   dialog.show()
 }
 
 function ensureVisibile(itm) {
   itm[0].scrollIntoView({block:"center"})
   return itm
+}
+
+function errorDialog(text) {
+  var dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("errordialog"), {})
+  $("#errordialogtext").html(text)
+  dialog.show()
 }

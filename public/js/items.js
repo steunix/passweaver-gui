@@ -95,7 +95,7 @@ function itemCreate() {
     if ( resp.data && resp.data.id ) {
       location.reload()
     } else {
-      // TODO: handle error
+      errorDialog(resp.message)
     }
   });
 }
@@ -114,7 +114,7 @@ function itemRemove(itm) {
       if ( resp.status=="success" ) {
         location.reload()
       } else {
-        // TODO: handle error
+        errorDialog(resp.message)
       }
     })
   })
@@ -160,7 +160,7 @@ function itemEdit() {
     if ( resp.status=="success" ) {
       location.reload()
     } else {
-      // TODO: handle error
+      errorDialog(resp.message)
     }
   });
 }
@@ -191,7 +191,7 @@ function folderCreate() {
     if ( resp.data && resp.data.id ) {
       location.reload()
     } else {
-      // TODO: handle error
+      errorDialog(resp.message)
     }
   });
 }
@@ -202,7 +202,7 @@ function folderRemove() {
       if ( resp.status=="success" ) {
         location.reload()
       } else {
-        // TODO: handle error
+        errorDialog(resp.message)
       }
     })
   })
@@ -236,7 +236,7 @@ function folderEdit() {
     if ( resp.status=="success" ) {
       location.reload()
     } else {
-      // TODO: handle error
+      errorDialog(resp.message)
     }
   });
 }

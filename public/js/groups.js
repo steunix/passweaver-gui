@@ -64,7 +64,7 @@ function groupCreate() {
     if ( resp.data && resp.data.id ) {
       location.reload()
     } else {
-      // TODO: handle error
+      errorDialog(resp.message)
     }
   });
 }
@@ -75,7 +75,7 @@ function groupRemove() {
       if ( resp.status=="success" ) {
         location.reload()
       } else {
-        // TODO: handle error
+        errorDialog(resp.message)
       }
     })
   })
@@ -101,7 +101,7 @@ function groupEdit() {
     if ( resp.status=="success" ) {
       location.reload()
     } else {
-      // TODO: handle error
+      errorDialog(resp.message)
     }
   });
 }
@@ -119,7 +119,7 @@ function userPickerChoosen(id) {
     if ( resp.status=="success" ) {
       location.reload()
     } else {
-      // TODO: handle error
+      errorDialog(resp.message)
     }
   })
 }
@@ -130,7 +130,7 @@ function groupRemoveUser(id) {
       if ( resp.status=="success" ) {
         location.reload()
       } else {
-        // TODO: handle error
+        errorDialog(resp.message)
       }
     })
   })
