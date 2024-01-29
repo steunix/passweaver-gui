@@ -253,7 +253,7 @@ function itemViewFill(item) {
   $.get("/pages/items/"+item, (resp)=> {
     if ( resp.status=="success" ) {
       $("#viewtitle").val(resp.data.title)
-      $("#viewemail").val(resp.data.email)
+      $("#viewemail").val(resp.data.data.email)
       $("#viewdescription").val(resp.data.data.description)
       $("#viewurl").val(resp.data.data.url)
       $("#viewuser").val(resp.data.data.user)
