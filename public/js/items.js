@@ -54,6 +54,9 @@ function folderClicked(ev) {
       currentPermissions = { read: false, write: false }
     }
 
+    // Load items
+    fillItems()
+
     if ( currentPermissions.write ) {
       $("#newitem").removeAttr("disabled")
       $("#newfolder").removeAttr("disabled")
@@ -66,9 +69,6 @@ function folderClicked(ev) {
       $("#editfolder").attr("disabled","disabled")
     }
   })
-
-  // Load items
-  fillItems()
 }
 
 function toggleNewPassword() {
