@@ -38,6 +38,7 @@ function folderClicked(ev) {
   // "onclick" directly would mess with collapse status of the folder
   if ( typeof ev==="string" ) {
     $("[role=treeitem][id="+ev+"]").css("font-weight","bold").css("background-color","#eeeeee")
+    ensureVisibile( $("[role=treeitem][id="+ev+"]") )
     currentFolder = ev
   } else {
     $(this).css("font-weight","bold").css("background-color","#eeeeee")

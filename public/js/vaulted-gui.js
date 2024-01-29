@@ -37,3 +37,8 @@ function confirm(title,text,callback) {
   $("#confirmdialogok").off("click").on("click", callback)
   dialog.show()
 }
+
+function ensureVisibile(itm) {
+  itm[0].scrollIntoView({block:"center"})
+  return itm
+}
