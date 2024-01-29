@@ -122,6 +122,7 @@ export async function itemCreate(session, folder, body) {
     title: body.title,
     data: JSON.stringify({
       description: body.description,
+      email: body.email,
       url: body.url,
       user: body.user,
       password: body.password
@@ -164,14 +165,17 @@ export async function itemGet(session, item) {
  * @returns
  */
 export async function itemUpdate(session, itemid, body) {
+  const data = JSON.stringify({
+    description: body.data.description,
+    email: body.data.email,
+    url: body.data.url,
+    user: body.data.user,
+    password: body.data.password
+  })
+
   const item = {
     title: body.title,
-    data: JSON.stringify({
-      description: body.description,
-      url: body.url,
-      user: body.user,
-      password: body.password
-    })
+    data: data
   }
 
   const resp = await vaultedAPI(session, "patch", "/items/"+itemid, item)

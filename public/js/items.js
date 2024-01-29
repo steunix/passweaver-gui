@@ -83,6 +83,7 @@ function itemCreate() {
   let itemdata = {
     _csrf: $("#_csrf").val(),
     title: $("#newtitle").val(),
+    email: $("#newemail").val(),
     description: $("#newdescription").val(),
     url: $("#newurl").val(),
     user: $("#newuser").val(),
@@ -124,6 +125,7 @@ function itemEditFill(item) {
   $.get("/pages/items/"+item, (resp)=> {
     if ( resp.status=="success" ) {
       $("#edittitle").val(resp.data.title)
+      $("#editemail").val(resp.data.data.email)
       $("#editdescription").val(resp.data.data.description)
       $("#editurl").val(resp.data.data.url)
       $("#edituser").val(resp.data.data.user)
@@ -146,6 +148,7 @@ function itemEdit() {
     title: $("#edittitle").val(),
     data: {
       description: $("#editdescription").val(),
+      email: $("#editemail").val(),
       url: $("#editurl").val(),
       user: $("#edituser").val(),
       password: $("#editpassword").val()
@@ -249,6 +252,7 @@ function itemViewFill(item) {
   $.get("/pages/items/"+item, (resp)=> {
     if ( resp.status=="success" ) {
       $("#viewtitle").val(resp.data.title)
+      $("#viewemail").val(resp.data.email)
       $("#viewdescription").val(resp.data.data.description)
       $("#viewurl").val(resp.data.data.url)
       $("#viewuser").val(resp.data.data.user)

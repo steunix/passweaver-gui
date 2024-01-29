@@ -5,32 +5,42 @@
         <h5 class="text-light mb-0">New item</h5>
       </div>
       <div class="modal-body">
-        <div class="form-floating mb-3">
-          <input type="text" class="form-control border-danger" autofocus id="newtitle" name="newtitle" required="required" placeholder="fake" onkeyup="javascript:itemCreateEnable()">
-          <label for="newtitle" class="form-label">Title (required)</label>
-        </div>
-        <div class="form-floating mb-3">
-          <textarea type="text" class="form-control" id="newdescription" name="newdescription" rows="3" placeholder="fake" ></textarea>
-          <label for="newdescription" class="form-label">Description</label>
-        </div>
-        <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="newurl" name="newurl" placeholder="fake">
-          <label for="newurl" class="form-label">URL</label>
-        </div>
-        <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="newuser" name="newuser" placeholder="fake">
-          <label for="newuser" class="form-label">User</label>
-        </div>
-        <div class="mb-3">
-          <div class="input-group">
-            <div class="form-floating input-group">
-              <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="fake">
-              <label for="newpassword" class="form-label">Password</label>
+        <fieldset class="border border-danger rounded p-2 mb-1">
+          <legend class="h5">Unencrypted data</legend>
+          <div class="form-floating mb-1">
+            <input type="text" class="form-control border-danger" autofocus id="newtitle" name="newtitle" required="required" placeholder="fake" onkeyup="javascript:itemCreateEnable()">
+            <label for="newtitle" class="form-label">Title (required)</label>
+          </div>
+        </fieldset>
+        <fieldset class="border border-success rounded p-2 mb-1">
+          <legend class="h5">Crypted data</legend>
+          <div class="form-floating mb-1">
+            <textarea type="text" class="form-control" id="newdescription" name="newdescription" rows="3" placeholder="fake" ></textarea>
+            <label for="newdescription" class="form-label">Description</label>
+          </div>
+          <div class="form-floating mb-1">
+            <input type="text" class="form-control" id="newemail" name="newemail" placeholder="fake">
+            <label for="newemail" class="form-label">Email</label>
+          </div>
+          <div class="form-floating mb-1">
+            <input type="text" class="form-control" id="newurl" name="newurl" placeholder="fake">
+            <label for="newurl" class="form-label">URL</label>
+          </div>
+          <div class="form-floating mb-1">
+            <input type="text" class="form-control" id="newuser" name="newuser" placeholder="fake">
+            <label for="newuser" class="form-label">User</label>
+          </div>
+          <div class="mb-1">
+            <div class="input-group">
+              <div class="form-floating input-group">
+                <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="fake">
+                <label for="newpassword" class="form-label">Password</label>
+              </div>
+              <button id="togglenewpassword" class="btn btn-secondary" onclick="javascript:toggleNewPassword()"><span class="fa-solid fa-eye-slash"></button>
             </div>
-            <button id="togglenewpassword" class="btn btn-secondary" onclick="javascript:toggleNewPassword()"><span class="fa-solid fa-eye-slash"></button>
           </div>
         </div>
-      </div>
+      </fieldset>
       <div class="modal-footer">
         <button id="itemcreate" type="button" class="btn btn-primary" disabled="disabled" onclick="javascript:itemCreate()">Create item</button>
         <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
