@@ -11,12 +11,20 @@ function searchGroups() {
     if ( resp.data.length ) {
       var row = ""
       for ( const grp of resp.data ) {
-        row += `<tr ondblclick="javascript:groupPickerChoosen('${grp.id}')">`
-        row += `<td><i class='fa-solid fa-circle-check text-success' onclick="javascript:groupPickerChoosen('${grp.id}')"></i></td>`
+        row += `<tr id='row-${grp.id}' data-id='${grp.id}'>`
+        row += `<td><i id='choose-${grp.id}' data-id='${grp.id}' class='fa-solid fa-circle-check text-success'"></i></td>`
         row += `<td>${grp.description}</td>`
         row += "</tr>"
       }
       $("#grouppickertable tbody").append(row)
+
+      // Install event handlers
+      $("#grouppickertable tbody tr [id^=row]").on("dblclick", (ev)=>{
+        groupPickerChoosen($(ev.currentTarget).data("id"))
+      })
+      $("#grouppickertable tbody tr i[id^=choose]").on("click", (ev)=>{
+        groupPickerChoosen($(ev.currentTarget).data("id"))
+      })
     }
   })
 }

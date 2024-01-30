@@ -5,17 +5,23 @@ function fillUsers() {
   $.get("/pages/userslist/"+currentGroup,(resp)=>{
     $("#userstable tbody tr").remove()
     if ( resp.data.length ) {
+      var row = ''
       for ( const usr of resp.data ) {
-        var row = `<tr>`
-        row += `<td><i class='fa-solid fa-trash text-danger' onclick="javascript:groupRemoveUser('${usr.id}')"></i></td>`
+        row += `<tr>`
+        row += `<td><i id='remove-${usr.id}' data-id='${usr-id}' class='fa-solid fa-trash text-danger'"></i></td>`
         row += `<td>${usr.login}</td>`
         row += `<td>${usr.lastname}</td>`
         row += `<td>${usr.firstname}</td>`
-        $("#userstable tbody").append(row)
       }
+      $("#userstable tbody").append(row)
+
+      // Install event handlers
+      $("#userstable tbody i[id^=remove]").on("click",(ev)=>{
+        groupRemoveUser($(ev.currentTarget).data("id"))
+      })
     }
 
-    // group cannot be removed if not empty
+    // Group cannot be removed if not empty
     if ( $("#userstable tbody tr").length ) {
       $("#removegroup").attr("disabled","disabled")
     } else {
@@ -155,5 +161,18 @@ $(function() {
   // Autofocus
   $("#newgroupdialog,#editgroupdialog,#userpicker").on("shown.bs.modal", (ev)=> {
     $(this).find("[autofocus]").focus()
+  })
+})
+
+$(()=>{
+  $.get("/pages/groupstree", (resp)=>{
+    $('#groupstree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: resp.data })
+    $('[role=treeitem]').on("click", groupClicked)
+
+    // Open last used group
+    const last = localStorage.getItem("bstreeview_open_groupstree")
+    if ( last ) {
+      groupClicked(last)
+    }
   })
 })

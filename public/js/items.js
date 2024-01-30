@@ -300,3 +300,16 @@ $(function() {
     itemViewFill($(ev.relatedTarget).data("id"))
   })
 })
+
+$(()=>{
+  $.get("/pages/folderstree", (resp)=>{
+    $('#tree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: resp.data })
+    $('[role=treeitem]').on("click", folderClicked)
+
+    // Open last used folder
+    const last = localStorage.getItem("bstreeview_open_folderstree")
+    if ( last ) {
+      folderClicked(last)
+    }
+  })
+})
