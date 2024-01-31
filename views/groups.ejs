@@ -13,7 +13,7 @@
       <h5>Groups</h5>
       <button id="newgroup" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#newgroupdialog"><span class='fa-solid fa-add'/></button>
       <button id="editgroup" type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editgroupdialog"><span class='fa-solid fa-pen'/></button>
-      <button id="removegroup" type="button" class="btn btn-sm btn-danger" onclick="javascript:groupRemove()"><span class='fa-solid fa-trash'/></button>
+      <button id="removegroup" type="button" class="btn btn-sm btn-danger"><span class='fa-solid fa-trash'/></button>
       <%- include('partials/groupstree.ejs') %>
     </div>
     <div class="col-md-auto">
@@ -44,20 +44,6 @@
 
 </div>
 
-<script>
-  $(()=>{
-    $.get("/pages/groupstree", (resp)=>{
-      $('#groupstree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: resp.data })
-      $('[role=treeitem]').on("click", groupClicked)
-
-      // Open last used group
-      const last = localStorage.getItem("bstreeview_open_groupstree")
-      if ( last ) {
-        groupClicked(last)
-      }
-    })
-  })
-</script>
 <script src="/public/js/groups.js"></script>
 
 <%- include('partials/footer.ejs') %>

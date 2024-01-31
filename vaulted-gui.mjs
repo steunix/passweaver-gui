@@ -9,6 +9,7 @@
 
 import Express from 'express'
 import compression from 'compression'
+import helmet from 'helmet'
 
 import * as Config from './src/config.mjs'
 import * as Vaulted from './src/vaulted.mjs'
@@ -24,6 +25,14 @@ export const app = Express()
 const cfg = Config.get()
 
 // Express middlewares
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+      "style-src": ["'self'", "'unsafe-inline'", "fonts.googleapis.com", "cdnjs.cloudflare.com", "cdn.jsdelivr.net"],
+    },
+  },
+}))
 app.use(Express.json())
 app.use(compression())
 app.use(Express.urlencoded({ extended: true }))

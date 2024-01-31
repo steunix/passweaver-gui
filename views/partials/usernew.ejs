@@ -7,17 +7,17 @@
       <div class="modal-body">
         <div class="row g-2">
           <div class="col-md form-floating mb-3">
-            <input type="text" class="form-control border-danger" autofocus id="newlogin" name="newlogin" required="required" placeholder="fake" onkeyup="javascript:userCreateEnable()">
+            <input type="text" class="form-control border-danger" autofocus id="newlogin" name="newlogin" required="required" placeholder="fake">
             <label for="newlogin" class="form-label">Login (required)</label>
           </div>
           <div class="col form-floating mb-3">
-            <input type="email" class="form-control border-danger" id="newemail" required="required" name="newemail" placeholder="fake" ></textarea>
+            <input type="email" class="form-control border-danger" id="newemail" required="required" name="newemail" placeholder="fake" ></input>
             <label for="newemail" class="form-label">Email (required)</label>
           </div>
         </div>
         <div class="row g-2">
           <div class="col-md form-floating mb-3">
-            <input type="text" class="form-control border-danger" id="newlastname" name="newlastname" required="required" placeholder="fake" onkeyup="javascript:userCreateEnable()">
+            <input type="text" class="form-control border-danger" id="newlastname" name="newlastname" required="required" placeholder="fake">
             <label for="newlastname" class="form-label">Last name (required)</label>
           </div>
           <div class="col-md form-floating mb-3">
@@ -49,24 +49,24 @@
         <div class="mb-3">
           <div class="input-group">
             <div class="form-floating input-group">
-              <input type="password" class="form-control" id="newpassword" name="newpassword" onkeyup="javascript:userCreateEnable()" placeholder="fake">
+              <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="fake">
               <label for="newpassword" class="form-label">Password</label>
             </div>
-            <button id="togglenewpassword" class="btn btn-secondary" onclick="javascript:toggleNewPassword()"><span class="fa-solid fa-eye-slash"></button>
+            <button id="togglenewpassword" class="btn btn-secondary"><span class="fa-solid fa-eye-slash"></button>
           </div>
         </div>
         <div class="mb-3">
           <div class="input-group">
             <div class="form-floating input-group">
-              <input type="password" class="form-control" id="newpasswordconfirm" name="newpasswordconfirm" onkeyup="javascript:userCreateEnable()" placeholder="fake">
+              <input type="password" class="form-control" id="newpasswordconfirm" name="newpasswordconfirm" placeholder="fake">
               <label for="newpasswordconfirm" class="form-label">Confirm password</label>
             </div>
-            <button id="togglenewpasswordconfirm" class="btn btn-secondary" onclick="javascript:toggleNewPasswordConfirm()"><span class="fa-solid fa-eye-slash"></button>
+            <button id="togglenewpasswordconfirm" class="btn btn-secondary"><span class="fa-solid fa-eye-slash"></button>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button id="usercreate" type="button" class="btn btn-primary" disabled="disabled" onclick="javascript:userCreate()">Create user</button>
+        <button id="usercreate" type="button" class="btn btn-primary" disabled="disabled">Create user</button>
         <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>

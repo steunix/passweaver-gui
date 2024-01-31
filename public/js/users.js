@@ -2,10 +2,11 @@ function fillUsers() {
   $.get("/pages/userslist",(resp)=>{
     $("#userstable tbody tr").remove()
     if ( resp.data.length ) {
+      var row = ""
       for ( const itm of resp.data ) {
-        var row = `<tr ondblclick="javascript:userDoubleClicked('${itm.id}')">`
+        row += `<tr data-id='${itm.id}'>`
         row += `<td><i id='edit-${itm.id}' class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edituserdialog" data-id='${itm.id}'></i></td>`
-        row += `<td><i class='fa-solid fa-trash text-danger' onclick='javascript:userRemove("${itm.id}")'></i></td>`
+        row += `<td><i id='remove-${itm.id}' class='fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
         row += `<td>${itm.login}</td>`
         row += `<td>${itm.lastname}</td>`
         row += `<td>${itm.firstname}</td>`
@@ -14,8 +15,16 @@ function fillUsers() {
         row += `<td>${itm.authmethod}</td>`
         row += `<td class='text-center'><i class='fa-solid `+ (itm.active ? "fa-check text-success" : "fa-xmark text-danger") + `'/></td>`
         row += "</tr>"
-        $("#userstable tbody").append(row)
       }
+      $("#userstable tbody").append(row)
+
+      // Install event handlers
+      $("#userstable tbody tr").on("dblclick",(ev)=>{
+        userDoubleClicked($(ev.currentTarget).data("id"))
+      })
+      $("#userstable tbody tr i[id^=remove]").on("click",(ev)=>{
+        userRemove($(ev.currentTarget).data("id"))
+      })
     }
   })
 }
@@ -164,5 +173,29 @@ $(function() {
   // Autofocus
   $("#newuserdialog,#edituserdialog").on("shown.bs.modal", (ev)=> {
     $(this).find("[autofocus]").focus()
+  })
+})
+
+$(()=>{
+  fillUsers()
+
+  // Event handlers
+  $("#newlogin,#newemail,#newlastname,#newpassword,#newpasswordconfirm").on("keyup",(ev)=>{
+    userCreateEnable()
+  })
+  $("#togglenewpassword").on("click",(ev)=>{
+    toggleNewPassword()
+  })
+  $("#togglenewpasswordconfirm").on("click",(ev)=>{
+    toggleNewPasswordConfirm()
+  })
+  $("#usercreate").on("click",(ev)=>{
+    userCreate()
+  })
+  $("#editlogin,#editemail,#editlastname").on("keyup",(ev)=>{
+    userEditEnable()
+  })
+  $("#useredit").on("click",(ev)=>{
+    userEdit()
   })
 })
