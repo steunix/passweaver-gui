@@ -178,4 +178,24 @@ $(function() {
 
 $(()=>{
   fillUsers()
+
+  // Event handlers
+  $("#newlogin,#newemail,#newlastname,#newpassword,#newpasswordconfirm").on("keyup",(ev)=>{
+    userCreateEnable()
+  })
+  $("#togglenewpassword").on("click",(ev)=>{
+    toggleNewPassword()
+  })
+  $("#togglenewpasswordconfirm").on("click",(ev)=>{
+    toggleNewPasswordConfirm()
+  })
+  $("#usercreate").on("click",(ev)=>{
+    userCreate()
+  })
+  $("#editlogin,#editemail,#editlastname").on("keyup",(ev)=>{
+    userEditEnable()
+  })
+  $("#useredit").on("click",(ev)=>{
+    userEdit()
+  })
 })
