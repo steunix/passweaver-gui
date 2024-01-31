@@ -42,6 +42,9 @@ function confirm(title,text,callback) {
 }
 
 function ensureVisibile(itm) {
+  if ( !itm[0] ) {
+    return
+  }
   itm[0].scrollIntoView({block:"center"})
   return itm
 }

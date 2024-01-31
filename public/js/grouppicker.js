@@ -19,10 +19,10 @@ function searchGroups() {
       $("#grouppickertable tbody").append(row)
 
       // Install event handlers
-      $("#grouppickertable tbody tr [id^=row]").on("dblclick", (ev)=>{
+      $("#grouppickertable tbody tr[id^=row]").on("dblclick", (ev)=>{
         groupPickerChoosen($(ev.currentTarget).data("id"))
       })
-      $("#grouppickertable tbody tr i[id^=choose]").on("click", (ev)=>{
+      $("#grouppickertable tbody i[id^=choose]").on("click", (ev)=>{
         groupPickerChoosen($(ev.currentTarget).data("id"))
       })
     }

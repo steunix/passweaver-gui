@@ -11,14 +11,22 @@ function searchUsers() {
     if ( resp.data.length ) {
       var row = ""
       for ( const usr of resp.data ) {
-        row += `<tr ondblclick="javascript:userPickerChoosen('${usr.id}')">`
-        row += `<td><i class='fa-solid fa-circle-check text-success' onclick="javascript:userPickerChoosen('${usr.id}')"></i></td>`
+        row += `<tr id='row-${usr.id}' data-id='${usr.id}'>`
+        row += `<td><i id='user-${usr.id}' data-id='${usr.id}' class='fa-solid fa-circle-check text-success'></i></td>`
         row += `<td>${usr.login}</td>`
         row += `<td>${usr.lastname} ${usr.firstname}</td>`
         row += "</tr>"
       }
       $("#userpickertable tbody").append(row)
     }
+
+    // Event handlers
+    $("#userpickertable tbody tr[id^=row]").on("dblclick",(ev)=>{
+      userPickerChoosen($(ev.currentTarget).data("id"))
+    })
+    $("#userpickertable tbody i[id^=user]").on("click",(ev)=>{
+      userPickerChoosen($(ev.currentTarget).data("id"))
+    })
   })
 }
 
@@ -28,3 +36,5 @@ $("#userpickersearch").on("keyup", (ev) => {
   }
   userPickerTimeout = setTimeout(searchUsers,250)
 })
+
+$("#userpickerc")

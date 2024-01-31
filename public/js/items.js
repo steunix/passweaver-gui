@@ -11,7 +11,7 @@ function fillItems() {
     if ( resp.data.length ) {
       row = ""
       for ( const itm of resp.data ) {
-        row += `<tr id='${itm.id}' data-id='${itm.id}'>`
+        row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
         if ( currentPermissions.write ) {
           row += `<td><i id='view-${itm.id}' class='fa-solid fa-circle-info text-primary' data-bs-toggle="modal" data-bs-target="#viewitemdialog" data-id='${itm.id}'></i></td>`
           row += `<td><i class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i></td>`
@@ -26,9 +26,6 @@ function fillItems() {
 
     // Install event handlers
     $("#itemstable tbody tr[id^=row]").on("dblclick", (ev)=>{
-      itemShow($(ev.currentTarget).data("id"))
-    })
-    $("#itemstable tbody i[id^=view]").on("click", (ev)=>{
       itemShow($(ev.currentTarget).data("id"))
     })
     $("#itemstable tbody i[id^=remove]").on("click", (ev)=>{
@@ -333,7 +330,7 @@ $(()=>{
   $("#foldercreate").on("click",(ev)=>{
     folderCreate()
   })
-  $("#editfolderdescription").on("keyup",(ev)=>{
+  $("#foldereditdescription").on("keyup",(ev)=>{
     folderEditEnable()
   })
   $("#folderedit").on("click",(ev)=>{
