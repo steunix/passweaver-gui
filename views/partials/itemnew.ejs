@@ -8,7 +8,7 @@
         <fieldset class="border border-light shadow-sm rounded p-2 mb-3">
           <legend class="h5 mb-3">Unencrypted data</legend>
           <div class="form-floating mb-1">
-            <input type="text" class="form-control border-danger" autofocus id="newtitle" name="newtitle" required="required" placeholder="fake" onkeyup="javascript:itemCreateEnable()">
+            <input type="text" class="form-control border-danger" autofocus id="newtitle" name="newtitle" required="required" placeholder="fake">
             <label for="newtitle" class="form-label">Title (required)</label>
           </div>
         </fieldset>
@@ -36,13 +36,13 @@
                 <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="fake">
                 <label for="newpassword" class="form-label">Password</label>
               </div>
-              <button id="togglenewpassword" class="btn btn-secondary" onclick="javascript:toggleNewPassword()"><span class="fa-solid fa-eye-slash"></button>
+              <button id="togglenewpassword" class="btn btn-secondary"><span class="fa-solid fa-eye-slash"></button>
             </div>
           </div>
         </div>
       </fieldset>
       <div class="modal-footer">
-        <button id="itemcreate" type="button" class="btn btn-primary" disabled="disabled" onclick="javascript:itemCreate()">Create item</button>
+        <button id="itemcreate" type="button" class="btn btn-primary" disabled="disabled">Create item</button>
         <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>

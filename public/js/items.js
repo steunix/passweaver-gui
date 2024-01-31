@@ -20,8 +20,8 @@ function fillItems() {
           row += "<td></td><td></td>"
         }
         row += "<td>"+itm.title+"</td><td>"+itm.createdat+"</td></tr>"
-        $("#itemstable tbody").append(row)
       }
+      $("#itemstable tbody").append(row)
     }
 
     // Install event handlers
@@ -341,5 +341,26 @@ $(()=>{
   })
   $("#removefolder").on("click",(ev)=>{
     folderRemove()
+  })
+  $("#itemcreate").on("click",(ev)=>{
+    itemCreate()
+  })
+  $("#togglenewpassword").on("click",(ev)=>{
+    toggleNewPassword()
+  })
+  $("#newtitle").on("keyup",(ev)=>{
+    itemCreateEnable()
+  })
+  $("#toggleviewpassword").on("click",(ev)=>{
+    toggleViewPassword()
+  })
+  $("#itemedit").on("click",(ev)=>{
+    itemEdit()
+  })
+  $("#toggleeditpassword").on("click",(ev)=>{
+    toggleEditPassword()
+  })
+  $("#edittitle").on("keyup",(ev)=>{
+    itemEditEnable()
   })
 })

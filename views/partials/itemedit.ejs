@@ -8,7 +8,7 @@
         <fieldset class="border border-light shadow-sm rounded p-2 mb-3">
           <legend class="h5 mb-3">Unencrypted data</legend>
           <div class="form-floating mb-1">
-            <input type="text" class="form-control border-danger" autofocus id="edittitle" name="edittitle" required="required" placeholder="fake" onkeyup="javascript:itemEditEnable()">
+            <input type="text" class="form-control border-danger" autofocus id="edittitle" name="edittitle" required="required" placeholder="fake">
             <label for="edittitle" class="form-label">Title (required)</label>
           </div>
         </fieldset>
@@ -36,14 +36,14 @@
                 <input type="password" class="form-control" id="editpassword" name="editpassword" placeholder="fake">
                 <label for="editpassword" class="form-label">Password</label>
               </div>
-              <button id="toggleeditpassword" type="button" class="btn btn-secondary" onclick="javascript:toggleEditPassword()"><span class="fa-solid fa-eye-slash"></button>
+              <button id="toggleeditpassword" type="button" class="btn btn-secondary"><span class="fa-solid fa-eye-slash"></button>
             </div>
           </div>
         </fieldset>
         <input type="hidden" id="itemeditid">
       </div>
       <div class="modal-footer">
-        <button id="itemedit" type="button" class="btn btn-primary" onclick="javascript:itemEdit()">Save</button>
+        <button id="itemedit" type="button" class="btn btn-primary">Save</button>
         <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>
