@@ -117,6 +117,7 @@ app.get("/pages/items", async (req,res)=>{
   req.locals = {
     csfrtoken: req.csrfToken(),
     pagetitle: "Items",
+    pageid: "items",
     userdescription: req.session.userdescription
   }
   res.render('items', req.locals)
@@ -187,6 +188,7 @@ app.get("/pages/groups", async (req,res)=>{
   var page = {
     csfrtoken: req.csrfToken(),
     pagetitle: "Groups",
+    pageid: "groups",
     userdescription: req.session.userdescription
   }
   res.render('groups', page)
@@ -245,6 +247,7 @@ app.get("/pages/users", async(req,res)=> {
   var page = {
     csfrtoken: req.csrfToken(),
     pagetitle: "Users",
+    pageid: "users",
     userdescription: req.session.userdescription
   }
   res.render('users', page)
@@ -291,6 +294,7 @@ app.get("/pages/folders", async (req,res)=>{
   req.locals = {
     csfrtoken: req.csrfToken(),
     pagetitle: "Folders permissions",
+    pageid: "folders",
     userdescription: req.session.userdescription
   }
   res.render('folders', req.locals)

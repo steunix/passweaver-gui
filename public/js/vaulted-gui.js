@@ -54,3 +54,25 @@ function errorDialog(text) {
   $("#errordialogtext").html(text)
   dialog.show()
 }
+
+function checkResponse(resp) {
+  if ( resp.status=="success" ) {
+    return true
+  }
+  if ( resp.status=="failed" && resp.httpStatusCode=="404" ) {
+    return true
+  }
+
+  errorDialog(resp.message)
+
+  if ( resp.status=="failed" && resp.fatal ) {
+    window.location = "/logout"
+  }
+}
+
+$(()=>{
+  if ( $("#pageid").length ) {
+    const pageid = $("#pageid").data("pageid")
+    $("#sidebar .nav-link[data-bs-original-title="+pageid+"]").addClass("active")
+  }
+})
