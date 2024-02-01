@@ -42,7 +42,7 @@ function groupClicked(ev) {
     ensureVisibile( $("[role=treeitem][id="+ev+"]") )
     currentGroup = ev
   } else {
-    $(this).css("font-weight","bold").addClass("v-treeselected")
+    $(this).addClass("v-treeselected")
     currentGroup = this.id
   }
 

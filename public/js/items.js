@@ -19,7 +19,7 @@ function fillItems() {
         } else {
           row += "<td></td><td></td>"
         }
-        row += "<td>"+itm.title+"</td><td>"+itm.createdat+"</td></tr>"
+        row += "<td>"+itm.title+"</td></tr>"
       }
       $("#itemstable tbody").append(row)
     }
