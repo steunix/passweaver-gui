@@ -15,7 +15,7 @@ function fillItems() {
         if ( currentPermissions.write ) {
           row += `<td><i id='view-${itm.id}' class='fa-solid fa-circle-info text-primary' data-bs-toggle="modal" data-bs-target="#viewitemdialog" data-id='${itm.id}'></i></td>`
           row += `<td><i class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i></td>`
-          row += `<td><i id='remove-${itm}' class='fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
+          row += `<td><i id='remove-${itm.id}' class='fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
         } else {
           row += "<td></td><td></td>"
         }
