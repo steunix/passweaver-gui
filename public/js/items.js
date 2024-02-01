@@ -42,16 +42,16 @@ function fillItems() {
 }
 
 function folderClicked(ev) {
-  $("[role=treeitem]").css({"font-weight":"normal","background-color":"transparent"})
+  $("[role=treeitem]").removeClass("v-treeselected")
 
   // If ev is a string, the call has been forced on an item just for items reload: calling an
   // "onclick" directly would mess with collapse status of the folder
   if ( typeof ev==="string" ) {
-    $("[role=treeitem][id="+ev+"]").css("font-weight","bold").css("background-color","#eeeeee")
+    $("[role=treeitem][id="+ev+"]").addClass("v-treeselected")
     ensureVisibile( $("[role=treeitem][id="+ev+"]") )
     currentFolder = ev
   } else {
-    $(this).css("font-weight","bold").css("background-color","#eeeeee")
+    $(this).addClass("v-treeselected")
     currentFolder = this.id
   }
 

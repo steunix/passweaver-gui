@@ -9,6 +9,15 @@ body {
     color: #fab450;
 }
 
+.v-themebg {
+    background-color: #fab450;
+}
+
+.v-treeselected {
+    background-color: #fab450;
+    font-weight: bold;
+}
+
 .v-content {
     background: url('/public/images/vaulted-background.jpg') no-repeat center center fixed;
     background-size: cover;
