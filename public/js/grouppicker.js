@@ -7,6 +7,10 @@ function searchGroups() {
   }
 
   $.get("/pages/groupslist/?search="+encodeURIComponent(text),(resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
     $("#grouppickertable tbody tr").remove()
     if ( resp.data.length ) {
       var row = ""

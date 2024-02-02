@@ -23,17 +23,28 @@ async function vaultedAPI(session, method, path, data) {
       retry: {
         limit: 0
       },
+      timeout: {
+        response: 5000
+      },
       json: data,
       method: method
     }
     if ( session && session.jwt ) {
       options.headers = { "Authorization": "Bearer "+session.jwt}
     }
-    return await Got(cfg.vaulted_url+path, options).json()
+    var resp = await Got(cfg.vaulted_url+path, options)
+
+    var ret = JSON.parse(resp.body)
+    ret.fatal = false
+    ret.httpStatusCode = resp.statusCode
+
+    return ret
   } catch (err) {
     // Vaulted API not running
-    if ( err.code==="ECONNREFUSED") {
+    if ( err.code==="ECONNREFUSED" || err.code==="ETIMEDOUT" ) {
       return {
+        httpStatusCode: undefined,
+        fatal: true,
         status: "failed",
         message: "Error connecting to Vaulted API, contact your administrator.",
         data: {}
@@ -42,13 +53,21 @@ async function vaultedAPI(session, method, path, data) {
     // Bad error
     if ( err.response && err.response.statusCode=="500" ) {
       return {
+        httpStatusCode: undefined,
+        fatal: false,
         status: "failed",
         message: "Bad request to Vaulted API. Smells like a bug.",
         data: {}
       }
     }
-    // Default response
-    return err.response ? JSON.parse(err.response.body) : err
+    // Other response (404, 422, et al) or generic error
+    return {
+      httpStatusCode: err.response.statusCode,
+      fatal: false,
+      status: "failed",
+      message: err?.response?.body ? JSON.parse(err.response.body).message : "Unknown error",
+      data: {}
+    }
   }
 }
 

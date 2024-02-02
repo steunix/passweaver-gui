@@ -3,6 +3,10 @@ var currentFolder = ""
 function fillGroups() {
   loadingShow($("#groupstable"))
   $.get("/pages/foldergroups/"+currentFolder,(resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
     $("#groupstable tbody tr").remove()
     if ( resp.data.length ) {
       for ( const itm of resp.data ) {
@@ -54,6 +58,10 @@ function folderClicked(ev) {
 
 $(()=>{
   $.get("/pages/folderstree", (resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
     $('#tree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: resp.data })
     $('[role=treeitem]').on("click", folderClicked)
 

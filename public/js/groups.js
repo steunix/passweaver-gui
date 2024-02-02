@@ -3,6 +3,10 @@ var currentGroup = ""
 function fillUsers() {
   loadingShow($("#userstable"))
   $.get("/pages/userslist/"+currentGroup,(resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
     $("#userstable tbody tr").remove()
     if ( resp.data.length ) {
       var row = ''
@@ -67,7 +71,11 @@ function groupCreate() {
   }
 
   $.post("/pages/groupnew/"+currentGroup, userdata, (resp)=> {
-    if ( resp.data && resp.data.id ) {
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
+    if ( resp.data.id ) {
       location.reload()
     } else {
       errorDialog(resp.message)
@@ -78,11 +86,11 @@ function groupCreate() {
 function groupRemove() {
   confirm("Remove group", "Are you sure you want to remove this group?", ()=> {
     $.post("/pages/groupremove/"+currentGroup, {_csrf: $("#_csrf").val()}, (resp)=> {
-      if ( resp.status=="success" ) {
-        location.reload()
-      } else {
-        errorDialog(resp.message)
+      if ( !checkResponse(resp) ) {
+        return
       }
+
+      location.reload()
     })
   })
 }
@@ -91,6 +99,10 @@ function groupEditFill() {
   $("#groupeditid").val(currentGroup)
 
   $.get("/pages/groups/"+currentGroup, (resp)=> {
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
     if ( resp.status=="success" ) {
       $("#groupeditdescription").val(resp.data.description)
     }
@@ -104,12 +116,12 @@ function groupEdit() {
   }
 
   $.post("/pages/groupupdate/"+$("#groupeditid").val(), data, (resp)=> {
-    if ( resp.status=="success" ) {
-      location.reload()
-    } else {
-      errorDialog(resp.message)
+    if ( !checkResponse(resp) ) {
+      return
     }
-  });
+
+    location.reload()
+  })
 }
 
 function groupEditEnable() {
@@ -122,22 +134,22 @@ function groupEditEnable() {
 
 function userPickerChoosen(id) {
   $.post("/pages/groupadduser/"+currentGroup+"/"+id, {_csrf: $("#_csrf").val()}, (resp)=> {
-    if ( resp.status=="success" ) {
-      location.reload()
-    } else {
-      errorDialog(resp.message)
+    if ( !checkResponse(resp) ) {
+      return
     }
+
+    location.reload()
   })
 }
 
 function groupRemoveUser(id) {
   confirm("Remove user from group", "Are you sure you want to remove the user?", ()=> {
     $.post("/pages/groupremoveuser/"+currentGroup+"/"+id, {_csrf: $("#_csrf").val()}, (resp)=> {
-      if ( resp.status=="success" ) {
-        location.reload()
-      } else {
-        errorDialog(resp.message)
+      if ( !checkResponse(resp) ) {
+        return
       }
+
+      errorDialog(resp.message)
     })
   })
 }
@@ -166,6 +178,10 @@ $(function() {
 
 $(()=>{
   $.get("/pages/groupstree", (resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
     $('#groupstree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: resp.data })
     $('[role=treeitem]').on("click", groupClicked)
 

@@ -7,6 +7,10 @@ function searchUsers() {
   }
 
   $.get("/pages/userslist/?search="+encodeURIComponent(text),(resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
     $("#userpickertable tbody tr").remove()
     if ( resp.data.length ) {
       var row = ""

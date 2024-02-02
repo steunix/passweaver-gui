@@ -6,7 +6,12 @@ var currentPermissions = {
 
 function fillItems() {
   loadingShow($("#itemstable"))
+
   $.get("/pages/itemslist/"+currentFolder,(resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
     $("#itemstable tbody tr").remove()
     if ( resp.data.length ) {
       row = ""
@@ -59,6 +64,10 @@ function folderClicked(ev) {
 
   // Read folder info
   $.get("/pages/folders/"+currentFolder,(resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
     if ( resp.data && resp.data.permissions ) {
       currentPermissions = resp.data.permissions
     } else {
@@ -102,7 +111,11 @@ function itemCreate() {
   }
 
   $.post("/pages/itemnew/"+currentFolder, itemdata, (resp)=> {
-    if ( resp.data && resp.data.id ) {
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
+    if ( resp.data.id ) {
       location.reload()
     } else {
       errorDialog(resp.message)
@@ -121,11 +134,11 @@ function itemCreateEnable() {
 function itemRemove(itm) {
   confirm("Remove item", "Are you sure you want to remove this item?", ()=> {
     $.post("/pages/itemremove/"+itm, {_csrf: $("#_csrf").val()}, (resp)=> {
-      if ( resp.status=="success" ) {
-        location.reload()
-      } else {
-        errorDialog(resp.message)
+      if ( !checkResponse(resp) ) {
+        return
       }
+
+      location.reload()
     })
   })
 }
@@ -134,6 +147,10 @@ function itemEditFill(item) {
   $("#itemeditid").val(item)
 
   $.get("/pages/items/"+item, (resp)=> {
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
     if ( resp.status=="success" ) {
       $("#edittitle").val(resp.data.title)
       $("#editemail").val(resp.data.data.email)
@@ -167,12 +184,12 @@ function itemEdit() {
   }
 
   $.post("/pages/itemupdate/"+$("#itemeditid").val(), itemdata, (resp)=> {
-    if ( resp.status=="success" ) {
-      location.reload()
-    } else {
-      errorDialog(resp.message)
+    if ( !checkResponse(resp) ) {
+      return
     }
-  });
+
+    location.reload()
+  })
 }
 
 function toggleEditPassword() {
@@ -198,22 +215,22 @@ function folderCreate() {
   }
 
   $.post("/pages/foldernew/"+currentFolder, itemdata, (resp)=> {
-    if ( resp.data && resp.data.id ) {
-      location.reload()
-    } else {
-      errorDialog(resp.message)
+    if ( !checkResponse(resp) ) {
+      return
     }
-  });
+
+    location.reload()
+  })
 }
 
 function folderRemove() {
   confirm("Remove folder", "Are you sure you want to remove this folder?", ()=> {
     $.post("/pages/folderremove/"+currentFolder, {_csrf: $("#_csrf").val()}, (resp)=> {
-      if ( resp.status=="success" ) {
-        location.reload()
-      } else {
-        errorDialog(resp.message)
+      if ( !checkResponse(resp) ) {
+        return
       }
+
+      location.reload()
     })
   })
 }
@@ -230,9 +247,11 @@ function folderEditFill() {
   $("#foldereditid").val(currentFolder)
 
   $.get("/pages/folders/"+currentFolder, (resp)=> {
-    if ( resp.status=="success" ) {
-      $("#foldereditdescription").val(resp.data.description)
+    if ( !checkResponse(resp) ) {
+      return
     }
+
+    $("#foldereditdescription").val(resp.data.description)
   })
 }
 
@@ -243,12 +262,12 @@ function folderEdit() {
   }
 
   $.post("/pages/folderupdate/"+$("#foldereditid").val(), data, (resp)=> {
-    if ( resp.status=="success" ) {
-      location.reload()
-    } else {
-      errorDialog(resp.message)
+    if ( !checkResponse(resp) ) {
+      return
     }
-  });
+
+    location.reload()
+  })
 }
 
 function toggleViewPassword() {
@@ -261,14 +280,16 @@ function toggleViewPassword() {
 
 function itemViewFill(item) {
   $.get("/pages/items/"+item, (resp)=> {
-    if ( resp.status=="success" ) {
-      $("#viewtitle").val(resp.data.title)
-      $("#viewemail").val(resp.data.data.email)
-      $("#viewdescription").val(resp.data.data.description)
-      $("#viewurl").val(resp.data.data.url)
-      $("#viewuser").val(resp.data.data.user)
-      $("#viewpassword").val(resp.data.data.password).attr("type","password")
+    if ( !checkResponse(resp) ) {
+      return
     }
+
+    $("#viewtitle").val(resp.data.title)
+    $("#viewemail").val(resp.data.data.email)
+    $("#viewdescription").val(resp.data.data.description)
+    $("#viewurl").val(resp.data.data.url)
+    $("#viewuser").val(resp.data.data.user)
+    $("#viewpassword").val(resp.data.data.password).attr("type","password")
   })
 }
 
@@ -313,6 +334,10 @@ $(function() {
 
 $(()=>{
   $.get("/pages/folderstree", (resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
     $('#tree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: resp.data })
     $('[role=treeitem]').on("click", folderClicked)
 

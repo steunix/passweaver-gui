@@ -1,5 +1,9 @@
 function fillUsers() {
   $.get("/pages/userslist",(resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
     $("#userstable tbody tr").remove()
     if ( resp.data.length ) {
       var row = ""
@@ -59,11 +63,11 @@ function userCreate() {
   }
 
   $.post("/pages/usernew/", userdata, (resp)=> {
-    if ( resp.data && resp.data.id ) {
-      location.reload()
-    } else {
-      errorDialog(resp.message)
+    if ( !checkResponse(resp) ) {
+      return
     }
+
+    location.reload()
   })
 }
 
@@ -80,11 +84,11 @@ function userCreateEnable() {
 function userRemove(usr) {
   confirm("Remove user", "<strong><span class='text-danger'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", ()=> {
     $.post("/pages/userremove/"+usr, {_csrf: $("#_csrf").val()}, (resp)=> {
-      if ( resp.status=="success" ) {
-        location.reload()
-      } else {
-        errorDialog(resp.message)
+      if ( !checkResponse(resp) ) {
+        return
       }
+
+      location.reload()
     })
   })
 }
@@ -93,16 +97,18 @@ function userEditFill(user) {
   $("#usereditid").val(user)
 
   $.get("/pages/users/"+user, (resp)=> {
-    if ( resp.status=="success" ) {
-      $("#editlogin").val(resp.data.login)
-      $("#editemail").val(resp.data.email)
-      $("#editlastname").val(resp.data.lastname)
-      $("#editfirstname").val(resp.data.firstname)
-      $("#editlocale").val(resp.data.locale)
-      $("#editauthmethod").val(resp.data.authmethod)
-      if ( !resp.data.active ) {
-        $("#editactive").removeAttr("checked")
-      }
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
+    $("#editlogin").val(resp.data.login)
+    $("#editemail").val(resp.data.email)
+    $("#editlastname").val(resp.data.lastname)
+    $("#editfirstname").val(resp.data.firstname)
+    $("#editlocale").val(resp.data.locale)
+    $("#editauthmethod").val(resp.data.authmethod)
+    if ( !resp.data.active ) {
+      $("#editactive").removeAttr("checked")
     }
   })
 }
@@ -128,12 +134,12 @@ function userEdit() {
   }
 
   $.post("/pages/userupdate/"+$("#usereditid").val(), userdata, (resp)=> {
-    if ( resp.status=="success" ) {
-      location.reload()
-    } else {
-      errorDialog(resp.message)
+    if ( !checkResponse(resp) ) {
+      return
     }
-  });
+
+    location.reload()
+  })
 }
 
 function toggleEditPassword() {
