@@ -55,11 +55,14 @@ function errorDialog(text) {
   dialog.show()
 }
 
-function checkResponse(resp) {
+function checkResponse(resp,ignoreStatus) {
   if ( resp.status=="success" ) {
     return true
   }
   if ( resp.status=="failed" && resp.httpStatusCode=="404" ) {
+    return true
+  }
+  if ( resp.status=="failed" && ignoreStatus && resp.httpStatusCode==ignoreStatus ) {
     return true
   }
 

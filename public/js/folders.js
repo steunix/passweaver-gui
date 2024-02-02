@@ -2,12 +2,13 @@ var currentFolder = ""
 
 function fillGroups() {
   loadingShow($("#groupstable"))
+
+  $("#groupstable tbody tr").remove()
   $.get("/pages/foldergroups/"+currentFolder,(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
 
-    $("#groupstable tbody tr").remove()
     if ( resp.data.length ) {
       for ( const itm of resp.data ) {
         var row = "<tr>"

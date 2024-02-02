@@ -7,12 +7,14 @@ var currentPermissions = {
 function fillItems() {
   loadingShow($("#itemstable"))
 
+  $("#itemstable tbody tr").remove()
+
   $.get("/pages/itemslist/"+currentFolder,(resp)=>{
-    if ( !checkResponse(resp) ) {
+    // Folder may not be accessible
+    if ( !checkResponse(resp,403) ) {
       return
     }
 
-    $("#itemstable tbody tr").remove()
     if ( resp.data.length ) {
       row = ""
       for ( const itm of resp.data ) {
@@ -64,7 +66,8 @@ function folderClicked(ev) {
 
   // Read folder info
   $.get("/pages/folders/"+currentFolder,(resp)=>{
-    if ( !checkResponse(resp) ) {
+    // Folder may not be accessible
+    if ( !checkResponse(resp,"403") ) {
       return
     }
 

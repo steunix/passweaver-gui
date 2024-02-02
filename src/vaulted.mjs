@@ -62,7 +62,7 @@ async function vaultedAPI(session, method, path, data) {
     }
     // Other response (404, 422, et al) or generic error
     return {
-      httpStatusCode: err.response.statusCode,
+      httpStatusCode: err?.response?.statusCode,
       fatal: false,
       status: "failed",
       message: err?.response?.body ? JSON.parse(err.response.body).message : "Unknown error",

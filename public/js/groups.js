@@ -2,12 +2,13 @@ var currentGroup = ""
 
 function fillUsers() {
   loadingShow($("#userstable"))
+
+  $("#userstable tbody tr").remove()
   $.get("/pages/userslist/"+currentGroup,(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
 
-    $("#userstable tbody tr").remove()
     if ( resp.data.length ) {
       var row = ''
       for ( const usr of resp.data ) {
