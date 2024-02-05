@@ -125,7 +125,7 @@ app.get("/pages/items", async (req,res)=>{
 
 // Items list
 app.get("/pages/itemslist/:folder", async (req,res)=>{
-  const list = await Vaulted.itemslist(req.session, req.params.folder)
+  const list = await Vaulted.itemslist(req.session, req.params.folder, req.query?.search)
   res.status(200).json(list)
 })
 

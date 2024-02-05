@@ -3,13 +3,14 @@ var currentPermissions = {
   read: false,
   write: false
 }
+var itemSearchTimeout
 
 function fillItems() {
   loadingShow($("#itemstable"))
 
   $("#itemstable tbody tr").remove()
 
-  $.get("/pages/itemslist/"+currentFolder,(resp)=>{
+  $.get("/pages/itemslist/"+currentFolder+"?search="+$("#itemsearch").val(),(resp)=>{
     // Folder may not be accessible
     if ( !checkResponse(resp,403) ) {
       return
@@ -387,5 +388,12 @@ $(()=>{
   })
   $("#edittitle").on("keyup",(ev)=>{
     itemEditEnable()
+  })
+
+  $("#itemsearch").on("keyup", (ev) => {
+    if ( itemSearchTimeout ) {
+      clearTimeout(itemSearchTimeout)
+    }
+    itemSearchTimeout = setTimeout(fillItems,250)
   })
 })
