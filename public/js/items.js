@@ -4,6 +4,7 @@ var currentPermissions = {
   write: false
 }
 var itemSearchTimeout
+var folderSearchTimeout
 
 function fillItems() {
   loadingShow($("#itemstable"))
@@ -49,7 +50,7 @@ function fillItems() {
   })
 }
 
-function folderClicked(ev) {
+function folderClicked(ev, selectonly) {
   $("[role=treeitem]").removeClass("v-treeselected")
 
   // If ev is a string, the call has been forced on an item just for items reload: calling an
@@ -61,6 +62,10 @@ function folderClicked(ev) {
   } else {
     $(this).addClass("v-treeselected")
     currentFolder = this.id
+  }
+
+  if ( selectonly ) {
+    return
   }
 
   localStorage.setItem("bstreeview_open_folderstree",currentFolder)
@@ -336,6 +341,26 @@ $(function() {
   })
 })
 
+function searchFolder() {
+  var search = $("#foldersearch").val().toLowerCase()
+  var folders = $("span[id^=treedesc]")
+
+  for ( const folder of folders ) {
+    if ( $(folder).html().toLowerCase().includes(search) ) {
+      var parents = $(folder).parents()
+      for ( const parent of parents ) {
+        if ( $(parent).attr("role")=="group" && !$(parent).hasClass("show") ) {
+          const id = "#" + $(parent).attr("id")
+          const el = $(`[data-bs-target='${id}']`)
+          $(el).find("i").click()
+        }
+      }
+      folderClicked( ''+$(folder).data("id") )
+      return
+    }
+  }
+}
+
 $(()=>{
   $.get("/pages/folderstree", (resp)=>{
     if ( !checkResponse(resp) ) {
@@ -395,5 +420,12 @@ $(()=>{
       clearTimeout(itemSearchTimeout)
     }
     itemSearchTimeout = setTimeout(fillItems,250)
+  })
+
+  $("#foldersearch").on("keyup", (ev)=> {
+    if ( folderSearchTimeout ) {
+      clearTimeout(folderSearchTimeout)
+    }
+    folderSearchTimeout = setTimeout(searchFolder,250)
   })
 })

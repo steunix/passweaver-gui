@@ -11,9 +11,15 @@
     <div class="row">
     <div class="col-md-3">
       <h5>Folders</h5>
-      <button id="newfolder" type="button" class="btn btn-sm btn-primary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newfolderdialog"><span class='fa-solid fa-add'/></button>
-      <button id="editfolder" type="button" class="btn btn-sm btn-secondary" disabled="disabled" data-bs-toggle="modal" data-bs-target="#editfolderdialog"><span class='fa-solid fa-pen'/></button>
-      <button id="removefolder" type="button" class="btn btn-sm btn-danger" disabled="disabled"><span class='fa-solid fa-trash'/></button>
+      <div class="d-flex">
+        <button id="newfolder" type="button" class="btn btn-sm btn-primary flex-shrink-0 me-1" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newfolderdialog"><span class='fa-solid fa-add'/></button>
+        <button id="editfolder" type="button" class="btn btn-sm btn-secondary flex-shrink-0 me-1" disabled="disabled" data-bs-toggle="modal" data-bs-target="#editfolderdialog"><span class='fa-solid fa-pen'/></button>
+        <button id="removefolder" type="button" class="btn btn-sm btn-danger flex-shrink-0 me-3" disabled="disabled"><span class='fa-solid fa-trash'/></button>
+        <div class="input-group">
+          <input id="foldersearch" type="text" class="form-control" placeholder="Filter folders">
+          <button class="btn btn-secondary" type="button" id="button-addon1"><span class="fa-solid fa-search"></span></button>
+        </div>
+      </div>
       <%- include('partials/folderstree.ejs') %>
     </div>
     <div class="col-md-auto">
@@ -22,7 +28,7 @@
         <button id="newitem" type="button" class="btn btn-sm btn-primary flex-shrink-0 me-3" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newitemdialog">New item</button>
         <div class="input-group">
           <input id="itemsearch" type="text" class="form-control" placeholder="Filter items">
-          <button class="btn btn-secondary" type="button" id="button-addon1"><span class="fa-solid fa-search"></span></button>
+          <button class="btn btn-secondary" type="button" id="button-addon2"><span class="fa-solid fa-search"></span></button>
         </div>
       </div>
       <div class="mt-3 v-stickybottom shadow rounded">

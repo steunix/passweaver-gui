@@ -129,7 +129,8 @@
                 var treeItem = $(templates.treeviewItem)
                     .attr('data-bs-target', "#" + _this.itemIdPrefix + node.nodeId)
                     .attr('style', 'padding-left:' + leftPadding)
-                    .attr('aria-level', depth);
+                    .attr('aria-level', depth)
+                    .data('id', node.nodeId);
                 // Set Expand and Collapse icones.
                 if (node.children && node.children.length) {
                     var treeItemStateIcon = $(templates.treeviewItemStateIcon)
@@ -149,7 +150,8 @@
                     treeItem.append(treeItemIcon);
                 }
                 // Set node Text.
-                treeItem.append(node.description);
+                treeItem.append(`<span id='treedesc-${node.id}' data-id='${node.id}'>${node.description}</span>`);
+
                 // Reset node href if present
                 if (node.href) {
                     treeItem.attr('href', node.href);
@@ -168,7 +170,8 @@
                 if (node.children) {
                     // Node group item.
                     var treeGroup = $(templates.treeviewGroupItem)
-                        .attr('id', _this.itemIdPrefix + node.nodeId);
+                        .attr('id', _this.itemIdPrefix + node.nodeId)
+                        .data('id', node.nodeId );
                     parentElement.append(treeGroup);
                     _this.build(treeGroup, node.children, depth);
 
