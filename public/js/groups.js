@@ -150,7 +150,7 @@ function groupRemoveUser(id) {
         return
       }
 
-      errorDialog(resp.message)
+      location.reload()
     })
   })
 }
