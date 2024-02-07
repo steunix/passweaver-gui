@@ -10,8 +10,8 @@ function fillGroups() {
     }
 
     if ( resp.data.length ) {
+      var row = "<tr>"
       for ( const itm of resp.data ) {
-        var row = "<tr>"
         if ( itm.inherited ) {
           row += "<td>Inherited</td>"
         } else {
@@ -23,7 +23,6 @@ function fillGroups() {
         }
         row += "<td>"+(itm.write ? "Read + write" : "Read only")+"</td>"
         row += "<td>"+itm.description+"</td></tr>"
-        $("#groupstable tbody").append(row)
 
         // Check if groups can be added
         if ( !itm.canmodify ) {
@@ -32,6 +31,7 @@ function fillGroups() {
           $("#addgroup").removeAttr("disabled")
         }
       }
+      $("#groupstable tbody").append(row)
     }
     loadingHide($("#groupstable"))
   })
