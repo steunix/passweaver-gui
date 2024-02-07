@@ -102,6 +102,7 @@ app.post("/access", async (req,res)=>{
   const jwt = jsonwebtoken.decode(req.session.jwt)
 
   req.session.user = jwt.user
+  req.session.admin = jwt.admin
 
   const usr = await Vaulted.getUser(req.session, req.session.user)
 
@@ -118,7 +119,8 @@ app.get("/pages/items", async (req,res)=>{
     csfrtoken: req.csrfToken(),
     pagetitle: "Items",
     pageid: "items",
-    userdescription: req.session.userdescription
+    userdescription: req.session.userdescription,
+    admin: req.session.admin
   }
   res.render('items', req.locals)
 })
@@ -195,7 +197,8 @@ app.get("/pages/groups", async (req,res)=>{
     csfrtoken: req.csrfToken(),
     pagetitle: "Groups",
     pageid: "groups",
-    userdescription: req.session.userdescription
+    userdescription: req.session.userdescription,
+    admin: req.session.admin
   }
   res.render('groups', page)
 })
@@ -254,7 +257,8 @@ app.get("/pages/users", async(req,res)=> {
     csfrtoken: req.csrfToken(),
     pagetitle: "Users",
     pageid: "users",
-    userdescription: req.session.userdescription
+    userdescription: req.session.userdescription,
+    admin: req.session.admin
   }
   res.render('users', page)
 })
@@ -301,7 +305,8 @@ app.get("/pages/folders", async (req,res)=>{
     csfrtoken: req.csrfToken(),
     pagetitle: "Folders permissions",
     pageid: "folders",
-    userdescription: req.session.userdescription
+    userdescription: req.session.userdescription,
+    admin: req.session.admin
   }
   res.render('folders', req.locals)
 })
@@ -336,7 +341,8 @@ app.get("/pages/search", async (req,res)=>{
     csfrtoken: req.csrfToken(),
     pagetitle: "Search items",
     pageid: "search",
-    userdescription: req.session.userdescription
+    userdescription: req.session.userdescription,
+    admin: req.session.admin
   }
   res.render('search', req.locals)
 })
