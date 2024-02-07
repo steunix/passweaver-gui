@@ -125,7 +125,13 @@ app.get("/pages/items", async (req,res)=>{
 
 // Items list
 app.get("/pages/itemslist/:folder", async (req,res)=>{
-  const list = await Vaulted.itemslist(req.session, req.params.folder, req.query?.search)
+  const list = await Vaulted.itemsList(req.session, req.params.folder, req.query?.search)
+  res.status(200).json(list)
+})
+
+// Items search
+app.get("/pages/itemssearch/", async (req,res)=>{
+  const list = await Vaulted.itemsSearch(req.session, req.query?.search)
   res.status(200).json(list)
 })
 
@@ -322,6 +328,17 @@ app.post("/pages/folders/:folder/groups/:group", async(req,res)=> {
 app.delete("/pages/folders/:folder/groups/:group", async(req,res)=> {
   const resp = await Vaulted.folderRemoveGroup(req.session, req.params.folder, req.params.group)
   res.status(200).json(resp)
+})
+
+// Search items
+app.get("/pages/search", async (req,res)=>{
+  req.locals = {
+    csfrtoken: req.csrfToken(),
+    pagetitle: "Search items",
+    pageid: "search",
+    userdescription: req.session.userdescription
+  }
+  res.render('search', req.locals)
 })
 
 console.log("Listening on port "+cfg.listen_port)

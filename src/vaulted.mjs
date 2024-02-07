@@ -114,8 +114,19 @@ export async function foldersTree(session) {
  * @param {string} search Item title search
  * @returns
  */
-export async function itemslist(session, folder, search) {
+export async function itemsList(session, folder, search) {
   const resp = await vaultedAPI(session, "get", "/folders/"+folder+"/items?search="+encodeURIComponent(search))
+  return resp
+}
+
+/**
+ * Search items in any folder
+ * @param {Object} session Current session
+ * @param {string} search Item title search
+ * @returns
+ */
+export async function itemsSearch(session, search) {
+  const resp = await vaultedAPI(session, "get", "/items?search="+encodeURIComponent(search))
   return resp
 }
 
