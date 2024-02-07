@@ -410,6 +410,35 @@ export async function folderGroups(session, folder) {
 }
 
 /**
+ * Add a group to a folder
+ * @param {Object} session Session object
+ * @param {string} folder Folder
+ * @param {string} group Group to add
+ * @returns
+ */
+export async function folderAddGroup(session, folder, group) {
+  const data = {
+    read: true,
+    write: false
+  }
+
+  const resp = await vaultedAPI(session, "post", `/folders/${folder}/groups/${group}`, data)
+  return resp
+}
+
+/**
+ * Remove a group from folder
+ * @param {Object} session Session object
+ * @param {string} folder Folder
+ * @param {string} group Group to remove
+ * @returns
+ */
+export async function folderRemoveGroup(session, folder, group) {
+  const resp = await vaultedAPI(session, "delete", `/folders/${folder}/groups/${group}`)
+  return resp
+}
+
+/**
  * Groups list
  * @param {Object} session Current session
  * @returns
@@ -427,9 +456,8 @@ export async function groupsList(session, search) {
 
 /**
  * Delete an user
- * @param {Object} session
- * @param {string} user
- * @param {Object} body
+ * @param {Object} session Session object
+ * @param {string} user User
  * @returns
  */
 export async function userRemove(session, user) {

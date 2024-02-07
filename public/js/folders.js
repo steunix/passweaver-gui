@@ -16,7 +16,7 @@ function fillGroups() {
           row += "<td>Inherited</td>"
         } else {
           if ( itm.canmodify ) {
-            row += `<td><i class='fa-solid fa-trash text-danger' onclick='javascript:groupRemove("${itm.id}")'></i></td>`
+            row += `<td><i id='removegroup-${itm.id}' data-id='${itm.id}' class='fa-solid fa-trash text-danger'></i></td>`
           } else {
             row += "<td></td>"
           }
@@ -32,6 +32,9 @@ function fillGroups() {
         }
       }
       $("#groupstable tbody").append(row)
+
+      // Event handlers
+      $("i[id^=removegroup]").on("click", groupRemove)
     }
     loadingHide($("#groupstable"))
   })
@@ -55,6 +58,34 @@ function folderClicked(ev) {
 
   // Load groups
   fillGroups()
+}
+
+function groupRemove(ev) {
+  const group = $(ev.currentTarget).data("id")
+  confirm("Remove group", "Are you sure you want to remove the group?", ()=>{
+    $.ajax({
+      url: `/pages/folders/${currentFolder}/groups/${group}`,
+      type: "delete",
+      data: { _csrf: $("#_csrf").val() },
+      success: (resp)=>{
+        if ( !checkResponse(resp) ) {
+          return
+        }
+
+        location.reload()
+      }
+    })
+  })
+}
+
+function groupPickerChoosen(group) {
+  $.post(`/pages/folders/${currentFolder}/groups/${group}`, { _csrf: $("#_csrf").val() }, (resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
+    location.reload()
+  })
 }
 
 $(()=>{

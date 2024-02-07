@@ -312,6 +312,18 @@ app.get("/pages/groupslist", async (req,res)=> {
   res.status(200).json(list)
 })
 
+// Add group to folder
+app.post("/pages/folders/:folder/groups/:group", async(req,res)=> {
+  const resp = await Vaulted.folderAddGroup(req.session, req.params.folder, req.params.group)
+  res.status(200).json(resp)
+})
+
+// Remove group from folder
+app.delete("/pages/folders/:folder/groups/:group", async(req,res)=> {
+  const resp = await Vaulted.folderRemoveGroup(req.session, req.params.folder, req.params.group)
+  res.status(200).json(resp)
+})
+
 console.log("Listening on port "+cfg.listen_port)
 
 app.listen(cfg.listen_port)
