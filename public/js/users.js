@@ -1,5 +1,7 @@
+var userSearchTimeout
+
 function fillUsers() {
-  $.get("/pages/userslist",(resp)=>{
+  $.get("/pages/userslist?search="+$("#usersearch").val(),(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
@@ -203,5 +205,12 @@ $(()=>{
   })
   $("#useredit").on("click",(ev)=>{
     userEdit()
+  })
+
+  $("#usersearch").on("keyup", (ev) => {
+    if ( userSearchTimeout ) {
+      clearTimeout(userSearchTimeout)
+    }
+    userSearchTimeout = setTimeout(fillUsers,250)
   })
 })
