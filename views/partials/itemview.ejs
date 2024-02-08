@@ -13,17 +13,26 @@
           <textarea type="text" class="form-control" id="viewdescription" name="viewdescription" rows="3" readonly placeholder="fake" ></textarea>
           <label for="viewdescription" class="form-label">Description</label>
         </div>
-        <div class="form-floating mb-1">
-          <input type="text" class="form-control" id="viewemail" name="viewemail" readonly placeholder="fake">
-          <label for="viewemail" class="form-label">Email</label>
+        <div class="input-group mb-1">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="viewemail" name="viewemail" readonly placeholder="fake">
+            <label for="viewemail" class="form-label">Email</label>
+          </div>
+          <button type="button" class="btn btn-secondary copytoclipboard" data-target="viewemail"><span class="fa-solid fa-copy"></button>
         </div>
-        <div class="form-floating mb-1">
-          <input type="text" class="form-control" id="viewurl" name="viewurl" readonly placeholder="fake">
-          <label for="viewurl" class="form-label">URL</label>
+        <div class="input-group mb-1">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="viewurl" name="viewurl" readonly placeholder="fake">
+            <label for="viewurl" class="form-label">URL</label>
+          </div>
+          <button type="button" class="btn btn-secondary copytoclipboard" data-target="viewurl"><span class="fa-solid fa-copy"></button>
         </div>
-        <div class="form-floating mb-1">
-          <input type="text" class="form-control" id="viewuser" name="viewuser" readonly placeholder="fake">
-          <label for="viewuser" class="form-label">User</label>
+        <div class="input-group mb-1">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="viewuser" name="viewuser" readonly placeholder="fake">
+            <label for="viewuser" class="form-label">User</label>
+          </div>
+          <button type="button" class="btn btn-secondary copytoclipboard" data-target="viewuser"><span class="fa-solid fa-copy"></button>
         </div>
         <div class="mb-3">
           <div class="input-group">
@@ -32,6 +41,7 @@
               <label for="viewpassword" class="form-label">Password</label>
             </div>
             <button id="toggleviewpassword" type="button" class="btn btn-secondary"><span class="fa-solid fa-eye-slash"></button>
+            <button type="button" class="btn btn-secondary copytoclipboard" data-target="viewpassword"><span class="fa-solid fa-copy"></button>
           </div>
         </div>
         <input type="hidden" id="itemviewid">
