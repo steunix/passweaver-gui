@@ -347,6 +347,24 @@ app.get("/pages/search", async (req,res)=>{
   res.render('search', req.locals)
 })
 
+// Generate password
+app.get("/pages/generate", async (req,res)=>{
+  req.locals = {
+    csfrtoken: req.csrfToken(),
+    pagetitle: "Password generator",
+    pageid: "generate",
+    userdescription: req.session.userdescription,
+    admin: req.session.admin
+  }
+  res.render('generate', req.locals)
+})
+
+// Generate password
+app.get("/pages/generate", async (req,res)=>{
+  const resp = await Vaulted.generatePassword()
+  res.status(200).json(resp)
+})
+
 console.log("Listening on port "+cfg.listen_port)
 
 app.listen(cfg.listen_port)

@@ -73,9 +73,24 @@ function checkResponse(resp,ignoreStatus) {
   }
 }
 
+function showToast(text) {
+  $("#toasttext").html(text)
+  $("#toast").addClass("show")
+  setTimeout(()=>{
+    $("#toast").removeClass("show")
+  },3000)
+}
+
 $(()=>{
   if ( $("#pageid").length ) {
     const pageid = $("#pageid").data("pageid")
     $("#sidebar .nav-link[data-bs-original-title="+pageid+"]").addClass("active")
   }
+
+  $(".copytoclipboard").on("click", (ev)=> {
+    const id = $(ev.currentTarget).data("target")
+    navigator.clipboard.writeText($("#"+id).val())
+    showToast("Copied to clipboard")
+  })
+
 })

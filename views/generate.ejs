@@ -1,0 +1,31 @@
+<%- include('partials/header.ejs') %>
+
+<div class="container-fluid v-container">
+
+<div class="row">
+  <%- include('partials/sidebar.ejs') %>
+  <div class="col-sm min-vh-100">
+    <%- include('partials/toasts.ejs') %>
+    <%- include('partials/topbar.ejs') %>
+    <%- include('partials/csfr.ejs') %>
+    <div class="row">
+    <div class="col-md-auto">
+      <h5>Generate password</h5>
+      <button id="generate" type="button" class="btn btn-sm btn-primary flex-shrink-0 me-3" data-bs-toggle="modal" data-bs-target="#newitemdialog">Generate</button>
+      <div class="input-group mt-3">
+        <input type="text" class="form-control text-monospace" readonly="readonly" id="generatedpassword">
+        <button class="btn btn-secondary copytoclipboard" data-target="generatedpassword" type="button" id="button-addon1"><span class="fa-solid fa-copy"></span></button>
+      </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/commondialogs.ejs') %>
+
+</div>
+
+<script src="/public/js/generate.js"></script>
+
+<%- include('partials/footer.ejs') %>
