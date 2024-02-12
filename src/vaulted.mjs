@@ -26,11 +26,14 @@ async function vaultedAPI(session, method, path, data) {
       timeout: {
         response: 5000
       },
+      headers: {
+        'user-agent': 'got'
+      },
       json: data,
       method: method
     }
     if ( session && session.jwt ) {
-      options.headers = { "Authorization": "Bearer "+session.jwt}
+      options.headers['Authorization'] = `Bearer ${session.jwt}`
     }
     var resp = await Got(cfg.vaulted_url+path, options)
 
