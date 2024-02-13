@@ -16,7 +16,7 @@ function fillGroups() {
           row += "<td>Inherited</td>"
         } else {
           if ( itm.canmodify ) {
-            row += `<td><i id='removegroup-${itm.id}' data-id='${itm.id}' class='fa-solid fa-trash text-danger'></i></td>`
+            row += `<td><i id='removegroup-${itm.id}' data-id='${itm.id}' class='fa-solid fa-trash text-danger' title='Remove'></i></td>`
           } else {
             row += "<td></td>"
           }

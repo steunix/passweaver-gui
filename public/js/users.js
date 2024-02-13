@@ -11,8 +11,8 @@ function fillUsers() {
       var row = ""
       for ( const itm of resp.data ) {
         row += `<tr data-id='${itm.id}'>`
-        row += `<td><i id='edit-${itm.id}' class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edituserdialog" data-id='${itm.id}'></i></td>`
-        row += `<td><i id='remove-${itm.id}' class='fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
+        row += `<td><i id='edit-${itm.id}' title='Edit' class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edituserdialog" data-id='${itm.id}'></i></td>`
+        row += `<td><i id='remove-${itm.id}' title='Remove' class='fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
         row += `<td>${itm.login}</td>`
         row += `<td>${itm.lastname}</td>`
         row += `<td>${itm.firstname}</td>`

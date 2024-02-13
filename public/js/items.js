@@ -21,11 +21,11 @@ function fillItems() {
       row = ""
       for ( const itm of resp.data ) {
         row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
-        row += `<td><i id='view-${itm.id}' class='fa-solid fa-circle-info text-primary' data-bs-toggle="modal" data-bs-target="#viewitemdialog" data-id='${itm.id}'></i></td>`
+        row += `<td><i id='view-${itm.id}' title='View' class='fa-solid fa-circle-info text-primary' data-bs-toggle="modal" data-bs-target="#viewitemdialog" data-id='${itm.id}'></i></td>`
         if ( currentPermissions.write ) {
-          row += `<td><i id='edit-${itm.id}' class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i></td>`
-          row += `<td><i id='remove-${itm.id}' class='fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
-          row += `<td><i id='clone-${itm.id}' class='fa-solid fa-clone' data-id='${itm.id}' /></td>`
+          row += `<td><i id='edit-${itm.id}' title='Edit' class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i></td>`
+          row += `<td><i id='remove-${itm.id}' title='Remove' class='fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
+          row += `<td><i id='clone-${itm.id}' title='Clone' class='fa-solid fa-clone' data-id='${itm.id}' /></td>`
         } else {
           row += "<td></td><td></td><td></td>"
         }
