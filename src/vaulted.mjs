@@ -168,6 +168,17 @@ export async function itemCreate(session, folder, body) {
 }
 
 /**
+ * Clone an item
+ * @param {Object} session
+ * @param {string} item
+ * @returns
+ */
+export async function itemClone(session, item) {
+  const resp = await vaultedAPI(session, "post", `/items/${item}/clone`)
+  return resp
+}
+
+/**
  * Delete an item
  * @param {Object} session
  * @param {string} folder

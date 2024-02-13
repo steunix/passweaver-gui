@@ -23,10 +23,11 @@ function fillItems() {
         row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
         row += `<td><i id='view-${itm.id}' class='fa-solid fa-circle-info text-primary' data-bs-toggle="modal" data-bs-target="#viewitemdialog" data-id='${itm.id}'></i></td>`
         if ( currentPermissions.write ) {
-          row += `<td><i class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i></td>`
+          row += `<td><i id='edit-${itm.id}' class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i></td>`
           row += `<td><i id='remove-${itm.id}' class='fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
+          row += `<td><i id='clone-${itm.id}' class='fa-solid fa-clone' data-id='${itm.id}' /></td>`
         } else {
-          row += "<td></td><td></td>"
+          row += "<td></td><td></td><td></td>"
         }
         row += "<td>"+itm.title+"</td></tr>"
       }
@@ -39,6 +40,9 @@ function fillItems() {
     })
     $("#itemstable tbody i[id^=remove]").on("click", (ev)=>{
       itemRemove($(ev.currentTarget).data("id"))
+    })
+    $("#itemstable tbody i[id^=clone]").on("click",(ev)=>{
+      itemClone($(ev.currentTarget).data("id"))
     })
 
     // Folder cannot be removed if not empty
@@ -359,6 +363,18 @@ function searchFolder() {
       return
     }
   }
+}
+
+function itemClone(itm) {
+  confirm("Clone item", "Do you want to clone this item?", ()=>{
+    $.post(`/pages/items/${itm}/clone`, {_csrf: $("#_csrf").val()}, (resp)=> {
+      if ( !checkResponse(resp) ) {
+        return
+      }
+
+      location.reload()
+    })
+  })
 }
 
 $(()=>{

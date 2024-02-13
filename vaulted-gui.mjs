@@ -167,6 +167,12 @@ app.post("/pages/itemupdate/:item", async (req,res)=> {
   res.status(200).json(resp)
 })
 
+// Clone item
+app.post("/pages/items/:item/clone", async (req,res)=> {
+  const resp = await Vaulted.itemClone(req.session, req.params.item)
+  res.status(200).json(resp)
+})
+
 // Get folders tree
 app.get("/pages/folderstree", async (req,res)=> {
   const resp = await Vaulted.foldersTree(req.session)
