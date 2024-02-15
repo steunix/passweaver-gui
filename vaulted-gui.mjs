@@ -56,7 +56,11 @@ app.use(lusca.csrf({
 // Checks for valid session in pages/ subdir
 app.use("/pages", function(req,res,next) {
   if ( req?.session?.user===undefined ) {
-    res.status(401).redirect("/login?error=You need to login")
+    var link = "/login?error="+encodeURIComponent("You need to login")
+    if ( req.query?.viewitem ) {
+      link += "&viewitem="+encodeURIComponent(req.query.viewitem)
+    }
+    res.status(401).redirect(link)
     return
   }
   return next()
@@ -76,7 +80,8 @@ app.get(["/login","/"], (req,res)=>{
   req.locals = {
     error: req.query.error,
     company_name: cfg.company_name,
-    csfrtoken: req.csrfToken()
+    csfrtoken: req.csrfToken(),
+    viewitem: req.query?.viewitem ?? ''
   }
   res.render('login', req.locals)
 })
@@ -93,7 +98,11 @@ app.post("/access", async (req,res)=>{
   const resp = await Vaulted.login(req.body.username, req.body.password)
 
   if ( resp.status!=="success" ) {
-    res.status(401).redirect("/login?error="+resp.message)
+    var link = "/login?error="+encodeURIComponent(resp.message)
+    if ( req.body?.viewitem ) {
+      link += "&viewitem="+encodeURIComponent(req.body.viewitem)
+    }
+    res.status(401).redirect(link)
     return
   }
 
@@ -110,7 +119,11 @@ app.post("/access", async (req,res)=>{
   req.session.email = usr.data.email
   req.session.save()
 
-  res.status(200).redirect("/pages/items")
+  if ( req.body?.viewitem ) {
+    res.status(200).redirect("/pages/items?viewitem="+encodeURIComponent(req.body.viewitem))
+  } else {
+    res.status(200).redirect("/pages/items")
+  }
 })
 
 // Items
@@ -120,7 +133,8 @@ app.get("/pages/items", async (req,res)=>{
     pagetitle: "Items",
     pageid: "items",
     userdescription: req.session.userdescription,
-    admin: req.session.admin
+    admin: req.session.admin,
+    viewitem: req.query?.viewitem ?? ''
   }
   res.render('items', req.locals)
 })

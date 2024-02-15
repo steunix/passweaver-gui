@@ -26,8 +26,9 @@ function fillItems() {
           row += `<td><i id='edit-${itm.id}' title='Edit' class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i></td>`
           row += `<td><i id='remove-${itm.id}' title='Remove' class='fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
           row += `<td><i id='clone-${itm.id}' title='Clone' class='fa-solid fa-clone' data-id='${itm.id}' /></td>`
+          row += `<td><i id='link-${itm.id}' title='Copy link' class='fa-solid fa-link' data-id='${itm.id}' /></td>`
         } else {
-          row += "<td></td><td></td><td></td>"
+          row += "<td></td><td></td><td></td><td></td>"
         }
         row += "<td>"+itm.title+"</td></tr>"
       }
@@ -43,6 +44,9 @@ function fillItems() {
     })
     $("#itemstable tbody i[id^=clone]").on("click",(ev)=>{
       itemClone($(ev.currentTarget).data("id"))
+    })
+    $("#itemstable tbody i[id^=link]").on("click",(ev)=>{
+      itemCopyLink($(ev.currentTarget).data("id"))
     })
 
     // Folder cannot be removed if not empty
@@ -377,6 +381,17 @@ function itemClone(itm) {
   })
 }
 
+function itemCopyLink(itm) {
+  navigator.clipboard.writeText(`${window.location.origin}/pages/items?viewitem=${itm}`)
+  showToast("Copied to clipboard")
+}
+
+function findAndShowItem(itm) {
+  itemViewFill(itm)
+  const dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("viewitemdialog"), {})
+  dialog.show()
+}
+
 $(()=>{
   $.get("/pages/folderstree", (resp)=>{
     if ( !checkResponse(resp) ) {
@@ -444,4 +459,8 @@ $(()=>{
     }
     folderSearchTimeout = setTimeout(searchFolder,250)
   })
+
+  if ( $("#viewitem").length ) {
+    findAndShowItem($("#viewitem").val())
+  }
 })

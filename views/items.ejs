@@ -60,3 +60,7 @@
 <script src="/public/js/items.js"></script>
 
 <%- include('partials/footer.ejs') %>
+
+<% if ( viewitem ) { %>
+<input type="hidden" id="viewitem" value="<%= viewitem %>"/>
+<% } %>

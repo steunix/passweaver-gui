@@ -15,6 +15,9 @@
           <input type="password" class="form-control" id="password" name="password" placeholder="password">
           <label for="password">Password</label>
         </div>
+        <% if ( viewitem ) { %>
+        <input id="viewitem" name="viewitem" type="hidden" value="<%= viewitem %>" />
+        <% } %>
         <button id="login" type="submit" class="mb-3 btn btn-primary">Login</button>
         <% if ( error ) { %>
           <div class="mb-3 alert alert-danger">
