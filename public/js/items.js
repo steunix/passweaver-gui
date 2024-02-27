@@ -30,7 +30,7 @@ function fillItems() {
         } else {
           row += "<td></td><td></td><td></td><td></td>"
         }
-        row += "<td>"+itm.title+"</td></tr>"
+        row += `<td>${itm.title}</td></tr>`
       }
       $("#itemstable tbody").append(row)
     }
@@ -383,7 +383,7 @@ function itemClone(itm) {
 
 function itemCopyLink(itm) {
   navigator.clipboard.writeText(`${window.location.origin}/pages/items?viewitem=${itm}`)
-  showToast("Copied to clipboard")
+  showToast("Item link copied to clipboard")
 }
 
 function findAndShowItem(itm) {
