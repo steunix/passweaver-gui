@@ -385,6 +385,18 @@ app.get("/pages/generate", async (req,res)=>{
   res.status(200).json(resp)
 })
 
+// Create personal password
+app.post("/pages/personalpassword", async (req,res)=>{
+  const resp = await Vaulted.personalPasswordCreate(req.session, req.body.password)
+  res.status(200).json(resp)
+})
+
+// Set personal password
+app.post("/pages/personallogin", async (req,res)=>{
+  const resp = await Vaulted.personalLogin(req, req.session, req.body.password)
+  res.status(200).json(resp)
+})
+
 console.log("Listening on port "+cfg.listen_port)
 
 app.listen(cfg.listen_port)

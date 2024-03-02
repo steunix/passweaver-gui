@@ -24,7 +24,7 @@ async function vaultedAPI(session, method, path, data) {
         limit: 0
       },
       timeout: {
-        response: 5000
+        response: 50000
       },
       headers: {
         'user-agent': 'got'
@@ -492,10 +492,52 @@ export async function userRemove(session, user) {
 
 /**
  * Generate a password
- * @param {Object} session
+ * @param {Object} session Session
  * @returns
  */
 export async function generatePassword(session) {
   const resp = await vaultedAPI(session, "get", "/util/generatepassword")
+  return resp
+}
+
+/**
+ * Create personal password
+ * @param {Object} session Session
+ * @param {string} passsword Password
+ * @returns
+ */
+export async function personalPasswordCreate(session, password) {
+  var resp = await vaultedAPI(session, "post", "/users/personalsecret", {
+    personalsecret: password
+  })
+
+  if ( resp.httpStatusCode=="200" ) {
+    resp = await vaultedAPI(session, "post", "/users/personalfolderlogin", {
+      password: password
+    })
+
+    if ( resp.httpStatusCode=="200" ) {
+      req.session.jwt = resp.data.jwt
+    }
+  }
+
+  return resp
+}
+
+/**
+ * Personal login
+ * @param {Object} session Session
+ * @param {string} passsword Password
+ * @returns
+ */
+export async function personalLogin(req, session, password) {
+  const resp = await vaultedAPI(session, "post", "/users/personalfolderlogin", {
+    password: password
+  })
+
+  if ( resp.httpStatusCode=="200" ) {
+    req.session.jwt = resp.data.jwt
+  }
+
   return resp
 }
