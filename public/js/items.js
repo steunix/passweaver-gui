@@ -12,6 +12,20 @@ function fillItems() {
   $("#itemstable tbody tr").remove()
 
   $.get("/pages/itemslist/"+currentFolder+"?search="+$("#itemsearch").val(),(resp)=>{
+    // Personal password not yet created?
+    if ( resp.httpStatusCode == "412" ) {
+      currentPermissions = { read: false, write: false }
+      personalPasswordCreateDialog()
+      return
+    }
+
+    // Personal password not yet set?
+    if ( resp.httpStatusCode == "417" ) {
+      currentPermissions = { read: false, write: false }
+      personalPasswordAskDialog()
+      return
+    }
+
     // Folder may not be accessible
     if ( !checkResponse(resp,403) ) {
       return
@@ -80,6 +94,7 @@ function folderClicked(ev, selectonly) {
 
   // Read folder info
   $.get("/pages/folders/"+currentFolder,(resp)=>{
+
     // Folder may not be accessible
     if ( !checkResponse(resp,"403") ) {
       return
@@ -392,6 +407,71 @@ function findAndShowItem(itm) {
   dialog.show()
 }
 
+function personalPasswordCreateDialog() {
+  const dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("personalpasswordnew"), {})
+  dialog.show()
+}
+
+function personalPasswordAskDialog() {
+  const dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("personalpasswordset"), {})
+  dialog.show()
+}
+
+function personalPasswordCreateEnable() {
+  if (
+    $("#newpersonalpassword").val()=="" || $("#newpersonalpassword").val().length<8 || $("#newpersonalpassword").val()!=$("#newpersonalpasswordconfirm").val() ) {
+      $("#personalpasswordcreate").attr("disabled","disabled")
+  } else {
+    $("#personalpasswordcreate").removeAttr("disabled")
+  }
+}
+
+function togglePersonalPassword() {
+  if ( $("#newpersonalpassword").attr("type")=="password") {
+    $("#newpersonalpassword").attr("type","text")
+  } else {
+    $("#newpersonalpassword").attr("type","password")
+  }
+}
+
+function togglePersonalPasswordConfirm() {
+  if ( $("#newpersonalpasswordconfirm").attr("type")=="password") {
+    $("#newpersonalpasswordconfirm").attr("type","text")
+  } else {
+    $("#newpersonalpasswordconfirm").attr("type","password")
+  }
+}
+
+function personalPasswordCreate() {
+  let data = {
+    _csrf: $("#_csrf").val(),
+    password: $("#newpersonalpassword").val()
+  }
+
+  $.post("/pages/personalpassword", data, (resp)=> {
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
+    location.reload()
+  })
+}
+
+function personalPasswordSet() {
+  let data = {
+    _csrf: $("#_csrf").val(),
+    password: $("#personalpasswordask").val()
+  }
+
+  $.post("/pages/personallogin", data, (resp)=> {
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
+    location.reload()
+  })
+}
+
 $(()=>{
   $.get("/pages/folderstree", (resp)=>{
     if ( !checkResponse(resp) ) {
@@ -444,6 +524,25 @@ $(()=>{
   })
   $("#edittitle").on("keyup",(ev)=>{
     itemEditEnable()
+  })
+  $("#personalpasswordcreate").on("click",(ev)=>{
+    personalPasswordCreate()
+  })
+  $("#newpersonalpassword,#newpersonalpasswordconfirm").on("keyup",(ev)=>{
+    personalPasswordCreateEnable()
+  })
+  $("#togglenewpersonalpassword").on("click",(ev)=>{
+    togglePersonalPassword()
+  })
+  $("#togglenewpersonalpasswordconfirm").on("click",(ev)=>{
+    togglePersonalPasswordConfirm()
+  })
+  $("#personalpasswordsetbutton").on("click",(ev)=>{
+    personalPasswordSet()
+  })
+  // Autofocus
+  $("#personalpasswordset,#personalpasswordnew").on("shown.bs.modal", (ev)=> {
+    $(ev.currentTarget).find("[autofocus]").focus()
   })
 
   $("#itemsearch").on("keyup", (ev) => {
