@@ -69,7 +69,7 @@ function checkResponse(resp,ignoreStatus) {
   errorDialog(resp.message)
 
   if ( resp.status=="failed" && resp.fatal ) {
-    window.location = "/logout"
+    window.location = "/logout?error="+encodeURIComponent(resp.message)
   }
 }
 

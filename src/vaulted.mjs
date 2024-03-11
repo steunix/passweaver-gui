@@ -53,13 +53,23 @@ async function vaultedAPI(session, method, path, data) {
         data: {}
       }
     }
-    // Bad error
+    // Error in API
     if ( err.response && err.response.statusCode=="500" ) {
       return {
-        httpStatusCode: undefined,
+        httpStatusCode: err.response.statusCode,
         fatal: false,
         status: "failed",
-        message: "Bad request to Vaulted API. Smells like a bug.",
+        message: "Bad request to Vaulted API.",
+        data: {}
+      }
+    }
+    // Invalid token (probably expired)
+    if ( err.response && err.response.statusCode=="401" ) {
+      return {
+        httpStatusCode: err.response.statusCode,
+        fatal: true,
+        status: "failed",
+        message: "Invalid token, you need to login",
         data: {}
       }
     }

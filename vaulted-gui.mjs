@@ -90,7 +90,11 @@ app.get(["/login","/"], (req,res)=>{
 app.get("/logout", (req,res)=>{
   req.session.destroy()
 
-  res.status(200).redirect("/login")
+  if ( req.query?.error ) {
+    res.status(200).redirect("/login?error="+encodeURIComponent(req.query.error))
+  } else {
+    res.status(200).redirect("/login")
+  }
 })
 
 // Access page
