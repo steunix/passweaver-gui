@@ -401,6 +401,11 @@ app.post("/pages/personallogin", async (req,res)=>{
   res.status(200).json(resp)
 })
 
+// Error handler
+app.use((err, req, res, next)=> {
+  res.status(200).redirect("/logout?error="+encodeURIComponent(err))
+})
+
 console.log("Listening on port "+cfg.listen_port)
 
 app.listen(cfg.listen_port)
