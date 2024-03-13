@@ -63,8 +63,8 @@ async function vaultedAPI(session, method, path, data) {
         data: {}
       }
     }
-    // Invalid token (probably expired)
-    if ( err.response && err.response.statusCode=="401" ) {
+    // Invalid token (we already have a session, but jwt token is not valid)
+    if ( session && session.jwt && err.response && err.response.statusCode=="401" ) {
       return {
         httpStatusCode: err.response.statusCode,
         fatal: true,
