@@ -10,6 +10,8 @@
 import Express from 'express'
 import compression from 'compression'
 import helmet from 'helmet'
+import https from 'https'
+import FS from 'fs'
 
 import * as Config from './src/config.mjs'
 import * as Vaulted from './src/vaulted.mjs'
@@ -408,4 +410,14 @@ app.use((err, req, res, next)=> {
 
 console.log("Listening on port "+cfg.listen_port)
 
-app.listen(cfg.listen_port)
+// HTTP(S) server startup
+if ( cfg.https.enabled ) {
+  https.createServer({
+    key: FS.readFileSync(cfg.https.private_key),
+    cert: FS.readFileSync(cfg.https.certificate)
+    },
+    app
+  ).listen(cfg.listen_port)
+} else {
+  app.listen(cfg.listen_port)
+}

@@ -1,7 +1,6 @@
 {
   "listen_port": 3001,
   "session_key_env": "VAULTEDGUI_SESSION_KEY",
-  "csfr_key_env": "VAULTEDGUI_CSFR_KEY",
   "vaulted_url": "http://localhost:3000/api/v1",
   "company_name": "MyCompany"
 }
