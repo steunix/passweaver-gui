@@ -551,3 +551,14 @@ export async function personalLogin(req, session, password) {
 
   return resp
 }
+
+/**
+ * Stats
+ * @param {Object} session Session
+ * @returns
+ */
+export async function stats(session) {
+  const resp = await vaultedAPI(session, "get", "/util/stats")
+
+  return resp
+}

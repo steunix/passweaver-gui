@@ -1,0 +1,28 @@
+<%- include('partials/header.ejs') %>
+
+<div class="container-fluid v-container">
+
+<div class="row">
+  <%- include('partials/sidebar.ejs') %>
+  <div class="col-sm min-vh-100">
+    <%- include('partials/toasts.ejs') %>
+    <%- include('partials/topbar.ejs') %>
+    <%- include('partials/csfr.ejs') %>
+    <div class="row">
+    <div class="col-md-auto">
+      <h5>Stats</h5>
+      <ul>
+        <li>API version: <%= apiVersion %></li>
+        <li>Users: <%= users %></li>
+        <li>Folders: <%= folders %></li>
+        <li>Items: <%= items %></li>
+        <li>Cache size: <%= cacheSize %> bytes</li>
+      </ul>
+    </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<%- include('partials/footer.ejs') %>

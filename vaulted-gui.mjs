@@ -403,6 +403,27 @@ app.post("/pages/personallogin", async (req,res)=>{
   res.status(200).json(resp)
 })
 
+// Stats
+app.get("/pages/stats", async(req,res)=> {
+  var page = {
+    csfrtoken: req.csrfToken(),
+    pagetitle: "Stats",
+    pageid: "stats",
+    userdescription: req.session.userdescription,
+    admin: req.session.admin
+  }
+
+  const resp = await Vaulted.stats(req.session)
+
+  page.apiVersion = resp.data.version
+  page.users = resp.data.users
+  page.folders = resp.data.folders
+  page.items = resp.data.items
+  page.cacheSize = resp.data.cacheSize
+
+  res.render('stats', page)
+})
+
 // Error handler
 app.use((err, req, res, next)=> {
   res.status(200).redirect("/logout?error="+encodeURIComponent(err))
