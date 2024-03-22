@@ -1,4 +1,5 @@
 var currentFolder = ""
+var folderSearchTimeout
 
 function fillGroups() {
   loadingShow($("#groupstable"))
@@ -88,6 +89,51 @@ function groupPickerChoosen(group) {
   })
 }
 
+var searchFolderIndex = 0
+function searchFolder(start,direction) {
+  if ( start===undefined ) {
+    searchFolderIndex = 0
+  }
+
+  var search = $("#foldersearch").val().toLowerCase()
+  var folders = $("span[id^=treedesc]")
+
+  var index = 0
+  for ( const folder of folders ) {
+    if ( $(folder).html().toLowerCase().includes(search) ) {
+      if ( index==searchFolderIndex ) {
+        var parents = $(folder).parents()
+        for ( const parent of parents ) {
+          // Expand parents
+          if ( $(parent).attr("role")=="group" && !$(parent).hasClass("show") ) {
+            const id = "#" + $(parent).attr("id")
+            const el = $(`[data-bs-target='${id}']`)
+            $(el).find("i").click()
+          }
+        }
+        folderClicked( ''+$(folder).data("id") )
+        return true
+      }
+      index++
+    }
+  }
+  return false
+}
+
+function searchFolderNext() {
+  searchFolderIndex++
+  if ( !searchFolder(searchFolderIndex, 0) ) {
+    searchFolderIndex--
+  }
+}
+
+function searchFolderPrevious() {
+  searchFolderIndex--
+  if ( !searchFolder(searchFolderIndex, 1) ) {
+    searchFolderIndex++
+  }
+}
+
 $(()=>{
   $.get("/pages/folderstree", (resp)=>{
     if ( !checkResponse(resp) ) {
@@ -102,5 +148,20 @@ $(()=>{
     if ( last ) {
       folderClicked(last)
     }
+  })
+
+  $("#foldersearch").on("keyup", (ev)=> {
+    if ( folderSearchTimeout ) {
+      clearTimeout(folderSearchTimeout)
+    }
+    folderSearchTimeout = setTimeout(searchFolder,250)
+  })
+
+  $("#foldersearchnext").on("click", (ev)=>{
+    searchFolderNext()
+  })
+
+  $("#foldersearchprevious").on("click", (ev)=>{
+    searchFolderPrevious()
   })
 })

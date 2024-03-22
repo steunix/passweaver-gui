@@ -11,6 +11,13 @@
     <div class="row">
     <div class="col-md-3">
       <h5>Folders</h5>
+      <div class="d-flex">
+        <div class="input-group">
+          <input id="foldersearch" type="text" class="form-control" placeholder="Search folder">
+          <button class="btn btn-secondary" type="button" id="foldersearchprevious"><span class="fa-solid fa-chevron-left"></span></button>
+          <button class="btn btn-secondary" type="button" id="foldersearchnext"><span class="fa-solid fa-chevron-right"></span></button>
+        </div>
+      </div>
       <%- include('partials/folderstree.ejs') %>
     </div>
     <div class="col-md-auto">
