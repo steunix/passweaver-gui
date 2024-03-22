@@ -364,23 +364,48 @@ $(function() {
   })
 })
 
-function searchFolder() {
+var searchFolderIndex = 0
+function searchFolder(start,direction) {
+  if ( start===undefined ) {
+    searchFolderIndex = 0
+  }
+
   var search = $("#foldersearch").val().toLowerCase()
   var folders = $("span[id^=treedesc]")
 
+  var index = 0
   for ( const folder of folders ) {
     if ( $(folder).html().toLowerCase().includes(search) ) {
-      var parents = $(folder).parents()
-      for ( const parent of parents ) {
-        if ( $(parent).attr("role")=="group" && !$(parent).hasClass("show") ) {
-          const id = "#" + $(parent).attr("id")
-          const el = $(`[data-bs-target='${id}']`)
-          $(el).find("i").click()
+      if ( index==searchFolderIndex ) {
+        var parents = $(folder).parents()
+        for ( const parent of parents ) {
+          // Expand parents
+          if ( $(parent).attr("role")=="group" && !$(parent).hasClass("show") ) {
+            const id = "#" + $(parent).attr("id")
+            const el = $(`[data-bs-target='${id}']`)
+            $(el).find("i").click()
+          }
         }
+        folderClicked( ''+$(folder).data("id") )
+        return true
       }
-      folderClicked( ''+$(folder).data("id") )
-      return
+      index++
     }
+  }
+  return false
+}
+
+function searchFolderNext() {
+  searchFolderIndex++
+  if ( !searchFolder(searchFolderIndex, 0) ) {
+    searchFolderIndex--
+  }
+}
+
+function searchFolderPrevious() {
+  searchFolderIndex--
+  if ( !searchFolder(searchFolderIndex, 1) ) {
+    searchFolderIndex++
   }
 }
 
@@ -562,4 +587,13 @@ $(()=>{
   if ( $("#viewitem").length ) {
     findAndShowItem($("#viewitem").val())
   }
+
+  $("#foldersearchnext").on("click", (ev)=>{
+    searchFolderNext()
+  })
+
+  $("#foldersearchprevious").on("click", (ev)=>{
+    searchFolderPrevious()
+  })
+
 })
