@@ -164,6 +164,7 @@ export async function getFolder(session, folder) {
 export async function itemCreate(session, folder, body) {
   const item = {
     title: body.title,
+    metadata: body.user,
     data: JSON.stringify({
       description: body.description,
       email: body.email,
@@ -230,7 +231,8 @@ export async function itemUpdate(session, itemid, body) {
 
   const item = {
     title: body.title,
-    data: data
+    data: data,
+    metadata: body.data.user
   }
 
   const resp = await vaultedAPI(session, "patch", "/items/"+itemid, item)
