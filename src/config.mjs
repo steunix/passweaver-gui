@@ -4,7 +4,8 @@
  * @author Stefano Rivoir <rs4000@gmail.com>
  */
 
-import { readFile } from 'fs/promises';
+import { readFile } from 'fs/promises'
+import * as crypto from 'crypto'
 
 // Reads package.json
 const packagejson = JSON.parse(
@@ -26,12 +27,10 @@ try {
   process.exit(1)
 }
 
-let config = json
-
 // Retreives the master key from environment
-console.log("Reading session and CSFR keys from environment ("+config.session_key_env+")")
-config.session_key_env = process.env[config.session_key_env]
-config.csfr_key_env = process.env[config.csfr_key_env]
+console.log("Creating session and CSFR keys")
+json.session_key = crypto.randomBytes(32).toString('hex')
+json.csfr_key = crypto.randomBytes(32).toString('hex')
 
 /**
  * Returns the configuration stored in config.json

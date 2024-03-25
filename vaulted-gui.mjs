@@ -43,7 +43,7 @@ app.use(Express.urlencoded({ extended: true }))
 app.use(session({
   name: "vaultedgui",
   //store: new fileStore({}),
-  secret: cfg.session_key_env,
+  secret: cfg.session_key,
   resave: false,
   saveUninitialized: false,
   cookie: { secure: false, maxAge: 1000 * 60 * 60 * 4 }
@@ -52,7 +52,7 @@ app.use(session({
 // CSFR protection
 app.use(lusca.csrf({
   key: "_csrf",
-  secret: cfg.csfr_key_env
+  secret: cfg.csfr_key
 }))
 
 // Checks for valid session in pages/ subdir
