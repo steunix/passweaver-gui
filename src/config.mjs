@@ -6,6 +6,28 @@
 
 import { readFile } from 'fs/promises'
 import * as crypto from 'crypto'
+import jsonschema from 'jsonschema'
+
+// Config validation schema
+const configSchema = {
+  "id": "config",
+  "type": "object",
+  "properties": {
+    "listen_port": { "type": "integer", "minimum": 1, "maximum": 65535 },
+    "vaulted_url": { "type": "string" },
+    "company_name": { "type": "string" },
+    "https": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "certificate": { "type": "string" },
+        "private_key": { "type": "string" }
+      },
+      "required": [ "enabled" ]
+    }
+  },
+  "required": ["listen_port", "vaulted_url", "company_name", "https"]
+}
 
 // Reads package.json
 const packagejson = JSON.parse(
@@ -27,7 +49,15 @@ try {
   process.exit(1)
 }
 
-// Retreives the master key from environment
+// Validate config against schema
+const validate = jsonschema.validate(json, configSchema)
+if ( !validate.valid ) {
+  console.error("config.json is invalid, please verify the following:")
+  console.error(validate.toString())
+  process.exit(1)
+}
+
+// Create session and CSFR keys
 console.log("Creating session and CSFR keys")
 json.session_key = crypto.randomBytes(32).toString('hex')
 json.csfr_key = crypto.randomBytes(32).toString('hex')

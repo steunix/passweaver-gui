@@ -10,6 +10,7 @@
     "ejs": "^3.1.9",
     "got": "^14.0.0",
     "jsonwebtoken": "^9.0.2",
-    "pretty-bytes": ""
+    "pretty-bytes": "",
+    "jsonschema": "^1.4.1"
   }
 }
