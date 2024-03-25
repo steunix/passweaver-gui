@@ -362,6 +362,12 @@ app.delete("/pages/folders/:folder/groups/:group", async(req,res)=> {
   res.status(200).json(resp)
 })
 
+// Toggle group permissions on folder
+app.post("/pages/folders/:folder/groups/:group/toggle", async(req,res)=> {
+  const resp = await Vaulted.folderToggleGroup(req.session, req.params.folder, req.params.group)
+  res.status(200).json(resp)
+})
+
 // Search items
 app.get("/pages/search", async (req,res)=>{
   req.locals = {

@@ -474,6 +474,26 @@ export async function folderRemoveGroup(session, folder, group) {
 }
 
 /**
+ * Toggle group permissions on folder
+ * @param {Object} session Session object
+ * @param {string} folder Folder
+ * @param {string} group Group to remove
+ * @returns
+ */
+export async function folderToggleGroup(session, folder, group) {
+  const perm = await vaultedAPI(session, "get", `/folders/${folder}/groups`)
+
+  for ( const g of perm.data ) {
+    if ( g.id==group ) {
+      const resp = await vaultedAPI(session, "patch", `/folders/${folder}/groups/${group}`, { read: true, write: !g.write})
+      return resp
+    }
+  }
+
+  return perm
+}
+
+/**
  * Groups list
  * @param {Object} session Current session
  * @returns

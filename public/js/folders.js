@@ -14,12 +14,13 @@ function fillGroups() {
       var row = "<tr>"
       for ( const itm of resp.data ) {
         if ( itm.inherited ) {
-          row += "<td>Inherited</td>"
+          row += "<td colspan='2'>Inherited</td>"
         } else {
           if ( itm.canmodify ) {
             row += `<td><i id='removegroup-${itm.id}' data-id='${itm.id}' class='fa-solid fa-trash text-danger' title='Remove'></i></td>`
+            row += `<td><i id='togglegroup-${itm.id}' data-id='${itm.id}' class='fa-solid fa-arrow-right-arrow-left' title='Change permission'></i></td>`
           } else {
-            row += "<td></td>"
+            row += "<td></td><td></td>"
           }
         }
         row += "<td>"+(itm.write ? "Read + write" : "Read only")+"</td>"
@@ -36,6 +37,7 @@ function fillGroups() {
 
       // Event handlers
       $("i[id^=removegroup]").on("click", groupRemove)
+      $("i[id^=togglegroup]").on("click", groupToggle)
     }
     loadingHide($("#groupstable"))
   })
@@ -76,6 +78,17 @@ function groupRemove(ev) {
         location.reload()
       }
     })
+  })
+}
+
+function groupToggle(ev) {
+  const group = $(ev.currentTarget).data("id")
+  $.post(`/pages/folders/${currentFolder}/groups/${group}/toggle`, { _csrf: $("#_csrf").val() },(resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
+    location.reload()
   })
 }
 
