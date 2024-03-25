@@ -9,6 +9,7 @@
     "helmet": "^7.1.0",
     "ejs": "^3.1.9",
     "got": "^14.0.0",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "pretty-bytes": ""
   }
 }

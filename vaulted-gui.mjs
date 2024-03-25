@@ -12,6 +12,7 @@ import compression from 'compression'
 import helmet from 'helmet'
 import https from 'https'
 import FS from 'fs'
+import prettyBytes from 'pretty-bytes'
 
 import * as Config from './src/config.mjs'
 import * as Vaulted from './src/vaulted.mjs'
@@ -419,7 +420,7 @@ app.get("/pages/stats", async(req,res)=> {
   page.users = resp.data.users
   page.folders = resp.data.folders
   page.items = resp.data.items
-  page.cacheSize = resp.data.cacheSize
+  page.cacheSize = prettyBytes(resp.data.cacheSize)
 
   res.render('stats', page)
 })
