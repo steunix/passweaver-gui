@@ -47,7 +47,7 @@ app.use(session({
   secret: cfg.session_key,
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false, maxAge: 1000 * 60 * 60 * 4 }
+  cookie: { secure: cfg.https.enabled, maxAge: 1000 * 60 * 60 * 4 }
 }))
 
 // CSFR protection
