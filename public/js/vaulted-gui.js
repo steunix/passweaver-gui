@@ -81,6 +81,16 @@ function showToast(text) {
   },3000)
 }
 
+function copyToClipboard(ev) {
+  const id = $(ev.currentTarget).data("target")
+  if ( $("#"+id)[0].nodeName=="INPUT" ) {
+    navigator.clipboard.writeText($("#"+id).val())
+  } else {
+    navigator.clipboard.writeText($("#"+id).html())
+  }
+  showToast("Copied to clipboard")
+}
+
 $(()=>{
   if ( $("#pageid").length ) {
     const pageid = $("#pageid").data("pageid")
@@ -88,9 +98,7 @@ $(()=>{
   }
 
   $(".copytoclipboard").on("click", (ev)=> {
-    const id = $(ev.currentTarget).data("target")
-    navigator.clipboard.writeText($("#"+id).val())
-    showToast("Copied to clipboard")
+    copyToClipboard(ev)
   })
 
 })

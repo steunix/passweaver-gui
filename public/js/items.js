@@ -44,7 +44,10 @@ function fillItems() {
         } else {
           row += "<td></td><td></td><td></td><td></td>"
         }
-        row += `<td>${itm.title}</td></tr>`
+        row += `<td>${itm.title}</td>`
+        row += `<td id='user-${itm.id}'>${itm.metadata}</td>`
+        row += `<td><i class="fa-solid fa-copy copytoclipboard" title='Copy to clipboard' data-target='user-${itm.id}' /></td>`
+        row += `<tr>`
       }
       $("#itemstable tbody").append(row)
     }
@@ -61,6 +64,9 @@ function fillItems() {
     })
     $("#itemstable tbody i[id^=link]").on("click",(ev)=>{
       itemCopyLink($(ev.currentTarget).data("id"))
+    })
+    $("#itemstable .copytoclipboard").on("click",(ev)=>{
+      copyToClipboard(ev)
     })
 
     // Folder cannot be removed if not empty
