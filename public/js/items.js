@@ -39,7 +39,7 @@ function fillItems() {
         if ( currentPermissions.write ) {
           row += `<td><i id='edit-${itm.id}' title='Edit' class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i></td>`
           row += `<td><i id='remove-${itm.id}' title='Remove' class='fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
-          row += `<td><i id='clone-${itm.id}' title='Clone' class='fa-solid fa-clone' data-id='${itm.id}' /></td>`
+          row += `<td><i id='clone-${itm.id}' title='Clone' class='fa-solid fa-file-circle-plus' data-id='${itm.id}' /></td>`
           row += `<td><i id='link-${itm.id}' title='Copy link' class='fa-solid fa-link' data-id='${itm.id}' /></td>`
         } else {
           row += "<td></td><td></td><td></td><td></td>"

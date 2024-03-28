@@ -12,13 +12,13 @@
     <div class="col-md-3">
       <h5>Folders</h5>
       <div class="d-flex">
-        <button id="newfolder" type="button" class="btn btn-sm btn-primary flex-shrink-0 me-1" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newfolderdialog"><span class='fa-solid fa-add'/></button>
-        <button id="editfolder" type="button" class="btn btn-sm btn-secondary flex-shrink-0 me-1" disabled="disabled" data-bs-toggle="modal" data-bs-target="#editfolderdialog"><span class='fa-solid fa-pen'/></button>
-        <button id="removefolder" type="button" class="btn btn-sm btn-danger flex-shrink-0 me-3" disabled="disabled"><span class='fa-solid fa-trash'/></button>
+        <button id="newfolder" type="button" title="New subfolder" class="btn btn-sm btn-primary flex-shrink-0 me-1" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newfolderdialog"><span class='fa-solid fa-folder-plus'/></button>
+        <button id="editfolder" type="button" title="Edit folder" class="btn btn-sm btn-secondary flex-shrink-0 me-1" disabled="disabled" data-bs-toggle="modal" data-bs-target="#editfolderdialog"><span class='fa-solid fa-pen'/></button>
+        <button id="removefolder" type="button" title="Remove folder" class="btn btn-sm btn-danger flex-shrink-0 me-3" disabled="disabled"><span class='fa-solid fa-trash'/></button>
         <div class="input-group">
           <input id="foldersearch" type="text" class="form-control" placeholder="Search folder">
-          <button class="btn btn-secondary" type="button" id="foldersearchprevious"><span class="fa-solid fa-chevron-left"></span></button>
-          <button class="btn btn-secondary" type="button" id="foldersearchnext"><span class="fa-solid fa-chevron-right"></span></button>
+          <button class="btn btn-secondary" title="Search previous" type="button" id="foldersearchprevious"><span class="fa-solid fa-chevron-left"></span></button>
+          <button class="btn btn-secondary" title="Search next" type="button" id="foldersearchnext"><span class="fa-solid fa-chevron-right"></span></button>
         </div>
       </div>
       <%- include('partials/folderstree.ejs') %>
@@ -26,7 +26,9 @@
     <div class="col-md-auto">
       <h5>Items</h5>
       <div class="d-flex">
-        <button id="newitem" type="button" class="btn btn-sm btn-primary flex-shrink-0 me-3" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newitemdialog">New item</button>
+        <button id="newitem" type="button" title="New item" class="btn btn-sm btn-primary flex-shrink-0 me-3" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newitemdialog">
+          <span class="fa fa-file-circle-plus"></span>
+        </button>
         <div class="input-group">
           <input id="itemsearch" type="text" class="form-control" placeholder="Filter items">
         </div>

@@ -177,4 +177,9 @@ $(()=>{
   $("#foldersearchprevious").on("click", (ev)=>{
     searchFolderPrevious()
   })
+
+  // Autofocus
+  $("#grouppicker").on("shown.bs.modal", (ev)=> {
+    $(ev.currentTarget).find("[autofocus]").focus()
+  })
 })
