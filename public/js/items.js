@@ -35,21 +35,21 @@ function fillItems() {
       row = ""
       for ( const itm of resp.data ) {
         row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
-        row += `<td><i id='view-${itm.id}' title='View' class='fa-solid fa-circle-info text-primary' data-bs-toggle="modal" data-bs-target="#viewitemdialog" data-id='${itm.id}'></i></td>`
+        row += `<td><i id='view-${itm.id}' title='View' class='v-action fa-solid fa-circle-info text-primary' data-bs-toggle="modal" data-bs-target="#viewitemdialog" data-id='${itm.id}'></i></td>`
         if ( currentPermissions.write ) {
-          row += `<td><i id='edit-${itm.id}' title='Edit' class='fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i></td>`
-          row += `<td><i id='remove-${itm.id}' title='Remove' class='fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
-          row += `<td><i id='clone-${itm.id}' title='Clone' class='fa-solid fa-file-circle-plus' data-id='${itm.id}' /></td>`
-          row += `<td><i id='link-${itm.id}' title='Copy link' class='fa-solid fa-link' data-id='${itm.id}' /></td>`
+          row += `<td><i id='edit-${itm.id}' title='Edit' class='v-action fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i></td>`
+          row += `<td><i id='remove-${itm.id}' title='Remove' class='v-action fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
+          row += `<td><i id='clone-${itm.id}' title='Clone' class='v-action fa-solid fa-file-circle-plus' data-id='${itm.id}' /></td>`
+          row += `<td><i id='link-${itm.id}' title='Copy link' class='v-action fa-solid fa-link' data-id='${itm.id}' /></td>`
         } else {
           row += "<td></td><td></td><td></td><td></td>"
         }
         row += `<td>${itm.title}</td>`
         row += `<td id='user-${itm.id}'>${itm.metadata}</td>`
-        row += `<td><i class="fa-solid fa-copy copytoclipboard" title='Copy user to clipboard' data-target='user-${itm.id}' /></td>`
+        row += `<td><i class="v-action fa-solid fa-copy copytoclipboard" title='Copy user to clipboard' data-target='user-${itm.id}' /></td>`
         row += `<td id='password-${itm.id}'>****</td>`
-        row += `<td><i id='passwordcopy-${itm.id}' class="fa-solid fa-copy" title='Copy password to clipboard' data-id='${itm.id}' /></td>`
-        row += `<td><i id='passwordshow-${itm.id}' class="fa-solid fa-eye-slash" title='Show/hide password' data-id='${itm.id}' /></td>`
+        row += `<td><i id='passwordcopy-${itm.id}' class="v-action fa-solid fa-copy" title='Copy password to clipboard' data-id='${itm.id}' /></td>`
+        row += `<td><i id='passwordshow-${itm.id}' class="v-action fa-solid fa-eye-slash" title='Show/hide password' data-id='${itm.id}' /></td>`
         row += `<tr>`
       }
       $("#itemstable tbody").append(row)

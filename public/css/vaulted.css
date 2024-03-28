@@ -79,6 +79,10 @@ div[role=treeitem] {
     background-color:#eeeeeeaa;
 }
 
+.v-action {
+  cursor: pointer;
+}
+
 .spinner-border {
     height: 6rem;
     width: 6rem;

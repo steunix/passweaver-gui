@@ -13,7 +13,7 @@ function fillUsers() {
       var row = ''
       for ( const usr of resp.data ) {
         row += `<tr>`
-        row += `<td><i id='remove-${usr.id}' title='Remove' data-id='${usr.id}' class='fa-solid fa-trash text-danger'"></i></td>`
+        row += `<td><i id='remove-${usr.id}' title='Remove' data-id='${usr.id}' class='v-action fa-solid fa-trash text-danger'"></i></td>`
         row += `<td>${usr.login}</td>`
         row += `<td>${usr.lastname}</td>`
         row += `<td>${usr.firstname}</td>`
