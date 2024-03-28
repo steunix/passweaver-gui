@@ -46,7 +46,10 @@ function fillItems() {
         }
         row += `<td>${itm.title}</td>`
         row += `<td id='user-${itm.id}'>${itm.metadata}</td>`
-        row += `<td><i class="fa-solid fa-copy copytoclipboard" title='Copy to clipboard' data-target='user-${itm.id}' /></td>`
+        row += `<td><i class="fa-solid fa-copy copytoclipboard" title='Copy user to clipboard' data-target='user-${itm.id}' /></td>`
+        row += `<td id='password-${itm.id}'>****</td>`
+        row += `<td><i id='passwordcopy-${itm.id}' class="fa-solid fa-copy" title='Copy password to clipboard' data-id='${itm.id}' /></td>`
+        row += `<td><i id='passwordshow-${itm.id}' class="fa-solid fa-eye-slash" title='Show/hide password' data-id='${itm.id}' /></td>`
         row += `<tr>`
       }
       $("#itemstable tbody").append(row)
@@ -67,6 +70,12 @@ function fillItems() {
     })
     $("#itemstable .copytoclipboard").on("click",(ev)=>{
       copyToClipboard(ev)
+    })
+    $("#itemstable tbody i[id^=passwordcopy").on("click",(ev)=>{
+      passwordCopy(ev)
+    })
+    $("#itemstable tbody i[id^=passwordshow").on("click",(ev)=>{
+      passwordShow(ev)
     })
 
     // Folder cannot be removed if not empty
@@ -500,6 +509,29 @@ function personalPasswordSet() {
     }
 
     location.reload()
+  })
+}
+
+function passwordCopy(ev) {
+  var item = $(ev.currentTarget).data("id")
+  $.get("/pages/items/"+item, (resp)=> {
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
+    copyToClipboard(resp.data.data.password)
+  })
+}
+
+function passwordShow(ev) {
+  var item = $(ev.currentTarget).data("id")
+  $("[id^=password-]").html("****")
+  $.get("/pages/items/"+item, (resp)=> {
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
+    $(`#password-${item}`).html(resp.data.data.password)
   })
 }
 

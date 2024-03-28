@@ -82,12 +82,19 @@ function showToast(text) {
 }
 
 function copyToClipboard(ev) {
-  const id = $(ev.currentTarget).data("target")
-  if ( $("#"+id)[0].nodeName=="INPUT" ) {
-    navigator.clipboard.writeText($("#"+id).val())
+  var str
+  if ( typeof(ev)==="string" ) {
+    str = ev
   } else {
-    navigator.clipboard.writeText($("#"+id).html())
+    const id = $(ev.currentTarget).data("target")
+    if ( $("#"+id)[0].nodeName=="INPUT" ) {
+      str = $("#"+id).val()
+    } else {
+      str = $("#"+id).html()
+    }
   }
+
+  navigator.clipboard.writeText(str)
   showToast("Copied to clipboard")
 }
 
