@@ -44,7 +44,7 @@ function fillItems() {
         } else {
           row += "<td></td><td></td><td></td><td></td>"
         }
-        row += `<td class='border-start'>${itm.title}</td>`
+        row += `<td class='border-start border-end'>${itm.title}</td>`
         row += `<td id='user-${itm.id}'>${itm.metadata}</td>`
         row += `<td><i class="v-action fa-solid fa-copy copytoclipboard" title='Copy user to clipboard' data-target='user-${itm.id}' /></td>`
         row += `<td id='password-${itm.id}'>****</td>`
@@ -525,6 +525,12 @@ function passwordCopy(ev) {
 
 function passwordShow(ev) {
   var item = $(ev.currentTarget).data("id")
+
+  if ( $(`#password-${item}`).html()!=="****") {
+    $(`#password-${item}`).html("****")
+    return
+  }
+
   $("[id^=password-]").html("****")
   $.get("/pages/items/"+item, (resp)=> {
     if ( !checkResponse(resp) ) {
