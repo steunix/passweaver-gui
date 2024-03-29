@@ -23,8 +23,8 @@ function fillGroups() {
             row += "<td></td><td></td>"
           }
         }
-        row += "<td>"+(itm.write ? "Read + write" : "Read only")+"</td>"
-        row += "<td>"+itm.description+"</td></tr>"
+        row += "<td class='border-start'>"+(itm.write ? "Read + write" : "Read only")+"</td>"
+        row += `<td>${itm.description}</td></tr>`
 
         // Check if groups can be added
         if ( !itm.canmodify ) {

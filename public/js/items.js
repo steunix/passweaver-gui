@@ -44,13 +44,13 @@ function fillItems() {
         } else {
           row += "<td></td><td></td><td></td><td></td>"
         }
-        row += `<td>${itm.title}</td>`
+        row += `<td class='border-start'>${itm.title}</td>`
         row += `<td id='user-${itm.id}'>${itm.metadata}</td>`
         row += `<td><i class="v-action fa-solid fa-copy copytoclipboard" title='Copy user to clipboard' data-target='user-${itm.id}' /></td>`
         row += `<td id='password-${itm.id}'>****</td>`
         row += `<td><i id='passwordcopy-${itm.id}' class="v-action fa-solid fa-copy" title='Copy password to clipboard' data-id='${itm.id}' /></td>`
         row += `<td><i id='passwordshow-${itm.id}' class="v-action fa-solid fa-eye-slash" title='Show/hide password' data-id='${itm.id}' /></td>`
-        row += `<tr>`
+        row += `</tr>`
       }
       $("#itemstable tbody").append(row)
     }

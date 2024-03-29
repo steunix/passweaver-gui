@@ -17,7 +17,7 @@ function fillItems() {
         row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
         row += `<td><i id='view-${itm.id}' class='fa-solid fa-circle-info text-primary' data-bs-toggle="modal" data-bs-target="#viewitemdialog" data-id='${itm.id}'></i></td>`
         row += "<td></td><td></td>"
-        row += `<td>${itm.folderInfo.description}</td>`
+        row += `<td class='border-start'>${itm.folderInfo.description}</td>`
         row += `<td>${itm.title}</td></tr>`
       }
       $("#itemstable tbody").append(row)
