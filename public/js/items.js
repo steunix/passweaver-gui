@@ -44,7 +44,7 @@ function fillItems() {
         } else {
           row += "<td></td><td></td><td></td><td></td>"
         }
-        row += `<td class='border-start border-end'>${itm.title}</td>`
+        row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end'>${itm.title}</td>`
         row += `<td id='user-${itm.id}'>${itm.metadata}</td>`
         row += `<td><i class="v-action fa-solid fa-copy copytoclipboard" title='Copy user to clipboard' data-target='user-${itm.id}' /></td>`
         row += `<td id='password-${itm.id}'>****</td>`
@@ -56,7 +56,7 @@ function fillItems() {
     }
 
     // Install event handlers
-    $("#itemstable tbody tr[id^=row]").on("dblclick", (ev)=>{
+    $("#itemstable tbody td[id^=title]").on("dblclick", (ev)=>{
       itemShow($(ev.currentTarget).data("id"))
     })
     $("#itemstable tbody i[id^=remove]").on("click", (ev)=>{
