@@ -2,12 +2,15 @@
 
 Vaulted-gui is standalone WEB interface to Vaulted-API, bringing collaborative enterprise-scale password management to your browser. It's developed using mainly NodeJS, Express and EJS, and uses Boostrap for UI styling.
 
+Vaulted-gui is an opensource project, released under MIT license.
+
 # Features
 
-- HTTPS and optionally HTTP (with limitations, see below) server
-- Supports HTTP/2
-- LDAP authentication
-- CSP compliant
+- Quick user interface
+- Share items through permalinks
+- Pages are served with HTTPS, HTTP/2 and optionally HTTP (with limitations, see below)
+- CSP compliant pages
+- Both LDAP and local authentication
 
 # Forewords
 
@@ -17,14 +20,14 @@ While vaulted-api is a generic and independent piece of software, vaulted-gui is
 
 # Basics
 
-With vaulted-gui you can manage these entities:
+With vaulted-gui you will manage these entities:
 
 - Users
 - Groups
 - Folders
 - Items, holding your secret data
 
-Items are stored in folders, and folders can contain both items and other folders. Users join groups (one or more), and groups can read or write on a given folder.
+Items are stored in folders, and folders can contain both items and other folders. Users join groups (one or more), and groups can read or write on a given folder, its items and subfolders.
 
 ## Users
 
