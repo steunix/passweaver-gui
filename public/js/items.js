@@ -206,6 +206,8 @@ function itemEditFill(item) {
       $("#edituser").val(resp.data.data.user)
       $("#editpassword").val(resp.data.data.password)
     }
+
+    itemEditEnable()
   })
 }
 
@@ -609,9 +611,14 @@ $(()=>{
   $("#personalpasswordsetbutton").on("click",(ev)=>{
     personalPasswordSet()
   })
+
   // Autofocus
   $("#personalpasswordset,#personalpasswordnew").on("shown.bs.modal", (ev)=> {
     $(ev.currentTarget).find("[autofocus]").focus()
+  })
+
+  $("#newitemdialog").on("shown.bs.modal", (ev)=>{
+    itemCreateEnable()
   })
 
   $("#itemsearch").on("keyup", (ev) => {
