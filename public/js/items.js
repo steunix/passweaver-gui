@@ -53,6 +53,8 @@ function fillItems() {
         row += `</tr>`
       }
       $("#itemstable tbody").append(row)
+    } else {
+      $("#itemstable tbody").append("<tr><td colspan='99'>No item found</td></tr>")
     }
 
     // Install event handlers
