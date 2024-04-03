@@ -484,6 +484,14 @@ function togglePersonalPasswordConfirm() {
   }
 }
 
+function togglePersonalPasswordSet() {
+  if ( $("#togglepersonalpassword").attr("type")=="password") {
+    $("#togglepersonalpassword").attr("type","text")
+  } else {
+    $("#togglepersonalpassword").attr("type","password")
+  }
+}
+
 function personalPasswordCreate() {
   let data = {
     _csrf: $("#_csrf").val(),
@@ -592,6 +600,9 @@ $(()=>{
   })
   $("#toggleeditpassword").on("click",(ev)=>{
     toggleEditPassword()
+  })
+  $("#togglepersonalpassword").on("click",(ev)=>{
+    togglePersonalPasswordSet()
   })
   $("#edittitle").on("keyup",(ev)=>{
     itemEditEnable()
