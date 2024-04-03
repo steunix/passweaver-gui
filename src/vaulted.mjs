@@ -564,7 +564,7 @@ export async function personalPasswordCreate(session, password) {
     })
 
     if ( resp.httpStatusCode=="200" ) {
-      req.session.jwt = resp.data.jwt
+      session.jwt = resp.data.jwt
     }
   }
 
