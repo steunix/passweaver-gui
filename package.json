@@ -1,4 +1,11 @@
 {
+  "name": "vaulted-gui",
+  "version": "0.0.1",
+  "description": "Collaborative password manager GUI",
+  "main": "vaulted-gui.mjs",
+  "scripts": {},
+  "author": "Stefano Rivoir",
+  "license": "MIT",
   "dependencies": {
     "express": "^4.19.2",
     "express-rate-limit": "^7.1.5",

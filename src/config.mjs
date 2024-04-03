@@ -62,6 +62,8 @@ console.log("Creating session and CSFR keys")
 json.session_key = crypto.randomBytes(32).toString('hex')
 json.csfr_key = crypto.randomBytes(32).toString('hex')
 
+json.startuptime = (new Date()).toISOString()
+
 /**
  * Returns the configuration stored in config.json
  * @returns {Object} The configuration

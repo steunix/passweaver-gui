@@ -422,11 +422,14 @@ app.get("/pages/stats", async(req,res)=> {
 
   const resp = await Vaulted.stats(req.session)
 
+  page.guiVersion = Config.packageJson().version
+  page.guiStartup = Config.get().startuptime
   page.apiVersion = resp.data.version
+  page.apiStartup = resp.data.startup
   page.users = resp.data.users
   page.folders = resp.data.folders
   page.items = resp.data.items
-  page.cacheSize = prettyBytes(resp.data.cacheSize)
+  page.cacheSize = prettyBytes(resp.data.cacheSize ?? 0)
 
   res.render('stats', page)
 })
