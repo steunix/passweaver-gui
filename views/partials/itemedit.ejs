@@ -5,41 +5,35 @@
         <h5 class="mb-0">Edit item</h5>
       </div>
       <div class="modal-body">
-        <fieldset class="border border-light shadow-sm rounded p-2 mb-3">
-          <legend class="h5 mb-2">Unencrypted data</legend>
-          <div class="form-floating mb-1">
-            <input type="text" class="form-control border-danger" autofocus id="edittitle" name="edittitle" required="required" placeholder="fake">
-            <label for="edittitle" class="form-label">Title (required)</label>
-          </div>
-        </fieldset>
-        <fieldset class="border border-light shadow-sm rounded p-2 mb-2">
-          <legend class="h5 mb-2">Encrypted data</legend>
-          <div class="form-floating mb-1">
-            <textarea type="text" class="form-control" id="editdescription" name="editdescription" style="height:10em;" placeholder="fake" ></textarea>
-            <label for="editdescription" class="form-label">Description</label>
-          </div>
-          <div class="form-floating mb-1">
-            <input type="text" class="form-control" id="editemail" name="editemail" placeholder="fake">
-            <label for="editemail" class="form-label">Email</label>
-          </div>
-          <div class="form-floating mb-1">
-            <input type="text" class="form-control" id="editurl" name="editurl" placeholder="fake">
-            <label for="editurl" class="form-label">URL</label>
-          </div>
-          <div class="form-floating mb-1">
-            <input type="text" class="form-control" id="edituser" name="edituser" placeholder="fake">
-            <label for="edituser" class="form-label">User</label>
-          </div>
-          <div class="mb-1">
-            <div class="input-group">
-              <div class="form-floating input-group">
-                <input type="password" class="form-control" id="editpassword" name="editpassword" placeholder="fake">
-                <label for="editpassword" class="form-label">Password</label>
-              </div>
-              <button id="toggleeditpassword" type="button" class="btn btn-warning"><span class="fa-solid fa-eye-slash"></button>
+        <div class="form-floating mb-1">
+          <input type="text" class="form-control border-danger" autofocus id="edittitle" name="edittitle" required="required" placeholder="fake">
+          <label for="edittitle" class="form-label">Title (required)</label>
+        </div>
+        <div class="form-floating mb-1">
+          <textarea type="text" class="form-control" id="editdescription" name="editdescription" style="height:10em;" placeholder="fake" ></textarea>
+          <label for="editdescription" class="form-label">Description</label>
+        </div>
+        <div class="form-floating mb-1">
+          <input type="text" class="form-control" id="editemail" name="editemail" placeholder="fake">
+          <label for="editemail" class="form-label">Email</label>
+        </div>
+        <div class="form-floating mb-1">
+          <input type="text" class="form-control" id="editurl" name="editurl" placeholder="fake">
+          <label for="editurl" class="form-label">URL</label>
+        </div>
+        <div class="form-floating mb-1">
+          <input type="text" class="form-control" id="edituser" name="edituser" placeholder="fake">
+          <label for="edituser" class="form-label">User</label>
+        </div>
+        <div class="mb-1">
+          <div class="input-group">
+            <div class="form-floating input-group">
+              <input type="password" class="form-control" id="editpassword" name="editpassword" placeholder="fake">
+              <label for="editpassword" class="form-label">Password</label>
             </div>
+            <button id="toggleeditpassword" type="button" class="btn btn-warning"><span class="fa-solid fa-eye-slash"></button>
           </div>
-        </fieldset>
+        </div>
         <input type="hidden" id="itemeditid">
       </div>
       <div class="modal-footer">
