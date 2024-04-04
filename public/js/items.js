@@ -246,6 +246,7 @@ function itemEdit() {
 function toggleEditPassword() {
   if ( $("#editpassword").attr("type")=="password") {
     $("#editpassword").attr("type","text")
+    passwordAccessed($("#itemeditid").val())
   } else {
     $("#editpassword").attr("type","password")
   }
@@ -324,6 +325,7 @@ function folderEdit() {
 function toggleViewPassword() {
   if ( $("#viewpassword").attr("type")=="password") {
     $("#viewpassword").attr("type","text")
+    passwordAccessed($("#itemviewid").val())
   } else {
     $("#viewpassword").attr("type","password")
   }
@@ -335,6 +337,7 @@ function itemViewFill(item) {
       return
     }
 
+    $("#itemviewid").val(item)
     $("#viewtitle").val(resp.data.title)
     $("#viewemail").val(resp.data.data.email)
     $("#viewdescription").val(resp.data.data.description)
@@ -532,6 +535,8 @@ function passwordCopy(ev) {
     }
 
     copyToClipboard(resp.data.data.password)
+
+    passwordAccessed(item)
   })
 }
 
@@ -544,12 +549,23 @@ function passwordShow(ev) {
   }
 
   $("[id^=password-]").html("****")
-  $.get("/pages/items/"+item, (resp)=> {
+  $.get(`/pages/items/${item}`, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
 
     $(`#password-${item}`).html(resp.data.data.password)
+
+    passwordAccessed(item)
+  })
+}
+
+function passwordAccessed(item) {
+  $.post("/pages/events", {
+    _csrf: $("#_csrf").val(),
+    event: 'pwdread',
+    itemtype: 'item',
+    itemid: item
   })
 }
 
@@ -658,6 +674,10 @@ $(()=>{
 
   $("#foldersearchprevious").on("click", (ev)=>{
     searchFolderPrevious()
+  })
+
+  $("#copyviewpassword").on("click", (ev)=>{
+    passwordAccessed($("#itemviewid").val())
   })
 
 })

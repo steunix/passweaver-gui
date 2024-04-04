@@ -66,7 +66,9 @@ async function vaultedAPI(session, method, path, data) {
 
     // Error 401 may be expired token or bad personal password
     if ( err.response && err.response.statusCode=="401" ) {
-      if ( err.response.statusMessage=="Unauthorized" ) {
+      var msg = JSON.parse(err.response.body).message
+
+      if ( msg=="Unauthorized" ) {
         return {
           httpStatusCode: err.response.statusCode,
           fatal: false,
@@ -77,7 +79,7 @@ async function vaultedAPI(session, method, path, data) {
       }
 
       // Invalid token (we already have a session, but jwt token is not valid)
-      if ( session && session.jwt && err.response && err.response.statusCode=="401" ) {
+      if ( session && session.jwt && msg=="Invalid token" ) {
         return {
           httpStatusCode: err.response.statusCode,
           fatal: true,
@@ -586,6 +588,26 @@ export async function personalLogin(req, session, password) {
     req.session.jwt = resp.data.jwt
   }
 
+  return resp
+}
+
+/**
+ * Add an event
+ * @param {Object} req Request
+ * @param {Object} session Session
+ * @param {string} event Event code
+ * @param {string} itemtype Event type
+ * @param {string} itemid Item ID
+ * @returns
+ */
+export async function addEvent(req, session, event, itemtype, itemid) {
+  const data = {
+    event: event,
+    itemtype: itemtype,
+    itemid: itemid
+  }
+
+  const resp = await vaultedAPI(session, "post", "/events", data)
   return resp
 }
 

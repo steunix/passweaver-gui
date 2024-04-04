@@ -434,6 +434,12 @@ app.get("/pages/stats", async(req,res)=> {
   res.render('stats', page)
 })
 
+// Events
+app.post("/pages/events", async(req,res)=> {
+  const resp = await Vaulted.addEvent(req, req.session, req.body.event, req.body.itemtype, req.body.itemid)
+  res.status(200).json(resp)
+})
+
 // Error handler
 app.use((err, req, res, next)=> {
   res.status(200).redirect("/logout?error="+encodeURIComponent(err))
