@@ -63,16 +63,31 @@ async function vaultedAPI(session, method, path, data) {
         data: {}
       }
     }
-    // Invalid token (we already have a session, but jwt token is not valid)
-    if ( session && session.jwt && err.response && err.response.statusCode=="401" ) {
-      return {
-        httpStatusCode: err.response.statusCode,
-        fatal: true,
-        status: "failed",
-        message: "Invalid token, you need to login",
-        data: {}
+
+    // Error 401 may be expired token or bad personal password
+    if ( err.response && err.response.statusCode=="401" ) {
+      if ( err.response.statusMessage=="Unauthorized" ) {
+        return {
+          httpStatusCode: err.response.statusCode,
+          fatal: false,
+          status: "failed",
+          message: "Invalid password",
+          data: {}
+        }
+      }
+
+      // Invalid token (we already have a session, but jwt token is not valid)
+      if ( session && session.jwt && err.response && err.response.statusCode=="401" ) {
+        return {
+          httpStatusCode: err.response.statusCode,
+          fatal: true,
+          status: "failed",
+          message: "Invalid token, you need to login",
+          data: {}
+        }
       }
     }
+
     // Other response (404, 422, et al) or generic error
     return {
       httpStatusCode: err?.response?.statusCode,
@@ -549,7 +564,7 @@ export async function personalPasswordCreate(session, password) {
     })
 
     if ( resp.httpStatusCode=="200" ) {
-      req.session.jwt = resp.data.jwt
+      session.jwt = resp.data.jwt
     }
   }
 
