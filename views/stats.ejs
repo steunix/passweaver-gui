@@ -11,15 +11,31 @@
     <div class="row">
     <div class="col-md-auto">
       <h5>Stats</h5>
-      <ul>
-        <li>Vaulted GUI version: <%= guiVersion %></li>
-        <li>Vaulted GUI started: <%= guiStartup %> (UTC)</li>
-        <li>Vaulted API version: <%= apiVersion %></li>
-        <li>Vaulted API started: <%= apiStartup %> (UTC)</li>
-        <li>Users: <%= users %></li>
-        <li>Folders: <%= folders %></li>
-        <li>Items: <%= items %></li>
-        <li>Cache size: <%= cacheSize %></li>
+      <table class="table">
+        <tr>
+          <th>Vaulted GUI version</th><td><%= guiVersion %></td>
+        </tr>
+        <tr>
+          <th>Vaulted GUI started</th><td><%= guiStartup %> (UTC)</td>
+        </tr>
+        <tr>
+          <th>Vaulted API version</th><td><%= apiVersion %></td>
+        </tr>
+        <tr>
+          <th>Vaulted API started</th><td><%= apiStartup %> (UTC)</td>
+        </tr>
+        <tr>
+          <th>Users</th><td><%= users %></td>
+        </tr>
+        <tr>
+          <th>Folders</th><td><%= folders %></td>
+        </tr>
+        <tr>
+          <th>Items</th><td><%= items %></td>
+        </tr>
+        <tr>
+          <th>Cache size</th><td><%= cacheSize %></td>
+        </tr>
       </ul>
     </div>
     </div>
