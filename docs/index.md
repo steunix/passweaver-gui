@@ -34,7 +34,7 @@ Items are stored in folders, and folders can contain both items and other folder
 
 This is the items page:
 
-![Items page](/vaulted-gui/docs/assets/vaultedgui-item.jpeg)
+![Items page](assets/vaultedgui-items.jpeg)
 
 ## Users
 
