@@ -6,11 +6,12 @@ Vaulted-gui is an opensource project, released under MIT license.
 
 # Features
 
-- Quick user interface
+- Personal folders
 - Share items through permalinks
 - Pages are served with HTTPS, HTTP/2 and optionally HTTP (with limitations, see below)
 - CSP compliant pages
 - Both LDAP and local authentication
+- Quick user interface
 
 # Forewords
 
@@ -28,6 +29,12 @@ With vaulted-gui you will manage these entities:
 - Items, holding your secret data
 
 Items are stored in folders, and folders can contain both items and other folders. Users join groups (one or more), and groups can read or write on a given folder, its items and subfolders.
+
+## Items menu
+
+This is the items page:
+
+![Items page](/vaulted-gui/docs/assets/vaultedgui-item.jpeg)
 
 ## Users
 
