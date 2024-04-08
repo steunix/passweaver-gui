@@ -1,6 +1,6 @@
 {
   "name": "vaulted-gui",
-  "version": "0.0.1",
+  "version": "0.9.0",
   "description": "Collaborative password manager GUI",
   "main": "vaulted-gui.mjs",
   "scripts": {},
