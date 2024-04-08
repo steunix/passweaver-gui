@@ -57,7 +57,7 @@ function folderClicked(ev) {
     currentFolder = this.id
   }
 
-  localStorage.setItem("bstreeview_open_folderstree",currentFolder)
+  localStorage.setItem(`bstreeview_open_folderstree_${ getUser() }`,currentFolder)
 
   // Load groups
   fillGroups()
@@ -157,7 +157,7 @@ $(()=>{
     $('[role=treeitem]').on("click", folderClicked)
 
     // Open last used folder
-    const last = localStorage.getItem("bstreeview_open_folderstree")
+    const last = localStorage.getItem(`bstreeview_open_folderstree_${ getUser() }`)
     if ( last ) {
       folderClicked(last)
     }

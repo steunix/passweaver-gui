@@ -51,7 +51,7 @@ function groupClicked(ev) {
     currentGroup = this.id
   }
 
-  localStorage.setItem("bstreeview_open_groupstree",currentGroup)
+  localStorage.setItem(`bstreeview_open_groupstree_${ getUser() }`,currentGroup)
 
   // Read group members
   fillUsers()
@@ -187,7 +187,7 @@ $(()=>{
     $('[role=treeitem]').on("click", groupClicked)
 
     // Open last used group
-    const last = localStorage.getItem("bstreeview_open_groupstree")
+    const last = localStorage.getItem(`bstreeview_open_groupstree_${ getUser() }`)
     if ( last ) {
       groupClicked(last)
     }

@@ -78,15 +78,24 @@ app.use("/public", Express.static('public'))
 // Rate limiter
 app.use("/access", rateLimitMiddleware)
 
+// Common parameters to pass to pages
+function commonParams(req) {
+  return {
+    csfrtoken: req.csrfToken(),
+    company_name: cfg.company_name,
+    user: req.session.user,
+    userdescription: req.session.userdescription,
+    admin: req.session.admin,
+    viewitem: req.query?.viewitem ?? ''
+  }
+}
+
 // Login page
 app.get(["/login","/"], (req,res)=>{
   req.locals = {
-    error: req.query.error,
-    company_name: cfg.company_name,
-    csfrtoken: req.csrfToken(),
-    viewitem: req.query?.viewitem ?? ''
+    error: req.query.error
   }
-  res.render('login', req.locals)
+  res.render('login', { ...req.locals, ...commonParams(req) } )
 })
 
 // Logout page
@@ -136,14 +145,10 @@ app.post("/access", async (req,res)=>{
 // Items
 app.get("/pages/items", async (req,res)=>{
   req.locals = {
-    csfrtoken: req.csrfToken(),
     pagetitle: "Items",
-    pageid: "items",
-    userdescription: req.session.userdescription,
-    admin: req.session.admin,
-    viewitem: req.query?.viewitem ?? ''
+    pageid: "items"
   }
-  res.render('items', req.locals)
+  res.render('items', { ...req.locals, ...commonParams(req)} )
 })
 
 // Items list
@@ -221,13 +226,10 @@ app.post("/pages/folderupdate/:folder", async (req,res)=> {
 // Groups
 app.get("/pages/groups", async (req,res)=>{
   var page = {
-    csfrtoken: req.csrfToken(),
     pagetitle: "Groups",
-    pageid: "groups",
-    userdescription: req.session.userdescription,
-    admin: req.session.admin
+    pageid: "groups"
   }
-  res.render('groups', page)
+  res.render('groups', { ...page, ...commonParams(req) })
 })
 
 // Get groups tree
@@ -281,13 +283,10 @@ app.post("/pages/groupremoveuser/:group/:user", async (req,res)=> {
 // Users page
 app.get("/pages/users", async(req,res)=> {
   var page = {
-    csfrtoken: req.csrfToken(),
     pagetitle: "Users",
-    pageid: "users",
-    userdescription: req.session.userdescription,
-    admin: req.session.admin
+    pageid: "users"
   }
-  res.render('users', page)
+  res.render('users', { ...page, ...commonParams(req) })
 })
 
 // Get users list
@@ -329,13 +328,10 @@ app.get("/pages/generatepassword", async(req,res)=> {
 // Folders
 app.get("/pages/folders", async (req,res)=>{
   req.locals = {
-    csfrtoken: req.csrfToken(),
     pagetitle: "Folders permissions",
-    pageid: "folders",
-    userdescription: req.session.userdescription,
-    admin: req.session.admin
+    pageid: "folders"
   }
-  res.render('folders', req.locals)
+  res.render('folders', { ...req.locals, ...commonParams(req) })
 })
 
 // Get folder's groups
@@ -371,25 +367,19 @@ app.post("/pages/folders/:folder/groups/:group/toggle", async(req,res)=> {
 // Search items
 app.get("/pages/search", async (req,res)=>{
   req.locals = {
-    csfrtoken: req.csrfToken(),
     pagetitle: "Search items",
-    pageid: "search",
-    userdescription: req.session.userdescription,
-    admin: req.session.admin
+    pageid: "search"
   }
-  res.render('search', req.locals)
+  res.render('search', { ...req.locals, ...commonParams(req) })
 })
 
 // Generate password
 app.get("/pages/generate", async (req,res)=>{
   req.locals = {
-    csfrtoken: req.csrfToken(),
     pagetitle: "Password generator",
-    pageid: "generate",
-    userdescription: req.session.userdescription,
-    admin: req.session.admin
+    pageid: "generate"
   }
-  res.render('generate', req.locals)
+  res.render('generate', { ...req.locals, ...commonParams(req) })
 })
 
 // Generate password
@@ -413,11 +403,8 @@ app.post("/pages/personallogin", async (req,res)=>{
 // Stats
 app.get("/pages/stats", async(req,res)=> {
   var page = {
-    csfrtoken: req.csrfToken(),
     pagetitle: "Stats",
-    pageid: "stats",
-    userdescription: req.session.userdescription,
-    admin: req.session.admin
+    pageid: "stats"
   }
 
   const resp = await Vaulted.stats(req.session)
@@ -431,7 +418,7 @@ app.get("/pages/stats", async(req,res)=> {
   page.items = resp.data.items
   page.cacheSize = prettyBytes(resp.data.cacheSize ?? 0)
 
-  res.render('stats', page)
+  res.render('stats', { ...page, ...commonParams(req) })
 })
 
 // Events

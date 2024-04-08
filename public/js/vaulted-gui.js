@@ -98,6 +98,10 @@ function copyToClipboard(ev) {
   showToast("Copied to clipboard")
 }
 
+function getUser() {
+  return $("#v-user").val()
+}
+
 $(()=>{
   if ( $("#pageid").length ) {
     const pageid = $("#pageid").data("pageid")

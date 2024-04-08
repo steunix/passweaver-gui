@@ -57,6 +57,8 @@
          * bstreeview intialize.
          */
         init: function () {
+            var user = getUser()
+
             this.tree = [];
             this.children = [];
             // Retrieve bstreeview Json Data.
@@ -79,7 +81,7 @@
                     .toggleClass(_this.settings.expandIcon)
                     .toggleClass(_this.settings.collapseIcon);
 
-                localStorage.setItem("bstreeview_expanded_"+mainid+"_"+$(this).parent().attr("id"), $(this).hasClass(_this.settings.expandIconClass))
+                localStorage.setItem(`bstreeview_expanded_${mainid}_${user}_${ $(this).parent().attr("id")}`, $(this).hasClass(_this.settings.expandIconClass))
             });
         },
         /**
@@ -116,11 +118,14 @@
                 leftPadding = (_this.settings.indent + depth * _this.settings.indent).toString() + "rem;";
             }
             depth += 1;
+
+            var user = getUser()
+
             // Add each node and sub-nodes.
             $.each(children, function addNodes(id, node) {
 
                 // Search in localStorage for saved expanded status
-                var ls = localStorage.getItem("bstreeview_expanded_"+mainid+"_"+node.id)
+                var ls = localStorage.getItem(`bstreeview_expanded_${mainid}_${user}_${ node.id }`)
                 if ( ls=="true") {
                     node.expanded = true;
                 }
