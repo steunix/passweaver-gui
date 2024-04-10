@@ -35,15 +35,15 @@ function fillItems() {
       row = ""
       for ( const itm of resp.data ) {
         row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
-        row += `<td><i id='view-${itm.id}' title='View' class='v-action fa-solid fa-circle-info text-primary' data-bs-toggle="modal" data-bs-target="#viewitemdialog" data-id='${itm.id}'></i></td>`
+        row += `<td>`
+        row += `<i id='view-${itm.id}' title='View' class='v-action fa-solid fa-circle-info text-primary' data-bs-toggle="modal" data-bs-target="#viewitemdialog" data-id='${itm.id}'></i>`
         if ( currentPermissions.write ) {
-          row += `<td><i id='edit-${itm.id}' title='Edit' class='v-action fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i></td>`
-          row += `<td><i id='remove-${itm.id}' title='Remove' class='v-action fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
-          row += `<td><i id='clone-${itm.id}' title='Clone' class='v-action fa-solid fa-file-circle-plus' data-id='${itm.id}' /></td>`
-          row += `<td><i id='link-${itm.id}' title='Copy link' class='v-action fa-solid fa-link' data-id='${itm.id}' /></td>`
-        } else {
-          row += "<td></td><td></td><td></td><td></td>"
+          row += `<i id='edit-${itm.id}' title='Edit' class='v-action fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i>`
+          row += `<i id='remove-${itm.id}' title='Remove' class='v-action fa-solid fa-trash text-danger' data-id='${itm.id}'></i>`
+          row += `<i id='clone-${itm.id}' title='Clone' class='v-action fa-solid fa-file-circle-plus' data-id='${itm.id}'></i>`
+          row += `<i id='link-${itm.id}' title='Copy link' class='v-action fa-solid fa-link' data-id='${itm.id}'></i>`
         }
+        row += `</td>`
         row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end'>${itm.title}</td>`
         row += `<td id='user-${itm.id}'>${itm.metadata}</td>`
         row += `<td><i class="v-action fa-solid fa-copy copytoclipboard" title='Copy user to clipboard' data-target='user-${itm.id}' /></td>`
