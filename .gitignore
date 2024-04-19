@@ -2,6 +2,6 @@
 .env
 .vscode
 node_modules
-vaulted-gui.code-workspace
+passweaver-gui.code-workspace
 sessions
 config.json

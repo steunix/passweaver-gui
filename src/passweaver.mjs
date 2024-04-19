@@ -1,6 +1,6 @@
 /**
- * Vaulted API module
- * @module src/vaulted
+ * PassWeaver API module
+ * @module src/passweaver
  * @author Stefano Rivoir <rs4000@gmail.com>
  */
 
@@ -10,14 +10,14 @@ import * as Config from './config.mjs'
 const cfg = Config.get()
 
 /**
- * Call Vaulted API
+ * Call PassWeaver API
  * @param {Object} session Current session
  * @param {string} method HTTP method
  * @param {string} path API path
  * @param {Object} data data for POST operations
  * @returns
  */
-async function vaultedAPI(session, method, path, data) {
+async function passWeaverAPI(session, method, path, data) {
   try {
     let options = {
       retry: {
@@ -35,7 +35,7 @@ async function vaultedAPI(session, method, path, data) {
     if ( session && session.jwt ) {
       options.headers['Authorization'] = `Bearer ${session.jwt}`
     }
-    var resp = await Got(cfg.vaulted_url+path, options)
+    var resp = await Got(cfg.passweaverapi_url+path, options)
 
     var ret = JSON.parse(resp.body)
     ret.fatal = false
@@ -43,13 +43,13 @@ async function vaultedAPI(session, method, path, data) {
 
     return ret
   } catch (err) {
-    // Vaulted API not running
+    // PassWeaver API not running
     if ( err.code==="ECONNREFUSED" || err.code==="ETIMEDOUT" ) {
       return {
         httpStatusCode: undefined,
         fatal: true,
         status: "failed",
-        message: "Error connecting to Vaulted API, contact your administrator.",
+        message: "Error connecting to PassWeaver API, contact your administrator.",
         data: {}
       }
     }
@@ -59,7 +59,7 @@ async function vaultedAPI(session, method, path, data) {
         httpStatusCode: err.response.statusCode,
         fatal: false,
         status: "failed",
-        message: "Bad request to Vaulted API.",
+        message: "Bad request to PassWeaver API.",
         data: {}
       }
     }
@@ -108,7 +108,7 @@ async function vaultedAPI(session, method, path, data) {
  * @returns
  */
 export async function login(username, password) {
-  const resp = await vaultedAPI(null, "post", "/login", {
+  const resp = await passWeaverAPI(null, "post", "/login", {
     username: username,
     password: password
   })
@@ -122,7 +122,7 @@ export async function login(username, password) {
  * @returns
  */
 export async function getUser(session, id) {
-  const resp = await vaultedAPI(session, "get", "/users/"+id)
+  const resp = await passWeaverAPI(session, "get", "/users/"+id)
 
   return resp
 }
@@ -133,7 +133,7 @@ export async function getUser(session, id) {
  * @returns
  */
 export async function foldersTree(session) {
-  const resp = await vaultedAPI(session, "get", "/folders/util/tree")
+  const resp = await passWeaverAPI(session, "get", "/folders/util/tree")
   return resp
 }
 
@@ -145,7 +145,7 @@ export async function foldersTree(session) {
  * @returns
  */
 export async function itemsList(session, folder, search) {
-  const resp = await vaultedAPI(session, "get", "/folders/"+folder+"/items?search="+encodeURIComponent(search))
+  const resp = await passWeaverAPI(session, "get", "/folders/"+folder+"/items?search="+encodeURIComponent(search))
   return resp
 }
 
@@ -156,7 +156,7 @@ export async function itemsList(session, folder, search) {
  * @returns
  */
 export async function itemsSearch(session, search) {
-  const resp = await vaultedAPI(session, "get", "/items?search="+encodeURIComponent(search))
+  const resp = await passWeaverAPI(session, "get", "/items?search="+encodeURIComponent(search))
   return resp
 }
 
@@ -167,7 +167,7 @@ export async function itemsSearch(session, search) {
  * @returns
  */
 export async function getFolder(session, folder) {
-  const resp = await vaultedAPI(session, "get", "/folders/"+folder)
+  const resp = await passWeaverAPI(session, "get", "/folders/"+folder)
   return resp
 }
 
@@ -191,7 +191,7 @@ export async function itemCreate(session, folder, body) {
     })
   }
 
-  const resp = await vaultedAPI(session, "post", "/folders/"+folder+"/items", item)
+  const resp = await passWeaverAPI(session, "post", "/folders/"+folder+"/items", item)
   return resp
 }
 
@@ -202,7 +202,7 @@ export async function itemCreate(session, folder, body) {
  * @returns
  */
 export async function itemClone(session, item) {
-  const resp = await vaultedAPI(session, "post", `/items/${item}/clone`)
+  const resp = await passWeaverAPI(session, "post", `/items/${item}/clone`)
   return resp
 }
 
@@ -214,7 +214,7 @@ export async function itemClone(session, item) {
  * @returns
  */
 export async function itemRemove(session, item) {
-  const resp = await vaultedAPI(session, "delete", "/items/"+item)
+  const resp = await passWeaverAPI(session, "delete", "/items/"+item)
   return resp
 }
 
@@ -226,7 +226,7 @@ export async function itemRemove(session, item) {
  * @returns
  */
 export async function itemGet(session, item) {
-  const resp = await vaultedAPI(session, "get", "/items/"+item)
+  const resp = await passWeaverAPI(session, "get", "/items/"+item)
   return resp
 }
 
@@ -252,7 +252,7 @@ export async function itemUpdate(session, itemid, body) {
     metadata: body.data.user
   }
 
-  const resp = await vaultedAPI(session, "patch", "/items/"+itemid, item)
+  const resp = await passWeaverAPI(session, "patch", "/items/"+itemid, item)
   return resp
 }
 
@@ -268,7 +268,7 @@ export async function folderCreate(session, folder, body) {
     description: body.description
   }
 
-  const resp = await vaultedAPI(session, "post", "/folders/"+folder+"/folders", data)
+  const resp = await passWeaverAPI(session, "post", "/folders/"+folder+"/folders", data)
   return resp
 }
 
@@ -280,7 +280,7 @@ export async function folderCreate(session, folder, body) {
  * @returns
  */
 export async function folderRemove(session, folder) {
-  const resp = await vaultedAPI(session, "delete", "/folders/"+folder)
+  const resp = await passWeaverAPI(session, "delete", "/folders/"+folder)
   return resp
 }
 
@@ -296,7 +296,7 @@ export async function folderUpdate(session, folder, body) {
     description: body.description
   }
 
-  const resp = await vaultedAPI(session, "patch", "/folders/"+folder, data)
+  const resp = await passWeaverAPI(session, "patch", "/folders/"+folder, data)
   return resp
 }
 
@@ -306,7 +306,7 @@ export async function folderUpdate(session, folder, body) {
  * @returns
  */
 export async function groupsTree(session) {
-  const resp = await vaultedAPI(session, "get", "/groups/util/tree")
+  const resp = await passWeaverAPI(session, "get", "/groups/util/tree")
   return resp
 }
 
@@ -327,7 +327,7 @@ export async function usersList(session, group, search) {
   if ( search ) {
     url += `/?search=${search}`
   }
-  resp = await vaultedAPI(session, "get", url)
+  resp = await passWeaverAPI(session, "get", url)
   return resp
 }
 
@@ -343,7 +343,7 @@ export async function groupCreate(session, group, body) {
     description: body.description
   }
 
-  const resp = await vaultedAPI(session, "post", "/groups/"+group+"/groups", data)
+  const resp = await passWeaverAPI(session, "post", "/groups/"+group+"/groups", data)
   return resp
 }
 
@@ -354,7 +354,7 @@ export async function groupCreate(session, group, body) {
  * @returns
  */
 export async function getGroup(session, group) {
-  const resp = await vaultedAPI(session, "get", "/groups/"+group  )
+  const resp = await passWeaverAPI(session, "get", "/groups/"+group  )
   return resp
 }
 
@@ -370,7 +370,7 @@ export async function groupUpdate(session, group, body) {
     description: body.description
   }
 
-  const resp = await vaultedAPI(session, "patch", "/groups/"+group, data)
+  const resp = await passWeaverAPI(session, "patch", "/groups/"+group, data)
   return resp
 }
 
@@ -382,7 +382,7 @@ export async function groupUpdate(session, group, body) {
  * @returns
  */
 export async function groupRemove(session, group) {
-  const resp = await vaultedAPI(session, "delete", "/groups/"+group)
+  const resp = await passWeaverAPI(session, "delete", "/groups/"+group)
   return resp
 }
 
@@ -393,7 +393,7 @@ export async function groupRemove(session, group) {
  * @param {*} user
  */
 export async function groupAddUser(session, group, user) {
-  const resp = await vaultedAPI(session, "post", "/groups/"+group+"/users/"+user)
+  const resp = await passWeaverAPI(session, "post", "/groups/"+group+"/users/"+user)
   return resp
 }
 
@@ -404,7 +404,7 @@ export async function groupAddUser(session, group, user) {
  * @param {*} user
  */
 export async function groupRemoveUser(session, group, user) {
-  const resp = await vaultedAPI(session, "delete", "/groups/"+group+"/users/"+user)
+  const resp = await passWeaverAPI(session, "delete", "/groups/"+group+"/users/"+user)
   return resp
 }
 
@@ -415,7 +415,7 @@ export async function groupRemoveUser(session, group, user) {
  * @returns
  */
 export async function userCreate(session, user) {
-  const resp = await vaultedAPI(session, "post", "/users", user)
+  const resp = await passWeaverAPI(session, "post", "/users", user)
   return resp
 }
 
@@ -426,7 +426,7 @@ export async function userCreate(session, user) {
  * @returns
  */
 export async function userGet(session, user) {
-  const resp = await vaultedAPI(session, "get", "/users/"+user)
+  const resp = await passWeaverAPI(session, "get", "/users/"+user)
   return resp
 }
 
@@ -449,7 +449,7 @@ export async function userUpdate(session, user, body) {
     active: body.active=="true"
   }
 
-  const resp = await vaultedAPI(session, "patch", "/users/"+user, data)
+  const resp = await passWeaverAPI(session, "patch", "/users/"+user, data)
   return resp
 }
 
@@ -459,7 +459,7 @@ export async function userUpdate(session, user, body) {
  * @param {string} folder
  */
 export async function folderGroups(session, folder) {
-  const resp = await vaultedAPI(session, "get", `/folders/${folder}/groups`)
+  const resp = await passWeaverAPI(session, "get", `/folders/${folder}/groups`)
   return resp
 }
 
@@ -476,7 +476,7 @@ export async function folderAddGroup(session, folder, group) {
     write: false
   }
 
-  const resp = await vaultedAPI(session, "post", `/folders/${folder}/groups/${group}`, data)
+  const resp = await passWeaverAPI(session, "post", `/folders/${folder}/groups/${group}`, data)
   return resp
 }
 
@@ -488,7 +488,7 @@ export async function folderAddGroup(session, folder, group) {
  * @returns
  */
 export async function folderRemoveGroup(session, folder, group) {
-  const resp = await vaultedAPI(session, "delete", `/folders/${folder}/groups/${group}`)
+  const resp = await passWeaverAPI(session, "delete", `/folders/${folder}/groups/${group}`)
   return resp
 }
 
@@ -500,11 +500,11 @@ export async function folderRemoveGroup(session, folder, group) {
  * @returns
  */
 export async function folderToggleGroup(session, folder, group) {
-  const perm = await vaultedAPI(session, "get", `/folders/${folder}/groups`)
+  const perm = await passWeaverAPI(session, "get", `/folders/${folder}/groups`)
 
   for ( const g of perm.data ) {
     if ( g.id==group ) {
-      const resp = await vaultedAPI(session, "patch", `/folders/${folder}/groups/${group}`, { read: true, write: !g.write})
+      const resp = await passWeaverAPI(session, "patch", `/folders/${folder}/groups/${group}`, { read: true, write: !g.write})
       return resp
     }
   }
@@ -524,7 +524,7 @@ export async function groupsList(session, search) {
   if ( search ) {
     url += `/?search=${search}`
   }
-  resp = await vaultedAPI(session, "get", url)
+  resp = await passWeaverAPI(session, "get", url)
   return resp
 }
 
@@ -535,7 +535,7 @@ export async function groupsList(session, search) {
  * @returns
  */
 export async function userRemove(session, user) {
-  const resp = await vaultedAPI(session, "delete", "/users/"+user)
+  const resp = await passWeaverAPI(session, "delete", "/users/"+user)
   return resp
 }
 
@@ -545,7 +545,7 @@ export async function userRemove(session, user) {
  * @returns
  */
 export async function generatePassword(session) {
-  const resp = await vaultedAPI(session, "get", "/util/generatepassword")
+  const resp = await passWeaverAPI(session, "get", "/util/generatepassword")
   return resp
 }
 
@@ -556,12 +556,12 @@ export async function generatePassword(session) {
  * @returns
  */
 export async function personalPasswordCreate(session, password) {
-  var resp = await vaultedAPI(session, "post", "/users/personalsecret", {
+  var resp = await passWeaverAPI(session, "post", "/users/personalsecret", {
     personalsecret: password
   })
 
   if ( resp.httpStatusCode=="200" ) {
-    resp = await vaultedAPI(session, "post", "/users/personalfolderlogin", {
+    resp = await passWeaverAPI(session, "post", "/users/personalfolderlogin", {
       password: password
     })
 
@@ -580,7 +580,7 @@ export async function personalPasswordCreate(session, password) {
  * @returns
  */
 export async function personalLogin(req, session, password) {
-  const resp = await vaultedAPI(session, "post", "/users/personalfolderlogin", {
+  const resp = await passWeaverAPI(session, "post", "/users/personalfolderlogin", {
     password: password
   })
 
@@ -607,7 +607,7 @@ export async function addEvent(req, session, event, itemtype, itemid) {
     itemid: itemid
   }
 
-  const resp = await vaultedAPI(session, "post", "/events", data)
+  const resp = await passWeaverAPI(session, "post", "/events", data)
   return resp
 }
 
@@ -617,7 +617,7 @@ export async function addEvent(req, session, event, itemtype, itemid) {
  * @returns
  */
 export async function stats(session) {
-  const resp = await vaultedAPI(session, "get", "/util/stats")
+  const resp = await passWeaverAPI(session, "get", "/util/stats")
 
   return resp
 }

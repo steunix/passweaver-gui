@@ -14,7 +14,7 @@ const configSchema = {
   "type": "object",
   "properties": {
     "listen_port": { "type": "integer", "minimum": 1, "maximum": 65535 },
-    "vaulted_url": { "type": "string" },
+    "passweaverapi_url": { "type": "string" },
     "company_name": { "type": "string" },
     "https": {
       "type": "object",
@@ -26,7 +26,7 @@ const configSchema = {
       "required": [ "enabled" ]
     }
   },
-  "required": ["listen_port", "vaulted_url", "company_name", "https"]
+  "required": ["listen_port", "passweaverapi_url", "company_name", "https"]
 }
 
 // Reads package.json
