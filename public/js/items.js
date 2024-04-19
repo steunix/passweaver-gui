@@ -7,8 +7,6 @@ var itemSearchTimeout
 var folderSearchTimeout
 
 function fillItems() {
-  loadingShow($("#itemstable"))
-
   $.get("/pages/itemslist/"+currentFolder+"?search="+$("#itemsearch").val(),(resp)=>{
     $("#itemstable tbody tr").remove()
 
@@ -84,8 +82,6 @@ function fillItems() {
     if ( $("#itemstable tbody tr").length ) {
       $("#removefolder").attr("disabled","disabled")
     }
-
-    loadingHide($("#itemstable"))
   })
 }
 
@@ -110,11 +106,11 @@ function folderClicked(ev, selectonly) {
   localStorage.setItem(`bstreeview_open_folderstree_${ getUser() }`,currentFolder)
 
   // Read folder info
+  $("#itemstable tbody tr").remove()
   $.get("/pages/folders/"+currentFolder,(resp)=>{
 
     // Folder may not be accessible
     if ( !checkResponse(resp,"403") ) {
-      $("#itemstable tbody tr").remove()
       return
     }
 
