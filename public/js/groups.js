@@ -184,7 +184,7 @@ $(()=>{
     }
 
     $('#groupstree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: resp.data })
-    $('[role=treeitem]').on("click", groupClicked)
+    $('[role=treeitem]').on("mousedown", groupClicked)
 
     // Open last used group
     const last = localStorage.getItem(`bstreeview_open_groupstree_${ getUser() }`)

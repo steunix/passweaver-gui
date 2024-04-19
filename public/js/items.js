@@ -9,9 +9,9 @@ var folderSearchTimeout
 function fillItems() {
   loadingShow($("#itemstable"))
 
-  $("#itemstable tbody tr").remove()
-
   $.get("/pages/itemslist/"+currentFolder+"?search="+$("#itemsearch").val(),(resp)=>{
+    $("#itemstable tbody tr").remove()
+
     // Personal password not yet created?
     if ( resp.httpStatusCode == "412" ) {
       currentPermissions = { read: false, write: false }
@@ -114,6 +114,7 @@ function folderClicked(ev, selectonly) {
 
     // Folder may not be accessible
     if ( !checkResponse(resp,"403") ) {
+      $("#itemstable tbody tr").remove()
       return
     }
 
@@ -576,7 +577,7 @@ $(()=>{
     }
 
     $('#tree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: resp.data })
-    $('[role=treeitem]').on("click", folderClicked)
+    $('[role=treeitem]').on("mousedown", folderClicked)
 
     // Open last used folder
     const last = localStorage.getItem(`bstreeview_open_folderstree_${ getUser() }`)
