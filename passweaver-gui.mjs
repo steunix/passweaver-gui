@@ -131,7 +131,7 @@ app.post("/access", async (req,res)=>{
 
   const usr = await PassWeaver.getUser(req.session, req.session.user)
 
-  req.session.userdescription = (usr.data.lastname + " " + usr.data.firstname).trim()
+  req.session.userdescription = (`${usr.data.lastname} ${usr.data.firstname}`).trim()
   req.session.email = usr.data.email
   req.session.save()
 
@@ -432,7 +432,7 @@ app.use((err, req, res, next)=> {
   res.status(200).redirect("/logout?error="+encodeURIComponent(err))
 })
 
-console.log("Listening on port "+cfg.listen_port)
+console.log(`Listening on port ${cfg.listen_port}`)
 
 // HTTP(S) server startup
 if ( cfg.https.enabled ) {
