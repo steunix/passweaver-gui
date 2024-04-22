@@ -214,7 +214,7 @@ export async function itemClone(session, item) {
  * @returns
  */
 export async function itemRemove(session, item) {
-  const resp = await passWeaverAPI(session, "delete", `/items/${itemid}`)
+  const resp = await passWeaverAPI(session, "delete", `/items/${item}`)
   return resp
 }
 
@@ -226,7 +226,7 @@ export async function itemRemove(session, item) {
  * @returns
  */
 export async function itemGet(session, item) {
-  const resp = await passWeaverAPI(session, "get", `/items/${itemid}`)
+  const resp = await passWeaverAPI(session, "get", `/items/${item}`)
   return resp
 }
 
