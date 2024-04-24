@@ -23,7 +23,7 @@ function loadingHide(el) {
 function generatePassword() {
   var resp = $.ajax({
     type: "GET",
-    url: "/pages/generatepassword",
+    url: "/api/generatepassword",
     async: false
   })
 
@@ -66,11 +66,13 @@ function checkResponse(resp,ignoreStatus) {
     return true
   }
 
-  errorDialog(resp.message)
-
   if ( resp.status=="failed" && resp.fatal ) {
     window.location = "/logout?error="+encodeURIComponent(resp.message)
+    return
   }
+
+  errorDialog(resp.message)
+
 }
 
 function showToast(text) {
@@ -101,6 +103,12 @@ function copyToClipboard(ev) {
 function getUser() {
   return $("#v-user").val()
 }
+
+$(document).ajaxError(function(evt, request, settings){
+  if (request.getResponseHeader("Location") ) {
+     location.href = request.getResponseHeader("Location")
+  }
+})
 
 $(()=>{
   if ( $("#pageid").length ) {

@@ -6,7 +6,7 @@ function searchUsers() {
     return
   }
 
-  $.get("/pages/userslist/?search="+encodeURIComponent(text),(resp)=>{
+  $.get("/api/userslist/?search="+encodeURIComponent(text),(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }

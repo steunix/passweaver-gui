@@ -6,7 +6,7 @@ function searchGroups() {
     return
   }
 
-  $.get("/pages/groupslist/?search="+encodeURIComponent(text),(resp)=>{
+  $.get("/api/groupslist/?search="+encodeURIComponent(text),(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }

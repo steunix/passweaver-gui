@@ -4,7 +4,7 @@ function fillUsers() {
   loadingShow($("#userstable"))
 
   $("#userstable tbody tr").remove()
-  $.get("/pages/userslist/"+currentGroup,(resp)=>{
+  $.get("/api/userslist/"+currentGroup,(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
@@ -71,7 +71,7 @@ function groupCreate() {
     description: $("#newgroupdescription").val()
   }
 
-  $.post("/pages/groupnew/"+currentGroup, userdata, (resp)=> {
+  $.post("/api/groupnew/"+currentGroup, userdata, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -86,7 +86,7 @@ function groupCreate() {
 
 function groupRemove() {
   confirm("Remove group", "Are you sure you want to remove this group?", ()=> {
-    $.post("/pages/groupremove/"+currentGroup, {_csrf: $("#_csrf").val()}, (resp)=> {
+    $.post("/api/groupremove/"+currentGroup, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -99,7 +99,7 @@ function groupRemove() {
 function groupEditFill() {
   $("#groupeditid").val(currentGroup)
 
-  $.get("/pages/groups/"+currentGroup, (resp)=> {
+  $.get("/api/groups/"+currentGroup, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -116,7 +116,7 @@ function groupEdit() {
     description: $("#groupeditdescription").val()
   }
 
-  $.post("/pages/groupupdate/"+$("#groupeditid").val(), data, (resp)=> {
+  $.post("/api/groupupdate/"+$("#groupeditid").val(), data, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -134,7 +134,7 @@ function groupEditEnable() {
 }
 
 function userPickerChoosen(id) {
-  $.post("/pages/groupadduser/"+currentGroup+"/"+id, {_csrf: $("#_csrf").val()}, (resp)=> {
+  $.post("/api/groupadduser/"+currentGroup+"/"+id, {_csrf: $("#_csrf").val()}, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -145,7 +145,7 @@ function userPickerChoosen(id) {
 
 function groupRemoveUser(id) {
   confirm("Remove user from group", "Are you sure you want to remove the user?", ()=> {
-    $.post("/pages/groupremoveuser/"+currentGroup+"/"+id, {_csrf: $("#_csrf").val()}, (resp)=> {
+    $.post("/api/groupremoveuser/"+currentGroup+"/"+id, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -178,7 +178,7 @@ $(function() {
 })
 
 $(()=>{
-  $.get("/pages/groupstree", (resp)=>{
+  $.get("/api/groupstree", (resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }

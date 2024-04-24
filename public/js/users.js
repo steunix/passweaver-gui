@@ -1,7 +1,7 @@
 var userSearchTimeout
 
 function fillUsers() {
-  $.get("/pages/userslist?search="+$("#usersearch").val(),(resp)=>{
+  $.get("/api/userslist?search="+$("#usersearch").val(),(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
@@ -64,7 +64,7 @@ function userCreate() {
     secret: $("#newpassword").val()
   }
 
-  $.post("/pages/usernew/", userdata, (resp)=> {
+  $.post("/api/usernew/", userdata, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -85,7 +85,7 @@ function userCreateEnable() {
 
 function userRemove(usr) {
   confirm("Remove user", "<strong><span class='text-danger'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", ()=> {
-    $.post("/pages/userremove/"+usr, {_csrf: $("#_csrf").val()}, (resp)=> {
+    $.post("/api/userremove/"+usr, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -98,7 +98,7 @@ function userRemove(usr) {
 function userEditFill(user) {
   $("#usereditid").val(user)
 
-  $.get("/pages/users/"+user, (resp)=> {
+  $.get("/api/users/"+user, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -135,7 +135,7 @@ function userEdit() {
     active: $("#editactive").is(":checked")
   }
 
-  $.post("/pages/userupdate/"+$("#usereditid").val(), userdata, (resp)=> {
+  $.post("/api/userupdate/"+$("#usereditid").val(), userdata, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }

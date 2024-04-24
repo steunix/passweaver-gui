@@ -1,5 +1,5 @@
 function passwordGenerate() {
-  $.get("/pages/generatepassword", (resp)=> {
+  $.get("/api/generatepassword", (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }

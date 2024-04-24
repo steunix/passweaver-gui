@@ -5,7 +5,7 @@ function fillItems() {
 
   $("#itemstable tbody tr").remove()
 
-  $.get("/pages/itemssearch?search="+$("#itemsearch").val(),(resp)=>{
+  $.get("/api/itemssearch?search="+$("#itemsearch").val(),(resp)=>{
     // Folder may not be accessible
     if ( !checkResponse(resp,403) ) {
       return
@@ -38,7 +38,7 @@ function fillItems() {
 function itemEditFill(item) {
   $("#itemeditid").val(item)
 
-  $.get("/pages/items/"+item, (resp)=> {
+  $.get("/api/items/"+item, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -75,7 +75,7 @@ function itemEdit() {
     }
   }
 
-  $.post("/pages/itemupdate/"+$("#itemeditid").val(), itemdata, (resp)=> {
+  $.post("/api/itemupdate/"+$("#itemeditid").val(), itemdata, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -101,7 +101,7 @@ function toggleViewPassword() {
 }
 
 function itemViewFill(item) {
-  $.get("/pages/items/"+item, (resp)=> {
+  $.get("/api/items/"+item, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }

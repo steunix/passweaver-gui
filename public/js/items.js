@@ -7,7 +7,7 @@ var itemSearchTimeout
 var folderSearchTimeout
 
 function fillItems() {
-  $.get("/pages/itemslist/"+currentFolder+"?search="+$("#itemsearch").val(),(resp)=>{
+  $.get("/api/itemslist/"+currentFolder+"?search="+$("#itemsearch").val(),(resp)=>{
     $("#itemstable tbody tr").remove()
 
     // Personal password not yet created?
@@ -107,7 +107,7 @@ function folderClicked(ev, selectonly) {
 
   // Read folder info
   $("#itemstable tbody tr").remove()
-  $.get("/pages/folders/"+currentFolder,(resp)=>{
+  $.get("/api/folders/"+currentFolder,(resp)=>{
 
     // Folder may not be accessible
     if ( !checkResponse(resp,"403") ) {
@@ -156,7 +156,7 @@ function itemCreate() {
     password: $("#newpassword").val()
   }
 
-  $.post("/pages/itemnew/"+currentFolder, itemdata, (resp)=> {
+  $.post("/api/itemnew/"+currentFolder, itemdata, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -179,7 +179,7 @@ function itemCreateEnable() {
 
 function itemRemove(itm) {
   confirm("Remove item", "Are you sure you want to remove this item?", ()=> {
-    $.post("/pages/itemremove/"+itm, {_csrf: $("#_csrf").val()}, (resp)=> {
+    $.post("/api/itemremove/"+itm, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -192,7 +192,7 @@ function itemRemove(itm) {
 function itemEditFill(item) {
   $("#itemeditid").val(item)
 
-  $.get("/pages/items/"+item, (resp)=> {
+  $.get("/api/items/"+item, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -231,7 +231,7 @@ function itemEdit() {
     }
   }
 
-  $.post("/pages/itemupdate/"+$("#itemeditid").val(), itemdata, (resp)=> {
+  $.post("/api/itemupdate/"+$("#itemeditid").val(), itemdata, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -263,7 +263,7 @@ function folderCreate() {
     description: $("#newfolderdescription").val()
   }
 
-  $.post("/pages/foldernew/"+currentFolder, itemdata, (resp)=> {
+  $.post("/api/foldernew/"+currentFolder, itemdata, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -274,7 +274,7 @@ function folderCreate() {
 
 function folderRemove() {
   confirm("Remove folder", "Are you sure you want to remove this folder?", ()=> {
-    $.post("/pages/folderremove/"+currentFolder, {_csrf: $("#_csrf").val()}, (resp)=> {
+    $.post("/api/folderremove/"+currentFolder, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -295,7 +295,7 @@ function folderEditEnable() {
 function folderEditFill() {
   $("#foldereditid").val(currentFolder)
 
-  $.get("/pages/folders/"+currentFolder, (resp)=> {
+  $.get("/api/folders/"+currentFolder, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -310,7 +310,7 @@ function folderEdit() {
     description: $("#foldereditdescription").val()
   }
 
-  $.post("/pages/folderupdate/"+$("#foldereditid").val(), data, (resp)=> {
+  $.post("/api/folderupdate/"+$("#foldereditid").val(), data, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -329,7 +329,7 @@ function toggleViewPassword() {
 }
 
 function itemViewFill(item) {
-  $.get("/pages/items/"+item, (resp)=> {
+  $.get("/api/items/"+item, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -430,7 +430,7 @@ function searchFolderPrevious() {
 
 function itemClone(itm) {
   confirm("Clone item", "Do you want to clone this item?", ()=>{
-    $.post(`/pages/items/${itm}/clone`, {_csrf: $("#_csrf").val()}, (resp)=> {
+    $.post(`/api/items/${itm}/clone`, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -441,7 +441,7 @@ function itemClone(itm) {
 }
 
 function itemCopyLink(itm) {
-  navigator.clipboard.writeText(`${window.location.origin}/pages/items?viewitem=${itm}`)
+  navigator.clipboard.writeText(`${window.location.origin}/api/items?viewitem=${itm}`)
   showToast("Item link copied to clipboard")
 }
 
@@ -500,7 +500,7 @@ function personalPasswordCreate() {
     password: $("#newpersonalpassword").val()
   }
 
-  $.post("/pages/personalpassword", data, (resp)=> {
+  $.post("/api/personalpassword", data, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -515,7 +515,7 @@ function personalPasswordSet() {
     password: $("#personalpasswordask").val()
   }
 
-  $.post("/pages/personallogin", data, (resp)=> {
+  $.post("/api/personallogin", data, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -526,7 +526,7 @@ function personalPasswordSet() {
 
 function passwordCopy(ev) {
   var item = $(ev.currentTarget).data("id")
-  $.get("/pages/items/"+item, (resp)=> {
+  $.get("/api/items/"+item, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -546,7 +546,7 @@ function passwordShow(ev) {
   }
 
   $("[id^=password-]").html("****")
-  $.get(`/pages/items/${item}`, (resp)=> {
+  $.get(`/api/items/${item}`, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -558,7 +558,7 @@ function passwordShow(ev) {
 }
 
 function passwordAccessed(item) {
-  $.post("/pages/events", {
+  $.post("/api/events", {
     _csrf: $("#_csrf").val(),
     event: 'pwdread',
     itemtype: 'item',
@@ -567,7 +567,7 @@ function passwordAccessed(item) {
 }
 
 $(()=>{
-  $.get("/pages/folderstree", (resp)=>{
+  $.get("/api/folderstree", (resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }

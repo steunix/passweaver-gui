@@ -5,7 +5,7 @@ function fillGroups() {
   loadingShow($("#groupstable"))
 
   $("#groupstable tbody tr").remove()
-  $.get("/pages/foldergroups/"+currentFolder,(resp)=>{
+  $.get("/api/foldergroups/"+currentFolder,(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
@@ -67,7 +67,7 @@ function groupRemove(ev) {
   const group = $(ev.currentTarget).data("id")
   confirm("Remove group", "Are you sure you want to remove the group?", ()=>{
     $.ajax({
-      url: `/pages/folders/${currentFolder}/groups/${group}`,
+      url: `/api/folders/${currentFolder}/groups/${group}`,
       type: "delete",
       data: { _csrf: $("#_csrf").val() },
       success: (resp)=>{
@@ -83,7 +83,7 @@ function groupRemove(ev) {
 
 function groupToggle(ev) {
   const group = $(ev.currentTarget).data("id")
-  $.post(`/pages/folders/${currentFolder}/groups/${group}/toggle`, { _csrf: $("#_csrf").val() },(resp)=>{
+  $.post(`/api/folders/${currentFolder}/groups/${group}/toggle`, { _csrf: $("#_csrf").val() },(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
@@ -93,7 +93,7 @@ function groupToggle(ev) {
 }
 
 function groupPickerChoosen(group) {
-  $.post(`/pages/folders/${currentFolder}/groups/${group}`, { _csrf: $("#_csrf").val() }, (resp)=>{
+  $.post(`/api/folders/${currentFolder}/groups/${group}`, { _csrf: $("#_csrf").val() }, (resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
@@ -148,7 +148,7 @@ function searchFolderPrevious() {
 }
 
 $(()=>{
-  $.get("/pages/folderstree", (resp)=>{
+  $.get("/api/folderstree", (resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
