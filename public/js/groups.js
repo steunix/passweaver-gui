@@ -1,4 +1,5 @@
 var currentGroup = ""
+var groupSearchTimeout
 
 function fillUsers() {
   loadingShow($("#userstable"))
@@ -155,6 +156,51 @@ function groupRemoveUser(id) {
   })
 }
 
+var searchGroupIndex = 0
+function searchGroup(start,direction) {
+  if ( start===undefined ) {
+    searchGroupIndex = 0
+  }
+
+  var search = $("#groupsearch").val().toLowerCase()
+  var groups = $("span[id^=treedesc]")
+
+  var index = 0
+  for ( const group of groups ) {
+    if ( $(group).html().toLowerCase().includes(search) ) {
+      if ( index==searchGroupIndex ) {
+        var parents = $(group).parents()
+        for ( const parent of parents ) {
+          // Expand parents
+          if ( $(parent).attr("role")=="group" && !$(parent).hasClass("show") ) {
+            const id = "#" + $(parent).attr("id")
+            const el = $(`[data-bs-target='${id}']`)
+            $(el).find("i").click()
+          }
+        }
+        groupClicked( ''+$(group).data("id") )
+        return true
+      }
+      index++
+    }
+  }
+  return false
+}
+
+function searchGroupNext() {
+  searchGroupIndex++
+  if ( !searchGroup(searchGroupIndex, 0) ) {
+    searchGroupIndex--
+  }
+}
+
+function searchGroupPrevious() {
+  searchGroupIndex--
+  if ( !searchGroup(searchGroupIndex, 1) ) {
+    searchGroupIndex++
+  }
+}
+
 $(function() {
   // Reset add user dialog fields
   $("#adduserdialog").on("hidden.bs.modal", ()=> {
@@ -208,5 +254,18 @@ $(()=>{
   })
   $("#groupeditdescription").on("keyup", (ev)=>{
     groupEditEnable()
+  })
+  $("#groupsearch").on("keyup", (ev)=> {
+    if ( groupSearchTimeout ) {
+      clearTimeout(groupSearchTimeout)
+    }
+    groupSearchTimeout = setTimeout(searchGroup,250)
+  })
+  $("#groupsearchnext").on("click", (ev)=>{
+    searchGroupNext()
+  })
+
+  $("#groupsearchprevious").on("click", (ev)=>{
+    searchGroupPrevious()
   })
 })

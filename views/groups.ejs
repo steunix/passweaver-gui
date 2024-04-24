@@ -11,9 +11,16 @@
     <div class="row">
     <div class="col-md-3">
       <h5>Groups</h5>
-      <button id="newgroup" type="button" title="New group" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#newgroupdialog"><span class='fa-solid fa-add'/></button>
-      <button id="editgroup" type="button" title="Edit group" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editgroupdialog"><span class='fa-solid fa-pen'/></button>
-      <button id="removegroup" type="button" title="Remove group" class="btn btn-sm btn-danger"><span class='fa-solid fa-trash'/></button>
+      <div class="d-flex">
+        <button id="newgroup" type="button" title="New group" class="btn btn-sm btn-primary flex-shrink-0 me-1" data-bs-toggle="modal" data-bs-target="#newgroupdialog"><span class='fa-solid fa-add'/></button>
+        <button id="editgroup" type="button" title="Edit group" class="btn btn-sm btn-secondary flex-shrink-0 me-1" data-bs-toggle="modal" data-bs-target="#editgroupdialog"><span class='fa-solid fa-pen'/></button>
+        <button id="removegroup" type="button" title="Remove group" class="btn btn-sm btn-danger flex-shrink-0 me-3"><span class='fa-solid fa-trash'/></button>
+        <div class="input-group">
+          <input id="groupsearch" type="text" class="form-control" placeholder="Search group">
+          <button class="btn btn-secondary" title="Search previous" type="button" id="groupsearchprevious"><span class="fa-solid fa-chevron-left"></span></button>
+          <button class="btn btn-secondary" title="Search next" type="button" id="groupsearchnext"><span class="fa-solid fa-chevron-right"></span></button>
+        </div>
+      </div>
       <%- include('partials/groupstree.ejs') %>
     </div>
     <div class="col-md-auto">
