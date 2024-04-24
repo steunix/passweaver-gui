@@ -8,7 +8,7 @@ PassWeaver-gui is an opensource project, released under MIT license.
 
 - Personal folders
 - Share items through permalinks
-- Pages are served with HTTPS, HTTP/2 and optionally HTTP (with limitations, see below)
+- Pages are served with HTTPS and optionally HTTP (with limitations, see below)
 - CSP compliant pages
 - Both LDAP and local authentication
 - Quick user interface
@@ -36,10 +36,43 @@ This is the items page:
 
 ![Items page](assets/passweavergui-items.jpeg)
 
-## Users
+In "Folders" pane you can create a subfolder, modify or delete a folder, if you have permission on it. You can also search for a folder and use the previous/next buttons to navigate the tree.
 
-## Groups
+In "Items" pane you have a list of folder item, with the following actions, if you have proper permission:
+- View item
+- Edit item
+- Delete item
+- Clone item
+- Copy link
+
+You can also copy to clipboard both the username and the password. With the "Show" icon, you can toggle view/hide password for that single item.
+
+This is the item details dialog:
+
+![Item dialog](assets/passweavergui-item.jpeg)
+
+## Search
+
+In the "Search" page you can search items with a matching title or username. Just type a string to search for.
+
+![Search page](assets/passweavergui-search.jpeg)
+
+## Generator
+
+![Generator page](assets/passweavergui-generator.jpeg)
 
 ## Folders
 
-## Items
+![Folders page](assets/passweavergui-folders.jpeg)
+
+## Users
+
+![Users page](assets/passweavergui-users.jpeg)
+
+## Groups
+
+![Groups page](assets/passweavergui-groups.jpeg)
+
+## Stats
+
+![Stats page](assets/passweavergui-stats.jpeg)
