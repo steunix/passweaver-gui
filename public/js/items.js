@@ -515,7 +515,7 @@ function personalPasswordSet() {
     password: $("#personalpasswordask").val()
   }
 
-  $.post("/api/personallogin", data, (resp)=> {
+  $.post("/api/personalunlock", data, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }

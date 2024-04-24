@@ -438,8 +438,8 @@ app.post("/api/personalpassword", async (req,res)=>{
 })
 
 // Set personal password
-app.post("/api/personallogin", async (req,res)=>{
-  const resp = await PassWeaver.personalLogin(req, req.session, req.body.password)
+app.post("/api/personalunlock", async (req,res)=>{
+  const resp = await PassWeaver.personalUnlock(req, req.session, req.body.password)
   res.status(200).json(resp)
 })
 

@@ -579,7 +579,7 @@ export async function personalPasswordCreate(session, password) {
  * @param {string} passsword Password
  * @returns
  */
-export async function personalLogin(req, session, password) {
+export async function personalUnlock(req, session, password) {
   const resp = await passWeaverAPI(session, "post", "/users/personalfolderlogin", {
     password: password
   })
