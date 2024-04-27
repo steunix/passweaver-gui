@@ -153,10 +153,14 @@ app.post("/access", async (req,res)=>{
   req.session.email = usr.data.email
   req.session.save()
 
-  if ( req.body?.viewitem ) {
-    res.redirect("/pages/items?viewitem="+encodeURIComponent(req.body.viewitem))
+  if ( req.session.admin ) {
+    res.redirect("/pages/folders")
   } else {
-    res.redirect("/pages/items")
+    if ( req.body?.viewitem ) {
+      res.redirect("/pages/items?viewitem="+encodeURIComponent(req.body.viewitem))
+    } else {
+      res.redirect("/pages/items")
+    }
   }
 })
 
