@@ -4,6 +4,7 @@
       <img src="/public/images/passweaver-icon-light.png" width="36px"></img>
     </a>
     <ul class="nav nav-pills flex-column mb-auto">
+      <% if ( !admin ) { %>
       <li class="nav-item">
         <a href="/pages/items" class="nav-link text-white" title="Items" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="items">
           <i class="fa-solid fa-fw fa-list m-2"></i>
@@ -16,6 +17,7 @@
           Search
         </a>
       </li>
+      <% } %>
       <li class="nav-item">
         <a href="/pages/generate" class="nav-link text-white" title="Generator" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="generate">
           <i class="fa-solid fa-fw fa-wand-magic-sparkles m-2"></i>
