@@ -589,13 +589,13 @@ export async function generatePassword(session) {
  * @undocumented
  */
 export async function personalPasswordCreate(session, password) {
-  var resp = await passWeaverAPI(session, "post", "/users/personalsecret", {
-    personalsecret: password
+  var resp = await passWeaverAPI(session, "post", "/personal/password", {
+    password: password
   })
 
   // If successfull, unlock personal folder directly
   if ( resp.httpStatusCode=="200" ) {
-    resp = await passWeaverAPI(session, "post", "/users/personalunlock", {
+    resp = await passWeaverAPI(session, "post", "/personal/unlock", {
       password: password
     })
 
@@ -615,7 +615,7 @@ export async function personalPasswordCreate(session, password) {
  * @documented
  */
 export async function personalUnlock(req, session, password) {
-  const resp = await passWeaverAPI(session, "post", "/users/personalunlock", {
+  const resp = await passWeaverAPI(session, "post", "/personal/unlock", {
     password: password
   })
 
