@@ -106,7 +106,6 @@ async function passWeaverAPI(session, method, path, data) {
  * @param {string} username User name
  * @param {string} password Password
  * @returns
- * @documented
  */
 export async function login(username, password) {
   const resp = await passWeaverAPI(null, "post", "/login", {
@@ -121,7 +120,6 @@ export async function login(username, password) {
  * @param {Object} session Current session
  * @param {string} id User id
  * @returns
- * @documented
  */
 export async function getUser(session, id) {
   const resp = await passWeaverAPI(session, "get", `/users/${id}`)
@@ -133,7 +131,6 @@ export async function getUser(session, id) {
  * Get folders tree for current user
  * @param {Object} session Current session
  * @returns
- * @documented
  */
 export async function foldersTree(session) {
   const resp = await passWeaverAPI(session, "get", `/folders/tree`)
@@ -146,7 +143,6 @@ export async function foldersTree(session) {
  * @param {string} folder Folder id
  * @param {string} search Item title search
  * @returns
- * @documented
  */
 export async function itemsList(session, folder, search) {
   const resp = await passWeaverAPI(session, "get", `/folders/${folder}/items?search=`+encodeURIComponent(search))
@@ -158,7 +154,6 @@ export async function itemsList(session, folder, search) {
  * @param {Object} session Current session
  * @param {string} search Item title search
  * @returns
- * @documented
  */
 export async function itemsSearch(session, search) {
   const resp = await passWeaverAPI(session, "get", "/items?search="+encodeURIComponent(search))
@@ -170,7 +165,6 @@ export async function itemsSearch(session, search) {
  * @param {Object} session Current session
  * @param {string} folder Folder id
  * @returns
- * @documented
  */
 export async function getFolder(session, folder) {
   const resp = await passWeaverAPI(session, "get", `/folders/${folder}`)
@@ -183,7 +177,6 @@ export async function getFolder(session, folder) {
  * @param {string} folder
  * @param {Object} body
  * @returns
- * @documented
  */
 export async function itemCreate(session, folder, body) {
   const item = {
@@ -207,7 +200,6 @@ export async function itemCreate(session, folder, body) {
  * @param {Object} session
  * @param {string} item
  * @returns
- * @documented
  */
 export async function itemClone(session, item) {
   const resp = await passWeaverAPI(session, "post", `/items/${item}/clone`)
@@ -220,7 +212,6 @@ export async function itemClone(session, item) {
  * @param {string} folder
  * @param {Object} body
  * @returns
- * @documented
  */
 export async function itemRemove(session, item) {
   const resp = await passWeaverAPI(session, "delete", `/items/${item}`)
@@ -233,7 +224,6 @@ export async function itemRemove(session, item) {
  * @param {string} folder
  * @param {Object} body
  * @returns
- * @documented
  */
 export async function itemGet(session, item) {
   const resp = await passWeaverAPI(session, "get", `/items/${item}`)
@@ -246,7 +236,6 @@ export async function itemGet(session, item) {
  * @param {string} folder
  * @param {Object} body
  * @returns
- * @documented
  */
 export async function itemUpdate(session, itemid, body) {
   const data = JSON.stringify({
@@ -273,7 +262,6 @@ export async function itemUpdate(session, itemid, body) {
  * @param {string} folder
  * @param {Object} body
  * @returns
- * @documented
  */
 export async function folderCreate(session, folder, body) {
   const data = {
@@ -290,7 +278,6 @@ export async function folderCreate(session, folder, body) {
  * @param {string} folder
  * @param {Object} body
  * @returns
- * @documented
  */
 export async function folderRemove(session, folder) {
   const resp = await passWeaverAPI(session, "delete", `/folders/${folder}`)
@@ -303,7 +290,6 @@ export async function folderRemove(session, folder) {
  * @param {string} folder
  * @param {Object} body
  * @returns
- * @documented
  */
 export async function folderUpdate(session, folder, body) {
   const data = {
@@ -318,7 +304,6 @@ export async function folderUpdate(session, folder, body) {
  * Get groups tree
  * @param {Object} session Current session
  * @returns
- * @documented
  */
 export async function groupsTree(session) {
   const resp = await passWeaverAPI(session, "get", "/groups/tree")
@@ -330,7 +315,6 @@ export async function groupsTree(session) {
  * @param {Object} session Current session
  * @param {string} group Group id
  * @returns
- * @documented
  */
 export async function usersList(session, group, search) {
   var resp, url
@@ -353,7 +337,6 @@ export async function usersList(session, group, search) {
  * @param {string} group
  * @param {Object} body
  * @returns
- * @documented
  */
 export async function groupCreate(session, group, body) {
   const data = {
@@ -369,7 +352,6 @@ export async function groupCreate(session, group, body) {
  * @param {Object} session Current session
  * @param {string} group Group id
  * @returns
- * @documented
  */
 export async function getGroup(session, group) {
   const resp = await passWeaverAPI(session, "get", `/groups/${group}`  )
@@ -382,7 +364,6 @@ export async function getGroup(session, group) {
  * @param {string} group
  * @param {Object} body
  * @returns
- * @documented
  */
 export async function groupUpdate(session, group, body) {
   const data = {
@@ -399,7 +380,6 @@ export async function groupUpdate(session, group, body) {
  * @param {string} group
  * @param {Object} body
  * @returns
- * @documented
  */
 export async function groupRemove(session, group) {
   const resp = await passWeaverAPI(session, "delete", `/groups/${group}`)
@@ -411,7 +391,6 @@ export async function groupRemove(session, group) {
  * @param {*} session
  * @param {*} group
  * @param {*} user
- * @documented
  */
 export async function groupAddUser(session, group, user) {
   const resp = await passWeaverAPI(session, "post", `/groups/${group}/users/${user}`)
@@ -423,7 +402,6 @@ export async function groupAddUser(session, group, user) {
  * @param {*} session
  * @param {*} group
  * @param {*} user
- * @documented
  */
 export async function groupRemoveUser(session, group, user) {
   const resp = await passWeaverAPI(session, "delete", `/groups/${group}/users/${user}`)
@@ -435,7 +413,6 @@ export async function groupRemoveUser(session, group, user) {
  * @param {Object} session
  * @param {Object} user
  * @returns
- * @documented
  */
 export async function userCreate(session, user) {
   const resp = await passWeaverAPI(session, "post", `/users/${user}`)
@@ -447,7 +424,6 @@ export async function userCreate(session, user) {
  * @param {Object} session
  * @param {Object} user
  * @returns
- * @documented
  */
 export async function userGet(session, user) {
   const resp = await passWeaverAPI(session, "get", `/users/${user}`)
@@ -460,7 +436,6 @@ export async function userGet(session, user) {
  * @param {string} user
  * @param {Object} body
  * @returns
- * @documented
  */
 export async function userUpdate(session, user, body) {
   // Recalc data so it cannot be injected
@@ -482,7 +457,6 @@ export async function userUpdate(session, user, body) {
  * Get folder groups
  * @param {Object} session
  * @param {string} folder
- * @documented
  */
 export async function folderGroups(session, folder) {
   const resp = await passWeaverAPI(session, "get", `/folders/${folder}/groups`)
@@ -495,7 +469,6 @@ export async function folderGroups(session, folder) {
  * @param {string} folder Folder
  * @param {string} group Group to add
  * @returns
- * @documented
  */
 export async function folderAddGroup(session, folder, group) {
   const data = {
@@ -513,7 +486,6 @@ export async function folderAddGroup(session, folder, group) {
  * @param {string} folder Folder
  * @param {string} group Group to remove
  * @returns
- * @documented
  */
 export async function folderRemoveGroup(session, folder, group) {
   const resp = await passWeaverAPI(session, "delete", `/folders/${folder}/groups/${group}`)
@@ -526,7 +498,6 @@ export async function folderRemoveGroup(session, folder, group) {
  * @param {string} folder Folder
  * @param {string} group Group to remove
  * @returns
- * @documented
  */
 export async function folderToggleGroup(session, folder, group) {
   const perm = await passWeaverAPI(session, "get", `/folders/${folder}/groups`)
@@ -545,7 +516,6 @@ export async function folderToggleGroup(session, folder, group) {
  * Groups list
  * @param {Object} session Current session
  * @returns
- * @documented
  */
 export async function groupsList(session, search) {
   var resp
@@ -563,7 +533,6 @@ export async function groupsList(session, search) {
  * @param {Object} session Session object
  * @param {string} user User
  * @returns
- * @documented
  */
 export async function userRemove(session, user) {
   const resp = await passWeaverAPI(session, "delete", `/users/${user}`)
@@ -574,7 +543,6 @@ export async function userRemove(session, user) {
  * Generate a password
  * @param {Object} session Session
  * @returns
- * @documented
  */
 export async function generatePassword(session) {
   const resp = await passWeaverAPI(session, "get", "/util/generatepassword")
@@ -586,7 +554,6 @@ export async function generatePassword(session) {
  * @param {Object} session Session
  * @param {string} passsword Password
  * @returns
- * @documented
  */
 export async function personalPasswordCreate(session, password) {
   var resp = await passWeaverAPI(session, "post", "/personal/password", {
@@ -612,7 +579,6 @@ export async function personalPasswordCreate(session, password) {
  * @param {Object} session Session
  * @param {string} passsword Password
  * @returns
- * @documented
  */
 export async function personalUnlock(req, session, password) {
   const resp = await passWeaverAPI(session, "post", "/personal/unlock", {
@@ -634,7 +600,6 @@ export async function personalUnlock(req, session, password) {
  * @param {string} itemtype Event type
  * @param {string} itemid Item ID
  * @returns
- * @documented
  */
 export async function addEvent(req, session, event, itemtype, itemid) {
   const data = {
@@ -651,7 +616,6 @@ export async function addEvent(req, session, event, itemtype, itemid) {
  * Stats
  * @param {Object} session Session
  * @returns
- * @documented
  */
 export async function stats(session) {
   const resp = await passWeaverAPI(session, "get", "/util/stats")
