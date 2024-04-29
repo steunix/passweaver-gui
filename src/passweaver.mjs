@@ -133,10 +133,10 @@ export async function getUser(session, id) {
  * Get folders tree for current user
  * @param {Object} session Current session
  * @returns
- * @undocumented
+ * @documented
  */
 export async function foldersTree(session) {
-  const resp = await passWeaverAPI(session, "get", "/folders/util/tree")
+  const resp = await passWeaverAPI(session, "get", `/folders/tree`)
   return resp
 }
 
@@ -318,10 +318,10 @@ export async function folderUpdate(session, folder, body) {
  * Get groups tree
  * @param {Object} session Current session
  * @returns
- * @undocumented
+ * @documented
  */
 export async function groupsTree(session) {
-  const resp = await passWeaverAPI(session, "get", "/groups/util/tree")
+  const resp = await passWeaverAPI(session, "get", "/groups/tree")
   return resp
 }
 
@@ -330,7 +330,7 @@ export async function groupsTree(session) {
  * @param {Object} session Current session
  * @param {string} group Group id
  * @returns
- * @undocumented
+ * @documented
  */
 export async function usersList(session, group, search) {
   var resp, url
@@ -411,7 +411,7 @@ export async function groupRemove(session, group) {
  * @param {*} session
  * @param {*} group
  * @param {*} user
- * @undocumented
+ * @documented
  */
 export async function groupAddUser(session, group, user) {
   const resp = await passWeaverAPI(session, "post", `/groups/${group}/users/${user}`)
@@ -423,7 +423,7 @@ export async function groupAddUser(session, group, user) {
  * @param {*} session
  * @param {*} group
  * @param {*} user
- * @undocumented
+ * @documented
  */
 export async function groupRemoveUser(session, group, user) {
   const resp = await passWeaverAPI(session, "delete", `/groups/${group}/users/${user}`)
@@ -545,7 +545,7 @@ export async function folderToggleGroup(session, folder, group) {
  * Groups list
  * @param {Object} session Current session
  * @returns
- * @undocumented
+ * @documented
  */
 export async function groupsList(session, search) {
   var resp
@@ -586,7 +586,7 @@ export async function generatePassword(session) {
  * @param {Object} session Session
  * @param {string} passsword Password
  * @returns
- * @undocumented
+ * @documented
  */
 export async function personalPasswordCreate(session, password) {
   var resp = await passWeaverAPI(session, "post", "/personal/password", {
