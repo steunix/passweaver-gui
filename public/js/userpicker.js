@@ -1,5 +1,10 @@
 var userPickerTimeout = 0
 
+function userPickerHide() {
+  var dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("userpicker"), {})
+  dialog.hide()
+}
+
 function searchUsers() {
   var text = $("#userpickersearch").val()
   if ( text.length < 3 ) {

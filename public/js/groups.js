@@ -140,7 +140,8 @@ function userPickerChoosen(id) {
       return
     }
 
-    location.reload()
+    userPickerHide()
+    fillUsers()
   })
 }
 
@@ -151,7 +152,7 @@ function groupRemoveUser(id) {
         return
       }
 
-      location.reload()
+      fillUsers()
     })
   })
 }
