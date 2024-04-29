@@ -1,5 +1,10 @@
 var groupPickerTimeout = 0
 
+function groupPickerHide() {
+  var dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("grouppicker"), {})
+  dialog.hide()
+}
+
 function searchGroups() {
   var text = $("#grouppickersearch").val()
   if ( text.length < 3 ) {

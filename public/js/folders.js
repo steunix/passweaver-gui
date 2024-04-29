@@ -75,7 +75,7 @@ function groupRemove(ev) {
           return
         }
 
-        location.reload()
+        fillGroups()
       }
     })
   })
@@ -88,7 +88,7 @@ function groupToggle(ev) {
       return
     }
 
-    location.reload()
+    fillGroups()
   })
 }
 
@@ -98,7 +98,8 @@ function groupPickerChoosen(group) {
       return
     }
 
-    location.reload()
+    groupPickerHide()
+    fillGroups()
   })
 }
 
