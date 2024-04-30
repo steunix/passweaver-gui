@@ -162,7 +162,8 @@ function itemCreate() {
     }
 
     if ( resp.data.id ) {
-      location.reload()
+      itemCreateDialogHide()
+      fillItems()
     } else {
       errorDialog(resp.message)
     }
@@ -184,7 +185,7 @@ function itemRemove(itm) {
         return
       }
 
-      location.reload()
+      fillItems()
     })
   })
 }
@@ -236,7 +237,8 @@ function itemEdit() {
       return
     }
 
-    location.reload()
+    itemEditDialogHide()
+    fillItems()
   })
 }
 
@@ -435,7 +437,7 @@ function itemClone(itm) {
         return
       }
 
-      location.reload()
+      fillItems()
     })
   })
 }
@@ -564,6 +566,16 @@ function passwordAccessed(item) {
     itemtype: 'item',
     itemid: item
   })
+}
+
+function itemCreateDialogHide() {
+  var dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("newitemdialog"), {})
+  dialog.hide()
+}
+
+function itemEditDialogHide() {
+  var dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("edititemdialog"), {})
+  dialog.hide()
 }
 
 $(()=>{
