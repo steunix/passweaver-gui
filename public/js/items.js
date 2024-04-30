@@ -79,7 +79,7 @@ function fillItems() {
     })
 
     // Folder cannot be removed if not empty
-    if ( $("#itemstable tbody tr").length ) {
+    if ( $("#itemstable [id^='row-']").length ) {
       $("#removefolder").attr("disabled","disabled")
     }
   })
