@@ -410,12 +410,12 @@ export async function groupRemoveUser(session, group, user) {
 
 /**
  * Create a user
- * @param {Object} session
- * @param {Object} user
+ * @param {Object} session Session object
+ * @param {Object} userData User data
  * @returns
  */
-export async function userCreate(session, user) {
-  const resp = await passWeaverAPI(session, "post", `/users/${user}`)
+export async function userCreate(session, userData) {
+  const resp = await passWeaverAPI(session, "post", `/users/`, userData)
   return resp
 }
 
