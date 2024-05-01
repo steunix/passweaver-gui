@@ -21,7 +21,7 @@ function searchGroups() {
       var row = ""
       for ( const grp of resp.data ) {
         row += `<tr id='row-${grp.id}' data-id='${grp.id}'>`
-        row += `<td><i id='choose-${grp.id}' data-id='${grp.id}' class='fa-solid fa-circle-check text-success'"></i></td>`
+        row += `<td><i id='choose-${grp.id}' data-id='${grp.id}' class='fa-solid fa-circle-check text-success v-action'"></i></td>`
         row += `<td>${grp.description}</td>`
         row += "</tr>"
       }

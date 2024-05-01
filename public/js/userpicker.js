@@ -21,7 +21,7 @@ function searchUsers() {
       var row = ""
       for ( const usr of resp.data ) {
         row += `<tr id='row-${usr.id}' data-id='${usr.id}'>`
-        row += `<td><i id='user-${usr.id}' data-id='${usr.id}' class='fa-solid fa-circle-check text-success'></i></td>`
+        row += `<td><i id='user-${usr.id}' data-id='${usr.id}' class='fa-solid fa-circle-check text-success v-action'></i></td>`
         row += `<td>${usr.login}</td>`
         row += `<td>${usr.lastname} ${usr.firstname}</td>`
         row += "</tr>"
