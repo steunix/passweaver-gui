@@ -1,5 +1,4 @@
 var currentFolder = ""
-var folderSearchTimeout
 
 function fillGroups() {
   loadingShow($("#groupstable"))
@@ -59,8 +58,35 @@ function folderClicked(ev) {
 
   localStorage.setItem(`bstreeview_open_folderstree_${ getUser() }`,currentFolder)
 
-  // Load groups
-  fillGroups()
+  $.get(`/api/folders/${currentFolder}`,(resp)=>{
+
+    // Folder may not be accessible
+    if ( !checkResponse(resp,"403") ) {
+      return
+    }
+
+    if ( resp.data && resp.data.permissions ) {
+      currentPermissions = resp.data.permissions
+    } else {
+      currentPermissions = { read: false, write: false }
+    }
+
+    // Load groups
+    fillGroups()
+
+    if ( currentPermissions.write ) {
+      $("#newitem").removeAttr("disabled")
+      $("#newfolder").removeAttr("disabled")
+      $("#removefolder").removeAttr("disabled")
+      $("#editfolder").removeAttr("disabled")
+    } else {
+      $("#newitem").attr("disabled","disabled")
+      $("#newfolder").attr("disabled","disabled")
+      $("#removefolder").attr("disabled","disabled")
+      $("#editfolder").attr("disabled","disabled")
+    }
+  })
+
 }
 
 function groupRemove(ev) {

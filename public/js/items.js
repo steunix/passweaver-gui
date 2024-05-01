@@ -1,10 +1,5 @@
 var currentFolder = ""
-var currentPermissions = {
-  read: false,
-  write: false
-}
 var itemSearchTimeout
-var folderSearchTimeout
 
 function fillItems() {
   $.get("/api/itemslist/"+currentFolder+"?search="+$("#itemsearch").val(),(resp)=>{
@@ -107,7 +102,7 @@ function folderClicked(ev, selectonly) {
 
   // Read folder info
   $("#itemstable tbody tr").remove()
-  $.get("/api/folders/"+currentFolder,(resp)=>{
+  $.get(`/api/folders/${currentFolder}`,(resp)=>{
 
     // Folder may not be accessible
     if ( !checkResponse(resp,"403") ) {
@@ -251,76 +246,6 @@ function toggleEditPassword() {
   }
 }
 
-function folderCreateEnable() {
-  if ( $("#newfolderdescription").val()=="" ) {
-    $("#foldercreate").attr("disabled","disabled")
-  } else {
-    $("#foldercreate").removeAttr("disabled")
-  }
-}
-
-function folderCreate() {
-  let itemdata = {
-    _csrf: $("#_csrf").val(),
-    description: $("#newfolderdescription").val()
-  }
-
-  $.post("/api/foldernew/"+currentFolder, itemdata, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
-
-    location.reload()
-  })
-}
-
-function folderRemove() {
-  confirm("Remove folder", "Are you sure you want to remove this folder?", ()=> {
-    $.post("/api/folderremove/"+currentFolder, {_csrf: $("#_csrf").val()}, (resp)=> {
-      if ( !checkResponse(resp) ) {
-        return
-      }
-
-      location.reload()
-    })
-  })
-}
-
-function folderEditEnable() {
-  if ( $("#foldereditdescription").val()=="" ) {
-    $("#folderedit").attr("disabled","disabled")
-  } else {
-    $("#folderedit").removeAttr("disabled")
-  }
-}
-
-function folderEditFill() {
-  $("#foldereditid").val(currentFolder)
-
-  $.get("/api/folders/"+currentFolder, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
-
-    $("#foldereditdescription").val(resp.data.description)
-  })
-}
-
-function folderEdit() {
-  let data = {
-    _csrf: $("#_csrf").val(),
-    description: $("#foldereditdescription").val()
-  }
-
-  $.post("/api/folderupdate/"+$("#foldereditid").val(), data, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
-
-    location.reload()
-  })
-}
-
 function toggleViewPassword() {
   if ( $("#viewpassword").attr("type")=="password") {
     $("#viewpassword").attr("type","text")
@@ -364,19 +289,9 @@ $(function() {
     itemEditFill($(ev.relatedTarget).data("id"))
   })
 
-  // Reset new folder dialog fields
-  $("#newfolderdialog").on("hidden.bs.modal", ()=> {
-    $("#newfolderdialog input,textarea").val("")
-  })
-
   // Autofocus
-  $("#newitemdialog,#edititemdialog,#newfolderdialog").on("shown.bs.modal", (ev)=> {
+  $("#newitemdialog,#edititemdialog").on("shown.bs.modal", (ev)=> {
     $(this).find("[autofocus]").focus()
-  })
-
-  // Get the folder data to be edited
-  $("#editfolderdialog").on("show.bs.modal", (ev)=> {
-    folderEditFill($(ev.relatedTarget).data("id"))
   })
 
   // Get the item data to be shown
@@ -384,51 +299,6 @@ $(function() {
     itemViewFill($(ev.relatedTarget).data("id"))
   })
 })
-
-var searchFolderIndex = 0
-function searchFolder(start,direction) {
-  if ( start===undefined ) {
-    searchFolderIndex = 0
-  }
-
-  var search = $("#foldersearch").val().toLowerCase()
-  var folders = $("span[id^=treedesc]")
-
-  var index = 0
-  for ( const folder of folders ) {
-    if ( $(folder).html().toLowerCase().includes(search) ) {
-      if ( index==searchFolderIndex ) {
-        var parents = $(folder).parents()
-        for ( const parent of parents ) {
-          // Expand parents
-          if ( $(parent).attr("role")=="group" && !$(parent).hasClass("show") ) {
-            const id = "#" + $(parent).attr("id")
-            const el = $(`[data-bs-target='${id}']`)
-            $(el).find("i").click()
-          }
-        }
-        folderClicked( ''+$(folder).data("id") )
-        return true
-      }
-      index++
-    }
-  }
-  return false
-}
-
-function searchFolderNext() {
-  searchFolderIndex++
-  if ( !searchFolder(searchFolderIndex, 0) ) {
-    searchFolderIndex--
-  }
-}
-
-function searchFolderPrevious() {
-  searchFolderIndex--
-  if ( !searchFolder(searchFolderIndex, 1) ) {
-    searchFolderIndex++
-  }
-}
 
 function itemClone(itm) {
   confirm("Clone item", "Do you want to clone this item?", ()=>{
@@ -594,22 +464,8 @@ $(()=>{
     }
   })
 
-  // Event handlers
-  $("#newfolderdescription").on("keyup",(ev)=>{
-    folderCreateEnable()
-  })
-  $("#foldercreate").on("click",(ev)=>{
-    folderCreate()
-  })
-  $("#foldereditdescription").on("keyup",(ev)=>{
-    folderEditEnable()
-  })
-  $("#folderedit").on("click",(ev)=>{
-    folderEdit()
-  })
-  $("#removefolder").on("click",(ev)=>{
-    folderRemove()
-  })
+
+
   $("#itemcreate").on("click",(ev)=>{
     itemCreate()
   })
@@ -666,24 +522,10 @@ $(()=>{
     itemSearchTimeout = setTimeout(fillItems,250)
   })
 
-  $("#foldersearch").on("keyup", (ev)=> {
-    if ( folderSearchTimeout ) {
-      clearTimeout(folderSearchTimeout)
-    }
-    folderSearchTimeout = setTimeout(searchFolder,250)
-  })
-
   if ( $("#viewitem").length ) {
     findAndShowItem($("#viewitem").val())
   }
 
-  $("#foldersearchnext").on("click", (ev)=>{
-    searchFolderNext()
-  })
-
-  $("#foldersearchprevious").on("click", (ev)=>{
-    searchFolderPrevious()
-  })
 
   $("#copyviewpassword").on("click", (ev)=>{
     passwordAccessed($("#itemviewid").val())

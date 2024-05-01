@@ -12,6 +12,9 @@
     <div class="col-md-3">
       <h5>Folders</h5>
       <div class="d-flex">
+        <button id="newfolder" type="button" title="New subfolder" class="btn btn-sm btn-primary flex-shrink-0 me-1" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newfolderdialog"><span class='fa-solid fa-folder-plus'/></button>
+        <button id="editfolder" type="button" title="Edit folder" class="btn btn-sm btn-secondary flex-shrink-0 me-1" disabled="disabled" data-bs-toggle="modal" data-bs-target="#editfolderdialog"><span class='fa-solid fa-pen'/></button>
+        <button id="removefolder" type="button" title="Remove folder" class="btn btn-sm btn-danger flex-shrink-0 me-3" disabled="disabled"><span class='fa-solid fa-trash'/></button>
         <div class="input-group">
           <input id="foldersearch" type="text" class="form-control" placeholder="Search folder">
           <button class="btn btn-secondary" title="Search previous" type="button" id="foldersearchprevious"><span class="fa-solid fa-chevron-left"></span></button>
@@ -48,5 +51,6 @@
 </div>
 
 <script src="/public/js/folders.js"></script>
+<script src="/public/js/folders_shared.js"></script>
 
 <%- include('partials/footer.ejs') %>
