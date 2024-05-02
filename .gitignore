@@ -5,3 +5,4 @@ node_modules
 passweaver-gui.code-workspace
 sessions
 config.json
+log

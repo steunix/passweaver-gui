@@ -16,6 +16,7 @@ const configSchema = {
     "listen_port": { "type": "integer", "minimum": 1, "maximum": 65535 },
     "passweaverapi_url": { "type": "string" },
     "company_name": { "type": "string" },
+    "log_dir": { "type": "string" },
     "https": {
       "type": "object",
       "properties": {
@@ -26,7 +27,7 @@ const configSchema = {
       "required": [ "enabled" ]
     }
   },
-  "required": ["listen_port", "passweaverapi_url", "company_name", "https"]
+  "required": ["listen_port", "passweaverapi_url", "company_name", "https", "log_dir"]
 }
 
 // Reads package.json

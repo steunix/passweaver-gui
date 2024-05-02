@@ -13,6 +13,8 @@ import helmet from 'helmet'
 import https from 'https'
 import FS from 'fs'
 import prettyBytes from 'pretty-bytes'
+import Morgan from "morgan"
+import RFS from "rotating-file-stream"
 
 import * as Config from './src/config.mjs'
 import * as PassWeaver from './src/passweaver.mjs'
@@ -92,6 +94,23 @@ app.use("/public", Express.static('public'))
 
 // Rate limiter
 app.use("/access", rateLimitMiddleware)
+
+if ( !FS.existsSync(cfg.log_dir) ) {
+  FS.mkdirSync(cfg.log_dir)
+}
+
+// Log requests
+const logAccess = RFS.createStream(`${cfg.log_dir}/passweaver-gui-access.log`, {
+  interval: "1d",
+  rotate: 14
+})
+app.use(Morgan('combined', { stream: logAccess }))
+
+// Log errors
+const logErrors = RFS.createStream(`${cfg.log_dir}/passweaver-gui-errors.log`, {
+  interval: "1d",
+  rotate: 14
+})
 
 // Common parameters to pass to pages
 function commonParams(req) {
@@ -455,6 +474,10 @@ app.post("/api/events", async(req,res)=> {
 
 // Error handler
 app.use((err, req, res, next)=> {
+  logErrors.write(`[${(new Date()).toString()}]\n`)
+  logErrors.write(`${req.method} ${req.originalUrl}\n`)
+  logErrors.write(`${err.stack}\n`)
+  logErrors.write(`err.message\n`)
   res.redirect("/logout?error="+encodeURIComponent(err))
 })
 
