@@ -613,12 +613,12 @@ export async function addEvent(req, session, event, itemtype, itemid) {
 }
 
 /**
- * Stats
+ * Info
  * @param {Object} session Session
  * @returns
  */
-export async function stats(session) {
-  const resp = await passWeaverAPI(session, "get", "/util/stats")
+export async function info(session) {
+  const resp = await passWeaverAPI(session, "get", "/util/info")
 
   return resp
 }

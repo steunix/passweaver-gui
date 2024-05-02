@@ -218,14 +218,14 @@ app.get("/pages/generate", async (req,res)=>{
   res.render('generate', { ...req.locals, ...commonParams(req) })
 })
 
-// Stats
-app.get("/pages/stats", async(req,res)=> {
+// Info
+app.get("/pages/info", async(req,res)=> {
   var page = {
-    pagetitle: "Stats",
-    pageid: "stats"
+    pagetitle: "Info",
+    pageid: "info"
   }
 
-  const resp = await PassWeaver.stats(req.session)
+  const resp = await PassWeaver.info(req.session)
 
   page.guiVersion = Config.packageJson().version
   page.guiStartup = Config.get().startuptime
@@ -236,7 +236,7 @@ app.get("/pages/stats", async(req,res)=> {
   page.items = resp.data.items
   page.cacheSize = prettyBytes(resp.data.cacheSize ?? 0)
 
-  res.render('stats', { ...page, ...commonParams(req) })
+  res.render('info', { ...page, ...commonParams(req) })
 })
 
 /**

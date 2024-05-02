@@ -73,6 +73,6 @@ In the "Search" page you can search items with a matching title or username. Jus
 
 ![Groups page](assets/passweavergui-groups.jpeg)
 
-## Stats
+## Info
 
-![Stats page](assets/passweavergui-stats.jpeg)
+![Info page](assets/passweavergui-info.jpeg)
