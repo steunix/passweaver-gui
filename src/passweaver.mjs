@@ -464,6 +464,16 @@ export async function folderGroups(session, folder) {
 }
 
 /**
+ * Get user groups
+ * @param {Object} session Session object
+ * @param {string} user User ID
+ */
+export async function userGroups(session, user) {
+  const resp = await passWeaverAPI(session, "get", `/users/${user}/groups`)
+  return resp
+}
+
+/**
  * Add a group to a folder
  * @param {Object} session Session object
  * @param {string} folder Folder

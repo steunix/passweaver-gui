@@ -146,7 +146,7 @@ function userPickerChoosen(id) {
 }
 
 function groupRemoveUser(id) {
-  confirm("Remove user from group", "Are you sure you want to remove the user?", ()=> {
+  confirm("Remove user from group", "Are you sure you want to remove the user from the group?", ()=> {
     $.post("/api/groupremoveuser/"+currentGroup+"/"+id, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
@@ -219,7 +219,7 @@ $(function() {
   })
 
   // Autofocus
-  $("#newgroupdialog,#editgroupdialog,#userpicker").on("shown.bs.modal", (ev)=> {
+  $("#newgroupdialog,#editgroupdialog").on("shown.bs.modal", (ev)=> {
     $(this).find("[autofocus]").focus()
   })
 })

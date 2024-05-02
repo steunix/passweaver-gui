@@ -26,6 +26,11 @@ i {
     font-weight: bold;
 }
 
+tr.v-rowselected td {
+  background-color: #fab450;
+  font-weight: bold;
+}
+
 .v-content {
     background: url('/public/images/passweaver-background.jpg') no-repeat center center fixed;
     background-size: cover;

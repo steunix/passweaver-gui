@@ -44,3 +44,7 @@ $("#grouppickersearch").on("keyup", (ev) => {
   }
   groupPickerTimeout = setTimeout(searchGroups,250)
 })
+
+$("#grouppicker").on("shown.bs.modal", (ev)=> {
+  $(ev.currentTarget).find("[autofocus]").focus()
+})

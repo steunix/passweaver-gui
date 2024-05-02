@@ -1,4 +1,5 @@
 var userSearchTimeout
+var currentUser
 
 function fillUsers() {
   $.get("/api/userslist?search="+$("#usersearch").val(),(resp)=>{
@@ -10,7 +11,7 @@ function fillUsers() {
     if ( resp.data.length ) {
       var row = ""
       for ( const itm of resp.data ) {
-        row += `<tr data-id='${itm.id}'>`
+        row += `<tr data-id='${itm.id}' style='cursor:pointer'>`
         row += `<td><i id='edit-${itm.id}' title='Edit' class='v-action fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edituserdialog" data-id='${itm.id}'></i></td>`
         row += `<td><i id='remove-${itm.id}' title='Remove' class='v-action fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
         row += `<td class='border-start'>${itm.login}</td>`
@@ -31,7 +32,36 @@ function fillUsers() {
       $("#userstable tbody tr i[id^=remove]").on("click",(ev)=>{
         userRemove($(ev.currentTarget).data("id"))
       })
+      $("#userstable tbody tr").on("click",(ev)=>{
+        currentUser = $(ev.currentTarget).data("id")
+        $(ev.currentTarget).addClass("v-rowselected").siblings().removeClass("v-rowselected")
+        fillGroups()
+      })
     }
+  })
+}
+
+function fillGroups() {
+  loadingShow($("#groupstable"))
+
+  $("#groupstable tbody tr").remove()
+  $.get("/api/usergroups/"+currentUser,(resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
+    if ( resp.data.length ) {
+      var row = "<tr>"
+      for ( const itm of resp.data ) {
+        row += `<td><i id='removegroup-${itm.id}' data-id='${itm.id}' class='v-action fa-solid fa-trash text-danger' title='Remove'></i></td>`
+        row += `<td>${itm.description}</td></tr>`
+      }
+      $("#groupstable tbody").append(row)
+
+      // Event handlers
+      $("i[id^=removegroup]").on("click", groupRemove)
+    }
+    loadingHide($("#groupstable"))
   })
 }
 
@@ -183,6 +213,30 @@ $(function() {
     $(this).find("[autofocus]").focus()
   })
 })
+
+function groupRemove(ev) {
+  const group = $(ev.currentTarget).data("id")
+  confirm("Remove user from group", "Are you sure you want to remove the user from the group?", ()=> {
+    $.post(`/api/groupremoveuser/${group}/${currentUser}`, {_csrf: $("#_csrf").val()}, (resp)=> {
+      if ( !checkResponse(resp) ) {
+        return
+      }
+
+      fillGroups()
+    })
+  })
+}
+
+function groupPickerChoosen(group) {
+  $.post(`/api/groupadduser/${group}/${currentUser}`, {_csrf: $("#_csrf").val()}, (resp)=> {
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
+    groupPickerHide()
+    fillGroups()
+  })
+}
 
 $(()=>{
   fillUsers()

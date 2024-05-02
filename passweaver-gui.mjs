@@ -412,6 +412,12 @@ app.post("/api/userremove/:user", async (req,res)=> {
   res.status(200).json(resp)
 })
 
+// Get user's groups
+app.get("/api/usergroups/:id", async (req,res)=> {
+  const resp = await PassWeaver.userGroups(req.session, req.params.id)
+  res.status(200).json(resp)
+})
+
 // Generate random password
 app.get("/api/generatepassword", async(req,res)=> {
   const resp = await PassWeaver.generatePassword(req.session)

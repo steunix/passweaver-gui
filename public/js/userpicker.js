@@ -46,4 +46,6 @@ $("#userpickersearch").on("keyup", (ev) => {
   userPickerTimeout = setTimeout(searchUsers,250)
 })
 
-$("#userpickerc")
+$("#userpicker").on("shown.bs.modal", (ev)=> {
+  $(ev.currentTarget).find("[autofocus]").focus()
+})
