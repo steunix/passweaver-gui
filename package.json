@@ -1,6 +1,6 @@
 {
   "name": "passweaver-gui",
-  "version": "1.0.0beta2",
+  "version": "1.0.0beta3",
   "description": "Collaborative password manager GUI",
   "main": "passweaver-gui.mjs",
   "scripts": {},
@@ -14,7 +14,7 @@
     "compression": "^1.7.4",
     "lusca": "^1.7.0",
     "helmet": "^7.1.0",
-    "ejs": "^3.1.9",
+    "ejs": "^3.1.10",
     "got": "^14.0.0",
     "jsonwebtoken": "^9.0.2",
     "pretty-bytes": "",
