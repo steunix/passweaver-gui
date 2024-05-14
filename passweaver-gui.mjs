@@ -19,12 +19,10 @@ import RFS from "rotating-file-stream"
 import * as Config from './src/config.mjs'
 import * as PassWeaver from './src/passweaver.mjs'
 import session from 'express-session'
-import FileStore from 'session-file-store'
 import jsonwebtoken from 'jsonwebtoken'
 import rateLimitMiddleware from "./src/ratelimiter.mjs"
 import lusca from 'lusca'
 
-const fileStore = FileStore(session)
 export const app = Express()
 
 const cfg = Config.get()
@@ -45,7 +43,6 @@ app.use(Express.urlencoded({ extended: true }))
 // Session middleware
 app.use(session({
   name: "passweavergui",
-  //store: new fileStore({}),
   secret: cfg.session_key,
   resave: false,
   saveUninitialized: false,
