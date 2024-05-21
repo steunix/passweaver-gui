@@ -11,6 +11,7 @@
     --theme-header-bgcolor: var(--theme-sidebar-bgcolor);
     --theme-header-color: rgb(255, 255, 255);
     --theme-page-border-color: rgb(173, 173, 173);
+    --bottom-margin: 11rem;
     --cell-padding: 0.4em;
     --sl-input-font-family: var(--theme-font);
     --sl-input-required-content-color: red;
@@ -107,6 +108,7 @@ body {
     grid-area: main2;
     padding-left: 1em;
     max-height: calc(100vh - 4rem);
+    min-width: 0;
 }
 
 /** Customization */

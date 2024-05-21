@@ -17,7 +17,7 @@
         New user
       </sl-button>
     </div>
-    <table id="userstable" style="display:block; max-height: calc(100vh - 12rem); overflow-y: auto;">
+    <table id="userstable" style="display:block; max-height: calc(100vh - var(--bottom-margin)); overflow-y: auto;">
       <thead>
         <tr class="sticky">
           <th colspan="2">Actions</th>
@@ -37,11 +37,13 @@
 
   <div class="main2">
     <h2>Groups</h2>
-    <sl-button id="addgroup" type="button" title="Add group">
-      <sl-icon slot="prefix" name="plus-lg"></sl-icon>
-      Add group
-    </sl-button>
-    <table id="groupstable">
+    <div style="display: flex;">
+      <sl-button id="addgroup" type="button" title="Add group">
+        <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+        Add group
+      </sl-button>
+    </div>
+    <table id="groupstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;" class="bordered">
       <thead>
         <tr class="sticky-top">
           <th>Actions</th>
