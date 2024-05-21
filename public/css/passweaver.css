@@ -1,98 +1,121 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
 
+:root {
+    --theme-font: "Roboto Condensed";
+    --theme-font-size: 14px;
+    --theme-color: #ea9e34;
+    --theme-sidebar-bgcolor: #474747;
+    --theme-sidebar-color: rgb(255, 255, 255);
+    --theme-sidebar-current-bgcolor: var(--theme-color);
+    --theme-sidebar-current-color: rgb(255, 255, 255);
+    --theme-header-bgcolor: var(--theme-sidebar-bgcolor);
+    --theme-header-color: rgb(255, 255, 255);
+    --theme-page-border-color: rgb(173, 173, 173);
+    --cell-padding: 0.4em;
+    --sl-input-font-family: var(--theme-font);
+    --sl-input-required-content-color: red;
+    --indent-guide-width: 1px;
+}
+
 body {
-    font-family: "Roboto Condensed";
-    font-size: 90%;
+    margin: 0;
+    padding: 0;
+    font-family: var(--theme-font);
+    font-size: var(--theme-font-size);
 }
 
-i {
-    font-size: 1rem;
+/** CSS Grid */
+.login-container {
+    display: grid;
+    grid-template-areas:
+      "header"
+      "main";
+    grid-template-rows: 3em auto;
+    height: 100vh;
+    gap: 1px;
 }
 
-.v-themecolor {
-    color: #fab450;
+.login-content {
+    display: grid;
+    grid-area: main;
+    place-self: center;
+    width: 20%;
 }
 
-.v-themebg {
-    background-color: #fab450;
+.page-container {
+    display: grid;
+    grid-template-areas:
+      "sidebar header header"
+      "sidebar main1 main2";
+    grid-template-rows: 3em 100vh;
+    grid-template-columns: 10em auto 1fr;
+    height: 100vh;
+    max-height: 100vh;
 }
 
-.v-loginbg {
-    background-color: #edf4ff;
+.page-sidebar {
+    grid-area: sidebar;
+    background-color: var(--theme-sidebar-bgcolor);
+    color: var(--theme-sidebar-color);
+    max-height: calc(100vh);
 }
 
-.v-treeselected {
-    background-color: #fab450;
+.page-sidebar .link {
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    padding: 1em 0 1em 1em;
+    margin: 0 0.5em 0 0.5em;
+    color: var(--theme-sidebar-color);
+    border-radius: 8px;
+}
+
+.page-sidebar .link:hover {
+  background-color: #636363;
+}
+
+.page-sidebar .current {
+    background-color: var(--theme-sidebar-current-bgcolor);
+    color: var(--theme-sidebar-current-color);
+}
+
+.page-sidebar .logo {
+    text-align: center;
+    margin: 1.5em 0 1.5em 0;
+}
+
+.header {
+    display: grid;
+    padding: 0;
+    margin: 0;
+    grid-area: header;
+    align-items: center;
+    text-align: center;
+    background-color: var(--theme-header-bgcolor);
+    color: var(--theme-header-color);
+    font-size: 150%;
     font-weight: bold;
 }
 
-tr.v-rowselected td {
-  background-color: #fab450;
-  font-weight: bold;
+.main1 {
+    grid-area: main1;
+    padding-left: 1em;
+    max-height: calc(100vh - 4rem);
 }
 
-.v-content {
-    background: url('/public/images/passweaver-background.jpg') no-repeat center center fixed;
-    background-size: cover;
+.main2 {
+    grid-area: main2;
+    padding-left: 1em;
+    max-height: calc(100vh - 4rem);
 }
 
-.v-stickybottom {
-    overflow-y: auto;
-    overflow-x: hidden;
-    max-height: calc(100vh - 10rem);
-}
-
-.v-blur {
-    filter: blur(1px) grayscale(100%) opacity(50%)
-}
-
-div[role=treeitem] {
-    padding-top: 0.30rem !important;
-    padding-bottom: 0 !important;
-}
-
-.collapsing {
-    transition: none !important;
-}
-
-.v-container {
-    height: 100vh;
-}
-
-.v-topbar {
-    height: 3rem;
-}
-
-.v-pagetitle {
-    height: 2em;
-}
-
+/** Customization */
 .v-spinner {
     height: 100vh;
     display:flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.v-overlay {
-    position: fixed;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 2000;
-    background-color:#eeeeeeaa;
-}
-
-.v-action {
-  cursor: pointer;
-  font-size: 90%;
-  opacity: 0.7;
-  padding-right: 0.5rem;
-}
-
-.v-action:hover {
-  opacity: 1;
 }
 
 .spinner-border {
@@ -108,7 +131,86 @@ div[role=treeitem] {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #fab450;
+    background: var(--theme-color);
+    border-radius: 4px;
+}
+
+#errordialog::part(header) {
+    color: red;
+}
+#errordialog::part(panel) {
     border-radius: 8px;
-    -box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    text-align: start;
+    background-color: var(--sl-color-gray-100);
+}
+
+th,td {
+    padding: var(--cell-padding);
+}
+
+tr {
+    border-inline-start-color: transparent;
+    border-inline-end-color: transparent;
+    border-inline-width: 3px;
+    border-inline-style: solid;
+}
+
+tr:hover {
+    background-color: var(--sl-color-neutral-100);
+}
+.bordered {
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--sl-color-neutral-200)
+}
+
+.border-start {
+    border-width: 0 0 0 1px;
+    border-style: solid;
+    border-color: var(--sl-color-neutral-200)
+}
+
+.border-end {
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    border-color: var(--sl-color-neutral-200)
+}
+
+.sticky {
+    position: sticky;
+    top: 0;
+}
+
+.rowselected {
+    border-inline-start-color: var(--sl-color-primary-600);
+    border-inline-width: 3px;
+    border-inline-style: solid;
+    background-color: var(--sl-color-neutral-200);
+    font-weight: bold;
+}
+
+/* Shoelace */
+sl-tree-item::part(label) {
+    font-family: var(--theme-font);
+    font-size: var(--theme-font-size);
+}
+
+sl-tree {
+    --indent-guide-width: 1px;
+}
+
+sl-input,sl-button,sl-select,sl-textarea {
+    margin-bottom: 0.5em;
+}
+
+*::part(form-control-label) {
+    font-size: 90%;
 }

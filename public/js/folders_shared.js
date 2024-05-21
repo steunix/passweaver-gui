@@ -5,58 +5,81 @@ var currentPermissions = {
   write: false
 }
 
+function currentFolder() {
+  try {
+    return document.querySelector("sl-tree-item[selected]").getAttribute("data-id")
+  } catch (err) {
+    return ""
+  }
+}
+
+function folderCreateDialog() {
+  const dialog = document.querySelector("#foldercreatedialog")
+  $("#foldercreatedialog sl-input,sl-textarea").val("")
+  folderCreateEnable()
+  dialog.show()
+}
+
 function folderCreateEnable() {
-  if ( $("#newfolderdescription").val()=="" ) {
-    $("#foldercreate").attr("disabled","disabled")
+  if ( $("#foldercreatedescription").val()=="" ) {
+    $("#foldercreatesave").attr("disabled","disabled")
   } else {
-    $("#foldercreate").removeAttr("disabled")
+    $("#foldercreatesave").removeAttr("disabled")
   }
 }
 
 function folderCreate() {
   let itemdata = {
     _csrf: $("#_csrf").val(),
-    description: $("#newfolderdescription").val()
+    description: $("#foldercreatedescription").val()
   }
 
-  $.post("/api/foldernew/"+currentFolder, itemdata, (resp)=> {
+  $.post(`/api/foldernew/${currentFolder()}`, itemdata, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
 
-    location.reload()
+    showToast("success", "Folder created")
+    document.querySelector("#foldercreatedialog").hide()
+    fillFolders()
   })
 }
 
 function folderRemove() {
-  confirm("Remove folder", "Are you sure you want to remove this folder?", ()=> {
-    $.post("/api/folderremove/"+currentFolder, {_csrf: $("#_csrf").val()}, (resp)=> {
+  confirmDialog("Remove folder", "Are you sure you want to remove this folder?", ()=> {
+    $.post(`/api/folderremove/${currentFolder()}`, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
 
-      location.reload()
+      showToast("success", "Folder removed")
+      document.querySelector("#foldercreatedialog").hide()
+      fillFolders()
     })
   })
 }
 
+function folderEditDialog() {
+  document.querySelector("#foldereditdialog").show()
+  folderEditFill()
+}
+
 function folderEditEnable() {
   if ( $("#foldereditdescription").val()=="" ) {
-    $("#folderedit").attr("disabled","disabled")
+    $("#foldereditsave").attr("disabled","disabled")
   } else {
-    $("#folderedit").removeAttr("disabled")
+    $("#foldereditsave").removeAttr("disabled")
   }
 }
 
 function folderEditFill() {
-  $("#foldereditid").val(currentFolder)
-
-  $.get("/api/folders/"+currentFolder, (resp)=> {
+  $.get(`/api/folders/${currentFolder()}`, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
 
     $("#foldereditdescription").val(resp.data.description)
+    folderEditEnable()
   })
 }
 
@@ -66,108 +89,81 @@ function folderEdit() {
     description: $("#foldereditdescription").val()
   }
 
-  $.post("/api/folderupdate/"+$("#foldereditid").val(), data, (resp)=> {
+  $.post(`/api/folderupdate/${currentFolder()}`, data, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
 
-    location.reload()
+    showToast("success", "Folder updated")
+    document.querySelector("#foldereditdialog").hide()
+    fillFolders()
   })
 }
 
-var searchFolderIndex = 0
-function searchFolder(start,direction) {
-  if ( start===undefined ) {
-    searchFolderIndex = 0
-  }
-
-  var search = $("#foldersearch").val().toLowerCase()
-  var folders = $("span[id^=treedesc]")
-
-  var index = 0
-  for ( const folder of folders ) {
-    if ( $(folder).html().toLowerCase().includes(search) ) {
-      if ( index==searchFolderIndex ) {
-        var parents = $(folder).parents()
-        for ( const parent of parents ) {
-          // Expand parents
-          if ( $(parent).attr("role")=="group" && !$(parent).hasClass("show") ) {
-            const id = "#" + $(parent).attr("id")
-            const el = $(`[data-bs-target='${id}']`)
-            $(el).find("i").click()
-          }
-        }
-        folderClicked( ''+$(folder).data("id") )
-        return true
-      }
-      index++
+function fillFolders() {
+  $.get("/api/folderstree", (resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
     }
-  }
-  return false
-}
 
-function searchFolderNext() {
-  searchFolderIndex++
-  if ( !searchFolder(searchFolderIndex, 0) ) {
-    searchFolderIndex--
-  }
-}
-
-function searchFolderPrevious() {
-  searchFolderIndex--
-  if ( !searchFolder(searchFolderIndex, 1) ) {
-    searchFolderIndex++
-  }
+    $("sl-tree-item").remove()
+    treeFill("folderstree",resp.data,null,folderClicked)
+  })
 }
 
 $(function() {
   // Event handlers
-  $("#newfolderdescription").on("keyup",(ev)=>{
+  $("#foldercreatedescription").on("keyup",(ev)=>{
     folderCreateEnable()
   })
 
-  $("#foldercreate").on("click",(ev)=>{
+  $("#folderremove").on("click", (ev)=>{
+    folderRemove()
+  })
+  $("#folderedit").on("click", (ev)=>{
+    folderEditDialog()
+  })
+  $("#foldercreate").on("click", (ev)=>{
+    if ( currentFolder()==="" ) {
+      errorDialog("Select a parent folder")
+      return
+    }
+    folderCreateDialog()
+  })
+
+  $("#foldercreatesave").on("click", (ev)=>{
     folderCreate()
+  })
+  $("#foldercreatecancel").on("click", (ev)=> {
+    document.querySelector("#foldercreatedialog").hide()
   })
 
   $("#foldereditdescription").on("keyup",(ev)=>{
     folderEditEnable()
   })
-
-  $("#folderedit").on("click",(ev)=>{
+  $("#foldereditcancel").on("click", (ev)=> {
+    document.querySelector("#foldereditdialog").hide()
+  })
+  $("#foldereditsave").on("click", (ev)=>{
     folderEdit()
   })
-  $("#removefolder").on("click",(ev)=>{
-    folderRemove()
-  })
 
-  $("#foldersearch").on("keyup", (ev)=> {
+  $("#foldersearch").on("sl-input", (ev)=> {
     if ( folderSearchTimeout ) {
       clearTimeout(folderSearchTimeout)
     }
-    folderSearchTimeout = setTimeout(searchFolder,250)
+    folderSearchTimeout = setTimeout(()=>{
+      const search = document.querySelector("#foldersearch").value
+      treeSearch("folderstree", search)
+    },250)
   })
 
   $("#foldersearchnext").on("click", (ev)=>{
-    searchFolderNext()
+    const search = document.querySelector("#foldersearch").value
+    treeSearchNext("folderstree", search)
   })
-
   $("#foldersearchprevious").on("click", (ev)=>{
-    searchFolderPrevious()
-  })
-
-  // Reset new folder dialog fields
-  $("#newfolderdialog").on("hidden.bs.modal", ()=> {
-    $("#newfolderdialog input,textarea").val("")
-  })
-
-  // Autofocus
-  $("#newfolderdialog").on("shown.bs.modal", (ev)=> {
-    $(this).find("[autofocus]").focus()
-  })
-
-  // Get the folder data to be edited
-  $("#editfolderdialog").on("show.bs.modal", (ev)=> {
-    folderEditFill($(ev.relatedTarget).data("id"))
+    const search = document.querySelector("#foldersearch").value
+    treeSearchPrevious("folderstree", search)
   })
 })

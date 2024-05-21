@@ -1,53 +1,67 @@
 <%- include('partials/header.ejs') %>
 
-<div class="container-fluid v-container">
+<div class="page-container">
 
-<div class="row">
+  <%- include('partials/topbar.ejs') %>
   <%- include('partials/sidebar.ejs') %>
-  <div class="col-sm min-vh-100">
-    <%- include('partials/toasts.ejs') %>
-    <%- include('partials/topbar.ejs') %>
-    <%- include('partials/csfr.ejs') %>
-    <div class="row">
-    <div class="col-md-3">
-      <h5>Groups</h5>
-      <div class="d-flex">
-        <button id="newgroup" type="button" title="New group" class="btn btn-sm btn-primary flex-shrink-0 me-1" data-bs-toggle="modal" data-bs-target="#newgroupdialog"><span class='fa-solid fa-add'/></button>
-        <button id="editgroup" type="button" title="Edit group" class="btn btn-sm btn-secondary flex-shrink-0 me-1" data-bs-toggle="modal" data-bs-target="#editgroupdialog"><span class='fa-solid fa-pen'/></button>
-        <button id="removegroup" type="button" title="Remove group" class="btn btn-sm btn-danger flex-shrink-0 me-3"><span class='fa-solid fa-trash'/></button>
-        <div class="input-group shadow rounded">
-          <input id="groupsearch" type="text" class="form-control" placeholder="Search group">
-          <button class="btn btn-secondary" title="Search previous" type="button" id="groupsearchprevious"><span class="fa-solid fa-chevron-left"></span></button>
-          <button class="btn btn-secondary" title="Search next" type="button" id="groupsearchnext"><span class="fa-solid fa-chevron-right"></span></button>
-        </div>
+  <%- include('partials/csfr.ejs') %>
+
+  <div class="main1">
+    <h2>Groups</h2>
+    <div style="display:flex;">
+      <div style="display:flex;margin-right:1em;">
+        <sl-input id="groupsearch" type="text" placeholder="Search group" autofocus="autofocus" clearable>
+          <sl-icon slot="suffix" name="search"></sl-icon>
+        </sl-input>
+        <sl-button title="Search previous" id="groupsearchprevious">
+          <sl-icon slot="suffix" name="chevron-left"></sl-icon>
+        </sl-button>
+        <sl-button title="Search next" id="groupsearchnext">
+          <sl-icon slot="suffix" name="chevron-right"></sl-icon>
+        </sl-button>
       </div>
-      <%- include('partials/groupstree.ejs') %>
+      <sl-button-group>
+        <sl-button id="groupcreate" type="button" title="New group">
+          <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+        </sl-button>
+        <sl-button id="groupedit" type="button" title="Edit group">
+          <sl-icon slot="prefix" name="pencil"></sl-icon>
+        </sl-button>
+        <sl-button id="groupremove" type="button" variant="danger" title="Remove group">
+          <sl-icon slot="prefix" name="trash3"></sl-icon>
+        </sl-button>
+      </sl-button-group>
     </div>
-    <div class="col-md-auto">
-      <h5>Members</h5>
-      <button id="newmember" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#userpicker">Add member</button>
-      <div class="mt-3 v-stickybottom shadow rounded">
-      <table id="userstable" class="table table-hover table-borderless w-auto">
-        <thead>
-          <tr class="sticky-top">
-            <th>Actions</th>
-            <th>Login</th>
-            <th>Last name</th>
-            <th>First name</th>
-          </tr>
-        </thead>
-        <tbody>
-        </tbody>
-      </table>
-      </div>
+    <%- include('partials/groupstree.ejs') %>
+  </div>
+
+  <div class="main2">
+    <h2>Members</h2>
+    <div style="display:flex;">
+      <sl-button id="newmember">
+        <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+        Add member
+      </sl-button>
     </div>
-    </div>
+    <table id="userstable" style="display:block; max-height: calc(100vh - 12rem); width: auto; overflow-y: auto;">
+      <thead>
+        <tr style="position:sticky; top:0;">
+          <th>Actions</th>
+          <th>Login</th>
+          <th>Last name</th>
+          <th>First name</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <%- include('partials/commondialogs.ejs') %>
 <%- include("partials/groupnew.ejs") %>
 <%- include("partials/groupedit.ejs") %>
+<%- include("partials/userpicker.ejs") %>
 
 </div>
 

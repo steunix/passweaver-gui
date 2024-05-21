@@ -1,10 +1,13 @@
-var currentFolder = ""
-
 function fillGroups() {
   loadingShow($("#groupstable"))
 
   $("#groupstable tbody tr").remove()
-  $.get("/api/foldergroups/"+currentFolder,(resp)=>{
+
+  if ( !currentFolder() ) {
+    return
+  }
+
+  $.get(`/api/foldergroups/${currentFolder()}`,(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
@@ -16,8 +19,8 @@ function fillGroups() {
           row += "<td colspan='2'>Inherited</td>"
         } else {
           if ( itm.canmodify ) {
-            row += `<td><i id='removegroup-${itm.id}' data-id='${itm.id}' class='v-action fa-solid fa-trash text-danger' title='Remove'></i></td>`
-            row += `<td><i id='togglegroup-${itm.id}' data-id='${itm.id}' class='v-action fa-solid fa-arrow-right-arrow-left' title='Change permission'></i></td>`
+            row += `<td><sl-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' title='Remove' style='color:red;'></sl-icon-button></td>`
+            row += `<td><sl-icon-button id='togglegroup-${itm.id}' data-id='${itm.id}' name='arrow-left-right' title='Change permissions'></sl-icon-button></td>`
           } else {
             row += "<td></td><td></td>"
           }
@@ -35,30 +38,15 @@ function fillGroups() {
       $("#groupstable tbody").append(row)
 
       // Event handlers
-      $("i[id^=removegroup]").on("click", groupRemove)
-      $("i[id^=togglegroup]").on("click", groupToggle)
+      $("[id^=removegroup]").on("click", groupRemove)
+      $("[id^=togglegroup]").on("click", groupToggle)
     }
     loadingHide($("#groupstable"))
   })
 }
 
-function folderClicked(ev) {
-  $("[role=treeitem]").removeClass("v-treeselected")
-
-  // If ev is a string, the call has been forced on an item just for items reload: calling an
-  // "onclick" directly would mess with collapse status of the folder
-  if ( typeof ev==="string" ) {
-    $("[role=treeitem][id="+ev+"]").addClass("v-treeselected")
-    ensureVisibile( $("[role=treeitem][id="+ev+"]") )
-    currentFolder = ev
-  } else {
-    $(this).addClass("v-treeselected")
-    currentFolder = this.id
-  }
-
-  localStorage.setItem(`bstreeview_open_folderstree_${ getUser() }`,currentFolder)
-
-  $.get(`/api/folders/${currentFolder}`,(resp)=>{
+function folderClicked(folderid) {
+  $.get(`/api/folders/${folderid}`,(resp)=>{
 
     // Folder may not be accessible
     if ( !checkResponse(resp,"403") ) {
@@ -91,9 +79,9 @@ function folderClicked(ev) {
 
 function groupRemove(ev) {
   const group = $(ev.currentTarget).data("id")
-  confirm("Remove group", "Are you sure you want to remove the group?", ()=>{
+  confirmDialog("Remove group", "Are you sure you want to remove the group?", ()=>{
     $.ajax({
-      url: `/api/folders/${currentFolder}/groups/${group}`,
+      url: `/api/folders/${currentFolder()}/groups/${group}`,
       type: "delete",
       data: { _csrf: $("#_csrf").val() },
       success: (resp)=>{
@@ -102,6 +90,7 @@ function groupRemove(ev) {
         }
 
         fillGroups()
+        showToast("success",  "Group removed")
       }
     })
   })
@@ -109,104 +98,33 @@ function groupRemove(ev) {
 
 function groupToggle(ev) {
   const group = $(ev.currentTarget).data("id")
-  $.post(`/api/folders/${currentFolder}/groups/${group}/toggle`, { _csrf: $("#_csrf").val() },(resp)=>{
+  $.post(`/api/folders/${currentFolder()}/groups/${group}/toggle`, { _csrf: $("#_csrf").val() },(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
 
     fillGroups()
+    showToast("success",  "Group permissions changed")
   })
 }
 
 function groupPickerChoosen(group) {
-  $.post(`/api/folders/${currentFolder}/groups/${group}`, { _csrf: $("#_csrf").val() }, (resp)=>{
+  $.post(`/api/folders/${currentFolder()}/groups/${group}`, { _csrf: $("#_csrf").val() }, (resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
 
     groupPickerHide()
     fillGroups()
+    showToast("success",  "Group added")
   })
 }
 
-var searchFolderIndex = 0
-function searchFolder(start,direction) {
-  if ( start===undefined ) {
-    searchFolderIndex = 0
-  }
-
-  var search = $("#foldersearch").val().toLowerCase()
-  var folders = $("span[id^=treedesc]")
-
-  var index = 0
-  for ( const folder of folders ) {
-    if ( $(folder).html().toLowerCase().includes(search) ) {
-      if ( index==searchFolderIndex ) {
-        var parents = $(folder).parents()
-        for ( const parent of parents ) {
-          // Expand parents
-          if ( $(parent).attr("role")=="group" && !$(parent).hasClass("show") ) {
-            const id = "#" + $(parent).attr("id")
-            const el = $(`[data-bs-target='${id}']`)
-            $(el).find("i").click()
-          }
-        }
-        folderClicked( ''+$(folder).data("id") )
-        return true
-      }
-      index++
-    }
-  }
-  return false
-}
-
-function searchFolderNext() {
-  searchFolderIndex++
-  if ( !searchFolder(searchFolderIndex, 0) ) {
-    searchFolderIndex--
-  }
-}
-
-function searchFolderPrevious() {
-  searchFolderIndex--
-  if ( !searchFolder(searchFolderIndex, 1) ) {
-    searchFolderIndex++
-  }
-}
 
 $(()=>{
-  $.get("/api/folderstree", (resp)=>{
-    if ( !checkResponse(resp) ) {
-      return
-    }
+  fillFolders()
 
-    $('#tree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: resp.data })
-    $('[role=treeitem]').on("mousedown", folderClicked)
-
-    // Open last used folder
-    const last = localStorage.getItem(`bstreeview_open_folderstree_${ getUser() }`)
-    if ( last ) {
-      folderClicked(last)
-    }
-  })
-
-  $("#foldersearch").on("keyup", (ev)=> {
-    if ( folderSearchTimeout ) {
-      clearTimeout(folderSearchTimeout)
-    }
-    folderSearchTimeout = setTimeout(searchFolder,250)
-  })
-
-  $("#foldersearchnext").on("click", (ev)=>{
-    searchFolderNext()
-  })
-
-  $("#foldersearchprevious").on("click", (ev)=>{
-    searchFolderPrevious()
-  })
-
-  // Autofocus
-  $("#grouppicker").on("shown.bs.modal", (ev)=> {
-    $(ev.currentTarget).find("[autofocus]").focus()
+  document.querySelector("#addgroup").addEventListener("click",(ev)=>{
+    groupPickerShow()
   })
 })

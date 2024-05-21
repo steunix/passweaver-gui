@@ -1,56 +1,69 @@
 <%- include('partials/header.ejs') %>
 
-<div class="container-fluid v-container">
+<div class="page-container">
 
-<div class="row">
+  <%- include('partials/topbar.ejs') %>
   <%- include('partials/sidebar.ejs') %>
-  <div class="col-sm min-vh-100">
-    <%- include('partials/toasts.ejs') %>
-    <%- include('partials/topbar.ejs') %>
-    <%- include('partials/csfr.ejs') %>
-    <div class="row">
-      <div class="col-md-3">
-        <h5>Folders</h5>
-        <div class="d-flex">
-          <button id="newfolder" type="button" title="New subfolder" class="btn btn-sm btn-primary flex-shrink-0 me-1" disabled="disabled" data-bs-toggle="modal" data-bs-target="#newfolderdialog"><span class='fa-solid fa-folder-plus'/></button>
-          <button id="editfolder" type="button" title="Edit folder" class="btn btn-sm btn-secondary flex-shrink-0 me-1" disabled="disabled" data-bs-toggle="modal" data-bs-target="#editfolderdialog"><span class='fa-solid fa-pen'/></button>
-          <button id="removefolder" type="button" title="Remove folder" class="btn btn-sm btn-danger flex-shrink-0 me-3" disabled="disabled"><span class='fa-solid fa-trash'/></button>
-          <div class="input-group shadow rounded">
-            <input id="foldersearch" type="text" class="form-control" placeholder="Search folder">
-            <button class="btn btn-secondary" title="Search previous" type="button" id="foldersearchprevious"><span class="fa-solid fa-chevron-left"></span></button>
-            <button class="btn btn-secondary" title="Search next" type="button" id="foldersearchnext"><span class="fa-solid fa-chevron-right"></span></button>
-          </div>
-        </div>
-        <%- include('partials/folderstree.ejs') %>
+  <%- include('partials/csfr.ejs') %>
+
+  <div class="main1">
+    <h2>Folders</h2>
+    <div style="display:flex;">
+      <div style="display:flex;margin-right:1em;">
+        <sl-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" clearable>
+          <sl-icon slot="suffix" name="search"></sl-icon>
+        </sl-input>
+        <sl-button title="Search previous" id="foldersearchprevious">
+          <sl-icon slot="suffix" name="chevron-left"></sl-icon>
+        </sl-button>
+        <sl-button title="Search next" id="foldersearchnext">
+          <sl-icon slot="suffix" name="chevron-right"></sl-icon>
+        </sl-button>
       </div>
-      <div class="col-md-auto">
-        <h5>Groups</h5>
-        <button id="addgroup" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#grouppicker">Add group</button>
-        <div class="mt-3 v-stickybottom shadow rounded">
-          <table id="groupstable" class="table table-hover table-borderless w-auto">
-            <thead>
-              <tr class="sticky-top">
-                <th colspan="2">Actions</th>
-                <th>Permission</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <sl-button-group>
+        <sl-button id="foldercreate" type="button" title="New subfolder">
+          <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+        </sl-button>
+        <sl-button id="folderedit" type="button" title="Edit folder">
+          <sl-icon slot="prefix" name="pencil"></sl-icon>
+        </sl-button>
+        <sl-button id="folderremove" type="button" variant="danger" title="Delete folder">
+          <sl-icon slot="prefix" name="trash3"></sl-icon>
+        </sl-button>
+      </sl-button-group>
     </div>
+    <%- include('partials/folderstree.ejs') %>
+  </div>
+
+  <div class="main2">
+    <h2>Groups</h2>
+    <div style="display:flex;">
+      <sl-button id="addgroup">
+        <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+        Add group
+      </sl-button>
+    </div>
+    <table id="groupstable">
+      <thead>
+        <tr class="sticky-top">
+          <th colspan="2">Actions</th>
+          <th>Permission</th>
+          <th>Group</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <%- include('partials/commondialogs.ejs') %>
 <%- include("partials/foldernew.ejs") %>
 <%- include("partials/folderedit.ejs") %>
-
+<%- include("partials/grouppicker.ejs") %>
 </div>
 
-<script src="/public/js/folders.js"></script>
 <script src="/public/js/folders_shared.js"></script>
+<script src="/public/js/folders.js"></script>
 
 <%- include('partials/footer.ejs') %>

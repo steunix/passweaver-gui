@@ -1,26 +1,26 @@
 var userSearchTimeout
-var currentUser
+var currentUser = ""
 
 function fillUsers() {
   $.get("/api/userslist?search="+$("#usersearch").val(),(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
-
+    $("#groupstable tbody tr").remove()
     $("#userstable tbody tr").remove()
     if ( resp.data.length ) {
       var row = ""
       for ( const itm of resp.data ) {
         row += `<tr data-id='${itm.id}' style='cursor:pointer'>`
-        row += `<td><i id='edit-${itm.id}' title='Edit' class='v-action fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edituserdialog" data-id='${itm.id}'></i></td>`
-        row += `<td><i id='remove-${itm.id}' title='Remove' class='v-action fa-solid fa-trash text-danger' data-id='${itm.id}'></i></td>`
+        row += `<td><sl-icon-button id='edituser-${itm.id}' title='Edit user' name='pencil' data-id='${itm.id}'></sl-icon-button></td>`
+        row += `<td><sl-icon-button id='removeuser-${itm.id}' title='Delete user' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button></td>`
         row += `<td class='border-start'>${itm.login}</td>`
         row += `<td>${itm.lastname}</td>`
         row += `<td>${itm.firstname}</td>`
         row += `<td>${itm.email}</td>`
         row += `<td>${itm.locale}</td>`
         row += `<td>${itm.authmethod}</td>`
-        row += `<td class='text-center'><i class='fa-solid `+ (itm.active ? "fa-check text-success" : "fa-xmark text-danger") + `'/></td>`
+        row += `<td class='text-center'><sl-icon name='${itm.active ? "check-lg":"x-lg"}' style='color:${itm.active?"green":"red"}'/></td>`
         row += "</tr>"
       }
       $("#userstable tbody").append(row)
@@ -29,12 +29,15 @@ function fillUsers() {
       $("#userstable tbody tr").on("dblclick",(ev)=>{
         userDoubleClicked($(ev.currentTarget).data("id"))
       })
-      $("#userstable tbody tr i[id^=remove]").on("click",(ev)=>{
+      $("#userstable tbody tr [id^=edituser]").on("click",(ev)=>{
+        userEditDialog($(ev.currentTarget).data("id"))
+      })
+      $("#userstable tbody tr [id^=removeuser]").on("click",(ev)=>{
         userRemove($(ev.currentTarget).data("id"))
       })
       $("#userstable tbody tr").on("click",(ev)=>{
         currentUser = $(ev.currentTarget).data("id")
-        $(ev.currentTarget).addClass("v-rowselected").siblings().removeClass("v-rowselected")
+        $(ev.currentTarget).addClass("rowselected").siblings().removeClass("rowselected")
         fillGroups()
       })
     }
@@ -53,32 +56,22 @@ function fillGroups() {
     if ( resp.data.length ) {
       var row = "<tr>"
       for ( const itm of resp.data ) {
-        row += `<td><i id='removegroup-${itm.id}' data-id='${itm.id}' class='v-action fa-solid fa-trash text-danger' title='Remove'></i></td>`
+        row += `<td><sl-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' style='color:red;' title='Remove'></sl-icon-button></td>`
         row += `<td>${itm.description}</td></tr>`
       }
       $("#groupstable tbody").append(row)
 
       // Event handlers
-      $("i[id^=removegroup]").on("click", groupRemove)
+      $("[id^=removegroup]").on("click", groupRemove)
     }
     loadingHide($("#groupstable"))
   })
 }
 
-function toggleNewPassword() {
-  if ( $("#newpassword").attr("type")=="password") {
-    $("#newpassword").attr("type","text")
-  } else {
-    $("#newpassword").attr("type","password")
-  }
-}
-
-function toggleNewPasswordConfirm() {
-  if ( $("#newpasswordconfirm").attr("type")=="password") {
-    $("#newpasswordconfirm").attr("type","text")
-  } else {
-    $("#newpasswordconfirm").attr("type","password")
-  }
+function userCreateDialog() {
+  document.querySelector("#newuserdialog").show()
+  $("#newuserdialog sl-input,sl-textarea,sl-select").val("")
+  userCreateEnable()
 }
 
 function userCreate() {
@@ -90,7 +83,7 @@ function userCreate() {
     firstname: $("#newfirstname").val(),
     locale: $("#newlocale").val(),
     authmethod: $("#newauthmethod").val(),
-    active: $("#newactive").is(":checked"),
+    active: $("#newactive").attr("checked"),
     secret: $("#newpassword").val()
   }
 
@@ -99,7 +92,9 @@ function userCreate() {
       return
     }
 
-    location.reload()
+    fillUsers()
+    document.querySelector("#newuserdialog").hide()
+    showToast("success", "User created")
   })
 }
 
@@ -114,20 +109,19 @@ function userCreateEnable() {
 }
 
 function userRemove(usr) {
-  confirm("Remove user", "<strong><span class='text-danger'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", ()=> {
+  confirmDialog("Remove user", "<strong><span style='color:red;'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", ()=> {
     $.post("/api/userremove/"+usr, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
 
-      location.reload()
+      fillUsers()
+      showToast("success", "User removed")
     })
   })
 }
 
 function userEditFill(user) {
-  $("#usereditid").val(user)
-
   $.get("/api/users/"+user, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
@@ -141,7 +135,11 @@ function userEditFill(user) {
     $("#editauthmethod").val(resp.data.authmethod)
     if ( !resp.data.active ) {
       $("#editactive").removeAttr("checked")
+    } else {
+      $("#editactive").attr("checked","checked")
     }
+
+    userEditEnable()
   })
 }
 
@@ -153,6 +151,12 @@ function userEditEnable() {
   }
 }
 
+function userEditDialog(userid) {
+  const dialog = $("#edituserdialog")
+  userEditFill(userid)
+  dialog[0].show()
+}
+
 function userEdit() {
   let userdata = {
     _csrf: $("#_csrf").val(),
@@ -162,79 +166,53 @@ function userEdit() {
     firstname: $("#editfirstname").val(),
     locale: $("#editlocale").val(),
     authmethod: $("#editauthmethod").val(),
-    active: $("#editactive").is(":checked")
+    active: $("#editactive").prop("checked")
   }
 
-  $.post("/api/userupdate/"+$("#usereditid").val(), userdata, (resp)=> {
+  $.post(`/api/userupdate/${currentUser}`, userdata, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
 
-    location.reload()
+    fillUsers()
+    showToast("success", "User saved")
   })
-}
-
-function toggleEditPassword() {
-  if ( $("#editpassword").attr("type")=="password") {
-    $("#editpassword").attr("type","text")
-  } else {
-    $("#editpassword").attr("type","password")
-  }
-}
-
-function toggleViewPassword() {
-  if ( $("#viewpassword").attr("type")=="password") {
-    $("#viewpassword").attr("type","text")
-  } else {
-    $("#viewpassword").attr("type","password")
-  }
 }
 
 function userDoubleClicked(user) {
   if ( window.getSelection() ) {
     window.getSelection().empty()
   }
-  $("#edit-"+user).click()
+  $("#edituser-"+user).click()
 }
 
 $(function() {
-  // Reset new user dialog fields
-  $("#newuserdialog").on("hidden.bs.modal", ()=> {
-    $("#newuserdialog input,textarea").val("")
-  })
 
-  // Get the user data to be edited
-  $("#edituserdialog").on("show.bs.modal", (ev)=> {
-    userEditFill($(ev.relatedTarget).data("id"))
-  })
-
-  // Autofocus
-  $("#newuserdialog,#edituserdialog").on("shown.bs.modal", (ev)=> {
-    $(this).find("[autofocus]").focus()
-  })
 })
 
 function groupRemove(ev) {
   const group = $(ev.currentTarget).data("id")
-  confirm("Remove user from group", "Are you sure you want to remove the user from the group?", ()=> {
+  confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", ()=> {
     $.post(`/api/groupremoveuser/${group}/${currentUser}`, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
 
       fillGroups()
+      showToast("success", "Group removed")
     })
   })
 }
 
 function groupPickerChoosen(group) {
+  groupPickerHide()
   $.post(`/api/groupadduser/${group}/${currentUser}`, {_csrf: $("#_csrf").val()}, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
 
-    groupPickerHide()
     fillGroups()
+    showToast("success","Group added")
   })
 }
 
@@ -245,13 +223,7 @@ $(()=>{
   $("#newlogin,#newemail,#newlastname,#newpassword,#newpasswordconfirm").on("keyup",(ev)=>{
     userCreateEnable()
   })
-  $("#togglenewpassword").on("click",(ev)=>{
-    toggleNewPassword()
-  })
-  $("#togglenewpasswordconfirm").on("click",(ev)=>{
-    toggleNewPasswordConfirm()
-  })
-  $("#usercreate").on("click",(ev)=>{
+  $("#usercreate").on("click",(ev)=> {
     userCreate()
   })
   $("#editlogin,#editemail,#editlastname").on("keyup",(ev)=>{
@@ -260,11 +232,26 @@ $(()=>{
   $("#useredit").on("click",(ev)=>{
     userEdit()
   })
-
-  $("#usersearch").on("keyup", (ev) => {
+  $("#newuser").on("click",(ev)=>{
+    userCreateDialog()
+  })
+  $("#newuserdialog #cancel").on("click", (ev)=>{
+    document.querySelector("#newuserdialog").hide()
+  })
+  $("#usersearch").on("sl-input", (ev) => {
     if ( userSearchTimeout ) {
       clearTimeout(userSearchTimeout)
     }
-    userSearchTimeout = setTimeout(fillUsers,250)
+    userSearchTimeout = setTimeout(()=>{
+      $("#groupstable tbody tr").remove()
+      fillUsers()
+    },250)
+  })
+  $("#addgroup").on("click",(ev)=>{
+    if ( currentUser==="" ) {
+      errorDialog("Select a user")
+      return
+    }
+    groupPickerShow()
   })
 })

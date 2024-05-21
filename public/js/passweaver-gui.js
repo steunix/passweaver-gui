@@ -30,29 +30,33 @@ function generatePassword() {
   return resp.responseJSON.data.password
 }
 
-function confirm(title,text,callback) {
-  var dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("confirmdialog"), {})
-  $("#confirmdialogtitle").html(title)
+function confirmDialog(title,text,callback) {
+  const dialog = $("#confirmdialog")
+  dialog.attr("label", title)
   $("#confirmdialogtext").html(text)
-  $("#confirmdialogok").off("click").on("click", ()=>{
-    dialog.hide()
+  $("#confirmok").off("click").on("click", event=> {
+    dialog[0].hide()
     callback()
-  })
-  dialog.show()
-}
-
-function ensureVisibile(itm) {
-  if ( !itm[0] ) {
     return
-  }
-  itm[0].scrollIntoView({block:"center"})
-  return itm
+  })
+  $("#confirmcancel").on("click", event=> {
+    dialog[0].hide()
+  })
+  dialog.on('sl-request-close', event => {
+    if (event.detail.source === 'overlay') {
+      event.preventDefault();
+    }
+  })
+  dialog[0].show()
 }
 
 function errorDialog(text) {
-  var dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("errordialog"), {})
+  const dialog = $("#errordialog")
   $("#errordialogtext").html(text)
-  dialog.show()
+  $("#errordialogclose").on("click", event=> {
+    dialog[0].hide()
+  })
+  dialog[0].show()
 }
 
 function checkResponse(resp,ignoreStatus) {
@@ -72,32 +76,137 @@ function checkResponse(resp,ignoreStatus) {
   }
 
   errorDialog(resp.message)
-
 }
 
-function showToast(text) {
-  $("#toasttext").html(text)
-  $("#toast").addClass("show")
-  setTimeout(()=>{
-    $("#toast").removeClass("show")
-  },3000)
-}
+function treeFill(id, data, mainid, callback) {
+  const user = getUser()
 
-function copyToClipboard(ev) {
-  var str
-  if ( typeof(ev)==="string" ) {
-    str = ev
-  } else {
-    const id = $(ev.currentTarget).data("target")
-    if ( $("#"+id)[0].nodeName=="INPUT" ) {
-      str = $("#"+id).val()
-    } else {
-      str = $("#"+id).html()
+  const parent = $(`#${id}`)
+  const root = mainid ? mainid : id
+
+  for ( item of data ) {
+    const newid = `item-${item.id}`
+
+    const lskey = `${user}_${root}_expanded_${newid}`
+    var props = "";
+    if ( localStorage.getItem(lskey)==="1" ) {
+      props += " expanded"
+    }
+
+    let newitem = $(`<sl-tree-item id='${newid}' data-id='${item.id}' ${props} data-description='${item.description}'>${item.description}</sl-tree-item>`)
+
+    parent.append(newitem)
+    newitem.on("sl-collapse", (ev)=> {
+      const lskey = `${user}_${root}_expanded_${ev.target.id}`
+      localStorage.removeItem(lskey)
+    })
+    newitem.on("sl-expand", (ev)=> {
+      const lskey = `${user}_${root}_expanded_${ev.target.id}`
+      localStorage.setItem(lskey, "1")
+    })
+
+    // Recurse with children
+    if ( item?.children.length ) {
+      treeFill(newid, item.children, root, callback)
     }
   }
 
-  navigator.clipboard.writeText(str)
-  showToast("Copied to clipboard")
+
+  // Only once, for root element
+  if ( !mainid ) {
+    $(`#${id}`).off("sl-selection-change").on("sl-selection-change", (ev)=>{
+      const sel = document.querySelector("sl-tree-item[selected]")
+      callback(sel.getAttribute("data-id"))
+
+      // Save last item
+      const user = getUser()
+      const lskey = `${user}_${id}_selected`
+      localStorage.setItem(lskey, sel.id)
+    })
+
+    var last = localStorage.getItem(`${user}_${id}_selected`)
+    if ( last ) {
+      // Select last item
+      const lastelem = document.querySelector(`#${last}`)
+      if ( lastelem ) {
+        $(`#${last}`).attr("selected","selected")
+        setTimeout(()=>{
+          lastelem.scrollIntoView()
+          callback(last)
+        }, 200)
+      }
+    }
+  }
+}
+
+var searchTreeIndex = 0
+function treeSearch(elemid,searchstring,start) {
+  if ( start===undefined ) {
+    searchTreeIndex = 0
+  }
+
+  var treeitems = document.querySelector(`#${elemid}`).querySelectorAll("sl-tree-item")
+
+  var index = 0
+  for ( const treeitem of treeitems ) {
+    if ( treeitem.getAttribute("data-description").toLowerCase().includes(searchstring) ) {
+      if ( index==searchTreeIndex ) {
+
+        // Expand parents
+        var parents = $(treeitem).parents()
+        for ( const parent of parents ) {
+          $(parent).prop("expanded","expanded")
+        }
+
+        // Select item and show it
+        $("sl-tree-item").prop("selected","")
+        $(treeitem).prop("selected","selected")
+        treeitem.scrollIntoView()
+
+        // Store last viewed item
+        const user = getUser()
+        const lskey = `${user}_${elemid}_selected`
+        localStorage.setItem(lskey, treeitem.id)
+
+        return true
+      }
+      index++
+    }
+  }
+  return false
+}
+
+function treeSearchNext(elemid,searchstring) {
+  searchTreeIndex++
+  if ( !treeSearch(elemid,searchstring,searchTreeIndex) ) {
+    searchTreeIndex--
+  }
+}
+
+function treeSearchPrevious(elemid,searchstring) {
+  searchTreeIndex--
+  if ( !treeSearch(elemid,searchstring,searchTreeIndex) ) {
+    searchTreeIndex++
+  }
+}
+
+function showToast(variant,text) {
+  const icon = {
+    "success": "check2-circle",
+    "primary": "info-circle",
+    "danger": "exclamation-octagon",
+    "warning": "exclamation-triangle"
+  }
+
+  const alert = Object.assign(document.createElement('sl-alert'), {
+    variant,
+    closable: true,
+    duration: 3000,
+    innerHTML: `<sl-icon name="${icon[variant]}" slot="icon"></sl-icon>${text}`
+  });
+
+  document.body.append(alert)
+  alert.toast()
 }
 
 function getUser() {
@@ -112,12 +221,7 @@ $(document).ajaxError(function(evt, request, settings){
 
 $(()=>{
   if ( $("#pageid").length ) {
-    const pageid = $("#pageid").data("pageid")
-    $("#sidebar .nav-link[data-bs-original-title="+pageid+"]").addClass("active")
+    const pageid = $("#pageid").val()
+    $(`.page-sidebar .link[pageid=${pageid}]`).addClass("current")
   }
-
-  $(".copytoclipboard").on("click", (ev)=> {
-    copyToClipboard(ev)
-  })
-
 })

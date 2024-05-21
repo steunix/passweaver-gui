@@ -1,30 +1,18 @@
-<div id="grouppicker" class="modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header v-themebg">
-        <h5 class="mb-0">Choose group</h5>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <div class="input-group">
-            <input type="text mb-3" class="form-control" autofocus="autofocus" id="grouppickersearch" name="grouppickersearch" placeholder="Search group">
-            <button class="btn btn-secondary" type="button" id="button-addon1"><span class="fa-solid fa-search"></span></button>
-          </div>
-          <table class="table mt-3" id="grouppickertable">
-            <thead>
-              <tr>
-                <th class="col-1">Choose</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      </div>
-    </div>
+<sl-dialog id="grouppickerdialog" label="Choose a group">
+  <sl-input autofocus id="grouppickersearch" name="grouppickersearch" placeholder="Search group" clearable>
+    <sl-icon slot="prefix" name="search"></sl-icon>
+  </sl-input>
+  <sl-divider></sl-divider>
+  <div style="height:20em;max-height:20em;">
+    <table id="grouppickertable">
+      <thead>
+        <tr>
+          <th>Choose</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
   </div>
-</div>
+</sl-dialog>

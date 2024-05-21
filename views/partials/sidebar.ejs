@@ -1,63 +1,45 @@
-<div class="col-sm-auto bg-dark sticky-top p-0" id="sidebar">
-  <div class="d-flex flex-column flex-shrink-0 p-2 text-white bg-dark sticky-top">
-    <a href="#" class="d-block p-3 text-white text-decoration-none text-center" title="PassWeaver" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
-      <img src="/public/images/passweaver-icon-light.png" width="36px"></img>
-    </a>
-    <ul class="nav nav-pills flex-column mb-auto">
-      <% if ( !admin ) { %>
-      <li class="nav-item">
-        <a href="/pages/items" class="nav-link text-white" title="Items" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="items">
-          <i class="fa-solid fa-fw fa-list m-2"></i>
-          Items
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="/pages/search" class="nav-link text-white" title="Search" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="search">
-          <i class="fa-solid fa-fw fa-magnifying-glass m-2"></i>
-          Search
-        </a>
-      </li>
-      <% } %>
-      <% if ( admin ) { %>
-      <li class="nav-item">
-        <a href="/pages/folders" class="nav-link text-white" title="Folders" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="folders">
-          <i class="fa-solid fa-fw fa-folder-open m-2"></i>
-          Folders
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="/pages/users" class="nav-link text-white" title="Users" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="users">
-          <i class="fa-solid fa-fw fa-user m-2"></i>
-          Users
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="/pages/groups" class="nav-link text-white" title="Groups" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="groups">
-          <i class="fa-solid fa-fw fa-users m-2"></i>
-          Groups
-        </a>
-      </li>
-      <% } %>
-      <li class="nav-item">
-        <a href="/pages/generate" class="nav-link text-white" title="Generator" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="generate">
-          <i class="fa-solid fa-fw fa-wand-magic-sparkles m-2"></i>
-          Generator
-        </a>
-      </li>
-      <% if ( admin ) { %>
-        <li class="nav-item">
-          <a href="/pages/info" class="nav-link text-white" title="Info" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="info">
-            <i class="fa-solid fa-fw fa-info m-2"></i>
-            Info
-          </a>
-        </li>
-        <% } %>
-      <li>
-        <a href="/logout" class="nav-link text-white" title="Logout" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Logout">
-          <i class="fa-solid fa-fw fa-arrow-right-from-bracket m-2"></i>
-          Logout
-        </a>
-      </li>
-    </ul>
+<div class="page-sidebar">
+  <div class="logo">
+    <img src="/public/images/passweaver-icon-light.png" width="36px"></img>
   </div>
+
+  <input type="hidden" id="pageid" value="<%- pageid %>"></input>
+  <% if ( !admin ) { %>
+    <a href="/pages/items" title="Items" class="link" pageid="items">
+      <sl-icon name="folder2-open"></sl-icon>
+      Items
+    </a>
+    <a href="/pages/search" title="Search" class="link" pageid="search">
+      <sl-icon name="search"></sl-icon>
+      Search</a>
+    </a>
+  <% } %>
+  <% if ( admin ) { %>
+    <a href="/pages/folders" title="Folders" class="link" pageid="folders">
+      <sl-icon name="folder2-open"></sl-icon>
+      Folders
+    </a>
+    <a href="/pages/users" title="Users" class="link" pageid="users">
+      <sl-icon name="person"></sl-icon>
+      Users
+    </a>
+    <a href="/pages/groups" title="Groups" class="link" pageid="groups">
+      <sl-icon name="people"></sl-icon>
+      Groups
+    </a>
+  <% } %>
+  <a href="/pages/generate" title="Generator" class="link" pageid="generate">
+    <sl-icon name="magic"></sl-icon>
+    Generator
+  </a>
+  <% if ( admin ) { %>
+    <a href="/pages/info" title="Info" class="link" pageid="info">
+      <sl-icon name="info-circle"></sl-icon>
+      Info
+    </a>
+  <% } %>
+  <a href="/logout" title="Logout" class="link">
+    <sl-icon name="box-arrow-right" page="Logout"></sl-icon>
+    Logout
+  </a>
 </div>

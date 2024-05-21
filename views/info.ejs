@@ -1,43 +1,38 @@
 <%- include('partials/header.ejs') %>
 
-<div class="container-fluid v-container">
+<div class="page-container">
 
-<div class="row">
+  <%- include('partials/topbar.ejs') %>
   <%- include('partials/sidebar.ejs') %>
-  <div class="col-sm min-vh-100">
-    <%- include('partials/toasts.ejs') %>
-    <%- include('partials/topbar.ejs') %>
-    <%- include('partials/csfr.ejs') %>
-    <div class="row">
-    <div class="col-md-auto">
-      <h5>Info</h5>
-      <table class="table">
-        <tr>
-          <th>PassWeaver GUI version</th><td><%= guiVersion %></td>
-        </tr>
-        <tr>
-          <th>PassWeaver GUI started</th><td><%= guiStartup %> (UTC)</td>
-        </tr>
-        <tr>
-          <th>PassWeaver API version</th><td><%= apiVersion %></td>
-        </tr>
-        <tr>
-          <th>PassWeaver API started</th><td><%= apiStartup %> (UTC)</td>
-        </tr>
-        <tr>
-          <th>Users</th><td><%= users %></td>
-        </tr>
-        <tr>
-          <th>Folders</th><td><%= folders %></td>
-        </tr>
-        <tr>
-          <th>Items</th><td><%= items %></td>
-        </tr>
-        <tr>
-          <th>Cache size</th><td><%= cacheSize %></td>
-        </tr>
-      </ul>
-    </div>
+
+  <div class="main1">
+    <h2>Info</h2>
+    <table>
+      <tr>
+        <th>PassWeaver GUI version</th><td><%= guiVersion %></td>
+      </tr>
+      <tr>
+        <th>PassWeaver GUI started</th><td><%= guiStartup %> (UTC)</td>
+      </tr>
+      <tr>
+        <th>PassWeaver API version</th><td><%= apiVersion %></td>
+      </tr>
+      <tr>
+        <th>PassWeaver API started</th><td><%= apiStartup %> (UTC)</td>
+      </tr>
+      <tr>
+        <th>Users</th><td><%= users %></td>
+      </tr>
+      <tr>
+        <th>Folders</th><td><%= folders %></td>
+      </tr>
+      <tr>
+        <th>Items</th><td><%= items %></td>
+      </tr>
+      <tr>
+        <th>Cache size</th><td><%= cacheSize %></td>
+      </tr>
+    </table>
     </div>
   </div>
 </div>

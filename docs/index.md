@@ -1,6 +1,6 @@
 # About
 
-PassWeaver-gui is standalone WEB interface to PassWeaver-API, bringing collaborative enterprise-scale password management to your browser. It's developed using mainly NodeJS, Express and EJS, and uses Boostrap for UI styling.
+PassWeaver-gui is standalone WEB interface to PassWeaver-API, bringing collaborative enterprise-scale password management to your browser. It's developed using mainly NodeJS, Express and EJS, and uses Shoelace for WEB Components.
 
 PassWeaver-gui is an opensource project, released under MIT license.
 

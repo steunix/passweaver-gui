@@ -1,15 +1,19 @@
 var userPickerTimeout = 0
 
+function userPickerShow() {
+  const dialog = $("#userpickerdialog")
+  $("#userpickersearch").val("")
+  $("#userpickertable tbody tr").remove()
+  dialog[0].show()
+}
+
 function userPickerHide() {
-  var dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("userpicker"), {})
-  dialog.hide()
+  const dialog = $("#userpickerdialog")
+  dialog[0].hide()
 }
 
 function searchUsers() {
   var text = $("#userpickersearch").val()
-  if ( text.length < 3 ) {
-    return
-  }
 
   $.get("/api/userslist/?search="+encodeURIComponent(text),(resp)=>{
     if ( !checkResponse(resp) ) {
@@ -21,7 +25,7 @@ function searchUsers() {
       var row = ""
       for ( const usr of resp.data ) {
         row += `<tr id='row-${usr.id}' data-id='${usr.id}'>`
-        row += `<td><i id='user-${usr.id}' data-id='${usr.id}' class='fa-solid fa-circle-check text-success v-action'></i></td>`
+        row += `<td><sl-icon-button id='user-${usr.id}' data-id='${usr.id}' name="arrow-right-circle"></sl-icon-button></td>`
         row += `<td>${usr.login}</td>`
         row += `<td>${usr.lastname} ${usr.firstname}</td>`
         row += "</tr>"
@@ -33,19 +37,15 @@ function searchUsers() {
     $("#userpickertable tbody tr[id^=row]").on("dblclick",(ev)=>{
       userPickerChoosen($(ev.currentTarget).data("id"))
     })
-    $("#userpickertable tbody i[id^=user]").on("click",(ev)=>{
+    $("#userpickertable tbody sl-icon-button[id^=user]").on("click",(ev)=>{
       userPickerChoosen($(ev.currentTarget).data("id"))
     })
   })
 }
 
-$("#userpickersearch").on("keyup", (ev) => {
+$("#userpickersearch").on("sl-input", (ev) => {
   if ( userPickerTimeout ) {
     clearTimeout(userPickerTimeout)
   }
   userPickerTimeout = setTimeout(searchUsers,250)
-})
-
-$("#userpicker").on("shown.bs.modal", (ev)=> {
-  $(ev.currentTarget).find("[autofocus]").focus()
 })

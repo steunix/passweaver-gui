@@ -1,30 +1,33 @@
 <%- include('partials/header.ejs') %>
 
-<div class="container">
-  <div class="row justify-content-center align-items-center text-center vh-100">
-    <div class="col-md-4 p-4 shadow rounded-3 v-loginbg">
-      <img src="/public/images/passweaver-icon-dark.png" class='mb-2' width="60"></img>
-      <h3 class="mb-4"><strong>PassWeaver - <%- company_name %></strong></h3>
-      <form class="mb-2" id="loginForm" action="access" method="post">
+<div class="login-container">
+  <div class="header">
+    PassWeaver - <%- company_name %>
+  </div>
+
+  <div class="login-content">
+    <div class="pill">
+      <center>
+        <img src="/public/images/passweaver-icon-dark.png" width="60"></img>
+      </center>
+      <form id="loginForm" action="access" method="post">
         <%- include('partials/csfr.ejs') %>
-        <div class="form-floating mb-3">
-          <input type="text" class="form-control" autofocus id="username" name="username" placeholder="User">
-          <label for="username">User</label>
-        </div>
-        <div class="form-floating mb-3">
-          <input type="password" class="form-control" id="password" name="password" placeholder="password">
-          <label for="password">Password</label>
-        </div>
+        <sl-input type="text" autofocus id="username" name="username" label="User"></sl-input>
+        <sl-input type="password" id="password" name="password" label="Password"></sl-input>
+        <sl-divider></sl-divider>
         <% if ( viewitem ) { %>
-        <input id="viewitem" name="viewitem" type="hidden" value="<%= viewitem %>" />
+          <input id="viewitem" name="viewitem" type="hidden" value="<%= viewitem %>"></input>
         <% } %>
-        <button id="login" type="submit" class="mb-3 btn btn-primary">Login</button>
-        <% if ( error ) { %>
-          <div class="mb-3 alert alert-danger">
-            <%= error %>
-          </div>
-        <% } %>
-      </form>
+        <center>
+          <sl-button id="login" type="submit" variant="primary">Login</sl-button>
+          <% if ( error ) { %>
+            <sl-alert variant="danger" open>
+              <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+              <%= error %>
+            </sl-alert>
+          <% } %>
+        </center>
+    </form>
     </div>
   </div>
 </div>

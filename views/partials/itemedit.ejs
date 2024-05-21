@@ -1,45 +1,11 @@
-<div id="edititemdialog" class="modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header v-themebg">
-        <h5 class="mb-0">Edit item</h5>
-      </div>
-      <div class="modal-body">
-        <div class="form-floating mb-1">
-          <input type="text" class="form-control border-danger" autofocus id="edittitle" name="edittitle" required="required" placeholder="fake">
-          <label for="edittitle" class="form-label">Title (required)</label>
-        </div>
-        <div class="form-floating mb-1">
-          <textarea type="text" class="form-control" id="editdescription" name="editdescription" style="height:10em;" placeholder="fake" ></textarea>
-          <label for="editdescription" class="form-label">Description</label>
-        </div>
-        <div class="form-floating mb-1">
-          <input type="text" class="form-control" id="editemail" name="editemail" placeholder="fake">
-          <label for="editemail" class="form-label">Email</label>
-        </div>
-        <div class="form-floating mb-1">
-          <input type="text" class="form-control" id="editurl" name="editurl" placeholder="fake">
-          <label for="editurl" class="form-label">URL</label>
-        </div>
-        <div class="form-floating mb-1">
-          <input type="text" class="form-control" id="edituser" name="edituser" placeholder="fake">
-          <label for="edituser" class="form-label">User</label>
-        </div>
-        <div class="mb-1">
-          <div class="input-group">
-            <div class="form-floating input-group">
-              <input type="password" class="form-control" id="editpassword" name="editpassword" placeholder="fake">
-              <label for="editpassword" class="form-label">Password</label>
-            </div>
-            <button id="toggleeditpassword" type="button" class="btn btn-warning"><span class="fa-solid fa-eye-slash"></button>
-          </div>
-        </div>
-        <input type="hidden" id="itemeditid">
-      </div>
-      <div class="modal-footer">
-        <button id="itemedit" type="button" class="btn btn-primary">Save</button>
-        <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
+<sl-dialog id="itemeditdialog" label="Edit item">
+  <sl-visually-hidden id="itemeditid"></sl-visually-hidden>
+  <sl-input label="Title" id="edittitle" name="edittitle" required="required" autofocus></sl-input>
+  <sl-textarea label="Description" id="editdescription" name="editdescription"></sl-textarea>
+  <sl-input label="Email" id="editemail" name="editemail"></sl-input>
+  <sl-input label="URL" id="editurl" name="editurl"></sl-input>
+  <sl-input label="User" id="edituser" name="edituser"></sl-input>
+  <sl-input label="Password" id="editpassword" name="editpassword" password-toggle></sl-input>
+  <sl-button id="itemeditsave" disabled="disabled" slot="footer" variant="primary">Save</sl-button>
+  <sl-button id="itemeditcancel" slot="footer">Cancel</sl-button>
+</sl-dialog>

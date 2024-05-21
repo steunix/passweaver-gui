@@ -1,8 +1,7 @@
-var currentFolder = ""
 var itemSearchTimeout
 
 function fillItems() {
-  $.get("/api/itemslist/"+currentFolder+"?search="+$("#itemsearch").val(),(resp)=>{
+  $.get(`/api/itemslist/${currentFolder()}?search=${$("#itemsearch").val()}`,(resp)=>{
     $("#itemstable tbody tr").remove()
 
     // Personal password not yet created?
@@ -28,21 +27,21 @@ function fillItems() {
       row = ""
       for ( const itm of resp.data ) {
         row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
-        row += `<td>`
-        row += `<i id='view-${itm.id}' title='View' class='v-action fa-solid fa-circle-info text-primary' data-bs-toggle="modal" data-bs-target="#viewitemdialog" data-id='${itm.id}'></i>`
+        row += `<td class='border-end'>`
+        row += `<sl-icon-button id='view-${itm.id}' name='file-earmark' title='View item' data-id='${itm.id}'></sl-icon-button>`
         if ( currentPermissions.write ) {
-          row += `<i id='edit-${itm.id}' title='Edit' class='v-action fa-solid fa-pen-to-square' data-bs-toggle="modal" data-bs-target="#edititemdialog" data-id='${itm.id}'></i>`
-          row += `<i id='remove-${itm.id}' title='Remove' class='v-action fa-solid fa-trash text-danger' data-id='${itm.id}'></i>`
-          row += `<i id='clone-${itm.id}' title='Clone' class='v-action fa-solid fa-file-circle-plus' data-id='${itm.id}'></i>`
-          row += `<i id='link-${itm.id}' title='Copy link' class='v-action fa-solid fa-link' data-id='${itm.id}'></i>`
+          row += `<sl-icon-button id='edit-${itm.id}' title='Edit item' name='pencil' data-id='${itm.id}'></sl-icon-button>`
+          row += `<sl-icon-button id='remove-${itm.id}' title='Remove item' name='trash3' style="color:red;" data-id='${itm.id}'></sl-icon-button>`
+          row += `<sl-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></sl-icon-button>`
+          row += `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`
         }
         row += `</td>`
         row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end'>${itm.title}</td>`
         row += `<td id='user-${itm.id}'>${itm.metadata}</td>`
-        row += `<td class='border-end'><i class="v-action fa-solid fa-copy copytoclipboard" title='Copy user to clipboard' data-target='user-${itm.id}' /></td>`
+        row += `<td class='border-end'><sl-copy-button title='Copy user to clipboard' from='user-${itm.id}'></sl-copy-button></td>`
         row += `<td id='password-${itm.id}'>****</td>`
-        row += `<td><i id='passwordcopy-${itm.id}' class="v-action fa-solid fa-copy" title='Copy password to clipboard' data-id='${itm.id}' /></td>`
-        row += `<td><i id='passwordshow-${itm.id}' class="v-action fa-solid fa-eye-slash" title='Show/hide password' data-id='${itm.id}' /></td>`
+        row += `<td><sl-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></sl-copy-button></td>`
+        row += `<td><sl-icon-button id='passwordshow-${itm.id}' title='Show/hide password' data-id='${itm.id}' name='eye'></sl-icon-button></td>`
         row += `</tr>`
       }
       $("#itemstable tbody").append(row)
@@ -51,25 +50,28 @@ function fillItems() {
     }
 
     // Install event handlers
-    $("#itemstable tbody td[id^=title]").on("dblclick", (ev)=>{
+    $("#itemstable tbody [id^=view]").on("click", (ev)=>{
       itemShow($(ev.currentTarget).data("id"))
     })
-    $("#itemstable tbody i[id^=remove]").on("click", (ev)=>{
+    $("#itemstable tbody [id^=edit]").on("click", (ev)=>{
+      itemEditDialog($(ev.currentTarget).data("id"))
+    })
+    $("#itemstable tbody [id^=title]").on("dblclick", (ev)=>{
+      itemShow($(ev.currentTarget).data("id"))
+    })
+    $("#itemstable tbody [id^=remove]").on("click", (ev)=>{
       itemRemove($(ev.currentTarget).data("id"))
     })
-    $("#itemstable tbody i[id^=clone]").on("click",(ev)=>{
+    $("#itemstable tbody [id^=clone]").on("click",(ev)=>{
       itemClone($(ev.currentTarget).data("id"))
     })
-    $("#itemstable tbody i[id^=link]").on("click",(ev)=>{
+    $("#itemstable tbody [id^=link]").on("click",(ev)=>{
       itemCopyLink($(ev.currentTarget).data("id"))
     })
-    $("#itemstable .copytoclipboard").on("click",(ev)=>{
-      copyToClipboard(ev)
-    })
-    $("#itemstable tbody i[id^=passwordcopy").on("click",(ev)=>{
+    $("#itemstable tbody [id^=passwordcopy]").on("click",(ev)=>{
       passwordCopy(ev)
     })
-    $("#itemstable tbody i[id^=passwordshow").on("click",(ev)=>{
+    $("#itemstable tbody [id^=passwordshow]").on("click",(ev)=>{
       passwordShow(ev)
     })
 
@@ -81,28 +83,9 @@ function fillItems() {
 }
 
 function folderClicked(ev, selectonly) {
-  $("[role=treeitem]").removeClass("v-treeselected")
-
-  // If ev is a string, the call has been forced on an item just for items reload: calling an
-  // "onclick" directly would mess with collapse status of the folder
-  if ( typeof ev==="string" ) {
-    $("[role=treeitem][id="+ev+"]").addClass("v-treeselected")
-    ensureVisibile( $("[role=treeitem][id="+ev+"]") )
-    currentFolder = ev
-  } else {
-    $(this).addClass("v-treeselected")
-    currentFolder = this.id
-  }
-
-  if ( selectonly ) {
-    return
-  }
-
-  localStorage.setItem(`bstreeview_open_folderstree_${ getUser() }`,currentFolder)
-
   // Read folder info
   $("#itemstable tbody tr").remove()
-  $.get(`/api/folders/${currentFolder}`,(resp)=>{
+  $.get(`/api/folders/${currentFolder()}`,(resp)=>{
 
     // Folder may not be accessible
     if ( !checkResponse(resp,"403") ) {
@@ -132,15 +115,15 @@ function folderClicked(ev, selectonly) {
   })
 }
 
-function toggleNewPassword() {
-  if ( $("#newpassword").attr("type")=="password") {
-    $("#newpassword").attr("type","text")
-  } else {
-    $("#newpassword").attr("type","password")
-  }
+function itemCreateDialog() {
+  document.querySelector("#itemcreatedialog").show()
+  $("#itemcreatedialog sl-input,sl-textarea").val("")
+  itemCreateEnable()
 }
 
 function itemCreate() {
+  document.querySelector("#itemcreatedialog").hide()
+
   let itemdata = {
     _csrf: $("#_csrf").val(),
     title: $("#newtitle").val(),
@@ -151,30 +134,30 @@ function itemCreate() {
     password: $("#newpassword").val()
   }
 
-  $.post("/api/itemnew/"+currentFolder, itemdata, (resp)=> {
+  $.post(`/api/itemnew/${currentFolder()}`, itemdata, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
 
     if ( resp.data.id ) {
-      itemCreateDialogHide()
       fillItems()
+      showToast("success","Item created")
     } else {
       errorDialog(resp.message)
     }
-  });
+  })
 }
 
 function itemCreateEnable() {
   if ( $("#newtitle").val()=="" ) {
-    $("#itemcreate").attr("disabled","disabled")
+    $("#itemcreatesave").attr("disabled","disabled")
   } else {
-    $("#itemcreate").removeAttr("disabled")
+    $("#itemcreatesave").removeAttr("disabled")
   }
 }
 
 function itemRemove(itm) {
-  confirm("Remove item", "Are you sure you want to remove this item?", ()=> {
+  confirmDialog("Remove item", "Are you sure you want to remove this item?", ()=> {
     $.post("/api/itemremove/"+itm, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
@@ -185,15 +168,21 @@ function itemRemove(itm) {
   })
 }
 
-function itemEditFill(item) {
-  $("#itemeditid").val(item)
+function itemEditDialog(item) {
+  document.querySelector("#itemeditdialog").show()
+  $("#itemeditdialog sl-input,sl-textarea").val("")
+  itemEditFill(item)
+  itemEditEnable()
+}
 
-  $.get("/api/items/"+item, (resp)=> {
+function itemEditFill(item) {
+  $.get(`/api/items/${item}`, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
 
     if ( resp.status=="success" ) {
+      $("#itemeditid").val(item)
       $("#edittitle").val(resp.data.title)
       $("#editemail").val(resp.data.data.email)
       $("#editdescription").val(resp.data.data.description)
@@ -208,13 +197,15 @@ function itemEditFill(item) {
 
 function itemEditEnable() {
   if ( $("#edittitle").val()=="" ) {
-    $("#itemedit").attr("disabled","disabled")
+    $("#itemeditsave").attr("disabled","disabled")
   } else {
-    $("#itemedit").removeAttr("disabled")
+    $("#itemeditsave").removeAttr("disabled")
   }
 }
 
 function itemEdit() {
+  const id = document.querySelector("#itemeditid").value
+
   let itemdata = {
     _csrf: $("#_csrf").val(),
     title: $("#edittitle").val(),
@@ -227,12 +218,12 @@ function itemEdit() {
     }
   }
 
-  $.post("/api/itemupdate/"+$("#itemeditid").val(), itemdata, (resp)=> {
+  $.post(`/api/itemupdate/${id}`, itemdata, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
 
-    itemEditDialogHide()
+    document.querySelector("#itemeditdialog").hide()
     fillItems()
   })
 }
@@ -256,8 +247,9 @@ function toggleViewPassword() {
 }
 
 function itemViewFill(item) {
-  $.get("/api/items/"+item, (resp)=> {
+  $.get(`/api/items/${item}`, (resp)=> {
     if ( !checkResponse(resp) ) {
+      document.querySelector("#itemviewdialog").hide()
       return
     }
 
@@ -275,62 +267,39 @@ function itemShow(item) {
   if ( window.getSelection() ) {
     window.getSelection().empty()
   }
-  $("#view-"+item).click()
+  document.querySelector("#itemviewdialog").show()
+  itemViewFill(item)
 }
 
-$(function() {
-  // Reset new item dialog fields
-  $("#newitemdialog").on("hidden.bs.modal", ()=> {
-    $("#newitemdialog input,textarea").val("")
-  })
-
-  // Get the item data to be edited
-  $("#edititemdialog").on("show.bs.modal", (ev)=> {
-    itemEditFill($(ev.relatedTarget).data("id"))
-  })
-
-  // Autofocus
-  $("#newitemdialog,#edititemdialog").on("shown.bs.modal", (ev)=> {
-    $(this).find("[autofocus]").focus()
-  })
-
-  // Get the item data to be shown
-  $("#viewitemdialog").on("show.bs.modal", (ev)=> {
-    itemViewFill($(ev.relatedTarget).data("id"))
-  })
-})
-
 function itemClone(itm) {
-  confirm("Clone item", "Do you want to clone this item?", ()=>{
+  confirmDialog("Clone item", "Do you want to clone this item?", ()=>{
     $.post(`/api/items/${itm}/clone`, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
 
+      showToast("success","Item cloned")
       fillItems()
     })
   })
 }
 
 function itemCopyLink(itm) {
-  navigator.clipboard.writeText(`${window.location.origin}/api/items?viewitem=${itm}`)
-  showToast("Item link copied to clipboard")
+  navigator.clipboard.writeText(`${window.location.origin}/pages/items?viewitem=${itm}`)
+  showToast("primary", "Item link copied to clipboard")
 }
 
 function findAndShowItem(itm) {
   itemViewFill(itm)
-  const dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("viewitemdialog"), {})
-  dialog.show()
+  document.querySelector("#viewitemdialog").show()
 }
 
 function personalPasswordCreateDialog() {
-  const dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("personalpasswordnew"), {})
-  dialog.show()
+  document.querySelector("#personalpasswordnew").show()
 }
 
 function personalPasswordAskDialog() {
-  const dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("personalpasswordset"), {})
-  dialog.show()
+  document.querySelector("#personalpasswordset").show()
 }
 
 function personalPasswordCreateEnable() {
@@ -339,30 +308,6 @@ function personalPasswordCreateEnable() {
       $("#personalpasswordcreate").attr("disabled","disabled")
   } else {
     $("#personalpasswordcreate").removeAttr("disabled")
-  }
-}
-
-function togglePersonalPassword() {
-  if ( $("#newpersonalpassword").attr("type")=="password") {
-    $("#newpersonalpassword").attr("type","text")
-  } else {
-    $("#newpersonalpassword").attr("type","password")
-  }
-}
-
-function togglePersonalPasswordConfirm() {
-  if ( $("#newpersonalpasswordconfirm").attr("type")=="password") {
-    $("#newpersonalpasswordconfirm").attr("type","text")
-  } else {
-    $("#newpersonalpasswordconfirm").attr("type","password")
-  }
-}
-
-function togglePersonalPasswordSet() {
-  if ( $("#togglepersonalpassword").attr("type")=="password") {
-    $("#togglepersonalpassword").attr("type","text")
-  } else {
-    $("#togglepersonalpassword").attr("type","password")
   }
 }
 
@@ -377,7 +322,8 @@ function personalPasswordCreate() {
       return
     }
 
-    location.reload()
+    fillItems()
+    showToast("success", "Personal password saved")
   })
 }
 
@@ -398,13 +344,10 @@ function personalPasswordSet() {
 
 function passwordCopy(ev) {
   var item = $(ev.currentTarget).data("id")
-  $.get("/api/items/"+item, (resp)=> {
+  $.get(`/api/items/${item}`, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
-
-    copyToClipboard(resp.data.data.password)
-
     passwordAccessed(item)
   })
 }
@@ -438,57 +381,52 @@ function passwordAccessed(item) {
   })
 }
 
-function itemCreateDialogHide() {
-  var dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("newitemdialog"), {})
-  dialog.hide()
-}
-
-function itemEditDialogHide() {
-  var dialog = bootstrap.Modal.getOrCreateInstance(document.getElementById("edititemdialog"), {})
-  dialog.hide()
-}
-
 $(()=>{
-  $.get("/api/folderstree", (resp)=>{
-    if ( !checkResponse(resp) ) {
-      return
-    }
 
-    $('#tree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: resp.data })
-    $('[role=treeitem]').on("mousedown", folderClicked)
+  fillFolders()
 
-    // Open last used folder
-    const last = localStorage.getItem(`bstreeview_open_folderstree_${ getUser() }`)
-    if ( last ) {
-      folderClicked(last)
-    }
+  // Create
+  $("#newitem").on("click",(ev)=>{
+    itemCreateDialog()
   })
-
-
-
-  $("#itemcreate").on("click",(ev)=>{
+  $("#itemcreatecancel").on("click",(ev)=>{
+    document.querySelector("#itemcreatedialog").hide()
+  })
+  $("#itemcreatesave").on("click",(ev)=>{
     itemCreate()
   })
-  $("#togglenewpassword").on("click",(ev)=>{
-    toggleNewPassword()
-  })
+
+  // View
   $("#newtitle").on("keyup",(ev)=>{
     itemCreateEnable()
   })
   $("#toggleviewpassword").on("click",(ev)=>{
     toggleViewPassword()
   })
-  $("#itemedit").on("click",(ev)=>{
-    itemEdit()
-  })
+
+  // Edit
   $("#toggleeditpassword").on("click",(ev)=>{
     toggleEditPassword()
   })
+  $("#edittitle").on("keyup",(ev)=>{
+    itemEditEnable()
+  })
+  $("#itemeditcancel").on("click",(ev)=>{
+    document.querySelector("#itemeditdialog").hide()
+  })
+  $("#itemeditsave").on("click",(ev)=>{
+    itemEdit()
+  })
+
+  // Personal
   $("#togglepersonalpassword").on("click",(ev)=>{
     togglePersonalPasswordSet()
   })
-  $("#edittitle").on("keyup",(ev)=>{
-    itemEditEnable()
+  $("#personalpasswordcancel").on("click",(ev)=>{
+    document.querySelector("#personalpasswordnew").hide()
+  })
+  $("#personalpasswordsetcancel").on("click",(ev)=>{
+    document.querySelector("#personalpasswordset").hide()
   })
   $("#personalpasswordcreate").on("click",(ev)=>{
     personalPasswordCreate()
@@ -506,16 +444,7 @@ $(()=>{
     personalPasswordSet()
   })
 
-  // Autofocus
-  $("#personalpasswordset,#personalpasswordnew").on("shown.bs.modal", (ev)=> {
-    $(ev.currentTarget).find("[autofocus]").focus()
-  })
-
-  $("#newitemdialog").on("shown.bs.modal", (ev)=>{
-    itemCreateEnable()
-  })
-
-  $("#itemsearch").on("keyup", (ev) => {
+  $("#itemsearch").on("sl-input", (ev) => {
     if ( itemSearchTimeout ) {
       clearTimeout(itemSearchTimeout)
     }
@@ -526,9 +455,7 @@ $(()=>{
     findAndShowItem($("#viewitem").val())
   }
 
-
   $("#copyviewpassword").on("click", (ev)=>{
     passwordAccessed($("#itemviewid").val())
   })
-
 })

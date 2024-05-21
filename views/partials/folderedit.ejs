@@ -1,20 +1,5 @@
-<div id="editfolderdialog" class="modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header v-themebg">
-        <h5 class="mb-0">Edit folder</h5>
-      </div>
-      <div class="modal-body">
-        <div class="form-floating mb-3">
-          <input type="text" class="form-control border-danger" autofocus id="foldereditdescription" name="foldereditdescription" required="required" placeholder="fake">
-          <label for="foldereditdescription" class="form-label">Description (required)</label>
-        </div>
-        <input type="hidden" id="foldereditid">
-      </div>
-      <div class="modal-footer">
-        <button id="folderedit" type="button" class="btn btn-primary">Update folder</button>
-        <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
+<sl-dialog id="foldereditdialog" label="Edit folder" class="dialog-deny-close">
+  <sl-input id="foldereditdescription" name="foldereditdescription" label="Description" required autofocus></sl-input>
+  <sl-button id="foldereditsave" slot="footer" variant="primary" disabled="disabled">Save</sl-button>
+  <sl-button id="foldereditcancel" slot="footer">Cancel</sl-button>
+</sl-dialog>

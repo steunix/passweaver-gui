@@ -1,15 +1,4 @@
-<div id="errordialog" class="modal" style="z-index:10000" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-danger">
-        <h5 id="errordialogtitle" class="text-light mb-0">Error</h5>
-      </div>
-      <div class="modal-body">
-      <span id="errordialogtext" class="fw-bold"></span>
-      </div>
-      <div class="modal-footer">
-        <button id="errordialogclose" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+<sl-dialog id="errordialog" label="Error!">
+  <span id="errordialogtext"></span>
+  <sl-button slot="footer" id="errordialogclose" variant="primary">Close</sl-button>
+</sl-dialog>

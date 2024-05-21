@@ -1,31 +1,23 @@
 <%- include('partials/header.ejs') %>
 
-<div class="container-fluid v-container">
+<div class="page-container">
 
-<div class="row">
+  <%- include('partials/topbar.ejs') %>
   <%- include('partials/sidebar.ejs') %>
-  <div class="col-sm min-vh-100">
-    <%- include('partials/toasts.ejs') %>
-    <%- include('partials/topbar.ejs') %>
-    <%- include('partials/csfr.ejs') %>
-    <div class="row">
-    <div class="col-md-auto">
-      <h5>Generate secure password</h5>
-      <div class="input-group mt-3 shadow rounded">
-        <input type="text" class="form-control text-monospace" style="font-family:monospace;" readonly="readonly" id="generatedpassword">
-        <button class="btn btn-secondary" title='Generate' type="button" id="generate"><span class="fa-solid fa-refresh"></span></button>
-        <button class="btn btn-secondary copytoclipboard" title='Copy to clipboard' data-target="generatedpassword" type="button" id="button-addon1"><span class="fa-solid fa-copy"></span></button>
-      </div>
-      </div>
-    </div>
-    </div>
+
+  <div class="main1">
+    <h2>Generate secure password</h2>
+    <sl-button-group>
+      <sl-input type="text" style="width:15rem;" readonly="readonly" id="generatedpassword"></sl-input>
+      <sl-button title='Generate' id="generate">
+        <sl-icon name="arrow-clockwise" slot="prefix"></sl-icon>
+      </sl-button>
+      <sl-copy-button title='Copy to clipboard' from="generatedpassword.value"></sl-copy-button>
+    </sl-button-group>
   </div>
-</div>
-
-<%- include('partials/commondialogs.ejs') %>
-
 </div>
 
 <script src="/public/js/generate.js"></script>
 
+<%- include('partials/commondialogs.ejs') %>
 <%- include('partials/footer.ejs') %>

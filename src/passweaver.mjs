@@ -88,6 +88,17 @@ async function passWeaverAPI(session, method, path, data) {
           data: {}
         }
       }
+
+      // Token expired (we already have a session, but jwt token is expired)
+      if ( session && session.jwt && msg=="Token expired" ) {
+        return {
+          httpStatusCode: err.response.statusCode,
+          fatal: true,
+          status: "failed",
+          message: "Session token expired",
+          data: {}
+        }
+      }
     }
 
     // Other response (404, 422, et al) or generic error

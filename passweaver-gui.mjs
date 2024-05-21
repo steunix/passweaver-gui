@@ -33,8 +33,10 @@ app.use(helmet({
     directives: {
       "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
       "style-src": ["'self'", "'unsafe-inline'", "fonts.googleapis.com", "cdnjs.cloudflare.com", "cdn.jsdelivr.net"],
-    },
-  },
+      "connect-src": ["'self'","cdn.jsdelivr.net", "data: blob:"],
+      "img-src": ["'self'", "https: data: blob:"]
+    }
+  }
 }))
 app.use(Express.json())
 app.use(compression())

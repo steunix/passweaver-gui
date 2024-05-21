@@ -1,16 +1,5 @@
-<div id="confirmdialog" class="modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header v-themebg">
-        <h5 id="confirmdialogtitle" class="mb-0"></h5>
-      </div>
-      <div class="modal-body">
-      <span id="confirmdialogtext"></span>
-      </div>
-      <div class="modal-footer">
-        <button id="confirmdialogok" type="button" class="btn btn-primary">Confirm</button>
-        <button id="confirmdialogcancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
+<sl-dialog id="confirmdialog" label="Dialog" class="dialog-deny-close">
+  <span id="confirmdialogtext"></span>
+  <sl-button slot="footer" id="confirmok" variant="primary">OK</sl-button>
+  <sl-button slot="footer" id="confirmcancel">Cancel</sl-button>
+</sl-dialog>

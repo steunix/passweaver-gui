@@ -1,11 +1,18 @@
-var currentGroup = ""
 var groupSearchTimeout
+
+function currentGroup() {
+  try {
+    return document.querySelector("sl-tree-item[selected]").getAttribute("data-id")
+  } catch (err) {
+    return ""
+  }
+}
 
 function fillUsers() {
   loadingShow($("#userstable"))
 
   $("#userstable tbody tr").remove()
-  $.get("/api/userslist/"+currentGroup,(resp)=>{
+  $.get(`/api/userslist/${currentGroup()}`,(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
@@ -14,7 +21,7 @@ function fillUsers() {
       var row = ''
       for ( const usr of resp.data ) {
         row += `<tr>`
-        row += `<td><i id='remove-${usr.id}' title='Remove' data-id='${usr.id}' class='v-action fa-solid fa-trash text-danger'"></i></td>`
+        row += `<td><sl-icon-button id='remove-${usr.id}' title='Remove' data-id='${usr.id}' name="trash3" style="color:red;"></sl-icon-button></td>`
         row += `<td class='border-start'>${usr.login}</td>`
         row += `<td>${usr.lastname}</td>`
         row += `<td>${usr.firstname}</td>`
@@ -22,7 +29,7 @@ function fillUsers() {
       $("#userstable tbody").append(row)
 
       // Install event handlers
-      $("#userstable tbody i[id^=remove]").on("click",(ev)=>{
+      $("#userstable tbody [id^=remove]").on("click",(ev)=>{
         groupRemoveUser($(ev.currentTarget).data("id"))
       })
     }
@@ -38,41 +45,32 @@ function fillUsers() {
   })
 }
 
-function groupClicked(ev) {
-  $("[role=treeitem]").removeClass("v-treeselected")
-
-  // If ev is a string, the call has been forced on an item just for items reload: calling an
-  // "onclick" directly would mess with collapse status of the folder
-  if ( typeof ev==="string" ) {
-    $("[role=treeitem][id="+ev+"]").addClass("v-treeselected")
-    ensureVisibile( $("[role=treeitem][id="+ev+"]") )
-    currentGroup = ev
-  } else {
-    $(this).addClass("v-treeselected")
-    currentGroup = this.id
-  }
-
-  localStorage.setItem(`bstreeview_open_groupstree_${ getUser() }`,currentGroup)
-
-  // Read group members
+function groupClicked(groupid) {
   fillUsers()
 }
 
 function groupCreateEnable() {
-  if ( $("#newgroupdescription").val()=="" ) {
-    $("#groupcreate").attr("disabled","disabled")
+  if ( $("#groupcreatedescription").val()==="" ) {
+    $("#groupcreatesave").attr("disabled","disabled")
   } else {
-    $("#groupcreate").removeAttr("disabled")
+    $("#groupcreatesave").removeAttr("disabled")
   }
+}
+
+function groupCreateDialog() {
+  const dialog = $("#groupcreatedialog")
+  $("#groupcreatedialog sl-input,sl-textarea").val("")
+  groupCreateEnable()
+  dialog[0].show()
 }
 
 function groupCreate() {
   let userdata = {
     _csrf: $("#_csrf").val(),
-    description: $("#newgroupdescription").val()
+    description: $("#groupcreatedescription").val()
   }
 
-  $.post("/api/groupnew/"+currentGroup, userdata, (resp)=> {
+  $.post(`/api/groupnew/${currentGroup()}`, userdata, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -86,8 +84,8 @@ function groupCreate() {
 }
 
 function groupRemove() {
-  confirm("Remove group", "Are you sure you want to remove this group?", ()=> {
-    $.post("/api/groupremove/"+currentGroup, {_csrf: $("#_csrf").val()}, (resp)=> {
+  confirmDialog("Remove group", "Are you sure you want to remove this group?", ()=> {
+    $.post(`/api/groupremove/${currentGroup()}`, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -97,16 +95,21 @@ function groupRemove() {
   })
 }
 
-function groupEditFill() {
-  $("#groupeditid").val(currentGroup)
+function groupEditDialog() {
+  const dialog = document.querySelector("#groupeditdialog")
+  groupEditFill()
+  dialog.show()
+}
 
-  $.get("/api/groups/"+currentGroup, (resp)=> {
+function groupEditFill() {
+  $.get(`/api/groups/${currentGroup()}`, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
 
     if ( resp.status=="success" ) {
       $("#groupeditdescription").val(resp.data.description)
+      groupEditEnable()
     }
   })
 }
@@ -117,7 +120,7 @@ function groupEdit() {
     description: $("#groupeditdescription").val()
   }
 
-  $.post("/api/groupupdate/"+$("#groupeditid").val(), data, (resp)=> {
+  $.post(`/api/groupupdate/${currentGroup()}`, data, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -128,14 +131,14 @@ function groupEdit() {
 
 function groupEditEnable() {
   if ( $("#groupeditdescription").val()=="" ) {
-    $("#groupedit").attr("disabled","disabled")
+    $("#groupeditsave").attr("disabled","disabled")
   } else {
-    $("#groupedit").removeAttr("disabled")
+    $("#groupeditsave").removeAttr("disabled")
   }
 }
 
 function userPickerChoosen(id) {
-  $.post("/api/groupadduser/"+currentGroup+"/"+id, {_csrf: $("#_csrf").val()}, (resp)=> {
+  $.post(`/api/groupadduser/${currentGroup()}/${id}`, {_csrf: $("#_csrf").val()}, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -146,8 +149,8 @@ function userPickerChoosen(id) {
 }
 
 function groupRemoveUser(id) {
-  confirm("Remove user from group", "Are you sure you want to remove the user from the group?", ()=> {
-    $.post("/api/groupremoveuser/"+currentGroup+"/"+id, {_csrf: $("#_csrf").val()}, (resp)=> {
+  confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", ()=> {
+    $.post(`/api/groupremoveuser/${currentGroup()}/${id}`, {_csrf: $("#_csrf").val()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -157,116 +160,72 @@ function groupRemoveUser(id) {
   })
 }
 
-var searchGroupIndex = 0
-function searchGroup(start,direction) {
-  if ( start===undefined ) {
-    searchGroupIndex = 0
-  }
-
-  var search = $("#groupsearch").val().toLowerCase()
-  var groups = $("span[id^=treedesc]")
-
-  var index = 0
-  for ( const group of groups ) {
-    if ( $(group).html().toLowerCase().includes(search) ) {
-      if ( index==searchGroupIndex ) {
-        var parents = $(group).parents()
-        for ( const parent of parents ) {
-          // Expand parents
-          if ( $(parent).attr("role")=="group" && !$(parent).hasClass("show") ) {
-            const id = "#" + $(parent).attr("id")
-            const el = $(`[data-bs-target='${id}']`)
-            $(el).find("i").click()
-          }
-        }
-        groupClicked( ''+$(group).data("id") )
-        return true
-      }
-      index++
-    }
-  }
-  return false
-}
-
-function searchGroupNext() {
-  searchGroupIndex++
-  if ( !searchGroup(searchGroupIndex, 0) ) {
-    searchGroupIndex--
-  }
-}
-
-function searchGroupPrevious() {
-  searchGroupIndex--
-  if ( !searchGroup(searchGroupIndex, 1) ) {
-    searchGroupIndex++
-  }
-}
-
-$(function() {
-  // Reset add user dialog fields
-  $("#adduserdialog").on("hidden.bs.modal", ()=> {
-    $("#adduserdialog input,textarea,select").val("")
-  })
-
-  // Get the user data to be edited
-  $("#editgroupdialog").on("show.bs.modal", (ev)=> {
-    groupEditFill($(ev.relatedTarget).data("id"))
-  })
-
-  // Reset new group dialog fields
-  $("#newgroupdialog").on("hidden.bs.modal", ()=> {
-    $("#newgroupdialog input,textarea,select").val("")
-  })
-
-  // Autofocus
-  $("#newgroupdialog,#editgroupdialog").on("shown.bs.modal", (ev)=> {
-    $(this).find("[autofocus]").focus()
-  })
-})
-
 $(()=>{
   $.get("/api/groupstree", (resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
 
-    $('#groupstree').bstreeview({ parentsMarginLeft: '1rem', indent: 1, data: resp.data })
-    $('[role=treeitem]').on("mousedown", groupClicked)
-
-    // Open last used group
-    const last = localStorage.getItem(`bstreeview_open_groupstree_${ getUser() }`)
-    if ( last ) {
-      groupClicked(last)
-    }
+    treeFill("groupstree",resp.data,null,groupClicked)
   })
 
   // Event handlers
-  $("#removegroup").on("click", (ev)=>{
+  $("#groupremove").on("click", (ev)=>{
     groupRemove()
   })
   $("#groupedit").on("click", (ev)=>{
-    groupEdit()
+    groupEditDialog()
   })
   $("#groupcreate").on("click", (ev)=>{
-    groupCreate()
+    groupCreateDialog()
   })
-  $("#newgroupdescription").on("keyup", (ev)=>{
+
+  $("#groupcreatedescription").on("keyup", (ev)=>{
     groupCreateEnable()
   })
+  $("#groupcreatesave").on("click", (ev)=>{
+    groupCreate()
+  })
+  $("#groupcreatecancel").on("click", (ev)=> {
+    const dialog = $("#groupcreatedialog")
+    dialog[0].hide()
+  })
+
   $("#groupeditdescription").on("keyup", (ev)=>{
     groupEditEnable()
   })
-  $("#groupsearch").on("keyup", (ev)=> {
+  $("#groupeditsave").on("click", (ev)=>{
+    groupEdit()
+  })
+  $("#groupeditcancel").on("click", (ev)=> {
+    const dialog = $("#groupeditdialog")
+    dialog[0].hide()
+  })
+
+  $("#newmember").on("click", (ev)=>{
+    if ( currentGroup()=="" ) {
+      errorDialog("Select a group")
+      return
+    }
+    userPickerShow()
+  })
+
+  $("#groupsearch").on("sl-input", (ev)=> {
     if ( groupSearchTimeout ) {
       clearTimeout(groupSearchTimeout)
     }
-    groupSearchTimeout = setTimeout(searchGroup,250)
+    groupSearchTimeout = setTimeout(()=>{
+      const search = document.querySelector("#groupsearch").value
+      treeSearch("groupstree", search)
+    },250)
   })
   $("#groupsearchnext").on("click", (ev)=>{
-    searchGroupNext()
+    const search = document.querySelector("#groupsearch").value
+    treeSearchNext("groupstree", search)
   })
 
   $("#groupsearchprevious").on("click", (ev)=>{
-    searchGroupPrevious()
+    const search = document.querySelector("#groupsearch").value
+    treeSearchPrevious("groupstree", search)
   })
 })
