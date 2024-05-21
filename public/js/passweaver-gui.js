@@ -161,7 +161,8 @@ function treeSearch(elemid,searchstring,start) {
         // Select item and show it
         $("sl-tree-item").prop("selected","")
         $(treeitem).prop("selected","selected")
-        treeitem.scrollIntoView()
+        setTimeout(()=>{treeitem.scrollIntoView()}, 200)
+        $(treeitem).trigger("sl-selection-change")
 
         // Store last viewed item
         const user = getUser()
@@ -178,16 +179,20 @@ function treeSearch(elemid,searchstring,start) {
 
 function treeSearchNext(elemid,searchstring) {
   searchTreeIndex++
-  if ( !treeSearch(elemid,searchstring,searchTreeIndex) ) {
+  const ret = treeSearch(elemid,searchstring,searchTreeIndex)
+  if ( !ret ) {
     searchTreeIndex--
   }
+  return ret
 }
 
 function treeSearchPrevious(elemid,searchstring) {
   searchTreeIndex--
-  if ( !treeSearch(elemid,searchstring,searchTreeIndex) ) {
+  const ret = treeSearch(elemid,searchstring,searchTreeIndex)
+  if ( !ret ) {
     searchTreeIndex++
   }
+  return ret
 }
 
 function showToast(variant,text) {

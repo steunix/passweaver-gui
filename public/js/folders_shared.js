@@ -154,7 +154,9 @@ $(function() {
     }
     folderSearchTimeout = setTimeout(()=>{
       const search = document.querySelector("#foldersearch").value
-      treeSearch("folderstree", search)
+      if ( !treeSearch("folderstree", search) ) {
+        showToast("danger", "Not found")
+      }
     },250)
   })
 

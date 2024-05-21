@@ -216,7 +216,9 @@ $(()=>{
     }
     groupSearchTimeout = setTimeout(()=>{
       const search = document.querySelector("#groupsearch").value
-      treeSearch("groupstree", search)
+      if ( !treeSearch("groupstree", search) ) {
+        showToast("danger", "Not found")
+      }
     },250)
   })
   $("#groupsearchnext").on("click", (ev)=>{
