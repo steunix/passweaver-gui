@@ -167,23 +167,20 @@ tr {
 tr:hover {
     background-color: var(--sl-color-neutral-100);
 }
+
 .bordered {
-  border-radius: 4px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--sl-color-neutral-200)
+    border-radius: 4px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--sl-color-neutral-200)
 }
 
 .border-start {
-    border-width: 0 0 0 1px;
-    border-style: solid;
-    border-color: var(--sl-color-neutral-200)
+    border-left: 1px solid var(--sl-color-neutral-200);
 }
 
 .border-end {
-    border-width: 0 1px 0 0;
-    border-style: solid;
-    border-color: var(--sl-color-neutral-200)
+    border-right: 1px solid var(--sl-color-neutral-200);
 }
 
 .sticky {
