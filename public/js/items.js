@@ -291,7 +291,7 @@ function itemCopyLink(itm) {
 
 function findAndShowItem(itm) {
   itemViewFill(itm)
-  document.querySelector("#viewitemdialog").show()
+  document.querySelector("#itemviewdialog").show()
 }
 
 function personalPasswordCreateDialog() {
@@ -452,7 +452,7 @@ $(()=>{
   })
 
   if ( $("#viewitem").length ) {
-    findAndShowItem($("#viewitem").val())
+    setTimeout(()=>{ findAndShowItem($("#viewitem").val()) }, 200)
   }
 
   $("#copyviewpassword").on("click", (ev)=>{
