@@ -161,74 +161,72 @@ function groupRemoveUser(id) {
   })
 }
 
-$(()=>{
-  $.get("/api/groupstree", (resp)=>{
-    if ( !checkResponse(resp) ) {
-      return
-    }
+$.get("/api/groupstree", (resp)=>{
+  if ( !checkResponse(resp) ) {
+    return
+  }
 
-    treeFill("groupstree",resp.data,null,groupClicked)
-  })
+  treeFill("groupstree",resp.data,null,groupClicked)
+})
 
-  // Event handlers
-  $("#groupremove").on("click", (ev)=>{
-    groupRemove()
-  })
-  $("#groupedit").on("click", (ev)=>{
-    groupEditDialog()
-  })
-  $("#groupcreate").on("click", (ev)=>{
-    groupCreateDialog()
-  })
+// Event handlers
+$("#groupremove").on("click", (ev)=>{
+  groupRemove()
+})
+$("#groupedit").on("click", (ev)=>{
+  groupEditDialog()
+})
+$("#groupcreate").on("click", (ev)=>{
+  groupCreateDialog()
+})
 
-  $("#groupcreatedescription").on("keyup", (ev)=>{
-    groupCreateEnable()
-  })
-  $("#groupcreatesave").on("click", (ev)=>{
-    groupCreate()
-  })
-  $("#groupcreatecancel").on("click", (ev)=> {
-    const dialog = $("#groupcreatedialog")
-    dialog[0].hide()
-  })
+$("#groupcreatedescription").on("keyup", (ev)=>{
+  groupCreateEnable()
+})
+$("#groupcreatesave").on("click", (ev)=>{
+  groupCreate()
+})
+$("#groupcreatecancel").on("click", (ev)=> {
+  const dialog = $("#groupcreatedialog")
+  dialog[0].hide()
+})
 
-  $("#groupeditdescription").on("keyup", (ev)=>{
-    groupEditEnable()
-  })
-  $("#groupeditsave").on("click", (ev)=>{
-    groupEdit()
-  })
-  $("#groupeditcancel").on("click", (ev)=> {
-    const dialog = $("#groupeditdialog")
-    dialog[0].hide()
-  })
+$("#groupeditdescription").on("keyup", (ev)=>{
+  groupEditEnable()
+})
+$("#groupeditsave").on("click", (ev)=>{
+  groupEdit()
+})
+$("#groupeditcancel").on("click", (ev)=> {
+  const dialog = $("#groupeditdialog")
+  dialog[0].hide()
+})
 
-  $("#newmember").on("click", (ev)=>{
-    if ( currentGroup()=="" ) {
-      errorDialog("Select a group")
-      return
-    }
-    userPickerShow()
-  })
+$("#newmember").on("click", (ev)=>{
+  if ( currentGroup()=="" ) {
+    errorDialog("Select a group")
+    return
+  }
+  userPickerShow()
+})
 
-  $("#groupsearch").on("sl-input", (ev)=> {
-    if ( groupSearchTimeout ) {
-      clearTimeout(groupSearchTimeout)
-    }
-    groupSearchTimeout = setTimeout(()=>{
-      const search = document.querySelector("#groupsearch").value
-      if ( !treeSearch("groupstree", search) ) {
-        showToast("danger", "Not found")
-      }
-    },250)
-  })
-  $("#groupsearchnext").on("click", (ev)=>{
+$("#groupsearch").on("sl-input", (ev)=> {
+  if ( groupSearchTimeout ) {
+    clearTimeout(groupSearchTimeout)
+  }
+  groupSearchTimeout = setTimeout(()=>{
     const search = document.querySelector("#groupsearch").value
-    treeSearchNext("groupstree", search)
-  })
+    if ( !treeSearch("groupstree", search) ) {
+      showToast("danger", "Not found")
+    }
+  },250)
+})
+$("#groupsearchnext").on("click", (ev)=>{
+  const search = document.querySelector("#groupsearch").value
+  treeSearchNext("groupstree", search)
+})
 
-  $("#groupsearchprevious").on("click", (ev)=>{
-    const search = document.querySelector("#groupsearch").value
-    treeSearchPrevious("groupstree", search)
-  })
+$("#groupsearchprevious").on("click", (ev)=>{
+  const search = document.querySelector("#groupsearch").value
+  treeSearchPrevious("groupstree", search)
 })

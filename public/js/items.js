@@ -381,81 +381,78 @@ function passwordAccessed(item) {
   })
 }
 
-$(()=>{
+fillFolders()
 
-  fillFolders()
+// Create
+$("#newitem").on("click",(ev)=>{
+  itemCreateDialog()
+})
+$("#itemcreatecancel").on("click",(ev)=>{
+  document.querySelector("#itemcreatedialog").hide()
+})
+$("#itemcreatesave").on("click",(ev)=>{
+  itemCreate()
+})
 
-  // Create
-  $("#newitem").on("click",(ev)=>{
-    itemCreateDialog()
-  })
-  $("#itemcreatecancel").on("click",(ev)=>{
-    document.querySelector("#itemcreatedialog").hide()
-  })
-  $("#itemcreatesave").on("click",(ev)=>{
-    itemCreate()
-  })
+// View
+$("#newtitle").on("keyup",(ev)=>{
+  itemCreateEnable()
+})
+$("#toggleviewpassword").on("click",(ev)=>{
+  toggleViewPassword()
+})
 
-  // View
-  $("#newtitle").on("keyup",(ev)=>{
-    itemCreateEnable()
-  })
-  $("#toggleviewpassword").on("click",(ev)=>{
-    toggleViewPassword()
-  })
+// Edit
+$("#toggleeditpassword").on("click",(ev)=>{
+  toggleEditPassword()
+})
+$("#edittitle").on("keyup",(ev)=>{
+  itemEditEnable()
+})
+$("#itemeditcancel").on("click",(ev)=>{
+  document.querySelector("#itemeditdialog").hide()
+})
+$("#itemeditsave").on("click",(ev)=>{
+  itemEdit()
+})
 
-  // Edit
-  $("#toggleeditpassword").on("click",(ev)=>{
-    toggleEditPassword()
-  })
-  $("#edittitle").on("keyup",(ev)=>{
-    itemEditEnable()
-  })
-  $("#itemeditcancel").on("click",(ev)=>{
-    document.querySelector("#itemeditdialog").hide()
-  })
-  $("#itemeditsave").on("click",(ev)=>{
-    itemEdit()
-  })
+// Personal
+$("#togglepersonalpassword").on("click",(ev)=>{
+  togglePersonalPasswordSet()
+})
+$("#personalpasswordcancel").on("click",(ev)=>{
+  document.querySelector("#personalpasswordnew").hide()
+})
+$("#personalpasswordsetcancel").on("click",(ev)=>{
+  document.querySelector("#personalpasswordset").hide()
+})
+$("#personalpasswordcreate").on("click",(ev)=>{
+  personalPasswordCreate()
+})
+$("#newpersonalpassword,#newpersonalpasswordconfirm").on("keyup",(ev)=>{
+  personalPasswordCreateEnable()
+})
+$("#togglenewpersonalpassword").on("click",(ev)=>{
+  togglePersonalPassword()
+})
+$("#togglenewpersonalpasswordconfirm").on("click",(ev)=>{
+  togglePersonalPasswordConfirm()
+})
+$("#personalpasswordsetbutton").on("click",(ev)=>{
+  personalPasswordSet()
+})
 
-  // Personal
-  $("#togglepersonalpassword").on("click",(ev)=>{
-    togglePersonalPasswordSet()
-  })
-  $("#personalpasswordcancel").on("click",(ev)=>{
-    document.querySelector("#personalpasswordnew").hide()
-  })
-  $("#personalpasswordsetcancel").on("click",(ev)=>{
-    document.querySelector("#personalpasswordset").hide()
-  })
-  $("#personalpasswordcreate").on("click",(ev)=>{
-    personalPasswordCreate()
-  })
-  $("#newpersonalpassword,#newpersonalpasswordconfirm").on("keyup",(ev)=>{
-    personalPasswordCreateEnable()
-  })
-  $("#togglenewpersonalpassword").on("click",(ev)=>{
-    togglePersonalPassword()
-  })
-  $("#togglenewpersonalpasswordconfirm").on("click",(ev)=>{
-    togglePersonalPasswordConfirm()
-  })
-  $("#personalpasswordsetbutton").on("click",(ev)=>{
-    personalPasswordSet()
-  })
-
-  $("#itemsearch").on("sl-input", (ev) => {
-    if ( itemSearchTimeout ) {
-      clearTimeout(itemSearchTimeout)
-    }
-    itemSearchTimeout = setTimeout(fillItems,250)
-  })
-
-  if ( $("#viewitem").length ) {
-    setTimeout(()=>{ findAndShowItem($("#viewitem").val()) }, 200)
+$("#itemsearch").on("sl-input", (ev) => {
+  if ( itemSearchTimeout ) {
+    clearTimeout(itemSearchTimeout)
   }
+  itemSearchTimeout = setTimeout(fillItems,250)
+})
 
-  $("#copyviewpassword").on("click", (ev)=>{
-    passwordAccessed($("#itemviewid").val())
-  })
+if ( $("#viewitem").length ) {
+  setTimeout(()=>{ findAndShowItem($("#viewitem").val()) }, 200)
+}
+
+$("#copyviewpassword").on("click", (ev)=>{
+  passwordAccessed($("#itemviewid").val())
 })

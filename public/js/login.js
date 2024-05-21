@@ -1,5 +1,3 @@
-$(()=>{
-  $("#login").on("click",(ev)=>{
-    spinnerShow()
-  })
+$("#login").on("click",(ev)=>{
+  spinnerShow()
 })

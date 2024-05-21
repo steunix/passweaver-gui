@@ -58,14 +58,11 @@ function itemShow(item) {
   itemViewFill(item)
 }
 
-$(()=>{
-  // Event handlers
-  $("#itemsearch").on("sl-input", (ev) => {
-    if ( itemSearchTimeout ) {
-      clearTimeout(itemSearchTimeout)
-    }
-    if ( $("#itemsearch").val().length>2 ) {
-      itemSearchTimeout = setTimeout(fillItems,250)
-    }
-  })
+$("#itemsearch").on("sl-input", (ev) => {
+  if ( itemSearchTimeout ) {
+    clearTimeout(itemSearchTimeout)
+  }
+  if ( $("#itemsearch").val().length>2 ) {
+    itemSearchTimeout = setTimeout(fillItems,250)
+  }
 })

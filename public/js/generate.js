@@ -10,9 +10,7 @@ function passwordGenerate() {
   })
 }
 
-$(()=>{
+passwordGenerate()
+$("#generate").on("click",(ev)=>{
   passwordGenerate()
-  $("#generate").on("click",(ev)=>{
-    passwordGenerate()
-  })
 })

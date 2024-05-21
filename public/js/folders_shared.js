@@ -112,62 +112,60 @@ function fillFolders() {
   })
 }
 
-$(function() {
-  // Event handlers
-  document.querySelector("#foldercreatedescription").addEventListener("keyup",(ev)=>{
-    folderCreateEnable()
-  })
+// Event handlers
+document.querySelector("#foldercreatedescription").addEventListener("keyup",(ev)=>{
+  folderCreateEnable()
+})
 
-  document.querySelector("#folderremove").addEventListener("click", (ev)=>{
-    folderRemove()
-  })
+document.querySelector("#folderremove").addEventListener("click", (ev)=>{
+  folderRemove()
+})
 
-  document.querySelector("#folderedit").addEventListener("click", (ev)=>{
-    folderEditDialog()
-  })
-  document.querySelector("#foldercreate").addEventListener("click", (ev)=>{
-    if ( currentFolder()==="" ) {
-      errorDialog("Select a parent folder")
-      return
-    }
-    folderCreateDialog()
-  })
+document.querySelector("#folderedit").addEventListener("click", (ev)=>{
+  folderEditDialog()
+})
+document.querySelector("#foldercreate").addEventListener("click", (ev)=>{
+  if ( currentFolder()==="" ) {
+    errorDialog("Select a parent folder")
+    return
+  }
+  folderCreateDialog()
+})
 
-  document.querySelector("#foldercreatesave").addEventListener("click", (ev)=>{
-    folderCreate()
-  })
-  document.querySelector("#foldercreatecancel").addEventListener("click", (ev)=> {
-    document.querySelector("#foldercreatedialog").hide()
-  })
+document.querySelector("#foldercreatesave").addEventListener("click", (ev)=>{
+  folderCreate()
+})
+document.querySelector("#foldercreatecancel").addEventListener("click", (ev)=> {
+  document.querySelector("#foldercreatedialog").hide()
+})
 
-  document.querySelector("#foldereditdescription").addEventListener("keyup",(ev)=>{
-    folderEditEnable()
-  })
-  document.querySelector("#foldereditcancel").addEventListener("click", (ev)=> {
-    document.querySelector("#foldereditdialog").hide()
-  })
-  document.querySelector("#foldereditsave").addEventListener("click", (ev)=>{
-    folderEdit()
-  })
+document.querySelector("#foldereditdescription").addEventListener("keyup",(ev)=>{
+  folderEditEnable()
+})
+document.querySelector("#foldereditcancel").addEventListener("click", (ev)=> {
+  document.querySelector("#foldereditdialog").hide()
+})
+document.querySelector("#foldereditsave").addEventListener("click", (ev)=>{
+  folderEdit()
+})
 
-  document.querySelector("#foldersearch").addEventListener("sl-input", (ev)=> {
-    if ( folderSearchTimeout ) {
-      clearTimeout(folderSearchTimeout)
-    }
-    folderSearchTimeout = setTimeout(()=>{
-      const search = document.querySelector("#foldersearch").value
-      if ( !treeSearch("folderstree", search) ) {
-        showToast("danger", "Not found")
-      }
-    },250)
-  })
-
-  document.querySelector("#foldersearchnext").addEventListener("click", (ev)=>{
+document.querySelector("#foldersearch").addEventListener("sl-input", (ev)=> {
+  if ( folderSearchTimeout ) {
+    clearTimeout(folderSearchTimeout)
+  }
+  folderSearchTimeout = setTimeout(()=>{
     const search = document.querySelector("#foldersearch").value
-    treeSearchNext("folderstree", search)
-  })
-  document.querySelector("#foldersearchprevious").addEventListener("click", (ev)=>{
-    const search = document.querySelector("#foldersearch").value
-    treeSearchPrevious("folderstree", search)
-  })
+    if ( !treeSearch("folderstree", search) ) {
+      showToast("danger", "Not found")
+    }
+  },250)
+})
+
+document.querySelector("#foldersearchnext").addEventListener("click", (ev)=>{
+  const search = document.querySelector("#foldersearch").value
+  treeSearchNext("folderstree", search)
+})
+document.querySelector("#foldersearchprevious").addEventListener("click", (ev)=>{
+  const search = document.querySelector("#foldersearch").value
+  treeSearchPrevious("folderstree", search)
 })

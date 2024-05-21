@@ -217,42 +217,40 @@ function groupPickerChoosen(group) {
   })
 }
 
-$(()=>{
-  fillUsers()
+fillUsers()
 
-  // Event handlers
-  $("#newlogin,#newemail,#newlastname,#newpassword,#newpasswordconfirm").on("keyup",(ev)=>{
-    userCreateEnable()
-  })
-  $("#usercreate").on("click",(ev)=> {
-    userCreate()
-  })
-  $("#editlogin,#editemail,#editlastname").on("keyup",(ev)=>{
-    userEditEnable()
-  })
-  $("#useredit").on("click",(ev)=>{
-    userEdit()
-  })
-  $("#newuser").on("click",(ev)=>{
-    userCreateDialog()
-  })
-  $("#newuserdialog #cancel").on("click", (ev)=>{
-    document.querySelector("#newuserdialog").hide()
-  })
-  $("#usersearch").on("sl-input", (ev) => {
-    if ( userSearchTimeout ) {
-      clearTimeout(userSearchTimeout)
-    }
-    userSearchTimeout = setTimeout(()=>{
-      $("#groupstable tbody tr").remove()
-      fillUsers()
-    },250)
-  })
-  $("#addgroup").on("click",(ev)=>{
-    if ( currentUser==="" ) {
-      errorDialog("Select a user")
-      return
-    }
-    groupPickerShow()
-  })
+// Event handlers
+$("#newlogin,#newemail,#newlastname,#newpassword,#newpasswordconfirm").on("keyup",(ev)=>{
+  userCreateEnable()
+})
+$("#usercreate").on("click",(ev)=> {
+  userCreate()
+})
+$("#editlogin,#editemail,#editlastname").on("keyup",(ev)=>{
+  userEditEnable()
+})
+$("#useredit").on("click",(ev)=>{
+  userEdit()
+})
+$("#newuser").on("click",(ev)=>{
+  userCreateDialog()
+})
+$("#newuserdialog #cancel").on("click", (ev)=>{
+  document.querySelector("#newuserdialog").hide()
+})
+$("#usersearch").on("sl-input", (ev) => {
+  if ( userSearchTimeout ) {
+    clearTimeout(userSearchTimeout)
+  }
+  userSearchTimeout = setTimeout(()=>{
+    $("#groupstable tbody tr").remove()
+    fillUsers()
+  },250)
+})
+$("#addgroup").on("click",(ev)=>{
+  if ( currentUser==="" ) {
+    errorDialog("Select a user")
+    return
+  }
+  groupPickerShow()
 })
