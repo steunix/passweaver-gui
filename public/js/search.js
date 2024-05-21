@@ -5,7 +5,7 @@ function fillItems() {
 
   $("#itemstable tbody tr").remove()
 
-  $.get("/api/itemssearch?search="+$("#itemsearch").val(),(resp)=>{
+  $.get(`/api/itemssearch?search=${$("#itemsearch").val()}`,(resp)=>{
     // Folder may not be accessible
     if ( !checkResponse(resp,403) ) {
       return
@@ -14,12 +14,13 @@ function fillItems() {
     if ( resp.data.length ) {
       row = ""
       for ( const itm of resp.data ) {
-        row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
-        row += `<td><sl-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></sl-icon-button></td>`
-        row += `<td class='border-start'>${itm.folder.description}</td>`
-        row += `<td>${itm.title}</td></tr>`
+        row +=
+          `<tr id='row-${itm.id}' data-id='${itm.id}'>`+
+          `<td><sl-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></sl-icon-button></td>`+
+          `<td class='border-start'>${itm.folder.description}</td>`+
+          `<td>${itm.title}</td></tr>`
       }
-      $("#itemstable tbody").append(row)
+      document.querySelector("#itemstable tbody").innerHTML = row
     }
 
     // Install event handlers
@@ -32,14 +33,6 @@ function fillItems() {
 
     loadingHide($("#itemstable"))
   })
-}
-
-function toggleViewPassword() {
-  if ( $("#viewpassword").attr("type")=="password") {
-    $("#viewpassword").attr("type","text")
-  } else {
-    $("#viewpassword").attr("type","password")
-  }
 }
 
 function itemViewFill(item) {
@@ -58,7 +51,6 @@ function itemViewFill(item) {
 }
 
 function itemShow(item) {
-  debugger
   if ( window.getSelection() ) {
     window.getSelection().empty()
   }

@@ -35,7 +35,7 @@ function fillGroups() {
           $("#addgroup").removeAttr("disabled")
         }
       }
-      $("#groupstable tbody").append(row)
+      document.querySelector("#groupstable tbody").innerHTML = row
 
       // Event handlers
       $("[id^=removegroup]").on("click", groupRemove)

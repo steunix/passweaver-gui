@@ -1,15 +1,13 @@
 var groupPickerTimeout = 0
 
 function groupPickerShow() {
-  const dialog = $("#grouppickerdialog")
   $("#grouppickersearch").val("")
   $("#grouppickertable tbody tr").remove()
-  dialog[0].show()
+  document.querySelector("#grouppickerdialog").show()
 }
 
 function groupPickerHide() {
-  const dialog = $("#grouppickerdialog")
-  dialog[0].hide()
+  document.querySelector("#grouppickerdialog").hide()
 }
 
 function searchGroups() {
@@ -24,10 +22,11 @@ function searchGroups() {
     if ( resp.data.length ) {
       var row = ""
       for ( const grp of resp.data ) {
-        row += `<tr id='row-${grp.id}' data-id='${grp.id}'>`
-        row += `<td><sl-icon-button id='choose-${grp.id}' data-id='${grp.id}' name="arrow-right-circle"></sl-icon-button></td>`
-        row += `<td>${grp.description}</td>`
-        row += "</tr>"
+        row +=
+          `<tr id='row-${grp.id}' data-id='${grp.id}'>`+
+          `<td><sl-icon-button id='choose-${grp.id}' data-id='${grp.id}' name="arrow-right-circle"></sl-icon-button></td>`+
+          `<td>${grp.description}</td>`+
+          `</tr>`
       }
       $("#grouppickertable tbody").append(row)
 

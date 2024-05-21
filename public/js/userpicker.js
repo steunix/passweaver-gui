@@ -1,15 +1,13 @@
 var userPickerTimeout = 0
 
 function userPickerShow() {
-  const dialog = $("#userpickerdialog")
   $("#userpickersearch").val("")
   $("#userpickertable tbody tr").remove()
-  dialog[0].show()
+  document.querySelector("#userpickerdialog").show()
 }
 
 function userPickerHide() {
-  const dialog = $("#userpickerdialog")
-  dialog[0].hide()
+  document.querySelector("#userpickerdialog").hide()
 }
 
 function searchUsers() {
@@ -30,7 +28,7 @@ function searchUsers() {
         row += `<td>${usr.lastname} ${usr.firstname}</td>`
         row += "</tr>"
       }
-      $("#userpickertable tbody").append(row)
+      document.querySelector("#userpickertable tbody").innerHTML = row
     }
 
     // Event handlers

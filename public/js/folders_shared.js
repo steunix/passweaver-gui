@@ -14,24 +14,24 @@ function currentFolder() {
 }
 
 function folderCreateDialog() {
-  const dialog = document.querySelector("#foldercreatedialog")
   $("#foldercreatedialog sl-input,sl-textarea").val("")
   folderCreateEnable()
-  dialog.show()
+  document.querySelector("#foldercreatedialog").show()
 }
 
 function folderCreateEnable() {
-  if ( $("#foldercreatedescription").val()=="" ) {
-    $("#foldercreatesave").attr("disabled","disabled")
+  const descr = document.querySelector("#foldercreatedescription").value
+  if ( descr==="" ) {
+    document.querySelector("#foldercreatesave").setAttribute("disabled","disabled")
   } else {
-    $("#foldercreatesave").removeAttr("disabled")
+    document.querySelector("#foldercreatesave").removeAttribute("disabled")
   }
 }
 
 function folderCreate() {
   let itemdata = {
     _csrf: $("#_csrf").val(),
-    description: $("#foldercreatedescription").val()
+    description: document.querySelector("#foldercreatedescription").value
   }
 
   $.post(`/api/foldernew/${currentFolder()}`, itemdata, (resp)=> {
@@ -65,10 +65,11 @@ function folderEditDialog() {
 }
 
 function folderEditEnable() {
-  if ( $("#foldereditdescription").val()=="" ) {
-    $("#foldereditsave").attr("disabled","disabled")
+  const descr = document.querySelector("#foldereditdescription").value
+  if ( descr==="" ) {
+    document.querySelector("#foldereditsave").setAttribute("disabled","disabled")
   } else {
-    $("#foldereditsave").removeAttr("disabled")
+    document.querySelector("#foldereditsave").removeAttribute("disabled")
   }
 }
 
@@ -78,7 +79,7 @@ function folderEditFill() {
       return
     }
 
-    $("#foldereditdescription").val(resp.data.description)
+    document.querySelector("#foldereditdescription").value = resp.data.description
     folderEditEnable()
   })
 }
@@ -86,7 +87,7 @@ function folderEditFill() {
 function folderEdit() {
   let data = {
     _csrf: $("#_csrf").val(),
-    description: $("#foldereditdescription").val()
+    description: document.querySelector("#foldereditdescription").value
   }
 
   $.post(`/api/folderupdate/${currentFolder()}`, data, (resp)=> {
@@ -113,17 +114,18 @@ function fillFolders() {
 
 $(function() {
   // Event handlers
-  $("#foldercreatedescription").on("keyup",(ev)=>{
+  document.querySelector("#foldercreatedescription").addEventListener("keyup",(ev)=>{
     folderCreateEnable()
   })
 
-  $("#folderremove").on("click", (ev)=>{
+  document.querySelector("#folderremove").addEventListener("click", (ev)=>{
     folderRemove()
   })
-  $("#folderedit").on("click", (ev)=>{
+
+  document.querySelector("#folderedit").addEventListener("click", (ev)=>{
     folderEditDialog()
   })
-  $("#foldercreate").on("click", (ev)=>{
+  document.querySelector("#foldercreate").addEventListener("click", (ev)=>{
     if ( currentFolder()==="" ) {
       errorDialog("Select a parent folder")
       return
@@ -131,24 +133,24 @@ $(function() {
     folderCreateDialog()
   })
 
-  $("#foldercreatesave").on("click", (ev)=>{
+  document.querySelector("#foldercreatesave").addEventListener("click", (ev)=>{
     folderCreate()
   })
-  $("#foldercreatecancel").on("click", (ev)=> {
+  document.querySelector("#foldercreatecancel").addEventListener("click", (ev)=> {
     document.querySelector("#foldercreatedialog").hide()
   })
 
-  $("#foldereditdescription").on("keyup",(ev)=>{
+  document.querySelector("#foldereditdescription").addEventListener("keyup",(ev)=>{
     folderEditEnable()
   })
-  $("#foldereditcancel").on("click", (ev)=> {
+  document.querySelector("#foldereditcancel").addEventListener("click", (ev)=> {
     document.querySelector("#foldereditdialog").hide()
   })
-  $("#foldereditsave").on("click", (ev)=>{
+  document.querySelector("#foldereditsave").addEventListener("click", (ev)=>{
     folderEdit()
   })
 
-  $("#foldersearch").on("sl-input", (ev)=> {
+  document.querySelector("#foldersearch").addEventListener("sl-input", (ev)=> {
     if ( folderSearchTimeout ) {
       clearTimeout(folderSearchTimeout)
     }
@@ -160,11 +162,11 @@ $(function() {
     },250)
   })
 
-  $("#foldersearchnext").on("click", (ev)=>{
+  document.querySelector("#foldersearchnext").addEventListener("click", (ev)=>{
     const search = document.querySelector("#foldersearch").value
     treeSearchNext("folderstree", search)
   })
-  $("#foldersearchprevious").on("click", (ev)=>{
+  document.querySelector("#foldersearchprevious").addEventListener("click", (ev)=>{
     const search = document.querySelector("#foldersearch").value
     treeSearchPrevious("folderstree", search)
   })

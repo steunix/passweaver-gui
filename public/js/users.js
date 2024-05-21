@@ -11,19 +11,20 @@ function fillUsers() {
     if ( resp.data.length ) {
       var row = ""
       for ( const itm of resp.data ) {
-        row += `<tr data-id='${itm.id}' style='cursor:pointer'>`
-        row += `<td><sl-icon-button id='edituser-${itm.id}' title='Edit user' name='pencil' data-id='${itm.id}'></sl-icon-button></td>`
-        row += `<td><sl-icon-button id='removeuser-${itm.id}' title='Delete user' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button></td>`
-        row += `<td class='border-start'>${itm.login}</td>`
-        row += `<td>${itm.lastname}</td>`
-        row += `<td>${itm.firstname}</td>`
-        row += `<td>${itm.email}</td>`
-        row += `<td>${itm.locale}</td>`
-        row += `<td>${itm.authmethod}</td>`
-        row += `<td class='text-center'><sl-icon name='${itm.active ? "check-lg":"x-lg"}' style='color:${itm.active?"green":"red"}'/></td>`
-        row += "</tr>"
+        row +=
+          `<tr data-id='${itm.id}' style='cursor:pointer'>`+
+          `<td><sl-icon-button id='edituser-${itm.id}' title='Edit user' name='pencil' data-id='${itm.id}'></sl-icon-button></td>`+
+          `<td><sl-icon-button id='removeuser-${itm.id}' title='Delete user' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button></td>`+
+          `<td class='border-start'>${itm.login}</td>`+
+          `<td>${itm.lastname}</td>`+
+          `<td>${itm.firstname}</td>`+
+          `<td>${itm.email}</td>`+
+          `<td>${itm.locale}</td>`+
+          `<td>${itm.authmethod}</td>`+
+          `<td class='text-center'><sl-icon name='${itm.active ? "check-lg":"x-lg"}' style='color:${itm.active?"green":"red"}'/></td>`+
+          `</tr>`
       }
-      $("#userstable tbody").append(row)
+      document.querySelector("#userstable tbody").innerHTML = row
 
       // Install event handlers
       $("#userstable tbody tr").on("dblclick",(ev)=>{

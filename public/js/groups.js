@@ -20,18 +20,19 @@ function fillUsers() {
     if ( resp.data.length ) {
       var row = ''
       for ( const usr of resp.data ) {
-        row += `<tr>`
-        row += `<td><sl-icon-button id='remove-${usr.id}' title='Remove' data-id='${usr.id}' name="trash3" style="color:red;"></sl-icon-button></td>`
-        row += `<td class='border-start'>${usr.login}</td>`
-        row += `<td>${usr.lastname}</td>`
-        row += `<td>${usr.firstname}</td>`
+        row +=
+          `<tr>`+
+          `<td><sl-icon-button id='remove-${usr.id}' title='Remove' data-id='${usr.id}' name="trash3" style="color:red;"></sl-icon-button></td>`+
+          `<td class='border-start'>${usr.login}</td>`+
+          `<td>${usr.lastname}</td>`+
+          `<td>${usr.firstname}</td>`
       }
-      $("#userstable tbody").append(row)
 
       // Install event handlers
       $("#userstable tbody [id^=remove]").on("click",(ev)=>{
         groupRemoveUser($(ev.currentTarget).data("id"))
       })
+      document.querySelector("#userstable tbody").innerHTML = row
     }
 
     // Group cannot be removed if not empty

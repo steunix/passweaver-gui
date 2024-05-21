@@ -44,9 +44,9 @@ function fillItems() {
         row += `<td><sl-icon-button id='passwordshow-${itm.id}' title='Show/hide password' data-id='${itm.id}' name='eye'></sl-icon-button></td>`
         row += `</tr>`
       }
-      $("#itemstable tbody").append(row)
+      document.querySelector("#itemstable tbody").innerHTML = row
     } else {
-      $("#itemstable tbody").append("<tr><td colspan='99'>No item found</td></tr>")
+      document.querySelector("#itemstable tbody").innerHTML = "<tr><td colspan='99'>No item found</td></tr>"
     }
 
     // Install event handlers
