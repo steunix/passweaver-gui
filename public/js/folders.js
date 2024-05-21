@@ -121,10 +121,8 @@ function groupPickerChoosen(group) {
 }
 
 
-$(()=>{
-  fillFolders()
+fillFolders()
 
-  document.querySelector("#addgroup").addEventListener("click",(ev)=>{
-    groupPickerShow()
-  })
+document.querySelector("#addgroup").addEventListener("click",(ev)=>{
+  groupPickerShow()
 })

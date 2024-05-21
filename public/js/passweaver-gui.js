@@ -224,9 +224,7 @@ $(document).ajaxError(function(evt, request, settings){
   }
 })
 
-$(()=>{
-  if ( $("#pageid").length ) {
-    const pageid = $("#pageid").val()
-    $(`.page-sidebar .link[pageid=${pageid}]`).addClass("current")
-  }
-})
+if ( $("#pageid").length ) {
+  const pageid = $("#pageid").val()
+  $(`.page-sidebar .link[pageid=${pageid}]`).addClass("current")
+}
