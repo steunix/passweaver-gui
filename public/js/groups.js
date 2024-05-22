@@ -9,7 +9,8 @@ function currentGroup() {
 }
 
 function fillUsers() {
-  $("#userstable tbody tr").remove()
+  jshQS("#userstable tbody").innerHTML = ""
+
   $.get(`/api/userslist/${currentGroup()}`,(resp)=>{
     if ( !checkResponse(resp) ) {
       return
@@ -25,19 +26,19 @@ function fillUsers() {
           `<td>${usr.lastname}</td>`+
           `<td>${usr.firstname}</td>`
       }
+      document.querySelector("#userstable tbody").innerHTML = row
 
       // Install event handlers
-      $("#userstable tbody [id^=remove]").on("click",(ev)=>{
-        groupRemoveUser($(ev.currentTarget).data("id"))
+      jshAddEventListener("#userstable tbody [id^=remove]", "click", (ev)=>{
+        groupRemoveUser(ev.currentTarget.getAttribute("data-id"))
       })
-      document.querySelector("#userstable tbody").innerHTML = row
     }
 
     // Group cannot be removed if not empty
-    if ( $("#userstable tbody tr").length ) {
-      $("#removegroup").attr("disabled","disabled")
+    if ( jshQSA("#userstable tbody tr").length ) {
+      jshQS("#groupremove").setAttribute("disabled","disabled")
     } else {
-      $("#removegroup").removeAttr("disabled")
+      jshQS("#groupremove").removeAttribute("disabled")
     }
   })
 }
@@ -47,24 +48,23 @@ function groupClicked(groupid) {
 }
 
 function groupCreateEnable() {
-  if ( $("#groupcreatedescription").val()==="" ) {
-    $("#groupcreatesave").attr("disabled","disabled")
+  if ( jshValue("#groupcreatedescription")==="" ) {
+    jshQS("#groupcreatesave").setAttribute("disabled","disabled")
   } else {
-    $("#groupcreatesave").removeAttr("disabled")
+    jshQS("#groupcreatesave").removeAttribute("disabled")
   }
 }
 
 function groupCreateDialog() {
-  const dialog = $("#groupcreatedialog")
-  $("#groupcreatedialog sl-input,sl-textarea").val("")
+  jshValue("#groupcreatedialog sl-input,sl-textarea", "")
   groupCreateEnable()
-  dialog[0].show()
+  jshQS("#groupcreatedialog").show()
 }
 
 function groupCreate() {
   let userdata = {
     _csrf: getCSRFToken(),
-    description: $("#groupcreatedescription").val()
+    description: jshValue("#groupcreatedescription")
   }
 
   $.post(`/api/groupnew/${currentGroup()}`, userdata, (resp)=> {
@@ -105,7 +105,7 @@ function groupEditFill() {
     }
 
     if ( resp.status=="success" ) {
-      $("#groupeditdescription").val(resp.data.description)
+      jshValue("#groupeditdescription", resp.data.description)
       groupEditEnable()
     }
   })
@@ -114,7 +114,7 @@ function groupEditFill() {
 function groupEdit() {
   let data = {
     _csrf: getCSRFToken(),
-    description: $("#groupeditdescription").val()
+    description: jshValue("#groupeditdescription")
   }
 
   $.post(`/api/groupupdate/${currentGroup()}`, data, (resp)=> {
@@ -127,10 +127,10 @@ function groupEdit() {
 }
 
 function groupEditEnable() {
-  if ( $("#groupeditdescription").val()=="" ) {
-    $("#groupeditsave").attr("disabled","disabled")
+  if ( jshValue("#groupeditdescription")=="" ) {
+    jshQS("#groupeditsave").setAttribute("disabled","disabled")
   } else {
-    $("#groupeditsave").removeAttr("disabled")
+    jshQS("#groupeditsave").removeAttribute("disabled")
   }
 }
 
@@ -166,39 +166,37 @@ $.get("/api/groupstree", (resp)=>{
 })
 
 // Event handlers
-$("#groupremove").on("click", (ev)=>{
+jshAddEventListener("#groupremove", "click", (ev)=>{
   groupRemove()
 })
-$("#groupedit").on("click", (ev)=>{
+jshAddEventListener("#groupedit", "click", (ev)=>{
   groupEditDialog()
 })
-$("#groupcreate").on("click", (ev)=>{
+jshAddEventListener("#groupcreate", "click", (ev)=>{
   groupCreateDialog()
 })
 
-$("#groupcreatedescription").on("keyup", (ev)=>{
+jshAddEventListener("#groupcreatedescription", "keyup", (ev)=>{
   groupCreateEnable()
 })
-$("#groupcreatesave").on("click", (ev)=>{
+jshAddEventListener("#groupcreatesave", "click", (ev)=>{
   groupCreate()
 })
-$("#groupcreatecancel").on("click", (ev)=> {
-  const dialog = $("#groupcreatedialog")
-  dialog[0].hide()
+jshAddEventListener("#groupcreatecancel", "click", (ev)=> {
+  jshQS("#groupcreatedialog").hide()
 })
 
-$("#groupeditdescription").on("keyup", (ev)=>{
+jshAddEventListener("#groupeditdescription", "keyup", (ev)=>{
   groupEditEnable()
 })
-$("#groupeditsave").on("click", (ev)=>{
+jshAddEventListener("#groupeditsave", "click", (ev)=>{
   groupEdit()
 })
-$("#groupeditcancel").on("click", (ev)=> {
-  const dialog = $("#groupeditdialog")
-  dialog[0].hide()
+jshAddEventListener("#groupeditcancel", "click", (ev)=> {
+  jshQS("#groupeditdialog").hide()
 })
 
-$("#newmember").on("click", (ev)=>{
+jshAddEventListener("#newmember", "click", (ev)=>{
   if ( currentGroup()=="" ) {
     errorDialog("Select a group")
     return
@@ -206,23 +204,23 @@ $("#newmember").on("click", (ev)=>{
   userPickerShow()
 })
 
-$("#groupsearch").on("sl-input", (ev)=> {
+jshAddEventListener("#groupsearch", "sl-input", (ev)=> {
   if ( groupSearchTimeout ) {
     clearTimeout(groupSearchTimeout)
   }
   groupSearchTimeout = setTimeout(()=>{
-    const search = document.querySelector("#groupsearch").value
+    const search = jshValue("#groupsearch")
     if ( !treeSearch("groupstree", search) ) {
       showToast("danger", "Not found")
     }
   },250)
 })
-$("#groupsearchnext").on("click", (ev)=>{
-  const search = document.querySelector("#groupsearch").value
+jshAddEventListener("#groupsearchnext", "click", (ev)=>{
+  const search = jshValue("#groupsearch")
   treeSearchNext("groupstree", search)
 })
 
-$("#groupsearchprevious").on("click", (ev)=>{
-  const search = document.querySelector("#groupsearch").value
+jshAddEventListener("#groupsearchprevious", "click", (ev)=>{
+  const search = jshValue("#groupsearch")
   treeSearchPrevious("groupstree", search)
 })

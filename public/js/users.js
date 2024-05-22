@@ -2,12 +2,13 @@ var userSearchTimeout
 var currentUser = ""
 
 function fillUsers() {
-  $.get("/api/userslist?search="+$("#usersearch").val(),(resp)=>{
+  $.get(`/api/userslist?search=${document.querySelector("#usersearch").value}`,(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
-    $("#groupstable tbody tr").remove()
-    $("#userstable tbody tr").remove()
+    document.querySelector("#groupstable tbody").innerHTML = ""
+    document.querySelector("#userstable tbody").innerHTML = ""
+
     if ( resp.data.length ) {
       var row = ""
       for ( const itm of resp.data ) {
