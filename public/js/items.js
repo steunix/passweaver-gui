@@ -125,7 +125,7 @@ function itemCreate() {
   document.querySelector("#itemcreatedialog").hide()
 
   let itemdata = {
-    _csrf: $("#_csrf").val(),
+    _csrf: getCSRFToken(),
     title: $("#newtitle").val(),
     email: $("#newemail").val(),
     description: $("#newdescription").val(),
@@ -158,7 +158,7 @@ function itemCreateEnable() {
 
 function itemRemove(itm) {
   confirmDialog("Remove item", "Are you sure you want to remove this item?", ()=> {
-    $.post("/api/itemremove/"+itm, {_csrf: $("#_csrf").val()}, (resp)=> {
+    $.post("/api/itemremove/"+itm, {_csrf: getCSRFToken()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -207,7 +207,7 @@ function itemEdit() {
   const id = document.querySelector("#itemeditid").value
 
   let itemdata = {
-    _csrf: $("#_csrf").val(),
+    _csrf: getCSRFToken(),
     title: $("#edittitle").val(),
     data: {
       description: $("#editdescription").val(),
@@ -273,7 +273,7 @@ function itemShow(item) {
 
 function itemClone(itm) {
   confirmDialog("Clone item", "Do you want to clone this item?", ()=>{
-    $.post(`/api/items/${itm}/clone`, {_csrf: $("#_csrf").val()}, (resp)=> {
+    $.post(`/api/items/${itm}/clone`, {_csrf: getCSRFToken()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -313,7 +313,7 @@ function personalPasswordCreateEnable() {
 
 function personalPasswordCreate() {
   let data = {
-    _csrf: $("#_csrf").val(),
+    _csrf: getCSRFToken(),
     password: $("#newpersonalpassword").val()
   }
 
@@ -329,7 +329,7 @@ function personalPasswordCreate() {
 
 function personalPasswordSet() {
   let data = {
-    _csrf: $("#_csrf").val(),
+    _csrf: getCSRFToken(),
     password: $("#personalpasswordask").val()
   }
 
@@ -374,7 +374,7 @@ function passwordShow(ev) {
 
 function passwordAccessed(item) {
   $.post("/api/events", {
-    _csrf: $("#_csrf").val(),
+    _csrf: getCSRFToken(),
     event: 'pwdread',
     itemtype: 'item',
     itemid: item

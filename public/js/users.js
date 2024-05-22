@@ -77,7 +77,7 @@ function userCreateDialog() {
 
 function userCreate() {
   let userdata = {
-    _csrf: $("#_csrf").val(),
+    _csrf: getCSRFToken(),
     login: $("#newlogin").val(),
     email: $("#newemail").val(),
     lastname: $("#newlastname").val(),
@@ -111,7 +111,7 @@ function userCreateEnable() {
 
 function userRemove(usr) {
   confirmDialog("Remove user", "<strong><span style='color:red;'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", ()=> {
-    $.post("/api/userremove/"+usr, {_csrf: $("#_csrf").val()}, (resp)=> {
+    $.post("/api/userremove/"+usr, {_csrf: getCSRFToken()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -160,7 +160,7 @@ function userEditDialog(userid) {
 
 function userEdit() {
   let userdata = {
-    _csrf: $("#_csrf").val(),
+    _csrf: getCSRFToken(),
     login: $("#editlogin").val(),
     email: $("#editemail").val(),
     lastname: $("#editlastname").val(),
@@ -194,7 +194,7 @@ $(function() {
 function groupRemove(ev) {
   const group = $(ev.currentTarget).data("id")
   confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", ()=> {
-    $.post(`/api/groupremoveuser/${group}/${currentUser}`, {_csrf: $("#_csrf").val()}, (resp)=> {
+    $.post(`/api/groupremoveuser/${group}/${currentUser}`, {_csrf: getCSRFToken()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -207,7 +207,7 @@ function groupRemove(ev) {
 
 function groupPickerChoosen(group) {
   groupPickerHide()
-  $.post(`/api/groupadduser/${group}/${currentUser}`, {_csrf: $("#_csrf").val()}, (resp)=> {
+  $.post(`/api/groupadduser/${group}/${currentUser}`, {_csrf: getCSRFToken()}, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }

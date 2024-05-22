@@ -83,7 +83,7 @@ function groupRemove(ev) {
     $.ajax({
       url: `/api/folders/${currentFolder()}/groups/${group}`,
       type: "delete",
-      data: { _csrf: $("#_csrf").val() },
+      data: { _csrf: getCSRFToken() },
       success: (resp)=>{
         if ( !checkResponse(resp) ) {
           return
@@ -98,7 +98,7 @@ function groupRemove(ev) {
 
 function groupToggle(ev) {
   const group = $(ev.currentTarget).data("id")
-  $.post(`/api/folders/${currentFolder()}/groups/${group}/toggle`, { _csrf: $("#_csrf").val() },(resp)=>{
+  $.post(`/api/folders/${currentFolder()}/groups/${group}/toggle`, { _csrf: getCSRFToken() },(resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }
@@ -109,7 +109,7 @@ function groupToggle(ev) {
 }
 
 function groupPickerChoosen(group) {
-  $.post(`/api/folders/${currentFolder()}/groups/${group}`, { _csrf: $("#_csrf").val() }, (resp)=>{
+  $.post(`/api/folders/${currentFolder()}/groups/${group}`, { _csrf: getCSRFToken() }, (resp)=>{
     if ( !checkResponse(resp) ) {
       return
     }

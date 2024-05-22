@@ -67,7 +67,7 @@ function groupCreateDialog() {
 
 function groupCreate() {
   let userdata = {
-    _csrf: $("#_csrf").val(),
+    _csrf: getCSRFToken(),
     description: $("#groupcreatedescription").val()
   }
 
@@ -86,7 +86,7 @@ function groupCreate() {
 
 function groupRemove() {
   confirmDialog("Remove group", "Are you sure you want to remove this group?", ()=> {
-    $.post(`/api/groupremove/${currentGroup()}`, {_csrf: $("#_csrf").val()}, (resp)=> {
+    $.post(`/api/groupremove/${currentGroup()}`, {_csrf: getCSRFToken()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -117,7 +117,7 @@ function groupEditFill() {
 
 function groupEdit() {
   let data = {
-    _csrf: $("#_csrf").val(),
+    _csrf: getCSRFToken(),
     description: $("#groupeditdescription").val()
   }
 
@@ -139,7 +139,7 @@ function groupEditEnable() {
 }
 
 function userPickerChoosen(id) {
-  $.post(`/api/groupadduser/${currentGroup()}/${id}`, {_csrf: $("#_csrf").val()}, (resp)=> {
+  $.post(`/api/groupadduser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()}, (resp)=> {
     if ( !checkResponse(resp) ) {
       return
     }
@@ -151,7 +151,7 @@ function userPickerChoosen(id) {
 
 function groupRemoveUser(id) {
   confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", ()=> {
-    $.post(`/api/groupremoveuser/${currentGroup()}/${id}`, {_csrf: $("#_csrf").val()}, (resp)=> {
+    $.post(`/api/groupremoveuser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }

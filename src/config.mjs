@@ -58,10 +58,10 @@ if ( !validate.valid ) {
   process.exit(1)
 }
 
-// Create session and CSFR keys
-console.log("Creating session and CSFR keys")
+// Create session and CSRF keys
+console.log("Creating session and CSRF keys")
 json.session_key = crypto.randomBytes(32).toString('hex')
-json.csfr_key = crypto.randomBytes(32).toString('hex')
+json.csrf_key = crypto.randomBytes(32).toString('hex')
 
 json.startuptime = (new Date()).toISOString()
 

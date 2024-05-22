@@ -30,7 +30,7 @@ function folderCreateEnable() {
 
 function folderCreate() {
   let itemdata = {
-    _csrf: $("#_csrf").val(),
+    _csrf: getCSRFToken(),
     description: document.querySelector("#foldercreatedescription").value
   }
 
@@ -47,7 +47,7 @@ function folderCreate() {
 
 function folderRemove() {
   confirmDialog("Remove folder", "Are you sure you want to remove this folder?", ()=> {
-    $.post(`/api/folderremove/${currentFolder()}`, {_csrf: $("#_csrf").val()}, (resp)=> {
+    $.post(`/api/folderremove/${currentFolder()}`, {_csrf: getCSRFToken()}, (resp)=> {
       if ( !checkResponse(resp) ) {
         return
       }
@@ -86,7 +86,7 @@ function folderEditFill() {
 
 function folderEdit() {
   let data = {
-    _csrf: $("#_csrf").val(),
+    _csrf: getCSRFToken(),
     description: document.querySelector("#foldereditdescription").value
   }
 

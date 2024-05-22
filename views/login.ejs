@@ -11,7 +11,7 @@
         <img src="/public/images/passweaver-icon-dark.png" width="60"></img>
       </center>
       <form id="loginForm" action="access" method="post">
-        <%- include('partials/csfr.ejs') %>
+        <%- include('partials/csrf.ejs') %>
         <sl-input type="text" autofocus id="username" name="username" label="User"></sl-input>
         <sl-input type="password" id="password" name="password" label="Password"></sl-input>
         <sl-divider></sl-divider>

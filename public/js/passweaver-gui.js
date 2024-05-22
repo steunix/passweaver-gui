@@ -214,7 +214,11 @@ function showToast(variant,text) {
 }
 
 function getUser() {
-  return $("#v-user").val()
+  return document.querySelector("#v-user").value
+}
+
+function getCSRFToken() {
+  return document.querySelector("#_csrf").value
 }
 
 $(document).ajaxError(function(evt, request, settings){

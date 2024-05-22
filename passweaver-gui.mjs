@@ -51,10 +51,10 @@ app.use(session({
   cookie: { secure: cfg.https.enabled, maxAge: 1000 * 60 * 60 * 4 }
 }))
 
-// CSFR protection
+// CSRF protection
 app.use(lusca.csrf({
   key: "_csrf",
-  secret: cfg.csfr_key
+  secret: cfg.csrf_key
 }))
 
 // Checks for valid session in pages/ subdir. We can use redirect since they are not Ajax
@@ -114,7 +114,7 @@ const logErrors = RFS.createStream(`${cfg.log_dir}/passweaver-gui-errors.log`, {
 // Common parameters to pass to pages
 function commonParams(req) {
   return {
-    csfrtoken: req.csrfToken(),
+    csrftoken: req.csrfToken(),
     company_name: cfg.company_name,
     user: req.session.user,
     userdescription: req.session.userdescription,
