@@ -1,6 +1,8 @@
 var userPickerTimeout = 0
+var userCallback
 
-function userPickerShow() {
+function userPickerShow(callback) {
+  userCallback = callback
   $("#userpickersearch").val("")
   $("#userpickertable tbody tr").remove()
   document.querySelector("#userpickerdialog").show()
@@ -10,7 +12,7 @@ function userPickerHide() {
   document.querySelector("#userpickerdialog").hide()
 }
 
-function searchUsers() {
+function searchUsers(callback) {
   var text = $("#userpickersearch").val()
 
   $.get("/api/userslist/?search="+encodeURIComponent(text),(resp)=>{
@@ -33,10 +35,10 @@ function searchUsers() {
 
     // Event handlers
     $("#userpickertable tbody tr[id^=row]").on("dblclick",(ev)=>{
-      userPickerChoosen($(ev.currentTarget).data("id"))
+      userCallback($(ev.currentTarget).data("id"))
     })
     $("#userpickertable tbody sl-icon-button[id^=user]").on("click",(ev)=>{
-      userPickerChoosen($(ev.currentTarget).data("id"))
+      userCallback($(ev.currentTarget).data("id"))
     })
   })
 }

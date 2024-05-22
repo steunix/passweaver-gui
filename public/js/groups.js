@@ -2,45 +2,46 @@ var groupSearchTimeout
 
 function currentGroup() {
   try {
-    return document.querySelector("sl-tree-item[selected]").getAttribute("data-id")
+    return jshQS("sl-tree-item[selected]").getAttribute("data-id")
   } catch (err) {
     return ""
   }
 }
 
-function fillUsers() {
+async function fillUsers() {
   jshQS("#userstable tbody").innerHTML = ""
 
-  $.get(`/api/userslist/${currentGroup()}`,(resp)=>{
-    if ( !checkResponse(resp) ) {
-      return
-    }
+  const resp = await fetch(`/api/userslist/${currentGroup()}`)
 
-    if ( resp.data.length ) {
-      var row = ''
-      for ( const usr of resp.data ) {
-        row +=
-          `<tr>`+
-          `<td><sl-icon-button id='remove-${usr.id}' title='Remove' data-id='${usr.id}' name="trash3" style="color:red;"></sl-icon-button></td>`+
-          `<td class='border-start'>${usr.login}</td>`+
-          `<td>${usr.lastname}</td>`+
-          `<td>${usr.firstname}</td>`
-      }
-      document.querySelector("#userstable tbody").innerHTML = row
+  if ( !await checkResponse2(resp) ) {
+    return
+  }
+  const body = await resp.json()
 
-      // Install event handlers
-      jshAddEventListener("#userstable tbody [id^=remove]", "click", (ev)=>{
-        groupRemoveUser(ev.currentTarget.getAttribute("data-id"))
-      })
+  if ( body.data.length ) {
+    var row = ''
+    for ( const usr of body.data ) {
+      row +=
+        `<tr>`+
+        `<td><sl-icon-button id='remove-${usr.id}' title='Remove' data-id='${usr.id}' name="trash3" style="color:red;"></sl-icon-button></td>`+
+        `<td class='border-start'>${usr.login}</td>`+
+        `<td>${usr.lastname}</td>`+
+        `<td>${usr.firstname}</td>`
     }
+    jshQS("#userstable tbody").innerHTML = row
 
-    // Group cannot be removed if not empty
-    if ( jshQSA("#userstable tbody tr").length ) {
-      jshQS("#groupremove").setAttribute("disabled","disabled")
-    } else {
-      jshQS("#groupremove").removeAttribute("disabled")
-    }
-  })
+    // Install event handlers
+    jshAddEventListener("#userstable tbody [id^=remove]", "click", (ev)=>{
+      groupRemoveUser(ev.currentTarget.getAttribute("data-id"))
+    })
+  }
+
+  // Group cannot be removed if not empty
+  if ( jshQSA("#userstable tbody tr").length ) {
+    jshQS("#groupremove").setAttribute("disabled","disabled")
+  } else {
+    jshQS("#groupremove").removeAttribute("disabled")
+  }
 }
 
 function groupClicked(groupid) {
@@ -61,69 +62,67 @@ function groupCreateDialog() {
   jshQS("#groupcreatedialog").show()
 }
 
-function groupCreate() {
+async function groupCreate() {
   let userdata = {
     _csrf: getCSRFToken(),
     description: jshValue("#groupcreatedescription")
   }
 
-  $.post(`/api/groupnew/${currentGroup()}`, userdata, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
-
-    if ( resp.data.id ) {
-      location.reload()
-    } else {
-      errorDialog(resp.message)
-    }
-  });
-}
-
-function groupRemove() {
-  confirmDialog("Remove group", "Are you sure you want to remove this group?", ()=> {
-    $.post(`/api/groupremove/${currentGroup()}`, {_csrf: getCSRFToken()}, (resp)=> {
-      if ( !checkResponse(resp) ) {
-        return
-      }
-
-      location.reload()
-    })
-  })
-}
-
-function groupEditDialog() {
-  const dialog = document.querySelector("#groupeditdialog")
-  groupEditFill()
-  dialog.show()
-}
-
-function groupEditFill() {
-  $.get(`/api/groups/${currentGroup()}`, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
-
-    if ( resp.status=="success" ) {
-      jshValue("#groupeditdescription", resp.data.description)
-      groupEditEnable()
-    }
-  })
-}
-
-function groupEdit() {
-  let data = {
-    _csrf: getCSRFToken(),
-    description: jshValue("#groupeditdescription")
+  const resp = await jshFetch(`/api/groupnew/${currentGroup()}`, userdata)
+  if ( !await checkResponse2(resp) ) {
+    return
   }
 
-  $.post(`/api/groupupdate/${currentGroup()}`, data, (resp)=> {
-    if ( !checkResponse(resp) ) {
+  const body = await resp.json()
+  if ( body.data.id ) {
+    location.reload()
+  } else {
+    errorDialog(body.message)
+  }
+}
+
+async function groupRemove() {
+  confirmDialog("Remove group", "Are you sure you want to remove this group?", async ()=> {
+    const resp = await jshFetch(`/api/groupremove/${currentGroup()}`, {_csrf: getCSRFToken()})
+
+    if ( !await checkResponse2(resp) ) {
       return
     }
 
     location.reload()
   })
+}
+
+function groupEditDialog() {
+  groupEditFill()
+  document.querySelector("#groupeditdialog").show()
+}
+
+async function groupEditFill() {
+  const resp = await jshFetch(`/api/groups/${currentGroup()}`)
+  if ( !await checkResponse2(resp) ) {
+    return
+  }
+
+  const body = await resp.json()
+  if ( body.status=="success" ) {
+    jshValue("#groupeditdescription", body.data.description)
+    groupEditEnable()
+  }
+}
+
+async function groupEdit() {
+  let data = {
+    _csrf: getCSRFToken(),
+    description: jshValue("#groupeditdescription")
+  }
+
+  const resp = await jshFetch(`/api/groupupdate/${currentGroup()}`, data)
+  if ( !await checkResponse2(resp) ) {
+    return
+  }
+
+    location.reload()
 }
 
 function groupEditEnable() {
@@ -134,36 +133,32 @@ function groupEditEnable() {
   }
 }
 
-function userPickerChoosen(id) {
-  $.post(`/api/groupadduser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()}, (resp)=> {
-    if ( !checkResponse(resp) ) {
+async function userPickerChoosen(id) {
+  const resp = await jshFetch(`/api/groupadduser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()})
+  if ( !await checkResponse2(resp) ) {
+    return
+  }
+
+  userPickerHide()
+  fillUsers()
+}
+
+async function groupRemoveUser(id) {
+  confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", async ()=> {
+  const resp = await jshFetch(`/api/groupremoveuser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()})
+    if ( !await checkResponse2(resp) ) {
       return
     }
 
-    userPickerHide()
     fillUsers()
   })
 }
 
-function groupRemoveUser(id) {
-  confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", ()=> {
-    $.post(`/api/groupremoveuser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()}, (resp)=> {
-      if ( !checkResponse(resp) ) {
-        return
-      }
-
-      fillUsers()
-    })
-  })
+const resp = await fetch("/api/groupstree")
+if ( await checkResponse2(resp) ) {
+  const body = await resp.json()
+  treeFill("groupstree",body.data,null,groupClicked)
 }
-
-$.get("/api/groupstree", (resp)=>{
-  if ( !checkResponse(resp) ) {
-    return
-  }
-
-  treeFill("groupstree",resp.data,null,groupClicked)
-})
 
 // Event handlers
 jshAddEventListener("#groupremove", "click", (ev)=>{
@@ -201,7 +196,7 @@ jshAddEventListener("#newmember", "click", (ev)=>{
     errorDialog("Select a group")
     return
   }
-  userPickerShow()
+  userPickerShow(userPickerChoosen)
 })
 
 jshAddEventListener("#groupsearch", "sl-input", (ev)=> {

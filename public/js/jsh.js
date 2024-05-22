@@ -68,3 +68,18 @@ function jshValue(query, value) {
     }
   }
 }
+
+async function jshFetch(url, payload) {
+  var settings = {
+    method: "GET"
+  }
+  if ( payload!==undefined ) {
+    settings.method = "POST"
+    settings.body = JSON.stringify(payload)
+    settings.headers = {
+      "Content-Type": "application/json"
+    }
+  }
+
+  return await fetch(url, settings)
+}
