@@ -381,6 +381,17 @@ function passwordAccessed(item) {
   })
 }
 
+function fillFolders() {
+  $.get("/api/folderstree", (resp)=>{
+    if ( !checkResponse(resp) ) {
+      return
+    }
+
+    $("sl-tree-item").remove()
+    treeFill("folderstree",resp.data,null,folderClicked)
+  })
+}
+
 fillFolders()
 
 // Create

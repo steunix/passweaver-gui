@@ -75,12 +75,17 @@ function jhValue(query, value) {
  * @param {object} payload
  * @returns
  */
-async function jhFetch(url, payload) {
+async function jhFetch(url, payload, method) {
   var settings = {
     method: "GET"
   }
   if ( payload!==undefined ) {
     settings.method = "POST"
+  }
+  if ( method!==undefined ) {
+    settings.method = method
+  }
+  if ( payload!==undefined ) {
     settings.body = JSON.stringify(payload)
     settings.headers = {
       "Content-Type": "application/json"

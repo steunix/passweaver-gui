@@ -101,16 +101,6 @@ function folderEdit() {
   })
 }
 
-function fillFolders() {
-  $.get("/api/folderstree", (resp)=>{
-    if ( !checkResponse(resp) ) {
-      return
-    }
-
-    $("sl-tree-item").remove()
-    treeFill("folderstree",resp.data,null,folderClicked)
-  })
-}
 
 // Event handlers
 document.querySelector("#foldercreatedescription").addEventListener("keyup",(ev)=>{
