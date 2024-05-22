@@ -1,3 +1,3 @@
-document.querySelector("#login").addEventListener("click",(ev)=>{
+jhEvent("#login", "click",(ev)=>{
   spinnerShow()
 })
