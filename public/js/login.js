@@ -1,3 +1,3 @@
-$("#login").on("click",(ev)=>{
+document.querySelector("#login").addEventListener("click",(ev)=>{
   spinnerShow()
 })

@@ -1,15 +1,14 @@
 function spinnerShow() {
-  $("body").append(`
-  <div id="spinner" class="v-overlay">
-    <div class="v-spinner">
-      <div class="spinner-border text-success"></div>
-    </div>
-  </div>`
-  );
+  const spinner = document.createElement('template')
+  spinner.innerHTML = `
+    <div id="spinner" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; align-items: center; justify-content: center;"">
+      <sl-spinner style="font-size: 5rem; --track-width: 15px;"></sl-spinner>
+    </div>`
+  document.querySelector("body").append(spinner.content)
 }
 
 function spinnerHide() {
-  $("#spinner").remove()
+  document.querySelector("#spinner").remove()
 }
 
 function loadingShow(el) {
