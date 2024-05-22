@@ -2,14 +2,14 @@ var groupSearchTimeout
 
 function currentGroup() {
   try {
-    return jshQS("sl-tree-item[selected]").getAttribute("data-id")
+    return jhQuery("sl-tree-item[selected]").getAttribute("data-id")
   } catch (err) {
     return ""
   }
 }
 
 async function fillUsers() {
-  jshQS("#userstable tbody").innerHTML = ""
+  jhQuery("#userstable tbody").innerHTML = ""
 
   const resp = await fetch(`/api/userslist/${currentGroup()}`)
 
@@ -28,19 +28,19 @@ async function fillUsers() {
         `<td>${usr.lastname}</td>`+
         `<td>${usr.firstname}</td>`
     }
-    jshQS("#userstable tbody").innerHTML = row
+    jhQuery("#userstable tbody").innerHTML = row
 
     // Install event handlers
-    jshAddEventListener("#userstable tbody [id^=remove]", "click", (ev)=>{
+    jhEvent("#userstable tbody [id^=remove]", "click", (ev)=>{
       groupRemoveUser(ev.currentTarget.getAttribute("data-id"))
     })
   }
 
   // Group cannot be removed if not empty
-  if ( jshQSA("#userstable tbody tr").length ) {
-    jshQS("#groupremove").setAttribute("disabled","disabled")
+  if ( jhQueryAll("#userstable tbody tr").length ) {
+    jhQuery("#groupremove").setAttribute("disabled","disabled")
   } else {
-    jshQS("#groupremove").removeAttribute("disabled")
+    jhQuery("#groupremove").removeAttribute("disabled")
   }
 }
 
@@ -49,26 +49,26 @@ function groupClicked(groupid) {
 }
 
 function groupCreateEnable() {
-  if ( jshValue("#groupcreatedescription")==="" ) {
-    jshQS("#groupcreatesave").setAttribute("disabled","disabled")
+  if ( jhValue("#groupcreatedescription")==="" ) {
+    jhQuery("#groupcreatesave").setAttribute("disabled","disabled")
   } else {
-    jshQS("#groupcreatesave").removeAttribute("disabled")
+    jhQuery("#groupcreatesave").removeAttribute("disabled")
   }
 }
 
 function groupCreateDialog() {
-  jshValue("#groupcreatedialog sl-input,sl-textarea", "")
+  jhValue("#groupcreatedialog sl-input,sl-textarea", "")
   groupCreateEnable()
-  jshQS("#groupcreatedialog").show()
+  jhQuery("#groupcreatedialog").show()
 }
 
 async function groupCreate() {
   let userdata = {
     _csrf: getCSRFToken(),
-    description: jshValue("#groupcreatedescription")
+    description: jhValue("#groupcreatedescription")
   }
 
-  const resp = await jshFetch(`/api/groupnew/${currentGroup()}`, userdata)
+  const resp = await jhFetch(`/api/groupnew/${currentGroup()}`, userdata)
   if ( !await checkResponse2(resp) ) {
     return
   }
@@ -83,7 +83,7 @@ async function groupCreate() {
 
 async function groupRemove() {
   confirmDialog("Remove group", "Are you sure you want to remove this group?", async ()=> {
-    const resp = await jshFetch(`/api/groupremove/${currentGroup()}`, {_csrf: getCSRFToken()})
+    const resp = await jhFetch(`/api/groupremove/${currentGroup()}`, {_csrf: getCSRFToken()})
 
     if ( !await checkResponse2(resp) ) {
       return
@@ -99,14 +99,14 @@ function groupEditDialog() {
 }
 
 async function groupEditFill() {
-  const resp = await jshFetch(`/api/groups/${currentGroup()}`)
+  const resp = await jhFetch(`/api/groups/${currentGroup()}`)
   if ( !await checkResponse2(resp) ) {
     return
   }
 
   const body = await resp.json()
   if ( body.status=="success" ) {
-    jshValue("#groupeditdescription", body.data.description)
+    jhValue("#groupeditdescription", body.data.description)
     groupEditEnable()
   }
 }
@@ -114,10 +114,10 @@ async function groupEditFill() {
 async function groupEdit() {
   let data = {
     _csrf: getCSRFToken(),
-    description: jshValue("#groupeditdescription")
+    description: jhValue("#groupeditdescription")
   }
 
-  const resp = await jshFetch(`/api/groupupdate/${currentGroup()}`, data)
+  const resp = await jhFetch(`/api/groupupdate/${currentGroup()}`, data)
   if ( !await checkResponse2(resp) ) {
     return
   }
@@ -126,15 +126,15 @@ async function groupEdit() {
 }
 
 function groupEditEnable() {
-  if ( jshValue("#groupeditdescription")=="" ) {
-    jshQS("#groupeditsave").setAttribute("disabled","disabled")
+  if ( jhValue("#groupeditdescription")=="" ) {
+    jhQuery("#groupeditsave").setAttribute("disabled","disabled")
   } else {
-    jshQS("#groupeditsave").removeAttribute("disabled")
+    jhQuery("#groupeditsave").removeAttribute("disabled")
   }
 }
 
 async function userPickerChoosen(id) {
-  const resp = await jshFetch(`/api/groupadduser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()})
+  const resp = await jhFetch(`/api/groupadduser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()})
   if ( !await checkResponse2(resp) ) {
     return
   }
@@ -145,7 +145,7 @@ async function userPickerChoosen(id) {
 
 async function groupRemoveUser(id) {
   confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", async ()=> {
-  const resp = await jshFetch(`/api/groupremoveuser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()})
+  const resp = await jhFetch(`/api/groupremoveuser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()})
     if ( !await checkResponse2(resp) ) {
       return
     }
@@ -161,37 +161,37 @@ if ( await checkResponse2(resp) ) {
 }
 
 // Event handlers
-jshAddEventListener("#groupremove", "click", (ev)=>{
+jhEvent("#groupremove", "click", (ev)=>{
   groupRemove()
 })
-jshAddEventListener("#groupedit", "click", (ev)=>{
+jhEvent("#groupedit", "click", (ev)=>{
   groupEditDialog()
 })
-jshAddEventListener("#groupcreate", "click", (ev)=>{
+jhEvent("#groupcreate", "click", (ev)=>{
   groupCreateDialog()
 })
 
-jshAddEventListener("#groupcreatedescription", "keyup", (ev)=>{
+jhEvent("#groupcreatedescription", "keyup", (ev)=>{
   groupCreateEnable()
 })
-jshAddEventListener("#groupcreatesave", "click", (ev)=>{
+jhEvent("#groupcreatesave", "click", (ev)=>{
   groupCreate()
 })
-jshAddEventListener("#groupcreatecancel", "click", (ev)=> {
-  jshQS("#groupcreatedialog").hide()
+jhEvent("#groupcreatecancel", "click", (ev)=> {
+  jhQuery("#groupcreatedialog").hide()
 })
 
-jshAddEventListener("#groupeditdescription", "keyup", (ev)=>{
+jhEvent("#groupeditdescription", "keyup", (ev)=>{
   groupEditEnable()
 })
-jshAddEventListener("#groupeditsave", "click", (ev)=>{
+jhEvent("#groupeditsave", "click", (ev)=>{
   groupEdit()
 })
-jshAddEventListener("#groupeditcancel", "click", (ev)=> {
-  jshQS("#groupeditdialog").hide()
+jhEvent("#groupeditcancel", "click", (ev)=> {
+  jhQuery("#groupeditdialog").hide()
 })
 
-jshAddEventListener("#newmember", "click", (ev)=>{
+jhEvent("#newmember", "click", (ev)=>{
   if ( currentGroup()=="" ) {
     errorDialog("Select a group")
     return
@@ -199,23 +199,23 @@ jshAddEventListener("#newmember", "click", (ev)=>{
   userPickerShow(userPickerChoosen)
 })
 
-jshAddEventListener("#groupsearch", "sl-input", (ev)=> {
+jhEvent("#groupsearch", "sl-input", (ev)=> {
   if ( groupSearchTimeout ) {
     clearTimeout(groupSearchTimeout)
   }
   groupSearchTimeout = setTimeout(()=>{
-    const search = jshValue("#groupsearch")
+    const search = jhValue("#groupsearch")
     if ( !treeSearch("groupstree", search) ) {
       showToast("danger", "Not found")
     }
   },250)
 })
-jshAddEventListener("#groupsearchnext", "click", (ev)=>{
-  const search = jshValue("#groupsearch")
+jhEvent("#groupsearchnext", "click", (ev)=>{
+  const search = jhValue("#groupsearch")
   treeSearchNext("groupstree", search)
 })
 
-jshAddEventListener("#groupsearchprevious", "click", (ev)=>{
-  const search = jshValue("#groupsearch")
+jhEvent("#groupsearchprevious", "click", (ev)=>{
+  const search = jhValue("#groupsearch")
   treeSearchPrevious("groupstree", search)
 })

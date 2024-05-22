@@ -1,6 +1,8 @@
 var groupPickerTimeout = 0
+var userCallback
 
-function groupPickerShow() {
+function groupPickerShow(callback) {
+  userCallback = callback
   $("#grouppickersearch").val("")
   $("#grouppickertable tbody tr").remove()
   document.querySelector("#grouppickerdialog").show()
@@ -32,10 +34,10 @@ function searchGroups() {
 
       // Install event handlers
       $("#grouppickertable tbody tr[id^=row]").on("dblclick", (ev)=>{
-        groupPickerChoosen($(ev.currentTarget).data("id"))
+        userCallback($(ev.currentTarget).data("id"))
       })
       $("#grouppickertable tbody [id^=choose]").on("click", (ev)=>{
-        groupPickerChoosen($(ev.currentTarget).data("id"))
+        userCallback($(ev.currentTarget).data("id"))
       })
     }
   })

@@ -3,15 +3,15 @@
   <sl-input type="email" label="Email" id="newemail" required="required" name="newemail"></sl-input>
   <sl-input label="Last name" id="newlastname" name="newlastname" required="required"></sl-input>
   <sl-input label="First name" id="newfirstname" name="newfirstname"></sl-input>
-  <sl-select label="Locale" id="newlocale" name="newlocale">
+  <sl-select label="Locale" id="newlocale" name="newlocale" required="required">
     <sl-option value="en_US">en_US</sl-option>
   </sl-select>
-  <sl-select label="Auth method" id="newauthmethod" name="newauthmethod">
+  <sl-select label="Auth method" id="newauthmethod" name="newauthmethod" required="required">
     <sl-option value="local">local</sl-option>
     <sl-option value="ldap">ldap</sl-option>
   </sl-select>
-  <sl-input label="Password" type="password" id="newpassword" name="newpassword" password-toggle></sl-input>
-  <sl-input label="Confirm password" type="password" id="newpasswordconfirm" name="newpasswordconfirm" password-toggle></sl-input>
+  <sl-input label="Password" type="password" id="newpassword" name="newpassword" password-toggle required="required"></sl-input>
+  <sl-input label="Confirm password" type="password" id="newpasswordconfirm" name="newpasswordconfirm" password-toggle required="required"></sl-input>
   <sl-checkbox id="newactive" name="newactive">Active</sl-checkbox>
   <sl-button id="usercreate" slot="footer" variant="primary">Save</sl-button>
   <sl-button id="cancel" slot="footer">Cancel</sl-button>

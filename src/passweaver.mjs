@@ -457,7 +457,7 @@ export async function userUpdate(session, user, body) {
     firstname: body.firstname,
     locale: body.locale,
     authmethod: body.authmethod,
-    active: body.active=="true"
+    active: body.active
   }
 
   const resp = await passWeaverAPI(session, "patch", `/users/${user}`, data)

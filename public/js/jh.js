@@ -1,4 +1,4 @@
-function jshResolveQuery(query) {
+function jhResolveQuery(query) {
   var el
   if ( typeof query=="string" ) {
     el = document.querySelectorAll(query)
@@ -14,7 +14,7 @@ function jshResolveQuery(query) {
  * @param {string} query Query
  * @returns
  */
-function jshQS(query) {
+function jhQuery(query) {
   return document.querySelector(query)
 }
 
@@ -23,7 +23,7 @@ function jshQS(query) {
  * @param {string} query Query
  * @returns
  */
-function jshQSA(query) {
+function jhQueryAll(query) {
   return document.querySelectorAll(query)
 }
 
@@ -34,8 +34,8 @@ function jshQSA(query) {
  * @param {function} callback Callback
  * @returns
  */
-function jshAddEventListener(query,event,callback) {
-  const el = jshResolveQuery(query)
+function jhEvent(query,event,callback) {
+  const el = jhResolveQuery(query)
 
   if ( el===null ) {
     return
@@ -51,8 +51,8 @@ function jshAddEventListener(query,event,callback) {
  * @param {string} query Query
  * @returns
  */
-function jshValue(query, value) {
-  const el = jshResolveQuery(query)
+function jhValue(query, value) {
+  const el = jhResolveQuery(query)
 
   if ( el===null ) {
     return
@@ -60,7 +60,7 @@ function jshValue(query, value) {
 
   if ( value===undefined ) {
     // Getter, on the first element
-    return el[0].value
+    return el[0].value === undefined ? '' : el[0].value
   } else {
     // Setter, on all elements
     for ( e of el) {
@@ -69,7 +69,13 @@ function jshValue(query, value) {
   }
 }
 
-async function jshFetch(url, payload) {
+/**
+ * Wrapper around fetch
+ * @param {string} url
+ * @param {object} payload
+ * @returns
+ */
+async function jhFetch(url, payload) {
   var settings = {
     method: "GET"
   }
