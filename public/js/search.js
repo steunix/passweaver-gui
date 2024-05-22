@@ -1,8 +1,6 @@
 var itemSearchTimeout
 
 function fillItems() {
-  loadingShow($("#itemstable"))
-
   $("#itemstable tbody tr").remove()
 
   $.get(`/api/itemssearch?search=${$("#itemsearch").val()}`,(resp)=>{
@@ -30,8 +28,6 @@ function fillItems() {
     $("#itemstable tbody [id^=view]").on("click", (ev)=>{
       itemShow($(ev.currentTarget).data("id"))
     })
-
-    loadingHide($("#itemstable"))
   })
 }
 

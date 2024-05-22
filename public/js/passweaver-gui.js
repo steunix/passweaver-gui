@@ -11,14 +11,6 @@ function spinnerHide() {
   document.querySelector("#spinner").remove()
 }
 
-function loadingShow(el) {
-  el.addClass("v-blur")
-}
-
-function loadingHide(el) {
-  el.removeClass("v-blur")
-}
-
 function generatePassword() {
   var resp = $.ajax({
     type: "GET",

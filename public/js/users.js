@@ -46,8 +46,6 @@ function fillUsers() {
 }
 
 function fillGroups() {
-  loadingShow($("#groupstable"))
-
   $("#groupstable tbody tr").remove()
   $.get("/api/usergroups/"+currentUser,(resp)=>{
     if ( !checkResponse(resp) ) {
@@ -65,7 +63,6 @@ function fillGroups() {
       // Event handlers
       $("[id^=removegroup]").on("click", groupRemove)
     }
-    loadingHide($("#groupstable"))
   })
 }
 

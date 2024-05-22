@@ -1,6 +1,4 @@
 function fillGroups() {
-  loadingShow($("#groupstable"))
-
   $("#groupstable tbody tr").remove()
 
   if ( !currentFolder() ) {
@@ -41,7 +39,6 @@ function fillGroups() {
       $("[id^=removegroup]").on("click", groupRemove)
       $("[id^=togglegroup]").on("click", groupToggle)
     }
-    loadingHide($("#groupstable"))
   })
 }
 

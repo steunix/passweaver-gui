@@ -9,8 +9,6 @@ function currentGroup() {
 }
 
 function fillUsers() {
-  loadingShow($("#userstable"))
-
   $("#userstable tbody tr").remove()
   $.get(`/api/userslist/${currentGroup()}`,(resp)=>{
     if ( !checkResponse(resp) ) {
@@ -41,8 +39,6 @@ function fillUsers() {
     } else {
       $("#removegroup").removeAttr("disabled")
     }
-
-    loadingHide($("#userstable"))
   })
 }
 
