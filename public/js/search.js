@@ -1,64 +1,66 @@
 var itemSearchTimeout
 
-function fillItems() {
-  $("#itemstable tbody tr").remove()
+async function fillItems() {
+  jhQuery("#itemstable tbody").innerHTML = ""
 
-  $.get(`/api/itemssearch?search=${$("#itemsearch").val()}`,(resp)=>{
-    // Folder may not be accessible
-    if ( !checkResponse(resp,403) ) {
-      return
+  const resp = await jhFetch(`/api/itemssearch?search=${$("#itemsearch").val()}`)
+
+  // Folder may not be accessible
+  if ( !await checkResponse2(resp,403) ) {
+    return
+  }
+
+  const body = await resp.json()
+  if ( body.data.length ) {
+    let row = ""
+    for ( const itm of body.data ) {
+      row +=
+        `<tr id='row-${itm.id}' data-id='${itm.id}'>`+
+        `<td><sl-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></sl-icon-button></td>`+
+        `<td class='border-start'>${itm.folder.description}</td>`+
+        `<td>${itm.title}</td></tr>`
     }
+    jhQuery("#itemstable tbody").innerHTML = row
+  }
 
-    if ( resp.data.length ) {
-      row = ""
-      for ( const itm of resp.data ) {
-        row +=
-          `<tr id='row-${itm.id}' data-id='${itm.id}'>`+
-          `<td><sl-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></sl-icon-button></td>`+
-          `<td class='border-start'>${itm.folder.description}</td>`+
-          `<td>${itm.title}</td></tr>`
-      }
-      document.querySelector("#itemstable tbody").innerHTML = row
-    }
-
-    // Install event handlers
-    $("#itemstable tbody tr[id^=row]").on("dblclick", (ev)=>{
-      itemShow($(ev.currentTarget).data("id"))
-    })
-    $("#itemstable tbody [id^=view]").on("click", (ev)=>{
-      itemShow($(ev.currentTarget).data("id"))
-    })
+  // Install event handlers
+  jhEvent("#itemstable tbody tr[id^=row]", "dblclick", async (ev)=>{
+    await itemShow($(ev.currentTarget).data("id"))
+  })
+  jhEvent("#itemstable tbody [id^=view]", "click", async (ev)=>{
+    await itemShow($(ev.currentTarget).data("id"))
   })
 }
 
-function itemViewFill(item) {
-  $.get(`/api/items/${item}`, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
+async function itemViewFill(item) {
+  const resp = await jhFetch(`/api/items/${item}`)
+  if ( !await checkResponse2(resp) ) {
+    jhQuery("#itemviewdialog").hide()
+    return
+  }
 
-    $("#viewtitle").val(resp.data.title)
-    $("#viewemail").val(resp.data.data.email)
-    $("#viewdescription").val(resp.data.data.description)
-    $("#viewurl").val(resp.data.data.url)
-    $("#viewuser").val(resp.data.data.user)
-    $("#viewpassword").val(resp.data.data.password).attr("type","password")
-  })
+  const body = await resp.json()
+  jhValue("#viewtitle", body.data.title)
+  jhValue("#viewemail", body.data.data.email)
+  jhValue("#viewdescription", body.data.data.description)
+  jhValue("#viewurl", body.data.data.url)
+  jhValue("#viewuser", body.data.data.user)
+  jhQuery("#viewpassword", body.data.data.password).setAttribute("type","password")
 }
 
-function itemShow(item) {
+async function itemShow(item) {
   if ( window.getSelection() ) {
     window.getSelection().empty()
   }
-  document.querySelector("#itemviewdialog").show()
-  itemViewFill(item)
+  jhQuery("#itemviewdialog").show()
+  await itemViewFill(item)
 }
 
-$("#itemsearch").on("sl-input", (ev) => {
+jhEvent("#itemsearch", "sl-input", async (ev) => {
   if ( itemSearchTimeout ) {
     clearTimeout(itemSearchTimeout)
   }
   if ( $("#itemsearch").val().length>2 ) {
-    itemSearchTimeout = setTimeout(fillItems,250)
+    itemSearchTimeout = setTimeout(async() => { await fillItems() },250)
   }
 })
