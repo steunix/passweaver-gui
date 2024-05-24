@@ -3,7 +3,8 @@ var itemSearchTimeout
 async function fillItems() {
   jhQuery("#itemstable tbody").innerHTML = ""
 
-  const resp = await jhFetch(`/api/itemssearch?search=${$("#itemsearch").val()}`)
+  const search = jhValue("#itemsearch")
+  const resp = await jhFetch(`/api/itemssearch?search=${search}`)
 
   // Folder may not be accessible
   if ( !await checkResponse2(resp,403) ) {
@@ -25,10 +26,10 @@ async function fillItems() {
 
   // Install event handlers
   jhEvent("#itemstable tbody tr[id^=row]", "dblclick", async (ev)=>{
-    await itemShow($(ev.currentTarget).data("id"))
+    await itemShow(ev.currentTarget.getAttribute("data-id"))
   })
   jhEvent("#itemstable tbody [id^=view]", "click", async (ev)=>{
-    await itemShow($(ev.currentTarget).data("id"))
+    await itemShow(ev.currentTarget.getAttribute("data-id"))
   })
 }
 
@@ -60,7 +61,7 @@ jhEvent("#itemsearch", "sl-input", async (ev) => {
   if ( itemSearchTimeout ) {
     clearTimeout(itemSearchTimeout)
   }
-  if ( $("#itemsearch").val().length>2 ) {
+  if ( jhValue("#itemsearch").length>2 ) {
     itemSearchTimeout = setTimeout(async() => { await fillItems() },250)
   }
 })

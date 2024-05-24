@@ -11,6 +11,6 @@ async function passwordGenerate() {
 }
 
 await passwordGenerate()
-$("#generate").on("click",async (ev)=>{
+jhEvent("#generate", "click",async (ev)=>{
   await passwordGenerate()
 })

@@ -35,10 +35,10 @@ async function search() {
 
     // Install event handlers
     jhEvent("#grouppickertable tbody tr[id^=row]", "dblclick", (ev)=>{
-      userCallback($(ev.currentTarget).data("id"))
+      userCallback(ev.currentTarget.getAttribute("data-id"))
     })
     jhEvent("#grouppickertable tbody [id^=choose]", "click", (ev)=>{
-      userCallback($(ev.currentTarget).data("id"))
+      userCallback(ev.currentTarget.getAttribute("data-id"))
     })
   }
 }

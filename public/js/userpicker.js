@@ -36,10 +36,10 @@ async function search() {
 
   // Event handlers
   jhEvent("#userpickertable tbody tr[id^=row]", "dblclick", (ev)=>{
-    userCallback($(ev.currentTarget).data("id"))
+    userCallback(ev.currentTarget.getAttribute("data-id"))
   })
   jhEvent("#userpickertable tbody sl-icon-button[id^=user]", "click", (ev)=>{
-    userCallback($(ev.currentTarget).data("id"))
+    userCallback(ev.currentTarget.getAttribute("data-id"))
   })
 }
 
