@@ -33,7 +33,7 @@ async function fillGroups() {
         jhQuery("#addgroup").removeAttribute("disabled")
       }
     }
-    document.querySelector("#groupstable tbody").innerHTML = row
+    jhQuery("#groupstable tbody").innerHTML = row
 
     // Event handlers
     jhEvent("[id^=removegroup]", "click", groupRemove)
