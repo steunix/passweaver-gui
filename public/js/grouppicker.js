@@ -1,51 +1,51 @@
 var groupPickerTimeout = 0
 var userCallback
 
-function groupPickerShow(callback) {
+export function show(callback) {
   userCallback = callback
-  $("#grouppickersearch").val("")
-  $("#grouppickertable tbody tr").remove()
-  document.querySelector("#grouppickerdialog").show()
+  jhValue("#grouppickersearch", "")
+  jhQuery("#grouppickertable tbody").innerHTML = ""
+  jhQuery("#grouppickerdialog").show()
 }
 
-function groupPickerHide() {
-  document.querySelector("#grouppickerdialog").hide()
+export function hide() {
+  jhQuery("#grouppickerdialog").hide()
 }
 
-function searchGroups() {
-  var text = $("#grouppickersearch").val()
+async function search() {
+  const text = jhValue("#grouppickersearch")
 
-  $.get("/api/groupslist/?search="+encodeURIComponent(text),(resp)=>{
-    if ( !checkResponse(resp) ) {
-      return
+  const resp = await jhFetch(`/api/groupslist/?search=${ encodeURIComponent(text) }`)
+  if ( !await checkResponse2(resp) ) {
+    return
+  }
+
+  jhQuery("#grouppickertable tbody").innerHTML = ""
+  const body = await resp.json()
+  if ( body.data.length ) {
+    var row = ""
+    for ( const grp of body.data ) {
+      row +=
+        `<tr id='row-${grp.id}' data-id='${grp.id}'>`+
+        `<td><sl-icon-button id='choose-${grp.id}' data-id='${grp.id}' name="arrow-right-circle"></sl-icon-button></td>`+
+        `<td>${grp.description}</td>`+
+        `</tr>`
     }
+    jhQuery("#grouppickertable tbody").innerHTML = row
 
-    $("#grouppickertable tbody tr").remove()
-    if ( resp.data.length ) {
-      var row = ""
-      for ( const grp of resp.data ) {
-        row +=
-          `<tr id='row-${grp.id}' data-id='${grp.id}'>`+
-          `<td><sl-icon-button id='choose-${grp.id}' data-id='${grp.id}' name="arrow-right-circle"></sl-icon-button></td>`+
-          `<td>${grp.description}</td>`+
-          `</tr>`
-      }
-      $("#grouppickertable tbody").append(row)
-
-      // Install event handlers
-      $("#grouppickertable tbody tr[id^=row]").on("dblclick", (ev)=>{
-        userCallback($(ev.currentTarget).data("id"))
-      })
-      $("#grouppickertable tbody [id^=choose]").on("click", (ev)=>{
-        userCallback($(ev.currentTarget).data("id"))
-      })
-    }
-  })
+    // Install event handlers
+    jhEvent("#grouppickertable tbody tr[id^=row]", "dblclick", (ev)=>{
+      userCallback($(ev.currentTarget).data("id"))
+    })
+    jhEvent("#grouppickertable tbody [id^=choose]", "click", (ev)=>{
+      userCallback($(ev.currentTarget).data("id"))
+    })
+  }
 }
 
-$("#grouppickersearch").on("sl-input", (ev) => {
+jhEvent("#grouppickersearch", "sl-input", (ev) => {
   if ( groupPickerTimeout ) {
     clearTimeout(groupPickerTimeout)
   }
-  groupPickerTimeout = setTimeout(searchGroups,250)
+  groupPickerTimeout = setTimeout(async()=>{ await search() },250)
 })

@@ -1,3 +1,5 @@
+import * as UPicker from './userpicker.js'
+
 var groupSearchTimeout
 
 function currentGroup() {
@@ -139,18 +141,20 @@ async function userPickerChoosen(id) {
     return
   }
 
-  userPickerHide()
+  UPicker.hide()
   fillUsers()
+  showToast("success", "User added to the group")
 }
 
 async function groupRemoveUser(id) {
   confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", async ()=> {
-  const resp = await jhFetch(`/api/groupremoveuser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()})
+    const resp = await jhFetch(`/api/groupremoveuser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()})
     if ( !await checkResponse2(resp) ) {
       return
     }
 
     fillUsers()
+    showToast("success", "User removed from group")
   })
 }
 
@@ -196,7 +200,7 @@ jhEvent("#newmember", "click", (ev)=>{
     errorDialog("Select a group")
     return
   }
-  userPickerShow(userPickerChoosen)
+  UPicker.show(userPickerChoosen)
 })
 
 jhEvent("#groupsearch", "sl-input", (ev)=> {

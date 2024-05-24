@@ -1,3 +1,5 @@
+import * as GPicker from './grouppicker.js'
+
 var userSearchTimeout
 var currentUser = ""
 
@@ -193,9 +195,9 @@ function userDoubleClicked(user) {
 }
 
 async function groupRemove(ev) {
-  const group = jhQuery(ev.currentTarget).getAttribute("data-id")
+  const group = ev.currentTarget.getAttribute("data-id")
   confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", async ()=> {
-  const resp = jhFetch(`/api/groupremoveuser/${group}/${currentUser}`, {_csrf: getCSRFToken()})
+  const resp = await jhFetch(`/api/groupremoveuser/${group}/${currentUser}`, {_csrf: getCSRFToken()})
     if ( !await checkResponse2(resp) ) {
       return
     }
@@ -206,7 +208,7 @@ async function groupRemove(ev) {
 }
 
 async function groupPickerChoosen(group) {
-  groupPickerHide()
+  GPicker.hide()
   const resp = await jhFetch(`/api/groupadduser/${group}/${currentUser}`, {_csrf: getCSRFToken()})
   if ( !await checkResponse2(resp) ) {
     return
@@ -251,5 +253,5 @@ jhEvent("#addgroup", "click",(ev)=>{
     errorDialog("Select a user")
     return
   }
-  groupPickerShow(groupPickerChoosen)
+  GPicker.show(groupPickerChoosen)
 })
