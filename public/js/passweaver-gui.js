@@ -54,13 +54,14 @@ async function checkResponse2(resp,ignoreStatus) {
   const respClone = resp.clone()
   const body = await respClone.json()
 
+  const ignore = typeof ignoreStatus=="object" ? ignoreStatus : [ignoreStatus]
   if ( body.status=="success" ) {
     return true
   }
   if ( body.status=="failed" && body.httpStatusCode=="404" ) {
     return true
   }
-  if ( body.status=="failed" && ignoreStatus && body.httpStatusCode==ignoreStatus ) {
+  if ( body.status=="failed" && ignoreStatus && ignore.includes(body.httpStatusCode) ) {
     return true
   }
 

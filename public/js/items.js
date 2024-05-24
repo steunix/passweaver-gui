@@ -1,286 +1,288 @@
 var itemSearchTimeout
 
-function fillItems() {
-  $.get(`/api/itemslist/${currentFolder()}?search=${$("#itemsearch").val()}`,(resp)=>{
-    $("#itemstable tbody tr").remove()
+async function fillItems() {
+  const search = jhValue("#itemsearch")
 
-    // Personal password not yet created?
-    if ( resp.httpStatusCode == "412" ) {
-      currentPermissions = { read: false, write: false }
-      personalPasswordCreateDialog()
-      return
-    }
+  const resp = await jhFetch(`/api/itemslist/${currentFolder()}?search=${search}`)
+  jhQuery("#itemstable tbody").innerHTML = ""
 
-    // Personal password not yet set?
-    if ( resp.httpStatusCode == "417" ) {
-      currentPermissions = { read: false, write: false }
-      personalPasswordAskDialog()
-      return
-    }
+  // Folder may not be accessible
+  if ( !await checkResponse2(resp,[403,412,417]) ) {
+    return
+  }
 
-    // Folder may not be accessible
-    if ( !checkResponse(resp,403) ) {
-      return
-    }
+  const body = await resp.json()
+  // Personal password not yet created?
+  if ( body.httpStatusCode == 412 ) {
+    currentPermissions = { read: false, write: false }
+    personalPasswordCreateDialog()
+    return
+  }
 
-    if ( resp.data.length ) {
-      row = ""
-      for ( const itm of resp.data ) {
-        row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
-        row += `<td class='border-end'>`
-        row += `<sl-icon-button id='view-${itm.id}' name='file-earmark' title='View item' data-id='${itm.id}'></sl-icon-button>`
-        if ( currentPermissions.write ) {
-          row += `<sl-icon-button id='edit-${itm.id}' title='Edit item' name='pencil' data-id='${itm.id}'></sl-icon-button>`
-          row += `<sl-icon-button id='remove-${itm.id}' title='Remove item' name='trash3' style="color:red;" data-id='${itm.id}'></sl-icon-button>`
-          row += `<sl-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></sl-icon-button>`
-          row += `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`
-        }
-        row += `</td>`
-        row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end'>${itm.title}</td>`
-        row += `<td id='user-${itm.id}'>${itm.metadata}</td>`
-        row += `<td class='border-end'><sl-copy-button title='Copy user to clipboard' from='user-${itm.id}'></sl-copy-button></td>`
-        row += `<td id='password-${itm.id}'>****</td>`
-        row += `<td><sl-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></sl-copy-button></td>`
-        row += `<td><sl-icon-button id='passwordshow-${itm.id}' title='Show/hide password' data-id='${itm.id}' name='eye'></sl-icon-button></td>`
-        row += `</tr>`
+  // Personal password not yet set?
+  if ( body.httpStatusCode == 417 ) {
+    currentPermissions = { read: false, write: false }
+    personalPasswordAskDialog()
+    return
+  }
+
+  // Manual check response, because body has already been read
+
+  if ( body.data.length ) {
+    var row = ""
+    for ( const itm of body.data ) {
+      row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
+      row += `<td class='border-end'>`
+      row += `<sl-icon-button id='view-${itm.id}' name='file-earmark' title='View item' data-id='${itm.id}'></sl-icon-button>`
+      if ( currentPermissions.write ) {
+        row += `<sl-icon-button id='edit-${itm.id}' title='Edit item' name='pencil' data-id='${itm.id}'></sl-icon-button>`
+        row += `<sl-icon-button id='remove-${itm.id}' title='Remove item' name='trash3' style="color:red;" data-id='${itm.id}'></sl-icon-button>`
+        row += `<sl-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></sl-icon-button>`
+        row += `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`
       }
-      document.querySelector("#itemstable tbody").innerHTML = row
-    } else {
-      document.querySelector("#itemstable tbody").innerHTML = "<tr><td colspan='99'>No item found</td></tr>"
+      row += `</td>`
+      row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end'>${itm.title}</td>`
+      row += `<td id='user-${itm.id}'>${itm.metadata}</td>`
+      row += `<td class='border-end'><sl-copy-button title='Copy user to clipboard' from='user-${itm.id}'></sl-copy-button></td>`
+      row += `<td id='password-${itm.id}'>****</td>`
+      row += `<td><sl-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></sl-copy-button></td>`
+      row += `<td><sl-icon-button id='passwordshow-${itm.id}' title='Show/hide password' data-id='${itm.id}' name='eye'></sl-icon-button></td>`
+      row += `</tr>`
     }
+    jhQuery("#itemstable tbody").innerHTML = row
+  } else {
+    jhQuery("#itemstable tbody").innerHTML = "<tr><td colspan='99'>No item found</td></tr>"
+  }
 
-    // Install event handlers
-    $("#itemstable tbody [id^=view]").on("click", (ev)=>{
-      itemShow($(ev.currentTarget).data("id"))
-    })
-    $("#itemstable tbody [id^=edit]").on("click", (ev)=>{
-      itemEditDialog($(ev.currentTarget).data("id"))
-    })
-    $("#itemstable tbody [id^=title]").on("dblclick", (ev)=>{
-      itemShow($(ev.currentTarget).data("id"))
-    })
-    $("#itemstable tbody [id^=remove]").on("click", (ev)=>{
-      itemRemove($(ev.currentTarget).data("id"))
-    })
-    $("#itemstable tbody [id^=clone]").on("click",(ev)=>{
-      itemClone($(ev.currentTarget).data("id"))
-    })
-    $("#itemstable tbody [id^=link]").on("click",(ev)=>{
-      itemCopyLink($(ev.currentTarget).data("id"))
-    })
-    $("#itemstable tbody [id^=passwordcopy]").on("click",(ev)=>{
-      passwordCopy(ev)
-    })
-    $("#itemstable tbody [id^=passwordshow]").on("click",(ev)=>{
-      passwordShow(ev)
-    })
-
-    // Folder cannot be removed if not empty
-    if ( $("#itemstable [id^='row-']").length ) {
-      $("#removefolder").attr("disabled","disabled")
-    }
+  // Install event handlers
+  jhEvent("#itemstable tbody [id^=view]", "click", (ev)=>{
+    itemShow(ev.currentTarget.getAttribute("data-id"))
   })
+  jhEvent("#itemstable tbody [id^=edit]", "click", (ev)=>{
+    itemEditDialog(ev.currentTarget.getAttribute("data-id"))
+  })
+  jhEvent("#itemstable tbody [id^=title]", "dblclick", (ev)=>{
+    itemShow(ev.currentTarget.getAttribute("data-id"))
+  })
+  jhEvent("#itemstable tbody [id^=remove]", "click", (ev)=>{
+    itemRemove(ev.currentTarget.getAttribute("data-id"))
+  })
+  jhEvent("#itemstable tbody [id^=clone]", "click",(ev)=>{
+    itemClone(ev.currentTarget.getAttribute("data-id"))
+  })
+  jhEvent("#itemstable tbody [id^=link]", "click",(ev)=>{
+    itemCopyLink(ev.currentTarget.getAttribute("data-id"))
+  })
+  jhEvent("#itemstable tbody [id^=passwordcopy]", "click",(ev)=>{
+    passwordCopy(ev)
+  })
+  jhEvent("#itemstable tbody [id^=passwordshow]", "click",(ev)=>{
+    passwordShow(ev)
+  })
+
+  // Folder cannot be removed if not empty
+  if ( jhQuery("#itemstable [id^='row-']") ) {
+    jhQuery("#folderremove").setAttribute("disabled","disabled")
+  }
 }
 
-function folderClicked(ev, selectonly) {
+async function folderClicked(ev, selectonly) {
   // Read folder info
-  $("#itemstable tbody tr").remove()
-  $.get(`/api/folders/${currentFolder()}`,(resp)=>{
+  jhQuery("#itemstable tbody").innerHTML = ""
+  const resp = await jhFetch(`/api/folders/${currentFolder()}`)
 
-    // Folder may not be accessible
-    if ( !checkResponse(resp,"403") ) {
-      return
-    }
+  // Folder may not be accessible
+  if ( !await checkResponse2(resp,"403") ) {
+    return
+  }
 
-    if ( resp.data && resp.data.permissions ) {
-      currentPermissions = resp.data.permissions
-    } else {
-      currentPermissions = { read: false, write: false }
-    }
+  const body = await resp.json()
+  if ( body.data && body.data.permissions ) {
+    currentPermissions = body.data.permissions
+  } else {
+    currentPermissions = { read: false, write: false }
+  }
 
-    // Load items
-    fillItems()
+  // Load items
+  await fillItems()
 
-    if ( currentPermissions.write ) {
-      $("#newitem").removeAttr("disabled")
-      $("#newfolder").removeAttr("disabled")
-      $("#removefolder").removeAttr("disabled")
-      $("#editfolder").removeAttr("disabled")
-    } else {
-      $("#newitem").attr("disabled","disabled")
-      $("#newfolder").attr("disabled","disabled")
-      $("#removefolder").attr("disabled","disabled")
-      $("#editfolder").attr("disabled","disabled")
-    }
-  })
+  if ( currentPermissions.write ) {
+    jhQuery("#newitem").removeAttribute("disabled")
+    jhQuery("#foldercreate").removeAttribute("disabled")
+    jhQuery("#folderremove").removeAttribute("disabled")
+    jhQuery("#folderedit").removeAttribute("disabled")
+  } else {
+    jhQuery("#newitem").setAttribute("disabled","disabled")
+    jhQuery("#foldercreate").setAttribute("disabled","disabled")
+    jhQuery("#folderremove").setAttribute("disabled","disabled")
+    jhQuery("#folderedit").setAttribute("disabled","disabled")
+  }
 }
 
 function itemCreateDialog() {
-  document.querySelector("#itemcreatedialog").show()
-  $("#itemcreatedialog sl-input,sl-textarea").val("")
+  jhQuery("#itemcreatedialog").show()
+  jhValue("#itemcreatedialog sl-input,sl-textarea", "")
   itemCreateEnable()
 }
 
-function itemCreate() {
-  document.querySelector("#itemcreatedialog").hide()
+async function itemCreate() {
+  jhQuery("#itemcreatedialog").hide()
 
   let itemdata = {
     _csrf: getCSRFToken(),
-    title: $("#newtitle").val(),
-    email: $("#newemail").val(),
-    description: $("#newdescription").val(),
-    url: $("#newurl").val(),
-    user: $("#newuser").val(),
-    password: $("#newpassword").val()
+    title: jhValue("#newtitle"),
+    email: jhValue("#newemail"),
+    description: jhValue("#newdescription"),
+    url: jhValue("#newurl"),
+    user: jhValue("#newuser"),
+    password: jhValue("#newpassword")
   }
 
-  $.post(`/api/itemnew/${currentFolder()}`, itemdata, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
+  const resp = await jhFetch(`/api/itemnew/${currentFolder()}`, itemdata)
+  if ( !await checkResponse2(resp) ) {
+    return
+  }
 
-    if ( resp.data.id ) {
-      fillItems()
-      showToast("success","Item created")
-    } else {
-      errorDialog(resp.message)
-    }
-  })
+  const body = await resp.json()
+  if ( body.data.id ) {
+    await fillItems()
+    showToast("success","Item created")
+  } else {
+    errorDialog(body.message)
+  }
 }
 
 function itemCreateEnable() {
-  if ( $("#newtitle").val()=="" ) {
-    $("#itemcreatesave").attr("disabled","disabled")
+  if ( jhValue("#newtitle")==="" ) {
+    jhQuery("#itemcreatesave").setAttribute("disabled","disabled")
   } else {
-    $("#itemcreatesave").removeAttr("disabled")
+    jhQuery("#itemcreatesave").removeAttribute("disabled")
   }
 }
 
-function itemRemove(itm) {
-  confirmDialog("Remove item", "Are you sure you want to remove this item?", ()=> {
-    $.post("/api/itemremove/"+itm, {_csrf: getCSRFToken()}, (resp)=> {
-      if ( !checkResponse(resp) ) {
+async function itemRemove(itm) {
+  confirmDialog("Remove item", "Are you sure you want to remove this item?", async()=> {
+    const resp = await jhFetch(`/api/itemremove/${itm}`, {_csrf: getCSRFToken()})
+      if ( !await checkResponse2(resp) ) {
         return
       }
 
-      fillItems()
+      await fillItems()
     })
-  })
 }
 
-function itemEditDialog(item) {
-  document.querySelector("#itemeditdialog").show()
-  $("#itemeditdialog sl-input,sl-textarea").val("")
+async function itemEditDialog(item) {
+  jhQuery("#itemeditdialog").show()
+  jhValue("#itemeditdialog sl-input,sl-textarea", "")
   itemEditFill(item)
   itemEditEnable()
 }
 
-function itemEditFill(item) {
-  $.get(`/api/items/${item}`, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
+async function itemEditFill(item) {
+  const resp = await jhFetch(`/api/items/${item}`)
+  if ( !await checkResponse2(resp) ) {
+    return
+  }
 
-    if ( resp.status=="success" ) {
-      $("#itemeditid").val(item)
-      $("#edittitle").val(resp.data.title)
-      $("#editemail").val(resp.data.data.email)
-      $("#editdescription").val(resp.data.data.description)
-      $("#editurl").val(resp.data.data.url)
-      $("#edituser").val(resp.data.data.user)
-      $("#editpassword").val(resp.data.data.password)
-    }
+  const body = await resp.json()
+  if ( body.status=="success" ) {
+    jhValue("#itemeditid", item)
+    jhValue("#edittitle", body.data.title)
+    jhValue("#editemail", body.data.data.email)
+    jhValue("#editdescription", body.data.data.description)
+    jhValue("#editurl", body.data.data.url)
+    jhValue("#edituser", body.data.data.user)
+    jhValue("#editpassword", body.data.data.password)
+  }
 
-    itemEditEnable()
-  })
+  itemEditEnable()
 }
 
 function itemEditEnable() {
-  if ( $("#edittitle").val()=="" ) {
-    $("#itemeditsave").attr("disabled","disabled")
+  if ( jhValue("#edittitle")==="" ) {
+    jhQuery("#itemeditsave").setAttribute("disabled","disabled")
   } else {
-    $("#itemeditsave").removeAttr("disabled")
+    jhQuery("#itemeditsave").removeAttribute("disabled")
   }
 }
 
-function itemEdit() {
-  const id = document.querySelector("#itemeditid").value
+async function itemEdit() {
+  const id = jhValue("#itemeditid")
 
   let itemdata = {
     _csrf: getCSRFToken(),
-    title: $("#edittitle").val(),
+    title: jhValue("#edittitle"),
     data: {
-      description: $("#editdescription").val(),
-      email: $("#editemail").val(),
-      url: $("#editurl").val(),
-      user: $("#edituser").val(),
-      password: $("#editpassword").val()
+      description: jhValue("#editdescription"),
+      email: jhValue("#editemail"),
+      url: jhValue("#editurl"),
+      user: jhValue("#edituser"),
+      password: jhValue("#editpassword")
     }
   }
 
-  $.post(`/api/itemupdate/${id}`, itemdata, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
+  const resp = await jhFetch(`/api/itemupdate/${id}`, itemdata)
+  if ( !await checkResponse2(resp) ) {
+    return
+  }
 
-    document.querySelector("#itemeditdialog").hide()
-    fillItems()
-  })
+  jhQuery("#itemeditdialog").hide()
+  await fillItems()
 }
 
 function toggleEditPassword() {
-  if ( $("#editpassword").attr("type")=="password") {
-    $("#editpassword").attr("type","text")
-    passwordAccessed($("#itemeditid").val())
+  if ( jhQuery("#editpassword").getAttribute("type")=="password") {
+    jhQuery("#editpassword").setAttribute("type","text")
+    passwordAccessed(jhValue("#itemeditid"))
   } else {
-    $("#editpassword").attr("type","password")
+    jhQuery("#editpassword").setAttribute("type","password")
   }
 }
 
 function toggleViewPassword() {
-  if ( $("#viewpassword").attr("type")=="password") {
-    $("#viewpassword").attr("type","text")
-    passwordAccessed($("#itemviewid").val())
+  if ( jhQuery("#viewpassword").getAttribute("type")=="password") {
+    jhQuery("#viewpassword").setAttribute("type","text")
+    passwordAccessed(jhValue("#itemviewid"))
   } else {
-    $("#viewpassword").attr("type","password")
+    jhQuery("#viewpassword").setAttribute("type","password")
   }
 }
 
-function itemViewFill(item) {
-  $.get(`/api/items/${item}`, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      document.querySelector("#itemviewdialog").hide()
-      return
-    }
+async function itemViewFill(item) {
+  const resp = await jhFetch(`/api/items/${item}`)
+  if ( !await checkResponse2(resp) ) {
+    jhQuery("#itemviewdialog").hide()
+    return
+  }
 
-    $("#itemviewid").val(item)
-    $("#viewtitle").val(resp.data.title)
-    $("#viewemail").val(resp.data.data.email)
-    $("#viewdescription").val(resp.data.data.description)
-    $("#viewurl").val(resp.data.data.url)
-    $("#viewuser").val(resp.data.data.user)
-    $("#viewpassword").val(resp.data.data.password).attr("type","password")
-  })
+  const body = await resp.json()
+  jhValue("#itemviewid", item)
+  jhValue("#viewtitle", body.data.title)
+  jhValue("#viewemail", body.data.data.email)
+  jhValue("#viewdescription", body.data.data.description)
+  jhValue("#viewurl", body.data.data.url)
+  jhValue("#viewuser", body.data.data.user)
+  jhValue("#viewpassword", body.data.data.password)
+  jhQuery("#viewpassword").setAttribute("type","password")
 }
 
 function itemShow(item) {
   if ( window.getSelection() ) {
     window.getSelection().empty()
   }
-  document.querySelector("#itemviewdialog").show()
+  jhQuery("#itemviewdialog").show()
   itemViewFill(item)
 }
 
-function itemClone(itm) {
-  confirmDialog("Clone item", "Do you want to clone this item?", ()=>{
-    $.post(`/api/items/${itm}/clone`, {_csrf: getCSRFToken()}, (resp)=> {
-      if ( !checkResponse(resp) ) {
-        return
-      }
+async function itemClone(itm) {
+  confirmDialog("Clone item", "Do you want to clone this item?", async()=>{
+  const resp = await jhFetch(`/api/items/${itm}/clone`, {_csrf: getCSRFToken()})
+    if ( !await checkResponse2(resp) ) {
+      return
+    }
 
-      showToast("success","Item cloned")
-      fillItems()
-    })
+    showToast("success","Item cloned")
+    await fillItems()
   })
 }
 
@@ -291,89 +293,91 @@ function itemCopyLink(itm) {
 
 function findAndShowItem(itm) {
   itemViewFill(itm)
-  document.querySelector("#itemviewdialog").show()
+  jhQuery("#itemviewdialog").show()
 }
 
 function personalPasswordCreateDialog() {
-  document.querySelector("#personalpasswordnew").show()
+  jhQuery("#personalpasswordnew").show()
 }
 
 function personalPasswordAskDialog() {
-  document.querySelector("#personalpasswordset").show()
+  jhQuery("#personalpasswordset").show()
 }
 
 function personalPasswordCreateEnable() {
   if (
-    $("#newpersonalpassword").val()=="" || $("#newpersonalpassword").val().length<8 || $("#newpersonalpassword").val()!=$("#newpersonalpasswordconfirm").val() ) {
-      $("#personalpasswordcreate").attr("disabled","disabled")
+    jhValue("#newpersonalpassword")=="" || jhValue("#newpersonalpassword").length<8 || jhValue("#newpersonalpassword")!=jhValue("#newpersonalpasswordconfirm") ) {
+      jhValue("#personalpasswordcreate").setAttribute("disabled","disabled")
   } else {
-    $("#personalpasswordcreate").removeAttr("disabled")
+    jhValue("#personalpasswordcreate").removeAttribute("disabled")
   }
 }
 
-function personalPasswordCreate() {
+async function personalPasswordCreate() {
   let data = {
     _csrf: getCSRFToken(),
-    password: $("#newpersonalpassword").val()
+    password: jhValue("#newpersonalpassword")
   }
 
-  $.post("/api/personalpassword", data, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
-
-    fillItems()
-    showToast("success", "Personal password saved")
-  })
-}
-
-function personalPasswordSet() {
-  let data = {
-    _csrf: getCSRFToken(),
-    password: $("#personalpasswordask").val()
-  }
-
-  $.post("/api/personalunlock", data, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
-
-    location.reload()
-  })
-}
-
-function passwordCopy(ev) {
-  var item = $(ev.currentTarget).data("id")
-  $.get(`/api/items/${item}`, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
-    passwordAccessed(item)
-  })
-}
-
-function passwordShow(ev) {
-  var item = $(ev.currentTarget).data("id")
-
-  if ( $(`#password-${item}`).html()!=="****") {
-    $(`#password-${item}`).html("****")
+  const resp = await jhFetch("/api/personalpassword", data)
+  if ( !await checkResponse2(resp) ) {
     return
   }
 
-  $("[id^=password-]").html("****")
-  $.get(`/api/items/${item}`, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
-
-    $(`#password-${item}`).html(resp.data.data.password)
-
-    passwordAccessed(item)
-  })
+  await fillItems()
+  showToast("success", "Personal password saved")
 }
 
-function passwordAccessed(item) {
-  $.post("/api/events", {
+async function personalPasswordSet() {
+  let data = {
+    _csrf: getCSRFToken(),
+    password: jhValue("#personalpasswordask")
+  }
+
+  debugger
+  jhQuery("#personalpasswordset").hide()
+  const resp = await jhFetch("/api/personalunlock", data)
+  if ( !await checkResponse2(resp) ) {
+    errorDialog("Wrong password")
+    return
+  }
+
+  location.reload()
+}
+
+async function passwordCopy(ev) {
+  const item = ev.currentTarget.getAttribute("data-id")
+
+  const resp = await jhFetch(`/api/items/${item}`)
+  if ( !await checkResponse2(resp) ) {
+    return
+  }
+
+  const body = await resp.json()
+  passwordAccessed(item)
+}
+
+async function passwordShow(ev) {
+  const item = ev.currentTarget.getAttribute("data-id")
+
+  if ( jhQuery(`#password-${item}`).innerHTML!=="****") {
+    jhQuery(`#password-${item}`).innerHTML = "****"
+    return
+  }
+
+  const resp = await jhFetch(`/api/items/${item}`)
+  if ( !await checkResponse2(resp) ) {
+    return
+  }
+
+  const body = await resp.json()
+  jhQuery(`#password-${item}`).innerHTML = body.data.data.password
+
+  passwordAccessed(item)
+}
+
+async function passwordAccessed(item) {
+  const resp = await jhFetch("/api/events", {
     _csrf: getCSRFToken(),
     event: 'pwdread',
     itemtype: 'item',
@@ -381,89 +385,89 @@ function passwordAccessed(item) {
   })
 }
 
-function fillFolders() {
-  $.get("/api/folderstree", (resp)=>{
-    if ( !checkResponse(resp) ) {
-      return
-    }
+async function fillFolders() {
+  const resp = await jhFetch("/api/folderstree")
+  if ( !await checkResponse2(resp) ) {
+    return
+  }
 
-    $("sl-tree-item").remove()
-    treeFill("folderstree",resp.data,null,folderClicked)
-  })
+  jhQuery("sl-tree").innerHTML=""
+  const body = await resp.json()
+  treeFill("folderstree",body.data,null,folderClicked)
 }
 
 fillFolders()
 
 // Create
-$("#newitem").on("click",(ev)=>{
+jhEvent("#newitem", "click",(ev)=>{
   itemCreateDialog()
 })
-$("#itemcreatecancel").on("click",(ev)=>{
-  document.querySelector("#itemcreatedialog").hide()
+jhEvent("#itemcreatecancel", "click",(ev)=>{
+  jhQuery("#itemcreatedialog").hide()
 })
-$("#itemcreatesave").on("click",(ev)=>{
+jhEvent("#itemcreatesave", "click",(ev)=>{
   itemCreate()
 })
 
 // View
-$("#newtitle").on("keyup",(ev)=>{
+jhEvent("#newtitle", "keyup",(ev)=>{
   itemCreateEnable()
 })
-$("#toggleviewpassword").on("click",(ev)=>{
+jhEvent("#toggleviewpassword", "click",(ev)=>{
   toggleViewPassword()
 })
 
 // Edit
-$("#toggleeditpassword").on("click",(ev)=>{
+jhEvent("#toggleeditpassword", "click",(ev)=>{
   toggleEditPassword()
 })
-$("#edittitle").on("keyup",(ev)=>{
+jhEvent("#edittitle", "keyup",(ev)=>{
   itemEditEnable()
 })
-$("#itemeditcancel").on("click",(ev)=>{
-  document.querySelector("#itemeditdialog").hide()
+jhEvent("#itemeditcancel", "click",(ev)=>{
+  jhQuery("#itemeditdialog").hide()
 })
-$("#itemeditsave").on("click",(ev)=>{
+jhEvent("#itemeditsave", "click",(ev)=>{
   itemEdit()
 })
 
 // Personal
-$("#togglepersonalpassword").on("click",(ev)=>{
+jhEvent("#togglepersonalpassword", "click",(ev)=>{
   togglePersonalPasswordSet()
 })
-$("#personalpasswordcancel").on("click",(ev)=>{
-  document.querySelector("#personalpasswordnew").hide()
+jhEvent("#personalpasswordcancel", "click",(ev)=>{
+  jhQuery("#personalpasswordnew").hide()
 })
-$("#personalpasswordsetcancel").on("click",(ev)=>{
-  document.querySelector("#personalpasswordset").hide()
+jhEvent("#personalpasswordsetcancel", "click",(ev)=>{
+  jhQuery("#personalpasswordset").hide()
 })
-$("#personalpasswordcreate").on("click",(ev)=>{
+jhEvent("#personalpasswordcreate", "click",(ev)=>{
   personalPasswordCreate()
 })
-$("#newpersonalpassword,#newpersonalpasswordconfirm").on("keyup",(ev)=>{
+jhEvent("#newpersonalpassword,#newpersonalpasswordconfirm", "keyup",(ev)=>{
   personalPasswordCreateEnable()
 })
-$("#togglenewpersonalpassword").on("click",(ev)=>{
+jhEvent("#togglenewpersonalpassword", "click",(ev)=>{
   togglePersonalPassword()
 })
-$("#togglenewpersonalpasswordconfirm").on("click",(ev)=>{
+jhEvent("#togglenewpersonalpasswordconfirm", "click",(ev)=>{
   togglePersonalPasswordConfirm()
 })
-$("#personalpasswordsetbutton").on("click",(ev)=>{
+jhEvent("#personalpasswordsetbutton", "click",(ev)=>{
   personalPasswordSet()
 })
 
-$("#itemsearch").on("sl-input", (ev) => {
+jhEvent("#itemsearch", "sl-input", (ev) => {
   if ( itemSearchTimeout ) {
     clearTimeout(itemSearchTimeout)
   }
-  itemSearchTimeout = setTimeout(fillItems,250)
+  itemSearchTimeout = setTimeout(async()=>{ fillItems() },250)
 })
 
-if ( $("#viewitem").length ) {
-  setTimeout(()=>{ findAndShowItem($("#viewitem").val()) }, 200)
+if ( jhQuery("#viewitem") ) {
+  setTimeout(()=>{ findAndShowItem(jhValue("#viewitem")) }, 200)
 }
 
-$("#copyviewpassword").on("click", (ev)=>{
-  passwordAccessed($("#itemviewid").val())
+jhEvent("#copyviewpassword", "click", (ev)=>{
+  passwordAccessed(jhValue("#itemviewid"))
 })
