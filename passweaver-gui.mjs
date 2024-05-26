@@ -15,6 +15,7 @@ import FS from 'fs'
 import prettyBytes from 'pretty-bytes'
 import Morgan from "morgan"
 import RFS from "rotating-file-stream"
+import favicon from 'serve-favicon'
 
 import * as Config from './src/config.mjs'
 import * as PassWeaver from './src/passweaver.mjs'
@@ -61,6 +62,11 @@ app.use(lusca.csrf({
   key: "_csrf",
   secret: cfg.csrf_key
 }))
+
+// Favicon
+app.use(
+  favicon('./public/images/favicon.ico')
+)
 
 // Checks for valid session in pages/ subdir. We can use redirect since they are not Ajax
 app.use("/pages", function(req,res,next) {

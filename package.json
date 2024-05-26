@@ -7,18 +7,19 @@
   "author": "Stefano Rivoir",
   "license": "MIT",
   "dependencies": {
+    "compression": "^1.7.4",
+    "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-rate-limit": "^7.1.5",
     "express-session": "^1.17.3",
-    "compression": "^1.7.4",
-    "lusca": "^1.7.0",
-    "helmet": "^7.1.0",
-    "ejs": "^3.1.10",
     "got": "^14.0.0",
-    "jsonwebtoken": "^9.0.2",
-    "pretty-bytes": "",
+    "helmet": "^7.1.0",
     "jsonschema": "^1.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "lusca": "^1.7.0",
     "morgan": "^1.10.0",
-    "rotating-file-stream": "^3.2.1"
+    "pretty-bytes": "",
+    "rotating-file-stream": "^3.2.1",
+    "serve-favicon": "^2.5.0"
   }
 }
