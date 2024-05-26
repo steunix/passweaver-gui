@@ -1,3 +1,5 @@
+import * as PW from './passweaver-gui.js'
+
 var folderSearchTimeout
 
 const refresh = new Event("folders-refresh")
@@ -38,23 +40,23 @@ async function folderCreate() {
 
   jhQuery("#foldercreatedialog").hide()
   const resp = await jhFetch(`/api/foldernew/${currentFolder()}`, itemdata)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
-  showToast("success", "Folder created")
+  PW.showToast("success", "Folder created")
   dispatchEvent(refresh)
 }
 
 async function folderRemove() {
-  confirmDialog("Remove folder", "Are you sure you want to remove this folder?", async ()=> {
+  PW.confirmDialog("Remove folder", "Are you sure you want to remove this folder?", async ()=> {
     jhQuery("#foldercreatedialog").hide()
     const resp = await jhFetch(`/api/folderremove/${currentFolder()}`, {_csrf: getCSRFToken()})
-    if ( !await checkResponse(resp) ) {
+    if ( !await PW.checkResponse(resp) ) {
       return
     }
 
-    showToast("success", "Folder removed")
+    PW.showToast("success", "Folder removed")
     dispatchEvent(refresh)
   })
 }
@@ -75,7 +77,7 @@ function folderEditEnable() {
 
 async function folderEditFill() {
   const resp = await jhFetch(`/api/folders/${currentFolder()}`)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -92,11 +94,11 @@ async function folderEdit() {
 
   jhQuery("#foldereditdialog").hide()
   const resp = await jhFetch(`/api/folderupdate/${currentFolder()}`, data)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
-  showToast("success", "Folder updated")
+  PW.showToast("success", "Folder updated")
   dispatchEvent(refresh)
 }
 
@@ -115,7 +117,7 @@ jhEvent("#folderedit", "click", (ev)=>{
 })
 jhEvent("#foldercreate", "click", (ev)=>{
   if ( currentFolder()==="" ) {
-    errorDialog("Select a parent folder")
+    PW.errorDialog("Select a parent folder")
     return
   }
   folderCreateDialog()
@@ -144,17 +146,17 @@ jhEvent("#foldersearch", "sl-input", (ev)=> {
   }
   folderSearchTimeout = setTimeout(()=>{
     const search = jhValue("#foldersearch")
-    if ( !treeSearch("folderstree", search) ) {
-      showToast("danger", "Not found")
+    if ( !PW.treeSearch("folderstree", search) ) {
+      PW.showToast("danger", "Not found")
     }
   },250)
 })
 
 jhEvent("#foldersearchnext", "click", (ev)=>{
   const search = jhValue("#foldersearch")
-  treeSearchNext("folderstree", search)
+  PW.treeSearchNext("folderstree", search)
 })
 jhEvent("#foldersearchprevious", "click", (ev)=>{
   const search = jhValue("#foldersearch")
-  treeSearchPrevious("folderstree", search)
+  PW.treeSearchPrevious("folderstree", search)
 })

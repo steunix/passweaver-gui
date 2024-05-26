@@ -1,3 +1,4 @@
+import * as PW from './passweaver-gui.js'
 import * as Folders from './folders_shared.js'
 
 var itemSearchTimeout
@@ -9,7 +10,7 @@ async function fillItems() {
   jhQuery("#itemstable tbody").innerHTML = ""
 
   // Folder may not be accessible
-  if ( !await checkResponse(resp,[403,412,417]) ) {
+  if ( !await PW.checkResponse(resp,[403,412,417]) ) {
     return
   }
 
@@ -96,13 +97,14 @@ async function folderClicked(ev, selectonly) {
   const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}`)
 
   // Folder may not be accessible
-  if ( !await checkResponse(resp,"403") ) {
+  if ( !await PW.checkResponse(resp,"403") ) {
     return
   }
 
   const body = await resp.json()
   if ( body.data && body.data.permissions ) {
-    Folders.currentPermissions = body.data.permissions
+    Folders.currentPermissions.read  = body.data.permissions.read
+    Folders.currentPermissions.write = body.data.permissions.write
   } else {
     Folders.currentPermissions.read  = false
     Folders.currentPermissions.write = false
@@ -144,7 +146,7 @@ async function itemCreate() {
   }
 
   const resp = await jhFetch(`/api/itemnew/${Folders.currentFolder()}`, itemdata)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -153,7 +155,7 @@ async function itemCreate() {
     await fillItems()
     showToast("success","Item created")
   } else {
-    errorDialog(body.message)
+    PW.errorDialog(body.message)
   }
 }
 
@@ -166,9 +168,9 @@ function itemCreateEnable() {
 }
 
 async function itemRemove(itm) {
-  confirmDialog("Remove item", "Are you sure you want to remove this item?", async()=> {
+  PW.confirmDialog("Remove item", "Are you sure you want to remove this item?", async()=> {
     const resp = await jhFetch(`/api/itemremove/${itm}`, {_csrf: getCSRFToken()})
-      if ( !await checkResponse(resp) ) {
+      if ( !await PW.checkResponse(resp) ) {
         return
       }
 
@@ -185,7 +187,7 @@ async function itemEditDialog(item) {
 
 async function itemEditFill(item) {
   const resp = await jhFetch(`/api/items/${item}`)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -227,7 +229,7 @@ async function itemEdit() {
   }
 
   const resp = await jhFetch(`/api/itemupdate/${id}`, itemdata)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -255,7 +257,7 @@ function toggleViewPassword() {
 
 async function itemViewFill(item) {
   const resp = await jhFetch(`/api/items/${item}`)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     jhQuery("#itemviewdialog").hide()
     return
   }
@@ -280,9 +282,9 @@ function itemShow(item) {
 }
 
 async function itemClone(itm) {
-  confirmDialog("Clone item", "Do you want to clone this item?", async()=>{
+  PW.confirmDialog("Clone item", "Do you want to clone this item?", async()=>{
   const resp = await jhFetch(`/api/items/${itm}/clone`, {_csrf: getCSRFToken()})
-    if ( !await checkResponse(resp) ) {
+    if ( !await PW.checkResponse(resp) ) {
       return
     }
 
@@ -325,7 +327,7 @@ async function personalPasswordCreate() {
   }
 
   const resp = await jhFetch("/api/personalpassword", data)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -339,11 +341,10 @@ async function personalPasswordSet() {
     password: jhValue("#personalpasswordask")
   }
 
-  debugger
   jhQuery("#personalpasswordset").hide()
   const resp = await jhFetch("/api/personalunlock", data)
-  if ( !await checkResponse(resp) ) {
-    errorDialog("Wrong password")
+  if ( !await PW.checkResponse(resp) ) {
+    PW.errorDialog("Wrong password")
     return
   }
 
@@ -354,7 +355,7 @@ async function passwordCopy(ev) {
   const item = ev.currentTarget.getAttribute("data-id")
 
   const resp = await jhFetch(`/api/items/${item}`)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -371,7 +372,7 @@ async function passwordShow(ev) {
   }
 
   const resp = await jhFetch(`/api/items/${item}`)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -392,13 +393,13 @@ async function passwordAccessed(item) {
 
 async function fillFolders() {
   const resp = await jhFetch("/api/folderstree")
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
   jhQuery("sl-tree").innerHTML=""
   const body = await resp.json()
-  treeFill("folderstree",body.data,null,folderClicked)
+  PW.treeFill("folderstree",body.data,null,folderClicked)
 }
 
 fillFolders()
@@ -479,4 +480,8 @@ jhEvent("#copyviewpassword", "click", (ev)=>{
 
 addEventListener("folders-refresh", async (ev)=>{
   await fillFolders()
+})
+
+addEventListener("pw-item-found", async(ev)=>{
+  await fillItems()
 })

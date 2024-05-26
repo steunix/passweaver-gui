@@ -41,7 +41,7 @@ function jhEvent(query,event,callback) {
     return
   }
 
-  for ( e of el) {
+  for ( const e of el) {
     e.addEventListener(event,callback)
   }
 }
@@ -63,7 +63,7 @@ function jhValue(query, value) {
     return el[0].value === undefined ? '' : el[0].value
   } else {
     // Setter, on all elements
-    for ( e of el) {
+    for ( const e of el) {
       e.value = value
     }
   }
@@ -93,4 +93,20 @@ async function jhFetch(url, payload, method) {
   }
 
   return await fetch(url, settings)
+}
+
+/**
+ * Returns element parents
+ * @param {object} el
+ * @param {string} selector
+ * @returns
+ */
+function jhParents(query, selector) {
+  var el = jhResolveQuery(query)
+
+  const parents = [];
+  while ((el = el.parentNode) && el !== document) {
+    if (!selector || el.matches(selector)) parents.push(el);
+  }
+  return parents;
 }

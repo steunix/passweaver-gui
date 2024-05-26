@@ -1,6 +1,8 @@
+import * as PW from './passweaver-gui.js'
+
 async function passwordGenerate() {
   const resp = await jhFetch("/api/generatepassword")
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 

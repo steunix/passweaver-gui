@@ -1,3 +1,4 @@
+import * as PW from './passweaver-gui.js'
 import * as UPicker from './userpicker.js'
 
 var groupSearchTimeout
@@ -15,7 +16,7 @@ async function fillUsers() {
 
   const resp = await fetch(`/api/userslist/${currentGroup()}`)
 
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
   const body = await resp.json()
@@ -71,7 +72,7 @@ async function groupCreate() {
   }
 
   const resp = await jhFetch(`/api/groupnew/${currentGroup()}`, userdata)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -79,15 +80,15 @@ async function groupCreate() {
   if ( body.data.id ) {
     location.reload()
   } else {
-    errorDialog(body.message)
+    PW.errorDialog(body.message)
   }
 }
 
 async function groupRemove() {
-  confirmDialog("Remove group", "Are you sure you want to remove this group?", async ()=> {
+  PW.confirmDialog("Remove group", "Are you sure you want to remove this group?", async ()=> {
     const resp = await jhFetch(`/api/groupremove/${currentGroup()}`, {_csrf: getCSRFToken()})
 
-    if ( !await checkResponse(resp) ) {
+    if ( !await PW.checkResponse(resp) ) {
       return
     }
 
@@ -97,12 +98,12 @@ async function groupRemove() {
 
 function groupEditDialog() {
   groupEditFill()
-  document.querySelector("#groupeditdialog").show()
+  jhQuery("#groupeditdialog").show()
 }
 
 async function groupEditFill() {
   const resp = await jhFetch(`/api/groups/${currentGroup()}`)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -120,7 +121,7 @@ async function groupEdit() {
   }
 
   const resp = await jhFetch(`/api/groupupdate/${currentGroup()}`, data)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -137,31 +138,31 @@ function groupEditEnable() {
 
 async function userPickerChoosen(id) {
   const resp = await jhFetch(`/api/groupadduser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()})
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
   UPicker.hide()
   fillUsers()
-  showToast("success", "User added to the group")
+  PW.showToast("success", "User added to the group")
 }
 
 async function groupRemoveUser(id) {
-  confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", async ()=> {
+  PW.confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", async ()=> {
     const resp = await jhFetch(`/api/groupremoveuser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()})
-    if ( !await checkResponse(resp) ) {
+    if ( !await PW.checkResponse(resp) ) {
       return
     }
 
     fillUsers()
-    showToast("success", "User removed from group")
+    PW.showToast("success", "User removed from group")
   })
 }
 
 const resp = await fetch("/api/groupstree")
-if ( await checkResponse(resp) ) {
+if ( await PW.checkResponse(resp) ) {
   const body = await resp.json()
-  treeFill("groupstree",body.data,null,groupClicked)
+  PW.treeFill("groupstree",body.data,null,groupClicked)
 }
 
 // Event handlers
@@ -197,7 +198,7 @@ jhEvent("#groupeditcancel", "click", (ev)=> {
 
 jhEvent("#newmember", "click", (ev)=>{
   if ( currentGroup()=="" ) {
-    errorDialog("Select a group")
+    PW.errorDialog("Select a group")
     return
   }
   UPicker.show(userPickerChoosen)
@@ -209,17 +210,21 @@ jhEvent("#groupsearch", "sl-input", (ev)=> {
   }
   groupSearchTimeout = setTimeout(()=>{
     const search = jhValue("#groupsearch")
-    if ( !treeSearch("groupstree", search) ) {
-      showToast("danger", "Not found")
+    if ( !PW.treeSearch("groupstree", search) ) {
+      PW.showToast("danger", "Not found")
     }
   },250)
 })
 jhEvent("#groupsearchnext", "click", (ev)=>{
   const search = jhValue("#groupsearch")
-  treeSearchNext("groupstree", search)
+  PW.treeSearchNext("groupstree", search)
 })
 
 jhEvent("#groupsearchprevious", "click", (ev)=>{
   const search = jhValue("#groupsearch")
-  treeSearchPrevious("groupstree", search)
+  PW.treeSearchPrevious("groupstree", search)
+})
+
+addEventListener("pw-item-found", async(ev)=>{
+  await fillUsers()
 })

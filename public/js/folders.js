@@ -1,4 +1,5 @@
 import * as Folders from './folders_shared.js'
+import * as PW from './passweaver-gui.js'
 
 async function fillGroups() {
   jhQuery("#groupstable tbody").innerHTML = ""
@@ -7,7 +8,7 @@ async function fillGroups() {
   }
 
   const resp = await jhFetch(`/api/foldergroups/${Folders.currentFolder()}`)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -47,7 +48,7 @@ async function folderClicked(folderid) {
   const resp = await jhFetch(`/api/folders/${folderid}`)
 
   // Folder may not be accessible
-  if ( !await checkResponse(resp,"403") ) {
+  if ( !await PW.checkResponse(resp,"403") ) {
     return
   }
 
@@ -76,48 +77,48 @@ async function folderClicked(folderid) {
 
 async function groupRemove(ev) {
   const group = ev.currentTarget.getAttribute("data-id")
-  confirmDialog("Remove group", "Are you sure you want to remove the group?", async ()=>{
+  PW.confirmDialog("Remove group", "Are you sure you want to remove the group?", async ()=>{
     const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: getCSRFToken() }, "DELETE")
-    if ( !await checkResponse(resp) ) {
+    if ( !await PW.checkResponse(resp) ) {
       return
     }
 
     await fillGroups()
-    showToast("success", "Group removed")
+    PW.showToast("success", "Group removed")
   })
 }
 
 async function groupToggle(ev) {
   const group = ev.currentTarget.getAttribute("data-id")
   const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}/toggle`, { _csrf: getCSRFToken() })
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
   await fillGroups()
-  showToast("success", "Group permissions changed")
+  PW.showToast("success", "Group permissions changed")
 }
 
 async function groupPickerChoosen(group) {
   const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: getCSRFToken() })
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
   groupPickerHide()
   await fillGroups()
-  showToast("success", "Group added")
+  PW.showToast("success", "Group added")
 }
 
 async function fillFolders() {
   const resp = await jhFetch("/api/folderstree")
-    if ( !await checkResponse(resp) ) {
+    if ( !await PW.checkResponse(resp) ) {
       return
     }
 
     const body = await resp.json()
     jhQuery("sl-tree").innerHTML = ""
-    treeFill("folderstree",body.data,null,folderClicked)
+    PW.treeFill("folderstree",body.data,null,folderClicked)
 }
 
 await fillFolders()
@@ -127,4 +128,7 @@ jhEvent("#addgroup", "click",(ev)=>{
 })
 addEventListener("folders-refresh", async (ev)=>{
   await fillFolders()
+})
+addEventListener("pw-item-found", async(ev)=>{
+  await fillGroups()
 })

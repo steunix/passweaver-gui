@@ -1,3 +1,4 @@
+import * as PW from './passweaver-gui.js'
 import * as GPicker from './grouppicker.js'
 
 var userSearchTimeout
@@ -6,7 +7,7 @@ var currentUser = ""
 async function fillUsers() {
   const search = jhValue("#usersearch")
   const resp = await jhFetch(`/api/userslist?search=${search}`)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -60,7 +61,7 @@ async function fillGroups() {
   jhQuery("#groupstable tbody").innerHTML = ""
 
   const resp = await jhFetch(`/api/usergroups/${currentUser}`)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -98,13 +99,13 @@ async function userCreate() {
   }
 
   const resp = await jhFetch("/api/usernew/", userdata)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
   fillUsers()
   jhQuery("#newuserdialog").hide()
-  showToast("success", "User created")
+  PW.showToast("success", "User created")
 }
 
 function userCreateEnable() {
@@ -118,20 +119,20 @@ function userCreateEnable() {
 }
 
 async function userRemove(usr) {
-  confirmDialog("Remove user", "<strong><span style='color:red;'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", async ()=> {
+  PW.confirmDialog("Remove user", "<strong><span style='color:red;'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", async ()=> {
     const resp = await jhFetch(`/api/userremove/${usr}`, {_csrf: getCSRFToken()})
-    if ( !await checkResponse(resp) ) {
+    if ( !await PW.checkResponse(resp) ) {
       return
     }
 
     fillUsers()
-    showToast("success", "User removed")
+    PW.showToast("success", "User removed")
   })
 }
 
 async function userEditFill(user) {
   const resp = await jhFetch(`/api/users/${user}`)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
@@ -179,12 +180,12 @@ async function userEdit() {
 
   const resp = await jhFetch(`/api/userupdate/${currentUser}`, userdata)
   jhQuery("#edituserdialog").hide()
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
   fillUsers()
-  showToast("success", "User saved")
+  PW.showToast("success", "User saved")
 }
 
 function userDoubleClicked(user) {
@@ -196,26 +197,26 @@ function userDoubleClicked(user) {
 
 async function groupRemove(ev) {
   const group = ev.currentTarget.getAttribute("data-id")
-  confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", async ()=> {
+  PW.confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", async ()=> {
   const resp = await jhFetch(`/api/groupremoveuser/${group}/${currentUser}`, {_csrf: getCSRFToken()})
-    if ( !await checkResponse(resp) ) {
+    if ( !await PW.checkResponse(resp) ) {
       return
     }
 
     fillGroups()
-    showToast("success", "Group removed")
+    PW.showToast("success", "Group removed")
   })
 }
 
 async function groupPickerChoosen(group) {
   GPicker.hide()
   const resp = await jhFetch(`/api/groupadduser/${group}/${currentUser}`, {_csrf: getCSRFToken()})
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 
   fillGroups()
-  showToast("success","Group added")
+  PW.showToast("success","Group added")
 }
 
 await fillUsers()
@@ -250,7 +251,7 @@ jhEvent("#usersearch", "sl-input", (ev) => {
 })
 jhEvent("#addgroup", "click",(ev)=>{
   if ( currentUser==="" ) {
-    errorDialog("Select a user")
+    PW.errorDialog("Select a user")
     return
   }
   GPicker.show(groupPickerChoosen)

@@ -112,20 +112,6 @@ body {
 }
 
 /** Customization */
-.v-spinner {
-    height: 100vh;
-    display:flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.spinner-border {
-    height: 6rem;
-    width: 6rem;
-    border-width: 1rem;
-}
-
 ::-webkit-scrollbar {
     height: 16px;
     width: 16px;

@@ -1,3 +1,5 @@
+import * as PW from './passweaver-gui.js'
+
 var userPickerTimeout = 0
 var userCallback
 
@@ -16,7 +18,7 @@ async function search() {
   const text = jhValue("#userpickersearch")
 
   const resp = await jhFetch(`/api/userslist/?search=${encodeURIComponent(text)}`)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     return
   }
 

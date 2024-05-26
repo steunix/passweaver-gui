@@ -1,27 +1,7 @@
-function spinnerShow() {
-  const spinner = document.createElement('template')
-  spinner.innerHTML = `
-    <div id="spinner" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; align-items: center; justify-content: center;"">
-      <sl-spinner style="font-size: 5rem; --track-width: 15px;"></sl-spinner>
-    </div>`
-  document.querySelector("body").append(spinner.content)
-}
+var treeCallback
+const itemFound = new Event("pw-item-found")
 
-function spinnerHide() {
-  document.querySelector("#spinner").remove()
-}
-
-function generatePassword() {
-  var resp = $.ajax({
-    type: "GET",
-    url: "/api/generatepassword",
-    async: false
-  })
-
-  return resp.responseJSON.data.password
-}
-
-function confirmDialog(title,text,callback) {
+export function confirmDialog(title,text,callback) {
   const dialog = $("#confirmdialog")
   dialog.attr("label", title)
   $("#confirmdialogtext").html(text)
@@ -41,7 +21,7 @@ function confirmDialog(title,text,callback) {
   dialog[0].show()
 }
 
-function errorDialog(text) {
+export function errorDialog(text) {
   const dialog = $("#errordialog")
   $("#errordialogtext").html(text)
   $("#errordialogclose").on("click", event=> {
@@ -50,7 +30,7 @@ function errorDialog(text) {
   dialog[0].show()
 }
 
-async function checkResponse(resp,ignoreStatus) {
+export async function checkResponse(resp,ignoreStatus) {
   const respClone = resp.clone()
   const body = await respClone.json()
 
@@ -73,13 +53,24 @@ async function checkResponse(resp,ignoreStatus) {
   errorDialog(body.message)
 }
 
-function treeFill(id, data, mainid, callback) {
+function treeSelectionChange(ev) {
+  const sel = jhQuery("sl-tree-item[selected]")
+  const id = sel.getAttribute("data-id")
+  treeCallback(id)
+
+  // Save last item
+  const user = getUser()
+  const lskey = `${user}_${ev.target.id}_selected`
+  localStorage.setItem(lskey, sel.id)
+}
+
+export function treeFill(id, data, mainid, callback) {
   const user = getUser()
 
-  const parent = $(`#${id}`)
+  const parent = jhQuery(`#${id}`)
   const root = mainid ? mainid : id
 
-  for ( item of data ) {
+  for ( const item of data ) {
     const newid = `item-${item.id}`
 
     const lskey = `${user}_${root}_expanded_${newid}`
@@ -88,14 +79,16 @@ function treeFill(id, data, mainid, callback) {
       props += " expanded"
     }
 
-    let newitem = $(`<sl-tree-item id='${newid}' data-id='${item.id}' ${props} data-description='${item.description}'>${item.description}</sl-tree-item>`)
+    const html = `<sl-tree-item id='${newid}' data-id='${item.id}' ${props} data-description='${item.description}'>${item.description}</sl-tree-item>`
+    const cont = new DOMParser().parseFromString(html, 'text/html')
+    const newitem = cont.querySelector("body").firstChild
 
     parent.append(newitem)
-    newitem.on("sl-collapse", (ev)=> {
+    jhEvent(`#${newid}`, "sl-collapse", (ev)=> {
       const lskey = `${user}_${root}_expanded_${ev.target.id}`
       localStorage.removeItem(lskey)
     })
-    newitem.on("sl-expand", (ev)=> {
+    jhEvent(`#${newid}`, "sl-expand", (ev)=> {
       const lskey = `${user}_${root}_expanded_${ev.target.id}`
       localStorage.setItem(lskey, "1")
     })
@@ -106,25 +99,17 @@ function treeFill(id, data, mainid, callback) {
     }
   }
 
-
   // Only once, for root element
   if ( !mainid ) {
-    $(`#${id}`).off("sl-selection-change").on("sl-selection-change", (ev)=>{
-      const sel = document.querySelector("sl-tree-item[selected]")
-      callback(sel.getAttribute("data-id"))
-
-      // Save last item
-      const user = getUser()
-      const lskey = `${user}_${id}_selected`
-      localStorage.setItem(lskey, sel.id)
-    })
+    treeCallback = callback
+    jhEvent(`#${id}`, "sl-selection-change", treeSelectionChange)
 
     var last = localStorage.getItem(`${user}_${id}_selected`)
     if ( last ) {
       // Select last item
-      const lastelem = document.querySelector(`#${last}`)
+      const lastelem = jhQuery(`#${last}`)
       if ( lastelem ) {
-        $(`#${last}`).attr("selected","selected")
+        jhQuery(`#${last}`).setAttribute("selected","selected")
         setTimeout(()=>{
           lastelem.scrollIntoView()
           callback(last)
@@ -135,12 +120,12 @@ function treeFill(id, data, mainid, callback) {
 }
 
 var searchTreeIndex = 0
-function treeSearch(elemid,searchstring,start) {
+export function treeSearch(elemid,searchstring,start) {
   if ( start===undefined ) {
     searchTreeIndex = 0
   }
 
-  var treeitems = document.querySelector(`#${elemid}`).querySelectorAll("sl-tree-item")
+  var treeitems = jhQueryAll(`#${elemid} sl-tree-item`)
 
   var index = 0
   for ( const treeitem of treeitems ) {
@@ -148,16 +133,21 @@ function treeSearch(elemid,searchstring,start) {
       if ( index==searchTreeIndex ) {
 
         // Expand parents
-        var parents = $(treeitem).parents()
+        var parents = jhParents(treeitem, "sl-tree-item")
         for ( const parent of parents ) {
-          $(parent).prop("expanded","expanded")
+          parent.setAttribute("expanded","expanded")
         }
 
         // Select item and show it
-        $("sl-tree-item").prop("selected","")
-        $(treeitem).prop("selected","selected")
-        setTimeout(()=>{treeitem.scrollIntoView()}, 200)
-        $(treeitem).trigger("sl-selection-change")
+        const selected = jhQueryAll("sl-tree-item [selected]")
+        for ( const s of selected ) {
+          s.removeAttribute("selected")
+        }
+        treeitem.setAttribute("selected","selected")
+        setTimeout(()=>{
+          treeitem.scrollIntoView()
+        }, 200)
+        dispatchEvent(itemFound)
 
         // Store last viewed item
         const user = getUser()
@@ -172,7 +162,7 @@ function treeSearch(elemid,searchstring,start) {
   return false
 }
 
-function treeSearchNext(elemid,searchstring) {
+export function treeSearchNext(elemid,searchstring) {
   searchTreeIndex++
   const ret = treeSearch(elemid,searchstring,searchTreeIndex)
   if ( !ret ) {
@@ -181,7 +171,7 @@ function treeSearchNext(elemid,searchstring) {
   return ret
 }
 
-function treeSearchPrevious(elemid,searchstring) {
+export function treeSearchPrevious(elemid,searchstring) {
   searchTreeIndex--
   const ret = treeSearch(elemid,searchstring,searchTreeIndex)
   if ( !ret ) {
@@ -190,7 +180,7 @@ function treeSearchPrevious(elemid,searchstring) {
   return ret
 }
 
-function showToast(variant,text) {
+export function showToast(variant,text) {
   const icon = {
     "success": "check2-circle",
     "primary": "info-circle",
@@ -209,21 +199,15 @@ function showToast(variant,text) {
   alert.toast()
 }
 
-function getUser() {
-  return document.querySelector("#v-user").value
+export function getUser() {
+  return jhValue("#v-user")
 }
 
-function getCSRFToken() {
-  return document.querySelector("#_csrf").value
+export function getCSRFToken() {
+  return jhValue("#_csrf")
 }
 
-$(document).ajaxError(function(evt, request, settings){
-  if (request.getResponseHeader("Location") ) {
-     location.href = request.getResponseHeader("Location")
-  }
-})
-
-if ( $("#pageid").length ) {
-  const pageid = $("#pageid").val()
-  $(`.page-sidebar .link[pageid=${pageid}]`).addClass("current")
+if ( jhQuery("#pageid") ) {
+  const pageid = jhValue("#pageid")
+  jhQuery(`.page-sidebar .link[pageid=${pageid}]`).classList.add("current")
 }

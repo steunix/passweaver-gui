@@ -1,3 +1,5 @@
+import * as PW from './passweaver-gui.js'
+
 var itemSearchTimeout
 
 async function fillItems() {
@@ -7,7 +9,7 @@ async function fillItems() {
   const resp = await jhFetch(`/api/itemssearch?search=${search}`)
 
   // Folder may not be accessible
-  if ( !await checkResponse(resp,403) ) {
+  if ( !await PW.checkResponse(resp,403) ) {
     return
   }
 
@@ -35,7 +37,7 @@ async function fillItems() {
 
 async function itemViewFill(item) {
   const resp = await jhFetch(`/api/items/${item}`)
-  if ( !await checkResponse(resp) ) {
+  if ( !await PW.checkResponse(resp) ) {
     jhQuery("#itemviewdialog").hide()
     return
   }
