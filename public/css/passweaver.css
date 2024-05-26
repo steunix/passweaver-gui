@@ -187,6 +187,9 @@ sl-tree-item::part(label) {
     font-family: var(--theme-font);
     font-size: var(--theme-font-size);
 }
+sl-tree-item::part(item):hover {
+  background-color: var(--sl-color-neutral-100);
+}
 
 sl-tree {
     --indent-guide-width: 1px;
