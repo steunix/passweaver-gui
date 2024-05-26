@@ -1,27 +1,31 @@
+import * as Folders from './folders_shared.js'
+
 var itemSearchTimeout
 
 async function fillItems() {
   const search = jhValue("#itemsearch")
 
-  const resp = await jhFetch(`/api/itemslist/${currentFolder()}?search=${search}`)
+  const resp = await jhFetch(`/api/itemslist/${Folders.currentFolder()}?search=${search}`)
   jhQuery("#itemstable tbody").innerHTML = ""
 
   // Folder may not be accessible
-  if ( !await checkResponse2(resp,[403,412,417]) ) {
+  if ( !await checkResponse(resp,[403,412,417]) ) {
     return
   }
 
   const body = await resp.json()
   // Personal password not yet created?
   if ( body.httpStatusCode == 412 ) {
-    currentPermissions = { read: false, write: false }
+    Folders.currentPermissions.read  = false
+    Folders.currentPermissions.write = false
     personalPasswordCreateDialog()
     return
   }
 
   // Personal password not yet set?
   if ( body.httpStatusCode == 417 ) {
-    currentPermissions = { read: false, write: false }
+    Folders.currentPermissions.read  = false
+    Folders.currentPermissions.write = false
     personalPasswordAskDialog()
     return
   }
@@ -34,7 +38,7 @@ async function fillItems() {
       row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
       row += `<td class='border-end'>`
       row += `<sl-icon-button id='view-${itm.id}' name='file-earmark' title='View item' data-id='${itm.id}'></sl-icon-button>`
-      if ( currentPermissions.write ) {
+      if ( Folders.currentPermissions.write ) {
         row += `<sl-icon-button id='edit-${itm.id}' title='Edit item' name='pencil' data-id='${itm.id}'></sl-icon-button>`
         row += `<sl-icon-button id='remove-${itm.id}' title='Remove item' name='trash3' style="color:red;" data-id='${itm.id}'></sl-icon-button>`
         row += `<sl-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></sl-icon-button>`
@@ -89,24 +93,25 @@ async function fillItems() {
 async function folderClicked(ev, selectonly) {
   // Read folder info
   jhQuery("#itemstable tbody").innerHTML = ""
-  const resp = await jhFetch(`/api/folders/${currentFolder()}`)
+  const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}`)
 
   // Folder may not be accessible
-  if ( !await checkResponse2(resp,"403") ) {
+  if ( !await checkResponse(resp,"403") ) {
     return
   }
 
   const body = await resp.json()
   if ( body.data && body.data.permissions ) {
-    currentPermissions = body.data.permissions
+    Folders.currentPermissions = body.data.permissions
   } else {
-    currentPermissions = { read: false, write: false }
+    Folders.currentPermissions.read  = false
+    Folders.currentPermissions.write = false
   }
 
   // Load items
   await fillItems()
 
-  if ( currentPermissions.write ) {
+  if ( Folders.currentPermissions.write ) {
     jhQuery("#newitem").removeAttribute("disabled")
     jhQuery("#foldercreate").removeAttribute("disabled")
     jhQuery("#folderremove").removeAttribute("disabled")
@@ -138,8 +143,8 @@ async function itemCreate() {
     password: jhValue("#newpassword")
   }
 
-  const resp = await jhFetch(`/api/itemnew/${currentFolder()}`, itemdata)
-  if ( !await checkResponse2(resp) ) {
+  const resp = await jhFetch(`/api/itemnew/${Folders.currentFolder()}`, itemdata)
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -163,7 +168,7 @@ function itemCreateEnable() {
 async function itemRemove(itm) {
   confirmDialog("Remove item", "Are you sure you want to remove this item?", async()=> {
     const resp = await jhFetch(`/api/itemremove/${itm}`, {_csrf: getCSRFToken()})
-      if ( !await checkResponse2(resp) ) {
+      if ( !await checkResponse(resp) ) {
         return
       }
 
@@ -180,7 +185,7 @@ async function itemEditDialog(item) {
 
 async function itemEditFill(item) {
   const resp = await jhFetch(`/api/items/${item}`)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -222,7 +227,7 @@ async function itemEdit() {
   }
 
   const resp = await jhFetch(`/api/itemupdate/${id}`, itemdata)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -250,7 +255,7 @@ function toggleViewPassword() {
 
 async function itemViewFill(item) {
   const resp = await jhFetch(`/api/items/${item}`)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     jhQuery("#itemviewdialog").hide()
     return
   }
@@ -277,7 +282,7 @@ function itemShow(item) {
 async function itemClone(itm) {
   confirmDialog("Clone item", "Do you want to clone this item?", async()=>{
   const resp = await jhFetch(`/api/items/${itm}/clone`, {_csrf: getCSRFToken()})
-    if ( !await checkResponse2(resp) ) {
+    if ( !await checkResponse(resp) ) {
       return
     }
 
@@ -320,7 +325,7 @@ async function personalPasswordCreate() {
   }
 
   const resp = await jhFetch("/api/personalpassword", data)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -337,7 +342,7 @@ async function personalPasswordSet() {
   debugger
   jhQuery("#personalpasswordset").hide()
   const resp = await jhFetch("/api/personalunlock", data)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     errorDialog("Wrong password")
     return
   }
@@ -349,7 +354,7 @@ async function passwordCopy(ev) {
   const item = ev.currentTarget.getAttribute("data-id")
 
   const resp = await jhFetch(`/api/items/${item}`)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -366,7 +371,7 @@ async function passwordShow(ev) {
   }
 
   const resp = await jhFetch(`/api/items/${item}`)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -387,7 +392,7 @@ async function passwordAccessed(item) {
 
 async function fillFolders() {
   const resp = await jhFetch("/api/folderstree")
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -470,4 +475,8 @@ if ( jhQuery("#viewitem") ) {
 
 jhEvent("#copyviewpassword", "click", (ev)=>{
   passwordAccessed(jhValue("#itemviewid"))
+})
+
+addEventListener("folders-refresh", async (ev)=>{
+  await fillFolders()
 })

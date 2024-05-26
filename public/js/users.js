@@ -6,7 +6,7 @@ var currentUser = ""
 async function fillUsers() {
   const search = jhValue("#usersearch")
   const resp = await jhFetch(`/api/userslist?search=${search}`)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -60,7 +60,7 @@ async function fillGroups() {
   jhQuery("#groupstable tbody").innerHTML = ""
 
   const resp = await jhFetch(`/api/usergroups/${currentUser}`)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -98,7 +98,7 @@ async function userCreate() {
   }
 
   const resp = await jhFetch("/api/usernew/", userdata)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -120,7 +120,7 @@ function userCreateEnable() {
 async function userRemove(usr) {
   confirmDialog("Remove user", "<strong><span style='color:red;'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", async ()=> {
     const resp = await jhFetch(`/api/userremove/${usr}`, {_csrf: getCSRFToken()})
-    if ( !await checkResponse2(resp) ) {
+    if ( !await checkResponse(resp) ) {
       return
     }
 
@@ -131,7 +131,7 @@ async function userRemove(usr) {
 
 async function userEditFill(user) {
   const resp = await jhFetch(`/api/users/${user}`)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -179,7 +179,7 @@ async function userEdit() {
 
   const resp = await jhFetch(`/api/userupdate/${currentUser}`, userdata)
   jhQuery("#edituserdialog").hide()
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -198,7 +198,7 @@ async function groupRemove(ev) {
   const group = ev.currentTarget.getAttribute("data-id")
   confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", async ()=> {
   const resp = await jhFetch(`/api/groupremoveuser/${group}/${currentUser}`, {_csrf: getCSRFToken()})
-    if ( !await checkResponse2(resp) ) {
+    if ( !await checkResponse(resp) ) {
       return
     }
 
@@ -210,7 +210,7 @@ async function groupRemove(ev) {
 async function groupPickerChoosen(group) {
   GPicker.hide()
   const resp = await jhFetch(`/api/groupadduser/${group}/${currentUser}`, {_csrf: getCSRFToken()})
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 

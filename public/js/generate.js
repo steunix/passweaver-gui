@@ -1,6 +1,6 @@
 async function passwordGenerate() {
   const resp = await jhFetch("/api/generatepassword")
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 

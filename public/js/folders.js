@@ -1,11 +1,13 @@
+import * as Folders from './folders_shared.js'
+
 async function fillGroups() {
   jhQuery("#groupstable tbody").innerHTML = ""
-  if ( !currentFolder() ) {
+  if ( !Folders.currentFolder() ) {
     return
   }
 
-  const resp = await jhFetch(`/api/foldergroups/${currentFolder()}`)
-  if ( !await checkResponse2(resp) ) {
+  const resp = await jhFetch(`/api/foldergroups/${Folders.currentFolder()}`)
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -45,18 +47,20 @@ async function folderClicked(folderid) {
   const resp = await jhFetch(`/api/folders/${folderid}`)
 
   // Folder may not be accessible
-  if ( !await checkResponse2(resp,"403") ) {
+  if ( !await checkResponse(resp,"403") ) {
     return
   }
 
   const body = await resp.json()
   if ( body.data && body.data.permissions ) {
-    currentPermissions = body.data.permissions
+    Folders.currentPermissions.write = body.data.permissions.write
+    Folders.currentPermissions.read  = body.data.permissions.read
   } else {
-    currentPermissions = { read: false, write: false }
+    Folders.currentPermissions.write = true
+    Folders.currentPermissions.read  = true
   }
 
-  if ( currentPermissions.write ) {
+  if ( Folders.currentPermissions.write ) {
     jhQuery("#foldercreate").removeAttribute("disabled")
     jhQuery("#folderremove").removeAttribute("disabled")
     jhQuery("#folderedit").removeAttribute("disabled")
@@ -73,8 +77,8 @@ async function folderClicked(folderid) {
 async function groupRemove(ev) {
   const group = ev.currentTarget.getAttribute("data-id")
   confirmDialog("Remove group", "Are you sure you want to remove the group?", async ()=>{
-    const resp = await jhFetch(`/api/folders/${currentFolder()}/groups/${group}`, { _csrf: getCSRFToken() }, "DELETE")
-    if ( !await checkResponse2(resp) ) {
+    const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: getCSRFToken() }, "DELETE")
+    if ( !await checkResponse(resp) ) {
       return
     }
 
@@ -85,8 +89,8 @@ async function groupRemove(ev) {
 
 async function groupToggle(ev) {
   const group = ev.currentTarget.getAttribute("data-id")
-  const resp = await jhFetch(`/api/folders/${currentFolder()}/groups/${group}/toggle`, { _csrf: getCSRFToken() })
-  if ( !await checkResponse2(resp) ) {
+  const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}/toggle`, { _csrf: getCSRFToken() })
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -95,8 +99,8 @@ async function groupToggle(ev) {
 }
 
 async function groupPickerChoosen(group) {
-  const resp = await jhFetch(`/api/folders/${currentFolder()}/groups/${group}`, { _csrf: getCSRFToken() })
-  if ( !await checkResponse2(resp) ) {
+  const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: getCSRFToken() })
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -107,7 +111,7 @@ async function groupPickerChoosen(group) {
 
 async function fillFolders() {
   const resp = await jhFetch("/api/folderstree")
-    if ( !await checkResponse2(resp) ) {
+    if ( !await checkResponse(resp) ) {
       return
     }
 
@@ -120,4 +124,7 @@ await fillFolders()
 
 jhEvent("#addgroup", "click",(ev)=>{
   groupPickerShow(groupPickerChoosen)
+})
+addEventListener("folders-refresh", async (ev)=>{
+  await fillFolders()
 })

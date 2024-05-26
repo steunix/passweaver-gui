@@ -16,7 +16,7 @@ async function search() {
   const text = jhValue("#grouppickersearch")
 
   const resp = await jhFetch(`/api/groupslist/?search=${ encodeURIComponent(text) }`)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 

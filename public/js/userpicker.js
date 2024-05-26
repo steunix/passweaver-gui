@@ -16,7 +16,7 @@ async function search() {
   const text = jhValue("#userpickersearch")
 
   const resp = await jhFetch(`/api/userslist/?search=${encodeURIComponent(text)}`)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 

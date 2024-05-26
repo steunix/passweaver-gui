@@ -7,7 +7,7 @@ async function fillItems() {
   const resp = await jhFetch(`/api/itemssearch?search=${search}`)
 
   // Folder may not be accessible
-  if ( !await checkResponse2(resp,403) ) {
+  if ( !await checkResponse(resp,403) ) {
     return
   }
 
@@ -35,7 +35,7 @@ async function fillItems() {
 
 async function itemViewFill(item) {
   const resp = await jhFetch(`/api/items/${item}`)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     jhQuery("#itemviewdialog").hide()
     return
   }

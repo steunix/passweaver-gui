@@ -15,7 +15,7 @@ async function fillUsers() {
 
   const resp = await fetch(`/api/userslist/${currentGroup()}`)
 
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
   const body = await resp.json()
@@ -71,7 +71,7 @@ async function groupCreate() {
   }
 
   const resp = await jhFetch(`/api/groupnew/${currentGroup()}`, userdata)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -87,7 +87,7 @@ async function groupRemove() {
   confirmDialog("Remove group", "Are you sure you want to remove this group?", async ()=> {
     const resp = await jhFetch(`/api/groupremove/${currentGroup()}`, {_csrf: getCSRFToken()})
 
-    if ( !await checkResponse2(resp) ) {
+    if ( !await checkResponse(resp) ) {
       return
     }
 
@@ -102,7 +102,7 @@ function groupEditDialog() {
 
 async function groupEditFill() {
   const resp = await jhFetch(`/api/groups/${currentGroup()}`)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -120,7 +120,7 @@ async function groupEdit() {
   }
 
   const resp = await jhFetch(`/api/groupupdate/${currentGroup()}`, data)
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -137,7 +137,7 @@ function groupEditEnable() {
 
 async function userPickerChoosen(id) {
   const resp = await jhFetch(`/api/groupadduser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()})
-  if ( !await checkResponse2(resp) ) {
+  if ( !await checkResponse(resp) ) {
     return
   }
 
@@ -149,7 +149,7 @@ async function userPickerChoosen(id) {
 async function groupRemoveUser(id) {
   confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", async ()=> {
     const resp = await jhFetch(`/api/groupremoveuser/${currentGroup()}/${id}`, {_csrf: getCSRFToken()})
-    if ( !await checkResponse2(resp) ) {
+    if ( !await checkResponse(resp) ) {
       return
     }
 
@@ -159,7 +159,7 @@ async function groupRemoveUser(id) {
 }
 
 const resp = await fetch("/api/groupstree")
-if ( await checkResponse2(resp) ) {
+if ( await checkResponse(resp) ) {
   const body = await resp.json()
   treeFill("groupstree",body.data,null,groupClicked)
 }

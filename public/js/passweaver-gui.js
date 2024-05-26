@@ -50,7 +50,7 @@ function errorDialog(text) {
   dialog[0].show()
 }
 
-async function checkResponse2(resp,ignoreStatus) {
+async function checkResponse(resp,ignoreStatus) {
   const respClone = resp.clone()
   const body = await respClone.json()
 
@@ -71,25 +71,6 @@ async function checkResponse2(resp,ignoreStatus) {
   }
 
   errorDialog(body.message)
-}
-
-function checkResponse(resp,ignoreStatus) {
-  if ( resp.status=="success" ) {
-    return true
-  }
-  if ( resp.status=="failed" && resp.httpStatusCode=="404" ) {
-    return true
-  }
-  if ( resp.status=="failed" && ignoreStatus && resp.httpStatusCode==ignoreStatus ) {
-    return true
-  }
-
-  if ( resp.status=="failed" && resp.fatal ) {
-    window.location = "/logout?error="+encodeURIComponent(resp.message)
-    return
-  }
-
-  errorDialog(resp.message)
 }
 
 function treeFill(id, data, mainid, callback) {

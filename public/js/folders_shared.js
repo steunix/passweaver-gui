@@ -1,120 +1,119 @@
 var folderSearchTimeout
 
-var currentPermissions = {
+const refresh = new Event("folders-refresh")
+
+export var currentPermissions = {
   read: false,
   write: false
 }
 
-function currentFolder() {
+export function currentFolder() {
   try {
-    return document.querySelector("sl-tree-item[selected]").getAttribute("data-id")
+    return jhQuery("sl-tree-item[selected]").getAttribute("data-id")
   } catch (err) {
     return ""
   }
 }
 
 function folderCreateDialog() {
-  $("#foldercreatedialog sl-input,sl-textarea").val("")
+  jhValue("#foldercreatedialog sl-input,sl-textarea")
   folderCreateEnable()
-  document.querySelector("#foldercreatedialog").show()
+  jhQuery("#foldercreatedialog").show()
 }
 
 function folderCreateEnable() {
-  const descr = document.querySelector("#foldercreatedescription").value
+  const descr = jhValue("#foldercreatedescription")
   if ( descr==="" ) {
-    document.querySelector("#foldercreatesave").setAttribute("disabled","disabled")
+    jhQuery("#foldercreatesave").setAttribute("disabled","disabled")
   } else {
-    document.querySelector("#foldercreatesave").removeAttribute("disabled")
+    jhQuery("#foldercreatesave").removeAttribute("disabled")
   }
 }
 
-function folderCreate() {
+async function folderCreate() {
   let itemdata = {
     _csrf: getCSRFToken(),
-    description: document.querySelector("#foldercreatedescription").value
+    description: jhValue("#foldercreatedescription")
   }
 
-  $.post(`/api/foldernew/${currentFolder()}`, itemdata, (resp)=> {
-    if ( !checkResponse(resp) ) {
+  jhQuery("#foldercreatedialog").hide()
+  const resp = await jhFetch(`/api/foldernew/${currentFolder()}`, itemdata)
+  if ( !await checkResponse(resp) ) {
+    return
+  }
+
+  showToast("success", "Folder created")
+  dispatchEvent(refresh)
+}
+
+async function folderRemove() {
+  confirmDialog("Remove folder", "Are you sure you want to remove this folder?", async ()=> {
+    jhQuery("#foldercreatedialog").hide()
+    const resp = await jhFetch(`/api/folderremove/${currentFolder()}`, {_csrf: getCSRFToken()})
+    if ( !await checkResponse(resp) ) {
       return
     }
 
-    showToast("success", "Folder created")
-    document.querySelector("#foldercreatedialog").hide()
-    fillFolders()
-  })
-}
-
-function folderRemove() {
-  confirmDialog("Remove folder", "Are you sure you want to remove this folder?", ()=> {
-    $.post(`/api/folderremove/${currentFolder()}`, {_csrf: getCSRFToken()}, (resp)=> {
-      if ( !checkResponse(resp) ) {
-        return
-      }
-
-      showToast("success", "Folder removed")
-      document.querySelector("#foldercreatedialog").hide()
-      fillFolders()
-    })
+    showToast("success", "Folder removed")
+    dispatchEvent(refresh)
   })
 }
 
 function folderEditDialog() {
-  document.querySelector("#foldereditdialog").show()
+  jhQuery("#foldereditdialog").show()
   folderEditFill()
 }
 
 function folderEditEnable() {
-  const descr = document.querySelector("#foldereditdescription").value
+  const descr = jhValue("#foldereditdescription")
   if ( descr==="" ) {
-    document.querySelector("#foldereditsave").setAttribute("disabled","disabled")
+    jhQuery("#foldereditsave").setAttribute("disabled","disabled")
   } else {
-    document.querySelector("#foldereditsave").removeAttribute("disabled")
+    jhQuery("#foldereditsave").removeAttribute("disabled")
   }
 }
 
-function folderEditFill() {
-  $.get(`/api/folders/${currentFolder()}`, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
+async function folderEditFill() {
+  const resp = await jhFetch(`/api/folders/${currentFolder()}`)
+  if ( !await checkResponse(resp) ) {
+    return
+  }
 
-    document.querySelector("#foldereditdescription").value = resp.data.description
-    folderEditEnable()
-  })
+  const body = await resp.json()
+  jhValue("#foldereditdescription", body.data.description)
+  folderEditEnable()
 }
 
-function folderEdit() {
+async function folderEdit() {
   let data = {
     _csrf: getCSRFToken(),
-    description: document.querySelector("#foldereditdescription").value
+    description: jhValue("#foldereditdescription")
   }
 
-  $.post(`/api/folderupdate/${currentFolder()}`, data, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
+  jhQuery("#foldereditdialog").hide()
+  const resp = await jhFetch(`/api/folderupdate/${currentFolder()}`, data)
+  if ( !await checkResponse(resp) ) {
+    return
+  }
 
-    showToast("success", "Folder updated")
-    document.querySelector("#foldereditdialog").hide()
-    fillFolders()
-  })
+  showToast("success", "Folder updated")
+  dispatchEvent(refresh)
 }
 
 
 // Event handlers
-document.querySelector("#foldercreatedescription").addEventListener("keyup",(ev)=>{
+jhEvent("#foldercreatedescription", "keyup",(ev)=>{
   folderCreateEnable()
 })
 
-document.querySelector("#folderremove").addEventListener("click", (ev)=>{
+jhEvent("#folderremove", "click", (ev)=>{
   folderRemove()
 })
 
-document.querySelector("#folderedit").addEventListener("click", (ev)=>{
+jhEvent("#folderedit", "click", (ev)=>{
   folderEditDialog()
 })
-document.querySelector("#foldercreate").addEventListener("click", (ev)=>{
+jhEvent("#foldercreate", "click", (ev)=>{
   if ( currentFolder()==="" ) {
     errorDialog("Select a parent folder")
     return
@@ -122,40 +121,40 @@ document.querySelector("#foldercreate").addEventListener("click", (ev)=>{
   folderCreateDialog()
 })
 
-document.querySelector("#foldercreatesave").addEventListener("click", (ev)=>{
+jhEvent("#foldercreatesave", "click", (ev)=>{
   folderCreate()
 })
-document.querySelector("#foldercreatecancel").addEventListener("click", (ev)=> {
-  document.querySelector("#foldercreatedialog").hide()
+jhEvent("#foldercreatecancel", "click", (ev)=> {
+  jhQuery("#foldercreatedialog").hide()
 })
 
-document.querySelector("#foldereditdescription").addEventListener("keyup",(ev)=>{
+jhEvent("#foldereditdescription", "keyup",(ev)=>{
   folderEditEnable()
 })
-document.querySelector("#foldereditcancel").addEventListener("click", (ev)=> {
-  document.querySelector("#foldereditdialog").hide()
+jhEvent("#foldereditcancel", "click", (ev)=> {
+  jhQuery("#foldereditdialog").hide()
 })
-document.querySelector("#foldereditsave").addEventListener("click", (ev)=>{
+jhEvent("#foldereditsave", "click", (ev)=>{
   folderEdit()
 })
 
-document.querySelector("#foldersearch").addEventListener("sl-input", (ev)=> {
+jhEvent("#foldersearch", "sl-input", (ev)=> {
   if ( folderSearchTimeout ) {
     clearTimeout(folderSearchTimeout)
   }
   folderSearchTimeout = setTimeout(()=>{
-    const search = document.querySelector("#foldersearch").value
+    const search = jhValue("#foldersearch")
     if ( !treeSearch("folderstree", search) ) {
       showToast("danger", "Not found")
     }
   },250)
 })
 
-document.querySelector("#foldersearchnext").addEventListener("click", (ev)=>{
-  const search = document.querySelector("#foldersearch").value
+jhEvent("#foldersearchnext", "click", (ev)=>{
+  const search = jhValue("#foldersearch")
   treeSearchNext("folderstree", search)
 })
-document.querySelector("#foldersearchprevious").addEventListener("click", (ev)=>{
-  const search = document.querySelector("#foldersearch").value
+jhEvent("#foldersearchprevious", "click", (ev)=>{
+  const search = jhValue("#foldersearch")
   treeSearchPrevious("folderstree", search)
 })
