@@ -1,5 +1,2 @@
-$(()=>{
-  $("#login").on("click",(ev)=>{
-    spinnerShow()
-  })
-})
+import * as PW from './passweaver-gui.js'
+

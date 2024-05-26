@@ -1,51 +1,53 @@
+import * as PW from './passweaver-gui.js'
+
 var userPickerTimeout = 0
+var userCallback
 
-function userPickerShow() {
-  const dialog = $("#userpickerdialog")
-  $("#userpickersearch").val("")
-  $("#userpickertable tbody tr").remove()
-  dialog[0].show()
+export function show(callback) {
+  userCallback = callback
+  jhValue("#userpickersearch", "")
+  jhQuery("#userpickertable tbody").innerHTML = ""
+  jhQuery("#userpickerdialog").show()
 }
 
-function userPickerHide() {
-  const dialog = $("#userpickerdialog")
-  dialog[0].hide()
+export function hide() {
+  jhQuery("#userpickerdialog").hide()
 }
 
-function searchUsers() {
-  var text = $("#userpickersearch").val()
+async function search() {
+  const text = jhValue("#userpickersearch")
 
-  $.get("/api/userslist/?search="+encodeURIComponent(text),(resp)=>{
-    if ( !checkResponse(resp) ) {
-      return
+  const resp = await jhFetch(`/api/userslist/?search=${encodeURIComponent(text)}`)
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  jhQuery("#userpickertable tbody").innerHTML = ""
+  const body = await resp.json()
+  if ( body.data.length ) {
+    var row = ""
+    for ( const usr of body.data ) {
+      row += `<tr id='row-${usr.id}' data-id='${usr.id}'>`
+      row += `<td><sl-icon-button id='user-${usr.id}' data-id='${usr.id}' name="arrow-right-circle"></sl-icon-button></td>`
+      row += `<td>${usr.login}</td>`
+      row += `<td>${usr.lastname} ${usr.firstname}</td>`
+      row += "</tr>"
     }
+    jhQuery("#userpickertable tbody").innerHTML = row
+  }
 
-    $("#userpickertable tbody tr").remove()
-    if ( resp.data.length ) {
-      var row = ""
-      for ( const usr of resp.data ) {
-        row += `<tr id='row-${usr.id}' data-id='${usr.id}'>`
-        row += `<td><sl-icon-button id='user-${usr.id}' data-id='${usr.id}' name="arrow-right-circle"></sl-icon-button></td>`
-        row += `<td>${usr.login}</td>`
-        row += `<td>${usr.lastname} ${usr.firstname}</td>`
-        row += "</tr>"
-      }
-      $("#userpickertable tbody").append(row)
-    }
-
-    // Event handlers
-    $("#userpickertable tbody tr[id^=row]").on("dblclick",(ev)=>{
-      userPickerChoosen($(ev.currentTarget).data("id"))
-    })
-    $("#userpickertable tbody sl-icon-button[id^=user]").on("click",(ev)=>{
-      userPickerChoosen($(ev.currentTarget).data("id"))
-    })
+  // Event handlers
+  jhEvent("#userpickertable tbody tr[id^=row]", "dblclick", (ev)=>{
+    userCallback(ev.currentTarget.getAttribute("data-id"))
+  })
+  jhEvent("#userpickertable tbody sl-icon-button[id^=user]", "click", (ev)=>{
+    userCallback(ev.currentTarget.getAttribute("data-id"))
   })
 }
 
-$("#userpickersearch").on("sl-input", (ev) => {
+jhEvent("#userpickersearch", "sl-input", (ev) => {
   if ( userPickerTimeout ) {
     clearTimeout(userPickerTimeout)
   }
-  userPickerTimeout = setTimeout(searchUsers,250)
+  userPickerTimeout = setTimeout(async()=>{ await search() },250)
 })

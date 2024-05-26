@@ -1,79 +1,70 @@
+import * as PW from './passweaver-gui.js'
+
 var itemSearchTimeout
 
-function fillItems() {
-  loadingShow($("#itemstable"))
+async function fillItems() {
+  jhQuery("#itemstable tbody").innerHTML = ""
 
-  $("#itemstable tbody tr").remove()
+  const search = jhValue("#itemsearch")
+  const resp = await jhFetch(`/api/itemssearch?search=${search}`)
 
-  $.get("/api/itemssearch?search="+$("#itemsearch").val(),(resp)=>{
-    // Folder may not be accessible
-    if ( !checkResponse(resp,403) ) {
-      return
-    }
-
-    if ( resp.data.length ) {
-      row = ""
-      for ( const itm of resp.data ) {
-        row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
-        row += `<td><sl-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></sl-icon-button></td>`
-        row += `<td class='border-start'>${itm.folder.description}</td>`
-        row += `<td>${itm.title}</td></tr>`
-      }
-      $("#itemstable tbody").append(row)
-    }
-
-    // Install event handlers
-    $("#itemstable tbody tr[id^=row]").on("dblclick", (ev)=>{
-      itemShow($(ev.currentTarget).data("id"))
-    })
-    $("#itemstable tbody [id^=view]").on("click", (ev)=>{
-      itemShow($(ev.currentTarget).data("id"))
-    })
-
-    loadingHide($("#itemstable"))
-  })
-}
-
-function toggleViewPassword() {
-  if ( $("#viewpassword").attr("type")=="password") {
-    $("#viewpassword").attr("type","text")
-  } else {
-    $("#viewpassword").attr("type","password")
+  // Folder may not be accessible
+  if ( !await PW.checkResponse(resp,403) ) {
+    return
   }
-}
 
-function itemViewFill(item) {
-  $.get(`/api/items/${item}`, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
+  const body = await resp.json()
+  if ( body.data.length ) {
+    let row = ""
+    for ( const itm of body.data ) {
+      row +=
+        `<tr id='row-${itm.id}' data-id='${itm.id}'>`+
+        `<td><sl-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></sl-icon-button></td>`+
+        `<td class='border-start'>${itm.folder.description}</td>`+
+        `<td>${itm.title}</td></tr>`
     }
+    jhQuery("#itemstable tbody").innerHTML = row
+  }
 
-    $("#viewtitle").val(resp.data.title)
-    $("#viewemail").val(resp.data.data.email)
-    $("#viewdescription").val(resp.data.data.description)
-    $("#viewurl").val(resp.data.data.url)
-    $("#viewuser").val(resp.data.data.user)
-    $("#viewpassword").val(resp.data.data.password).attr("type","password")
+  // Install event handlers
+  jhEvent("#itemstable tbody tr[id^=row]", "dblclick", async (ev)=>{
+    await itemShow(ev.currentTarget.getAttribute("data-id"))
+  })
+  jhEvent("#itemstable tbody [id^=view]", "click", async (ev)=>{
+    await itemShow(ev.currentTarget.getAttribute("data-id"))
   })
 }
 
-function itemShow(item) {
-  debugger
+async function itemViewFill(item) {
+  const resp = await jhFetch(`/api/items/${item}`)
+  if ( !await PW.checkResponse(resp) ) {
+    jhQuery("#itemviewdialog").hide()
+    return
+  }
+
+  const body = await resp.json()
+  jhValue("#viewtitle", body.data.title)
+  jhValue("#viewemail", body.data.data.email)
+  jhValue("#viewdescription", body.data.data.description)
+  jhValue("#viewurl", body.data.data.url)
+  jhValue("#viewuser", body.data.data.user)
+  jhQuery("#viewpassword").setAttribute("type","password")
+  jhValue("#viewpassword", body.data.data.password)
+}
+
+async function itemShow(item) {
   if ( window.getSelection() ) {
     window.getSelection().empty()
   }
-  document.querySelector("#itemviewdialog").show()
-  itemViewFill(item)
+  jhQuery("#itemviewdialog").show()
+  await itemViewFill(item)
 }
 
-$(()=>{
-  // Event handlers
-  $("#itemsearch").on("sl-input", (ev) => {
-    if ( itemSearchTimeout ) {
-      clearTimeout(itemSearchTimeout)
-    }
-    if ( $("#itemsearch").val().length>2 ) {
-      itemSearchTimeout = setTimeout(fillItems,250)
-    }
-  })
+jhEvent("#itemsearch", "sl-input", async (ev) => {
+  if ( itemSearchTimeout ) {
+    clearTimeout(itemSearchTimeout)
+  }
+  if ( jhValue("#itemsearch").length>2 ) {
+    itemSearchTimeout = setTimeout(async() => { await fillItems() },250)
+  }
 })

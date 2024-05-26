@@ -4,7 +4,7 @@
 
   <%- include('partials/topbar.ejs') %>
   <%- include('partials/sidebar.ejs') %>
-  <%- include('partials/csfr.ejs') %>
+  <%- include('partials/csrf.ejs') %>
 
   <div class="main1">
     <h2>Search items</h2>
@@ -28,6 +28,6 @@
 <%- include('partials/commondialogs.ejs') %>
 <%- include('partials/itemview.ejs') %>
 
-<script src="/public/js/search.js"></script>
+<script defer type="module" src="/public/js/search.js"></script>
 
 <%- include('partials/footer.ejs') %>

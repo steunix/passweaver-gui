@@ -1,257 +1,258 @@
+import * as PW from './passweaver-gui.js'
+import * as GPicker from './grouppicker.js'
+
 var userSearchTimeout
 var currentUser = ""
 
-function fillUsers() {
-  $.get("/api/userslist?search="+$("#usersearch").val(),(resp)=>{
-    if ( !checkResponse(resp) ) {
-      return
-    }
-    $("#groupstable tbody tr").remove()
-    $("#userstable tbody tr").remove()
-    if ( resp.data.length ) {
-      var row = ""
-      for ( const itm of resp.data ) {
-        row += `<tr data-id='${itm.id}' style='cursor:pointer'>`
-        row += `<td><sl-icon-button id='edituser-${itm.id}' title='Edit user' name='pencil' data-id='${itm.id}'></sl-icon-button></td>`
-        row += `<td><sl-icon-button id='removeuser-${itm.id}' title='Delete user' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button></td>`
-        row += `<td class='border-start'>${itm.login}</td>`
-        row += `<td>${itm.lastname}</td>`
-        row += `<td>${itm.firstname}</td>`
-        row += `<td>${itm.email}</td>`
-        row += `<td>${itm.locale}</td>`
-        row += `<td>${itm.authmethod}</td>`
-        row += `<td class='text-center'><sl-icon name='${itm.active ? "check-lg":"x-lg"}' style='color:${itm.active?"green":"red"}'/></td>`
-        row += "</tr>"
-      }
-      $("#userstable tbody").append(row)
+async function fillUsers() {
+  const search = jhValue("#usersearch")
+  const resp = await jhFetch(`/api/userslist?search=${search}`)
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
 
-      // Install event handlers
-      $("#userstable tbody tr").on("dblclick",(ev)=>{
-        userDoubleClicked($(ev.currentTarget).data("id"))
-      })
-      $("#userstable tbody tr [id^=edituser]").on("click",(ev)=>{
-        userEditDialog($(ev.currentTarget).data("id"))
-      })
-      $("#userstable tbody tr [id^=removeuser]").on("click",(ev)=>{
-        userRemove($(ev.currentTarget).data("id"))
-      })
-      $("#userstable tbody tr").on("click",(ev)=>{
-        currentUser = $(ev.currentTarget).data("id")
-        $(ev.currentTarget).addClass("rowselected").siblings().removeClass("rowselected")
-        fillGroups()
-      })
+  const body = await resp.json()
+
+  jhQuery("#groupstable tbody").innerHTML = ""
+  jhQuery("#userstable tbody").innerHTML = ""
+
+  if ( body.data.length ) {
+    var row = ""
+    for ( const itm of body.data ) {
+      row +=
+        `<tr data-id='${itm.id}' style='cursor:pointer'>`+
+        `<td><sl-icon-button id='edituser-${itm.id}' title='Edit user' name='pencil' data-id='${itm.id}'></sl-icon-button></td>`+
+        `<td><sl-icon-button id='removeuser-${itm.id}' title='Delete user' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button></td>`+
+        `<td class='border-start'>${itm.login}</td>`+
+        `<td>${itm.lastname}</td>`+
+        `<td>${itm.firstname}</td>`+
+        `<td>${itm.email}</td>`+
+        `<td>${itm.locale}</td>`+
+        `<td>${itm.authmethod}</td>`+
+        `<td class='text-center'><sl-icon name='${itm.active ? "check-lg":"x-lg"}' style='color:${itm.active?"green":"red"}'/></td>`+
+        `</tr>`
     }
-  })
+    jhQuery("#userstable tbody").innerHTML = row
+
+    // Install event handlers
+    jhEvent("#userstable tbody tr", "dblclick",(ev)=>{
+      userDoubleClicked(ev.currentTarget.getAttribute("data-id"))
+    })
+    jhEvent("#userstable tbody tr [id^=edituser]", "click",(ev)=>{
+      userEditDialog(ev.currentTarget.getAttribute("data-id"))
+    })
+    jhEvent("#userstable tbody tr [id^=removeuser]", "click",(ev)=>{
+      userRemove(ev.currentTarget.getAttribute("data-id"))
+    })
+    jhEvent("#userstable tbody tr", "click",(ev)=>{
+      currentUser = ev.currentTarget.getAttribute("data-id")
+
+      const sel = jhQuery("#userstable tbody tr.rowselected")
+      if ( sel ) {
+        sel.classList.remove("rowselected")
+      }
+      ev.currentTarget.classList.add("rowselected")
+      fillGroups()
+    })
+  }
 }
 
-function fillGroups() {
-  loadingShow($("#groupstable"))
+async function fillGroups() {
+  jhQuery("#groupstable tbody").innerHTML = ""
 
-  $("#groupstable tbody tr").remove()
-  $.get("/api/usergroups/"+currentUser,(resp)=>{
-    if ( !checkResponse(resp) ) {
-      return
+  const resp = await jhFetch(`/api/usergroups/${currentUser}`)
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  const body = await resp.json()
+  if ( body.data.length ) {
+    var row = "<tr>"
+    for ( const itm of body.data ) {
+      row += `<td><sl-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' style='color:red;' title='Remove'></sl-icon-button></td>`
+      row += `<td>${itm.description}</td></tr>`
     }
+    jhQuery("#groupstable tbody").innerHTML = row
 
-    if ( resp.data.length ) {
-      var row = "<tr>"
-      for ( const itm of resp.data ) {
-        row += `<td><sl-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' style='color:red;' title='Remove'></sl-icon-button></td>`
-        row += `<td>${itm.description}</td></tr>`
-      }
-      $("#groupstable tbody").append(row)
-
-      // Event handlers
-      $("[id^=removegroup]").on("click", groupRemove)
-    }
-    loadingHide($("#groupstable"))
-  })
+    // Event handlers
+    jhEvent("[id^=removegroup]", "click", groupRemove)
+  }
 }
 
 function userCreateDialog() {
-  document.querySelector("#newuserdialog").show()
-  $("#newuserdialog sl-input,sl-textarea,sl-select").val("")
+  jhQuery("#newuserdialog").show()
+  jhValue("#newuserdialog sl-input,sl-textarea,sl-select", "")
   userCreateEnable()
 }
 
-function userCreate() {
+async function userCreate() {
   let userdata = {
-    _csrf: $("#_csrf").val(),
-    login: $("#newlogin").val(),
-    email: $("#newemail").val(),
-    lastname: $("#newlastname").val(),
-    firstname: $("#newfirstname").val(),
-    locale: $("#newlocale").val(),
-    authmethod: $("#newauthmethod").val(),
-    active: $("#newactive").attr("checked"),
-    secret: $("#newpassword").val()
+    _csrf: PW.getCSRFToken(),
+    login: jhValue("#newlogin"),
+    email: jhValue("#newemail"),
+    lastname: jhValue("#newlastname"),
+    firstname: jhValue("#newfirstname"),
+    locale: jhValue("#newlocale"),
+    authmethod: jhValue("#newauthmethod"),
+    active: jhQuery("#newactive").hasAttribute("checked"),
+    secret: jhValue("#newpassword")
   }
 
-  $.post("/api/usernew/", userdata, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
+  const resp = await jhFetch("/api/usernew/", userdata)
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
 
-    fillUsers()
-    document.querySelector("#newuserdialog").hide()
-    showToast("success", "User created")
-  })
+  fillUsers()
+  jhQuery("#newuserdialog").hide()
+  PW.showToast("success", "User created")
 }
 
 function userCreateEnable() {
   if (
-    $("#newlogin").val()=="" || $("#newemail").val()=="" || $("#newlastname").val()=="" ||
-    $("#newpassword").val()!=$("#newpasswordconfirm").val() || $("#newpassword").val()=="" ) {
-      $("#usercreate").attr("disabled","disabled")
+    jhValue("#newlogin")=="" || jhValue("#newemail")=="" || jhValue("#newlastname")=="" ||
+    jhValue("#newpassword")!=jhValue("#newpasswordconfirm") || jhValue("#newpassword")=="" ) {
+      jhQuery("#usercreate").setAttribute("disabled","disabled")
   } else {
-    $("#usercreate").removeAttr("disabled")
+    jhQuery("#usercreate").removeAttribute("disabled")
   }
 }
 
-function userRemove(usr) {
-  confirmDialog("Remove user", "<strong><span style='color:red;'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", ()=> {
-    $.post("/api/userremove/"+usr, {_csrf: $("#_csrf").val()}, (resp)=> {
-      if ( !checkResponse(resp) ) {
-        return
-      }
-
-      fillUsers()
-      showToast("success", "User removed")
-    })
-  })
-}
-
-function userEditFill(user) {
-  $.get("/api/users/"+user, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
-
-    $("#editlogin").val(resp.data.login)
-    $("#editemail").val(resp.data.email)
-    $("#editlastname").val(resp.data.lastname)
-    $("#editfirstname").val(resp.data.firstname)
-    $("#editlocale").val(resp.data.locale)
-    $("#editauthmethod").val(resp.data.authmethod)
-    if ( !resp.data.active ) {
-      $("#editactive").removeAttr("checked")
-    } else {
-      $("#editactive").attr("checked","checked")
-    }
-
-    userEditEnable()
-  })
-}
-
-function userEditEnable() {
-  if ( $("#editlogin").val()=="" || $("#editemail").val()=="" || $("#editlastname").val()=="" ) {
-      $("#useredit").attr("disabled","disabled")
-  } else {
-    $("#useredit").removeAttr("disabled")
-  }
-}
-
-function userEditDialog(userid) {
-  const dialog = $("#edituserdialog")
-  userEditFill(userid)
-  dialog[0].show()
-}
-
-function userEdit() {
-  let userdata = {
-    _csrf: $("#_csrf").val(),
-    login: $("#editlogin").val(),
-    email: $("#editemail").val(),
-    lastname: $("#editlastname").val(),
-    firstname: $("#editfirstname").val(),
-    locale: $("#editlocale").val(),
-    authmethod: $("#editauthmethod").val(),
-    active: $("#editactive").prop("checked")
-  }
-
-  $.post(`/api/userupdate/${currentUser}`, userdata, (resp)=> {
-    if ( !checkResponse(resp) ) {
+async function userRemove(usr) {
+  PW.confirmDialog("Remove user", "<strong><span style='color:red;'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", async ()=> {
+    const resp = await jhFetch(`/api/userremove/${usr}`, {_csrf: PW.getCSRFToken()})
+    if ( !await PW.checkResponse(resp) ) {
       return
     }
 
     fillUsers()
-    showToast("success", "User saved")
+    PW.showToast("success", "User removed")
   })
+}
+
+async function userEditFill(user) {
+  const resp = await jhFetch(`/api/users/${user}`)
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  const body = await resp.json()
+
+  jhValue("#editlogin", body.data.login)
+  jhValue("#editemail", body.data.email)
+  jhValue("#editlastname", body.data.lastname)
+  jhValue("#editfirstname", body.data.firstname)
+  jhValue("#editlocale", body.data.locale)
+  jhValue("#editauthmethod", body.data.authmethod)
+  if ( !body.data.active ) {
+    jhQuery("#editactive").removeAttribute("checked")
+  } else {
+    jhQuery("#editactive").setAttribute("checked","checked")
+  }
+
+  userEditEnable()
+}
+
+function userEditEnable() {
+  if ( jhValue("#editlogin")=="" || jhValue("#editemail")=="" || jhValue("#editlastname")=="" ) {
+      jhQuery("#useredit").setAttribute("disabled","disabled")
+  } else {
+    jhQuery("#useredit").removeAttribute("disabled")
+  }
+}
+
+function userEditDialog(userid) {
+  userEditFill(userid)
+  jhQuery("#edituserdialog").show()
+}
+
+async function userEdit() {
+  let userdata = {
+    _csrf: PW.getCSRFToken(),
+    login: jhValue("#editlogin"),
+    email: jhValue("#editemail"),
+    lastname: jhValue("#editlastname"),
+    firstname: jhValue("#editfirstname"),
+    locale: jhValue("#editlocale"),
+    authmethod: jhValue("#editauthmethod"),
+    active: jhQuery("#editactive").hasAttribute("checked")
+  }
+
+  const resp = await jhFetch(`/api/userupdate/${currentUser}`, userdata)
+  jhQuery("#edituserdialog").hide()
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  fillUsers()
+  PW.showToast("success", "User saved")
 }
 
 function userDoubleClicked(user) {
   if ( window.getSelection() ) {
     window.getSelection().empty()
   }
-  $("#edituser-"+user).click()
+  jhQuery(`#edituser-${user}`).click()
 }
 
-$(function() {
-
-})
-
-function groupRemove(ev) {
-  const group = $(ev.currentTarget).data("id")
-  confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", ()=> {
-    $.post(`/api/groupremoveuser/${group}/${currentUser}`, {_csrf: $("#_csrf").val()}, (resp)=> {
-      if ( !checkResponse(resp) ) {
-        return
-      }
-
-      fillGroups()
-      showToast("success", "Group removed")
-    })
-  })
-}
-
-function groupPickerChoosen(group) {
-  groupPickerHide()
-  $.post(`/api/groupadduser/${group}/${currentUser}`, {_csrf: $("#_csrf").val()}, (resp)=> {
-    if ( !checkResponse(resp) ) {
+async function groupRemove(ev) {
+  const group = ev.currentTarget.getAttribute("data-id")
+  PW.confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", async ()=> {
+  const resp = await jhFetch(`/api/groupremoveuser/${group}/${currentUser}`, {_csrf: PW.getCSRFToken()})
+    if ( !await PW.checkResponse(resp) ) {
       return
     }
 
     fillGroups()
-    showToast("success","Group added")
+    PW.showToast("success", "Group removed")
   })
 }
 
-$(()=>{
-  fillUsers()
+async function groupPickerChoosen(group) {
+  GPicker.hide()
+  const resp = await jhFetch(`/api/groupadduser/${group}/${currentUser}`, {_csrf: PW.getCSRFToken()})
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
 
-  // Event handlers
-  $("#newlogin,#newemail,#newlastname,#newpassword,#newpasswordconfirm").on("keyup",(ev)=>{
-    userCreateEnable()
-  })
-  $("#usercreate").on("click",(ev)=> {
-    userCreate()
-  })
-  $("#editlogin,#editemail,#editlastname").on("keyup",(ev)=>{
-    userEditEnable()
-  })
-  $("#useredit").on("click",(ev)=>{
-    userEdit()
-  })
-  $("#newuser").on("click",(ev)=>{
-    userCreateDialog()
-  })
-  $("#newuserdialog #cancel").on("click", (ev)=>{
-    document.querySelector("#newuserdialog").hide()
-  })
-  $("#usersearch").on("sl-input", (ev) => {
-    if ( userSearchTimeout ) {
-      clearTimeout(userSearchTimeout)
-    }
-    userSearchTimeout = setTimeout(()=>{
-      $("#groupstable tbody tr").remove()
-      fillUsers()
-    },250)
-  })
-  $("#addgroup").on("click",(ev)=>{
-    if ( currentUser==="" ) {
-      errorDialog("Select a user")
-      return
-    }
-    groupPickerShow()
-  })
+  fillGroups()
+  PW.showToast("success","Group added")
+}
+
+await fillUsers()
+
+// Event handlers
+jhEvent("#newlogin,#newemail,#newlastname,#newpassword,#newpasswordconfirm", "keyup", (ev)=>{
+  userCreateEnable()
+})
+jhEvent("#usercreate", "click",(ev)=> {
+  userCreate()
+})
+jhEvent("#editlogin,#editemail,#editlastname", "keyup",(ev)=>{
+  userEditEnable()
+})
+jhEvent("#useredit", "click",(ev)=>{
+  userEdit()
+})
+jhEvent("#newuser", "click",(ev)=>{
+  userCreateDialog()
+})
+jhEvent("#newuserdialog #cancel", "click", (ev)=>{
+  jhQuery("#newuserdialog").hide()
+})
+jhEvent("#usersearch", "sl-input", (ev) => {
+  if ( userSearchTimeout ) {
+    clearTimeout(userSearchTimeout)
+  }
+  userSearchTimeout = setTimeout(()=>{
+    jhQuery("#groupstable tbody").innerHTML = ""
+    fillUsers()
+  },250)
+})
+jhEvent("#addgroup", "click",(ev)=>{
+  if ( currentUser==="" ) {
+    PW.errorDialog("Select a user")
+    return
+  }
+  GPicker.show(groupPickerChoosen)
 })

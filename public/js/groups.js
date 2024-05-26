@@ -1,48 +1,50 @@
+import * as PW from './passweaver-gui.js'
+import * as UPicker from './userpicker.js'
+
 var groupSearchTimeout
 
 function currentGroup() {
   try {
-    return document.querySelector("sl-tree-item[selected]").getAttribute("data-id")
+    return jhQuery("sl-tree-item[selected]").getAttribute("data-id")
   } catch (err) {
     return ""
   }
 }
 
-function fillUsers() {
-  loadingShow($("#userstable"))
+async function fillUsers() {
+  jhQuery("#userstable tbody").innerHTML = ""
 
-  $("#userstable tbody tr").remove()
-  $.get(`/api/userslist/${currentGroup()}`,(resp)=>{
-    if ( !checkResponse(resp) ) {
-      return
+  const resp = await fetch(`/api/userslist/${currentGroup()}`)
+
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+  const body = await resp.json()
+
+  if ( body.data.length ) {
+    var row = ''
+    for ( const usr of body.data ) {
+      row +=
+        `<tr>`+
+        `<td><sl-icon-button id='remove-${usr.id}' title='Remove' data-id='${usr.id}' name="trash3" style="color:red;"></sl-icon-button></td>`+
+        `<td class='border-start'>${usr.login}</td>`+
+        `<td>${usr.lastname}</td>`+
+        `<td>${usr.firstname}</td>`
     }
+    jhQuery("#userstable tbody").innerHTML = row
 
-    if ( resp.data.length ) {
-      var row = ''
-      for ( const usr of resp.data ) {
-        row += `<tr>`
-        row += `<td><sl-icon-button id='remove-${usr.id}' title='Remove' data-id='${usr.id}' name="trash3" style="color:red;"></sl-icon-button></td>`
-        row += `<td class='border-start'>${usr.login}</td>`
-        row += `<td>${usr.lastname}</td>`
-        row += `<td>${usr.firstname}</td>`
-      }
-      $("#userstable tbody").append(row)
+    // Install event handlers
+    jhEvent("#userstable tbody [id^=remove]", "click", (ev)=>{
+      groupRemoveUser(ev.currentTarget.getAttribute("data-id"))
+    })
+  }
 
-      // Install event handlers
-      $("#userstable tbody [id^=remove]").on("click",(ev)=>{
-        groupRemoveUser($(ev.currentTarget).data("id"))
-      })
-    }
-
-    // Group cannot be removed if not empty
-    if ( $("#userstable tbody tr").length ) {
-      $("#removegroup").attr("disabled","disabled")
-    } else {
-      $("#removegroup").removeAttr("disabled")
-    }
-
-    loadingHide($("#userstable"))
-  })
+  // Group cannot be removed if not empty
+  if ( jhQueryAll("#userstable tbody tr").length ) {
+    jhQuery("#groupremove").setAttribute("disabled","disabled")
+  } else {
+    jhQuery("#groupremove").removeAttribute("disabled")
+  }
 }
 
 function groupClicked(groupid) {
@@ -50,78 +52,43 @@ function groupClicked(groupid) {
 }
 
 function groupCreateEnable() {
-  if ( $("#groupcreatedescription").val()==="" ) {
-    $("#groupcreatesave").attr("disabled","disabled")
+  if ( jhValue("#groupcreatedescription")==="" ) {
+    jhQuery("#groupcreatesave").setAttribute("disabled","disabled")
   } else {
-    $("#groupcreatesave").removeAttr("disabled")
+    jhQuery("#groupcreatesave").removeAttribute("disabled")
   }
 }
 
 function groupCreateDialog() {
-  const dialog = $("#groupcreatedialog")
-  $("#groupcreatedialog sl-input,sl-textarea").val("")
+  jhValue("#groupcreatedialog sl-input,sl-textarea", "")
   groupCreateEnable()
-  dialog[0].show()
+  jhQuery("#groupcreatedialog").show()
 }
 
-function groupCreate() {
+async function groupCreate() {
   let userdata = {
-    _csrf: $("#_csrf").val(),
-    description: $("#groupcreatedescription").val()
+    _csrf: PW.getCSRFToken(),
+    description: jhValue("#groupcreatedescription")
   }
 
-  $.post(`/api/groupnew/${currentGroup()}`, userdata, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
-
-    if ( resp.data.id ) {
-      location.reload()
-    } else {
-      errorDialog(resp.message)
-    }
-  });
-}
-
-function groupRemove() {
-  confirmDialog("Remove group", "Are you sure you want to remove this group?", ()=> {
-    $.post(`/api/groupremove/${currentGroup()}`, {_csrf: $("#_csrf").val()}, (resp)=> {
-      if ( !checkResponse(resp) ) {
-        return
-      }
-
-      location.reload()
-    })
-  })
-}
-
-function groupEditDialog() {
-  const dialog = document.querySelector("#groupeditdialog")
-  groupEditFill()
-  dialog.show()
-}
-
-function groupEditFill() {
-  $.get(`/api/groups/${currentGroup()}`, (resp)=> {
-    if ( !checkResponse(resp) ) {
-      return
-    }
-
-    if ( resp.status=="success" ) {
-      $("#groupeditdescription").val(resp.data.description)
-      groupEditEnable()
-    }
-  })
-}
-
-function groupEdit() {
-  let data = {
-    _csrf: $("#_csrf").val(),
-    description: $("#groupeditdescription").val()
+  const resp = await jhFetch(`/api/groupnew/${currentGroup()}`, userdata)
+  if ( !await PW.checkResponse(resp) ) {
+    return
   }
 
-  $.post(`/api/groupupdate/${currentGroup()}`, data, (resp)=> {
-    if ( !checkResponse(resp) ) {
+  const body = await resp.json()
+  if ( body.data.id ) {
+    location.reload()
+  } else {
+    PW.errorDialog(body.message)
+  }
+}
+
+async function groupRemove() {
+  PW.confirmDialog("Remove group", "Are you sure you want to remove this group?", async ()=> {
+    const resp = await jhFetch(`/api/groupremove/${currentGroup()}`, {_csrf: PW.getCSRFToken()})
+
+    if ( !await PW.checkResponse(resp) ) {
       return
     }
 
@@ -129,105 +96,135 @@ function groupEdit() {
   })
 }
 
-function groupEditEnable() {
-  if ( $("#groupeditdescription").val()=="" ) {
-    $("#groupeditsave").attr("disabled","disabled")
-  } else {
-    $("#groupeditsave").removeAttr("disabled")
+function groupEditDialog() {
+  groupEditFill()
+  jhQuery("#groupeditdialog").show()
+}
+
+async function groupEditFill() {
+  const resp = await jhFetch(`/api/groups/${currentGroup()}`)
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  const body = await resp.json()
+  if ( body.status=="success" ) {
+    jhValue("#groupeditdescription", body.data.description)
+    groupEditEnable()
   }
 }
 
-function userPickerChoosen(id) {
-  $.post(`/api/groupadduser/${currentGroup()}/${id}`, {_csrf: $("#_csrf").val()}, (resp)=> {
-    if ( !checkResponse(resp) ) {
+async function groupEdit() {
+  let data = {
+    _csrf: PW.getCSRFToken(),
+    description: jhValue("#groupeditdescription")
+  }
+
+  const resp = await jhFetch(`/api/groupupdate/${currentGroup()}`, data)
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+    location.reload()
+}
+
+function groupEditEnable() {
+  if ( jhValue("#groupeditdescription")=="" ) {
+    jhQuery("#groupeditsave").setAttribute("disabled","disabled")
+  } else {
+    jhQuery("#groupeditsave").removeAttribute("disabled")
+  }
+}
+
+async function userPickerChoosen(id) {
+  const resp = await jhFetch(`/api/groupadduser/${currentGroup()}/${id}`, {_csrf: PW.getCSRFToken()})
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  UPicker.hide()
+  fillUsers()
+  PW.showToast("success", "User added to the group")
+}
+
+async function groupRemoveUser(id) {
+  PW.confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", async ()=> {
+    const resp = await jhFetch(`/api/groupremoveuser/${currentGroup()}/${id}`, {_csrf: PW.getCSRFToken()})
+    if ( !await PW.checkResponse(resp) ) {
       return
     }
 
-    userPickerHide()
     fillUsers()
+    PW.showToast("success", "User removed from group")
   })
 }
 
-function groupRemoveUser(id) {
-  confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", ()=> {
-    $.post(`/api/groupremoveuser/${currentGroup()}/${id}`, {_csrf: $("#_csrf").val()}, (resp)=> {
-      if ( !checkResponse(resp) ) {
-        return
-      }
-
-      fillUsers()
-    })
-  })
+const resp = await fetch("/api/groupstree")
+if ( await PW.checkResponse(resp) ) {
+  const body = await resp.json()
+  PW.treeFill("groupstree",body.data,null,groupClicked)
 }
 
-$(()=>{
-  $.get("/api/groupstree", (resp)=>{
-    if ( !checkResponse(resp) ) {
-      return
+// Event handlers
+jhEvent("#groupremove", "click", (ev)=>{
+  groupRemove()
+})
+jhEvent("#groupedit", "click", (ev)=>{
+  groupEditDialog()
+})
+jhEvent("#groupcreate", "click", (ev)=>{
+  groupCreateDialog()
+})
+
+jhEvent("#groupcreatedescription", "keyup", (ev)=>{
+  groupCreateEnable()
+})
+jhEvent("#groupcreatesave", "click", (ev)=>{
+  groupCreate()
+})
+jhEvent("#groupcreatecancel", "click", (ev)=> {
+  jhQuery("#groupcreatedialog").hide()
+})
+
+jhEvent("#groupeditdescription", "keyup", (ev)=>{
+  groupEditEnable()
+})
+jhEvent("#groupeditsave", "click", (ev)=>{
+  groupEdit()
+})
+jhEvent("#groupeditcancel", "click", (ev)=> {
+  jhQuery("#groupeditdialog").hide()
+})
+
+jhEvent("#newmember", "click", (ev)=>{
+  if ( currentGroup()=="" ) {
+    PW.errorDialog("Select a group")
+    return
+  }
+  UPicker.show(userPickerChoosen)
+})
+
+jhEvent("#groupsearch", "sl-input", (ev)=> {
+  if ( groupSearchTimeout ) {
+    clearTimeout(groupSearchTimeout)
+  }
+  groupSearchTimeout = setTimeout(()=>{
+    const search = jhValue("#groupsearch")
+    if ( !PW.treeSearch("groupstree", search) ) {
+      PW.showToast("danger", "Not found")
     }
+  },250)
+})
+jhEvent("#groupsearchnext", "click", (ev)=>{
+  const search = jhValue("#groupsearch")
+  PW.treeSearchNext("groupstree", search)
+})
 
-    treeFill("groupstree",resp.data,null,groupClicked)
-  })
+jhEvent("#groupsearchprevious", "click", (ev)=>{
+  const search = jhValue("#groupsearch")
+  PW.treeSearchPrevious("groupstree", search)
+})
 
-  // Event handlers
-  $("#groupremove").on("click", (ev)=>{
-    groupRemove()
-  })
-  $("#groupedit").on("click", (ev)=>{
-    groupEditDialog()
-  })
-  $("#groupcreate").on("click", (ev)=>{
-    groupCreateDialog()
-  })
-
-  $("#groupcreatedescription").on("keyup", (ev)=>{
-    groupCreateEnable()
-  })
-  $("#groupcreatesave").on("click", (ev)=>{
-    groupCreate()
-  })
-  $("#groupcreatecancel").on("click", (ev)=> {
-    const dialog = $("#groupcreatedialog")
-    dialog[0].hide()
-  })
-
-  $("#groupeditdescription").on("keyup", (ev)=>{
-    groupEditEnable()
-  })
-  $("#groupeditsave").on("click", (ev)=>{
-    groupEdit()
-  })
-  $("#groupeditcancel").on("click", (ev)=> {
-    const dialog = $("#groupeditdialog")
-    dialog[0].hide()
-  })
-
-  $("#newmember").on("click", (ev)=>{
-    if ( currentGroup()=="" ) {
-      errorDialog("Select a group")
-      return
-    }
-    userPickerShow()
-  })
-
-  $("#groupsearch").on("sl-input", (ev)=> {
-    if ( groupSearchTimeout ) {
-      clearTimeout(groupSearchTimeout)
-    }
-    groupSearchTimeout = setTimeout(()=>{
-      const search = document.querySelector("#groupsearch").value
-      if ( !treeSearch("groupstree", search) ) {
-        showToast("danger", "Not found")
-      }
-    },250)
-  })
-  $("#groupsearchnext").on("click", (ev)=>{
-    const search = document.querySelector("#groupsearch").value
-    treeSearchNext("groupstree", search)
-  })
-
-  $("#groupsearchprevious").on("click", (ev)=>{
-    const search = document.querySelector("#groupsearch").value
-    treeSearchPrevious("groupstree", search)
-  })
+addEventListener("pw-item-found", async(ev)=>{
+  await fillUsers()
 })

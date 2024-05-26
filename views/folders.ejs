@@ -4,7 +4,7 @@
 
   <%- include('partials/topbar.ejs') %>
   <%- include('partials/sidebar.ejs') %>
-  <%- include('partials/csfr.ejs') %>
+  <%- include('partials/csrf.ejs') %>
 
   <div class="main1">
     <h2>Folders</h2>
@@ -63,7 +63,7 @@
 <%- include("partials/grouppicker.ejs") %>
 </div>
 
-<script src="/public/js/folders_shared.js"></script>
-<script src="/public/js/folders.js"></script>
+<script defer type="module" src="/public/js/folders_shared.js"></script>
+<script defer type="module" src="/public/js/folders.js"></script>
 
 <%- include('partials/footer.ejs') %>
