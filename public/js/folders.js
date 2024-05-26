@@ -49,7 +49,7 @@ async function folderClicked(folderid) {
   const resp = await jhFetch(`/api/folders/${folderid}`)
 
   // Folder may not be accessible
-  if ( !await PW.checkResponse(resp,"403") ) {
+  if ( !await PW.checkResponse(resp,403) ) {
     return
   }
 

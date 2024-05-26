@@ -97,7 +97,7 @@ async function folderClicked(ev, selectonly) {
   const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}`)
 
   // Folder may not be accessible
-  if ( !await PW.checkResponse(resp,"403") ) {
+  if ( !await PW.checkResponse(resp,403) ) {
     return
   }
 

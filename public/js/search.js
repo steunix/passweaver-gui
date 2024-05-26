@@ -48,7 +48,8 @@ async function itemViewFill(item) {
   jhValue("#viewdescription", body.data.data.description)
   jhValue("#viewurl", body.data.data.url)
   jhValue("#viewuser", body.data.data.user)
-  jhQuery("#viewpassword", body.data.data.password).setAttribute("type","password")
+  jhQuery("#viewpassword").setAttribute("type","password")
+  jhValue("#viewpassword", body.data.data.password)
 }
 
 async function itemShow(item) {

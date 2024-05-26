@@ -44,7 +44,7 @@ export async function checkResponse(resp,ignoreStatus) {
   if ( body.status=="success" ) {
     return true
   }
-  if ( body.status=="failed" && body.httpStatusCode=="404" ) {
+  if ( body.status=="failed" && body.httpStatusCode==404 ) {
     return true
   }
   if ( body.status=="failed" && ignoreStatus && ignore.includes(body.httpStatusCode) ) {
