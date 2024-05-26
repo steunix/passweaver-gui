@@ -2,32 +2,38 @@ var treeCallback
 const itemFound = new Event("pw-item-found")
 
 export function confirmDialog(title,text,callback) {
-  const dialog = $("#confirmdialog")
-  dialog.attr("label", title)
-  $("#confirmdialogtext").html(text)
-  $("#confirmok").off("click").on("click", event=> {
-    dialog[0].hide()
+  const dialog = jhQuery("#confirmdialog")
+  dialog.setAttribute("label", title)
+  jhQuery("#confirmdialogtext").innerHTML = text
+
+  jhQuery("#confirmok").replaceWith(jhQuery("#confirmok").cloneNode(true))
+  jhEvent("#confirmok", "click", event=> {
+    dialog.hide()
     callback()
     return
   })
-  $("#confirmcancel").on("click", event=> {
-    dialog[0].hide()
+
+  jhQuery("#confirmcancel").replaceWith(jhQuery("#confirmcancel").cloneNode(true))
+  jhEvent("#confirmcancel", "click", event=> {
+    dialog.hide()
   })
-  dialog.on('sl-request-close', event => {
+  dialog.addEventListener('sl-request-close', event => {
     if (event.detail.source === 'overlay') {
       event.preventDefault();
     }
   })
-  dialog[0].show()
+  dialog.show()
 }
 
 export function errorDialog(text) {
-  const dialog = $("#errordialog")
-  $("#errordialogtext").html(text)
-  $("#errordialogclose").on("click", event=> {
-    dialog[0].hide()
+  const dialog = jhQuery("#errordialog")
+  jhQuery("#errordialogtext").innerHTML = text
+
+  jhQuery("#errordialogclose").replaceWith(jhQuery("#errordialogclose").cloneNode(true))
+  jhEvent("#errordialogclose", "click", event=> {
+    dialog.hide()
   })
-  dialog[0].show()
+  dialog.show()
 }
 
 export async function checkResponse(resp,ignoreStatus) {
@@ -193,7 +199,7 @@ export function showToast(variant,text) {
     closable: true,
     duration: 3000,
     innerHTML: `<sl-icon name="${icon[variant]}" slot="icon"></sl-icon>${text}`
-  });
+  })
 
   document.body.append(alert)
   alert.toast()

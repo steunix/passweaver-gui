@@ -87,7 +87,7 @@ function userCreateDialog() {
 
 async function userCreate() {
   let userdata = {
-    _csrf: getCSRFToken(),
+    _csrf: PW.getCSRFToken(),
     login: jhValue("#newlogin"),
     email: jhValue("#newemail"),
     lastname: jhValue("#newlastname"),
@@ -120,7 +120,7 @@ function userCreateEnable() {
 
 async function userRemove(usr) {
   PW.confirmDialog("Remove user", "<strong><span style='color:red;'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", async ()=> {
-    const resp = await jhFetch(`/api/userremove/${usr}`, {_csrf: getCSRFToken()})
+    const resp = await jhFetch(`/api/userremove/${usr}`, {_csrf: PW.getCSRFToken()})
     if ( !await PW.checkResponse(resp) ) {
       return
     }
@@ -168,7 +168,7 @@ function userEditDialog(userid) {
 
 async function userEdit() {
   let userdata = {
-    _csrf: getCSRFToken(),
+    _csrf: PW.getCSRFToken(),
     login: jhValue("#editlogin"),
     email: jhValue("#editemail"),
     lastname: jhValue("#editlastname"),
@@ -198,7 +198,7 @@ function userDoubleClicked(user) {
 async function groupRemove(ev) {
   const group = ev.currentTarget.getAttribute("data-id")
   PW.confirmDialog("Remove user from group", "Are you sure you want to remove the user from the group?", async ()=> {
-  const resp = await jhFetch(`/api/groupremoveuser/${group}/${currentUser}`, {_csrf: getCSRFToken()})
+  const resp = await jhFetch(`/api/groupremoveuser/${group}/${currentUser}`, {_csrf: PW.getCSRFToken()})
     if ( !await PW.checkResponse(resp) ) {
       return
     }
@@ -210,7 +210,7 @@ async function groupRemove(ev) {
 
 async function groupPickerChoosen(group) {
   GPicker.hide()
-  const resp = await jhFetch(`/api/groupadduser/${group}/${currentUser}`, {_csrf: getCSRFToken()})
+  const resp = await jhFetch(`/api/groupadduser/${group}/${currentUser}`, {_csrf: PW.getCSRFToken()})
   if ( !await PW.checkResponse(resp) ) {
     return
   }

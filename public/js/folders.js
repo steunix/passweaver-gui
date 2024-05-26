@@ -1,4 +1,5 @@
 import * as Folders from './folders_shared.js'
+import * as GPicker from './grouppicker.js'
 import * as PW from './passweaver-gui.js'
 
 async function fillGroups() {
@@ -78,7 +79,7 @@ async function folderClicked(folderid) {
 async function groupRemove(ev) {
   const group = ev.currentTarget.getAttribute("data-id")
   PW.confirmDialog("Remove group", "Are you sure you want to remove the group?", async ()=>{
-    const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: getCSRFToken() }, "DELETE")
+    const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: PW.getCSRFToken() }, "DELETE")
     if ( !await PW.checkResponse(resp) ) {
       return
     }
@@ -90,7 +91,7 @@ async function groupRemove(ev) {
 
 async function groupToggle(ev) {
   const group = ev.currentTarget.getAttribute("data-id")
-  const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}/toggle`, { _csrf: getCSRFToken() })
+  const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}/toggle`, { _csrf: PW.getCSRFToken() })
   if ( !await PW.checkResponse(resp) ) {
     return
   }
@@ -100,12 +101,12 @@ async function groupToggle(ev) {
 }
 
 async function groupPickerChoosen(group) {
-  const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: getCSRFToken() })
+  const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: PW.getCSRFToken() })
   if ( !await PW.checkResponse(resp) ) {
     return
   }
 
-  groupPickerHide()
+  GPicker.hide()
   await fillGroups()
   PW.showToast("success", "Group added")
 }
@@ -124,7 +125,7 @@ async function fillFolders() {
 await fillFolders()
 
 jhEvent("#addgroup", "click",(ev)=>{
-  groupPickerShow(groupPickerChoosen)
+  GPicker.show(groupPickerChoosen)
 })
 addEventListener("folders-refresh", async (ev)=>{
   await fillFolders()

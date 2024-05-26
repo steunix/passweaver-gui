@@ -136,7 +136,7 @@ async function itemCreate() {
   jhQuery("#itemcreatedialog").hide()
 
   let itemdata = {
-    _csrf: getCSRFToken(),
+    _csrf: PW.getCSRFToken(),
     title: jhValue("#newtitle"),
     email: jhValue("#newemail"),
     description: jhValue("#newdescription"),
@@ -153,7 +153,7 @@ async function itemCreate() {
   const body = await resp.json()
   if ( body.data.id ) {
     await fillItems()
-    showToast("success","Item created")
+    PW.showToast("success","Item created")
   } else {
     PW.errorDialog(body.message)
   }
@@ -169,12 +169,13 @@ function itemCreateEnable() {
 
 async function itemRemove(itm) {
   PW.confirmDialog("Remove item", "Are you sure you want to remove this item?", async()=> {
-    const resp = await jhFetch(`/api/itemremove/${itm}`, {_csrf: getCSRFToken()})
+    const resp = await jhFetch(`/api/itemremove/${itm}`, {_csrf: PW.getCSRFToken()})
       if ( !await PW.checkResponse(resp) ) {
         return
       }
 
       await fillItems()
+      PW.showToast("success", "Item removed")
     })
 }
 
@@ -217,7 +218,7 @@ async function itemEdit() {
   const id = jhValue("#itemeditid")
 
   let itemdata = {
-    _csrf: getCSRFToken(),
+    _csrf: PW.getCSRFToken(),
     title: jhValue("#edittitle"),
     data: {
       description: jhValue("#editdescription"),
@@ -283,19 +284,19 @@ function itemShow(item) {
 
 async function itemClone(itm) {
   PW.confirmDialog("Clone item", "Do you want to clone this item?", async()=>{
-  const resp = await jhFetch(`/api/items/${itm}/clone`, {_csrf: getCSRFToken()})
+  const resp = await jhFetch(`/api/items/${itm}/clone`, {_csrf: PW.getCSRFToken()})
     if ( !await PW.checkResponse(resp) ) {
       return
     }
 
-    showToast("success","Item cloned")
+    PW.showToast("success","Item cloned")
     await fillItems()
   })
 }
 
 function itemCopyLink(itm) {
   navigator.clipboard.writeText(`${window.location.origin}/pages/items?viewitem=${itm}`)
-  showToast("primary", "Item link copied to clipboard")
+  PW.showToast("primary", "Item link copied to clipboard")
 }
 
 function findAndShowItem(itm) {
@@ -322,7 +323,7 @@ function personalPasswordCreateEnable() {
 
 async function personalPasswordCreate() {
   let data = {
-    _csrf: getCSRFToken(),
+    _csrf: PW.getCSRFToken(),
     password: jhValue("#newpersonalpassword")
   }
 
@@ -332,12 +333,12 @@ async function personalPasswordCreate() {
   }
 
   await fillItems()
-  showToast("success", "Personal password saved")
+  PW.showToast("success", "Personal password saved")
 }
 
 async function personalPasswordSet() {
   let data = {
-    _csrf: getCSRFToken(),
+    _csrf: PW.getCSRFToken(),
     password: jhValue("#personalpasswordask")
   }
 
@@ -384,7 +385,7 @@ async function passwordShow(ev) {
 
 async function passwordAccessed(item) {
   const resp = await jhFetch("/api/events", {
-    _csrf: getCSRFToken(),
+    _csrf: PW.getCSRFToken(),
     event: 'pwdread',
     itemtype: 'item',
     itemid: item

@@ -34,7 +34,7 @@ function folderCreateEnable() {
 
 async function folderCreate() {
   let itemdata = {
-    _csrf: getCSRFToken(),
+    _csrf: PW.getCSRFToken(),
     description: jhValue("#foldercreatedescription")
   }
 
@@ -51,7 +51,7 @@ async function folderCreate() {
 async function folderRemove() {
   PW.confirmDialog("Remove folder", "Are you sure you want to remove this folder?", async ()=> {
     jhQuery("#foldercreatedialog").hide()
-    const resp = await jhFetch(`/api/folderremove/${currentFolder()}`, {_csrf: getCSRFToken()})
+    const resp = await jhFetch(`/api/folderremove/${currentFolder()}`, {_csrf: PW.getCSRFToken()})
     if ( !await PW.checkResponse(resp) ) {
       return
     }
@@ -88,7 +88,7 @@ async function folderEditFill() {
 
 async function folderEdit() {
   let data = {
-    _csrf: getCSRFToken(),
+    _csrf: PW.getCSRFToken(),
     description: jhValue("#foldereditdescription")
   }
 
