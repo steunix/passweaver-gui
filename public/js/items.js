@@ -229,12 +229,13 @@ async function itemEdit() {
     }
   }
 
+  jhQuery("#itemeditdialog").hide()
   const resp = await jhFetch(`/api/itemupdate/${id}`, itemdata)
   if ( !await PW.checkResponse(resp) ) {
     return
   }
 
-  jhQuery("#itemeditdialog").hide()
+  PW.showToast("success", "Item saved")
   await fillItems()
 }
 
@@ -332,8 +333,8 @@ async function personalPasswordCreate() {
     return
   }
 
-  await fillItems()
   PW.showToast("success", "Personal password saved")
+  await fillItems()
 }
 
 async function personalPasswordSet() {
@@ -349,7 +350,8 @@ async function personalPasswordSet() {
     return
   }
 
-  location.reload()
+  PW.showToast("success", "Personal folder unlocked")
+  await fillItems()
 }
 
 async function passwordCopy(ev) {
