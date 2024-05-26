@@ -38,6 +38,11 @@ app.use(helmet({
     }
   }
 }))
+
+if ( cfg?.https?.hsts ) {
+  app.use(helmet.hsts())
+}
+
 app.use(Express.json())
 app.use(compression())
 app.use(Express.urlencoded({ extended: true }))

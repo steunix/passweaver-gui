@@ -22,7 +22,8 @@ const configSchema = {
       "properties": {
         "enabled": { "type": "boolean" },
         "certificate": { "type": "string" },
-        "private_key": { "type": "string" }
+        "private_key": { "type": "string" },
+        "hsts": { "type": "boolean" }
       },
       "required": [ "enabled" ]
     }
