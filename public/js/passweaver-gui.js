@@ -38,7 +38,13 @@ export function errorDialog(text) {
 
 export async function checkResponse(resp,ignoreStatus) {
   const respClone = resp.clone()
-  const body = await respClone.json()
+  let body
+  try {
+    body = await respClone.json()
+  } catch (err) {
+    errorDialog("Bad request to PassWeaver GUI")
+    return
+  }
 
   const ignore = typeof ignoreStatus=="object" ? ignoreStatus : [ignoreStatus]
   if ( body.status=="success" ) {

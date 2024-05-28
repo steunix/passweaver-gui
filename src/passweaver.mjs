@@ -192,6 +192,7 @@ export async function getFolder(session, folder) {
 export async function itemCreate(session, folder, body) {
   const item = {
     title: body.title,
+    type: body.type,
     metadata: body.user,
     data: JSON.stringify({
       description: body.description,
@@ -259,6 +260,7 @@ export async function itemUpdate(session, itemid, body) {
 
   const item = {
     title: body.title,
+    type: body.type,
     data: data,
     metadata: body.data.user
   }
@@ -630,6 +632,78 @@ export async function addEvent(req, session, event, itemtype, itemid) {
   }
 
   const resp = await passWeaverAPI(session, "post", "/events", data)
+  return resp
+}
+
+/**
+ * Item types list
+ * @param {Object} req Request
+ * @param {Object} session Session
+ * @returns
+ */
+export async function itemTypesList(req, session) {
+
+  const resp = await passWeaverAPI(session, "get", "/itemtypes")
+  return resp
+}
+
+/**
+ * New item type
+ * @param {Object} req Request
+ * @param {Object} session Session
+ * @param {string} description Description
+ * @param {string} icon Icon
+ * @returns
+ */
+export async function itemTypeCreate(req, session, description, icon) {
+  const data = {
+    description: description,
+    icon: icon
+  }
+
+  const resp = await passWeaverAPI(session, "post", "/itemtypes", data)
+  return resp
+}
+
+/**
+ * Delete item type
+ * @param {Object} req Request
+ * @param {Object} session Session
+ * @param {string} id Item type id
+ * @returns
+ */
+export async function itemTypeRemove(req, session, id) {
+  const resp = await passWeaverAPI(session, "delete", `/itemtypes/${id}`)
+  return resp
+}
+
+/**
+ * Get item type
+ * @param {Object} req Request
+ * @param {Object} session Session
+ * @param {string} id Item type id
+ * @returns
+ */
+export async function itemTypeGet(req, session, id) {
+  const resp = await passWeaverAPI(session, "get", `/itemtypes/${id}`)
+  return resp
+}
+
+/**
+ * Edit item type
+ * @param {Object} req Request
+ * @param {Object} session Session
+ * @param {string} description Description
+ * @param {string} icon Icon
+ * @returns
+ */
+export async function itemTypeEdit(req, session, id, description, icon) {
+  const data = {
+    description: description,
+    icon: icon
+  }
+
+  const resp = await passWeaverAPI(session, "patch", `/itemtypes/${id}`, data)
   return resp
 }
 

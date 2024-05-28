@@ -33,11 +33,17 @@
     Generator
   </a>
   <% if ( admin ) { %>
+    <sl-divider></sl-divider>
     <a href="/pages/info" title="Info" class="link" pageid="info">
       <sl-icon name="info-circle"></sl-icon>
       Info
     </a>
+    <a href="/pages/settings" title="Settings" class="link" pageid="settings">
+      <sl-icon name="gear"></sl-icon>
+      Settings
+    </a>
   <% } %>
+  <sl-divider></sl-divider>
   <a href="/pages/preferences" title="preferences" class="link" pageid="preferences">
     <sl-icon name="sliders" page="Logout"></sl-icon>
     Preferences

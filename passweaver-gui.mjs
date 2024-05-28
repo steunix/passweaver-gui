@@ -280,6 +280,15 @@ app.get("/pages/info", async(req,res)=> {
 })
 
 // Settings
+app.get("/pages/settings", async (req,res)=>{
+  req.locals = {
+    pagetitle: "Settings",
+    pageid: "settings"
+  }
+  res.render('settings', { ...req.locals, ...commonParams(req) })
+})
+
+// Preferences
 app.get("/pages/preferences", async (req,res)=>{
   req.locals = {
     pagetitle: "Preferences",
@@ -534,6 +543,36 @@ app.use((err, req, res, next)=> {
   logErrors.write(`${err.stack}\n`)
   logErrors.write(`err.message\n`)
   res.redirect("/logout?error="+encodeURIComponent(err))
+})
+
+// Item types list
+app.get("/api/itemtypes", async (req,res)=>{
+  const resp = await PassWeaver.itemTypesList(req, req.session)
+  res.status(200).json(resp)
+})
+
+// New item type
+app.post("/api/itemtypes", async (req,res)=>{
+  const resp = await PassWeaver.itemTypeCreate(req, req.session, req.body.description, req.body.icon)
+  res.status(200).json(resp)
+})
+
+// Delete item type
+app.delete("/api/itemtypes/:id", async(req,res)=>{
+  const resp = await PassWeaver.itemTypeRemove(req, req.session, req.params.id)
+  res.status(200).json(resp)
+})
+
+// Get item type
+app.get("/api/itemtypes/:id", async(req,res)=>{
+  const resp = await PassWeaver.itemTypeGet(req, req.session, req.params.id)
+  res.status(200).json(resp)
+})
+
+// Update item type
+app.patch("/api/itemtypes/:id", async (req,res)=>{
+  const resp = await PassWeaver.itemTypeEdit(req, req.session, req.params.id, req.body.description, req.body.icon)
+  res.status(200).json(resp)
 })
 
 console.log(`Listening on port ${cfg.listen_port}`)

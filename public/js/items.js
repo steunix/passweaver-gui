@@ -2,6 +2,24 @@ import * as PW from './passweaver-gui.js'
 import * as Folders from './folders_shared.js'
 
 var itemSearchTimeout
+var itemTypesOptions
+
+async function fillItemTypes() {
+  const resp = await jhFetch(`/api/itemtypes`)
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  itemTypesOptions = ''
+  const body = await resp.json()
+  for ( const itm of body.data ) {
+    itemTypesOptions += `<sl-option id='itemtype-${itm.id}' value='${itm.id}'>${itm.description}`
+    if ( itm.icon ) {
+      itemTypesOptions += `<sl-icon name='${itm.icon}' slot='prefix'>${itm.description}</sl-icon>`
+    }
+    itemTypesOptions += `</sl-option>`
+  }
+}
 
 async function fillItems() {
   const search = jhValue("#itemsearch")
@@ -32,7 +50,6 @@ async function fillItems() {
   }
 
   // Manual check response, because body has already been read
-
   if ( body.data.length ) {
     var row = ""
     for ( const itm of body.data ) {
@@ -46,6 +63,10 @@ async function fillItems() {
         row += `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`
       }
       row += `</td>`
+      row += `<td class='border-end'>`
+      if ( itm.type ) {
+        row+= `<sl-icon name='${itm.itemtype.icon}' title='${itm.itemtype.description}'></sl-icon>`
+      }
       row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end'>${itm.title}</td>`
       row += `<td id='user-${itm.id}'>${itm.metadata}</td>`
       row += `<td class='border-end'><sl-copy-button title='Copy user to clipboard' from='user-${itm.id}'></sl-copy-button></td>`
@@ -128,7 +149,8 @@ async function folderClicked(ev, selectonly) {
 
 function itemCreateDialog() {
   jhQuery("#itemcreatedialog").show()
-  jhValue("#itemcreatedialog sl-input,sl-textarea", "")
+  jhValue("#itemcreatedialog sl-input,sl-textarea,sl-select", "")
+  jhQuery("#newtype").innerHTML = itemTypesOptions
   itemCreateEnable()
 }
 
@@ -137,6 +159,7 @@ async function itemCreate() {
 
   let itemdata = {
     _csrf: PW.getCSRFToken(),
+    type: jhValue("#newtype"),
     title: jhValue("#newtitle"),
     email: jhValue("#newemail"),
     description: jhValue("#newdescription"),
@@ -182,6 +205,8 @@ async function itemRemove(itm) {
 async function itemEditDialog(item) {
   jhQuery("#itemeditdialog").show()
   jhValue("#itemeditdialog sl-input,sl-textarea", "")
+  jhQuery("#edittype").innerHTML = itemTypesOptions
+
   itemEditFill(item)
   itemEditEnable()
 }
@@ -195,6 +220,7 @@ async function itemEditFill(item) {
   const body = await resp.json()
   if ( body.status=="success" ) {
     jhValue("#itemeditid", item)
+    jhValue("#edittype", body.data.type)
     jhValue("#edittitle", body.data.title)
     jhValue("#editemail", body.data.data.email)
     jhValue("#editdescription", body.data.data.description)
@@ -220,6 +246,7 @@ async function itemEdit() {
   let itemdata = {
     _csrf: PW.getCSRFToken(),
     title: jhValue("#edittitle"),
+    type: jhValue("#edittype"),
     data: {
       description: jhValue("#editdescription"),
       email: jhValue("#editemail"),
@@ -405,7 +432,8 @@ async function fillFolders() {
   PW.treeFill("folderstree",body.data,null,folderClicked)
 }
 
-fillFolders()
+await fillFolders()
+await fillItemTypes()
 
 // Create
 jhEvent("#newitem", "click",(ev)=>{
