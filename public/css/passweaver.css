@@ -23,6 +23,7 @@ body {
     padding: 0;
     font-family: var(--theme-font);
     font-size: var(--theme-font-size);
+    color: var(--sl-color-neutral-700);
 }
 
 /** CSS Grid */
