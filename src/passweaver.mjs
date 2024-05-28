@@ -640,6 +640,29 @@ export async function addEvent(req, session, event, itemtype, itemid) {
  */
 export async function info(session) {
   const resp = await passWeaverAPI(session, "get", "/util/info")
+  return resp
+}
 
+/**
+ * Get user preferences
+ * @param {*} req
+ * @param {*} session
+ */
+export async function preferencesGet(req, session) {
+  const resp = await passWeaverAPI(session, "get", `/users/${session.user}/settings`)
+  return resp
+}
+
+/**
+ * Set user preferences
+ * @param {*} req
+ * @param {*} session
+ */
+export async function preferencesSet(req, session) {
+  var prefs = [
+    { setting: "theme", value: req.body.theme }
+  ]
+
+  const resp = await passWeaverAPI(session, "post", `/users/${session.user}/settings`, prefs)
   return resp
 }

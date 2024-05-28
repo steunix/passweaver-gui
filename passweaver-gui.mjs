@@ -130,7 +130,8 @@ function commonParams(req) {
     user: req.session.user,
     userdescription: req.session.userdescription,
     admin: req.session.admin,
-    viewitem: req.query?.viewitem ?? ''
+    viewitem: req.query?.viewitem ?? '',
+    theme: req?.session?.theme ?? "light"
   }
 }
 
@@ -180,6 +181,16 @@ app.post("/access", async (req,res)=>{
 
   req.session.userdescription = (`${usr.data.lastname} ${usr.data.firstname}`).trim()
   req.session.email = usr.data.email
+
+  // Get user preferences
+  const prefs = await PassWeaver.preferencesGet(req, req.session)
+  const theme = prefs.data.find((el)=>{return el.setting=="theme"})
+  if ( theme ) {
+    req.session.theme = theme.value
+  } else {
+    req.session.theme = "light"
+  }
+
   req.session.save()
 
   if ( req.session.admin ) {
@@ -266,6 +277,15 @@ app.get("/pages/info", async(req,res)=> {
   page.cacheSize = prettyBytes(resp.data.cacheSize ?? 0)
 
   res.render('info', { ...page, ...commonParams(req) })
+})
+
+// Settings
+app.get("/pages/preferences", async (req,res)=>{
+  req.locals = {
+    pagetitle: "Preferences",
+    pageid: "preferences"
+  }
+  res.render('preferences', { ...req.locals, ...commonParams(req) })
 })
 
 /**
@@ -485,6 +505,25 @@ app.post("/api/personalunlock", async (req,res)=>{
 // Events
 app.post("/api/events", async(req,res)=> {
   const resp = await PassWeaver.addEvent(req, req.session, req.body.event, req.body.itemtype, req.body.itemid)
+  res.status(200).json(resp)
+})
+
+// Get user preferences
+app.get("/api/preferences", async(req,res)=>{
+  const resp = await PassWeaver.preferencesGet(req, req.session)
+  res.status(200).json(resp)
+})
+
+// Set user preferences
+app.post("/api/preferences", async(req,res)=>{
+  const resp = await PassWeaver.preferencesSet(req, req.session)
+
+  // Reapply theme
+  const theme = req?.body?.theme
+  if ( theme ) {
+    req.session.theme = theme
+    req.session.save()
+  }
   res.status(200).json(resp)
 })
 

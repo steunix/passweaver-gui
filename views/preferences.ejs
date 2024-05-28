@@ -1,0 +1,33 @@
+<%- include('partials/header.ejs') %>
+
+<div class="page-container">
+
+  <%- include('partials/topbar.ejs') %>
+  <%- include('partials/sidebar.ejs') %>
+  <%- include('partials/csrf.ejs') %>
+
+  <div class="main1">
+    <h2>Preferences</h2>
+    <table>
+      <tr>
+        <th>Theme</th>
+        <td>
+          <sl-select id='theme'>
+            <sl-option value="light">Light</sl-option>
+            <sl-option value="dark">Dark</sl-option>
+          </sl-select>
+        </td>
+      </tr>
+    </table>
+    <sl-divider></sl-divider>
+    <sl-button id='save' variant="primary">Save</sl-button>
+  </div>
+</div>
+
+</div>
+
+<script defer type="module" src="/public/js/preferences.js"></script>
+
+<%- include('partials/commondialogs.ejs') %>
+
+<%- include('partials/footer.ejs') %>
