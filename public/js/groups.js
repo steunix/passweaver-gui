@@ -27,7 +27,7 @@ async function fillUsers() {
       row +=
         `<tr>`+
         `<td><sl-icon-button id='remove-${usr.id}' title='Remove' data-id='${usr.id}' name="trash3" style="color:red;"></sl-icon-button></td>`+
-        `<td class='border-start'>${usr.login}</td>`+
+        `<td class='border-start border-end'>${usr.login}</td>`+
         `<td>${usr.lastname}</td>`+
         `<td>${usr.firstname}</td>`
     }
