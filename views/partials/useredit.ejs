@@ -1,8 +1,8 @@
 <sl-dialog id="edituserdialog" label="Edit user" class="dialog-deny-close">
-  <sl-input label="Login" id="editlogin" name="editlogin" required="required" autofocus></sl-input>
-  <sl-input type="email" label="Email" id="editemail" required="required" name="editemail"></sl-input>
-  <sl-input label="Last name" id="editlastname" name="editlastname" required="required"></sl-input>
-  <sl-input label="First name" id="editfirstname" name="editfirstname"></sl-input>
+  <sl-input label="Login" id="editlogin" name="editlogin" required="required" autofocus maxlength="50"></sl-input>
+  <sl-input type="email" label="Email" id="editemail" required="required" name="editemail" maxlength="50"></sl-input>
+  <sl-input label="Last name" id="editlastname" name="editlastname" required="required" maxlength="100"></sl-input>
+  <sl-input label="First name" id="editfirstname" name="editfirstname" maxlength="100"></sl-input>
   <sl-select label="Locale" id="editlocale" name="editlocale">
     <sl-option value="en_US">en_US</sl-option>
   </sl-select>

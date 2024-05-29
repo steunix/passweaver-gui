@@ -12,6 +12,10 @@ async function fillItemTypes() {
   jhQuery("#itemtypestable tbody").innerHTML = ""
 
   let row = ''
+  if ( !body.data.length ) {
+    return
+  }
+
   for ( const itm of body.data ) {
     row +=
       `<tr data-id='${itm.id}' style='cursor:pointer'>`+
@@ -34,7 +38,7 @@ async function fillItemTypes() {
 
 await fillItemTypes()
 
-function itemtemTypeCreateDialog() {
+function itemTypeCreateDialog() {
   jhValue("#itemtypenewdialog sl-input", "")
   jhQuery("#itemtypenewdialog").show()
   itemTypeCreateEnable()
@@ -124,7 +128,7 @@ async function itemTypeEdit() {
 }
 
 jhEvent("#additemtype", "click", ()=>{
-  itemtemTypeCreateDialog()
+  itemTypeCreateDialog()
 })
 jhEvent("#itemtypenewcancel", "click", ()=>{
   jhQuery("#itemtypenewdialog").hide()
