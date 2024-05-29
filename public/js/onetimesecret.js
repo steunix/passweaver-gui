@@ -1,0 +1,19 @@
+import * as PW from './passweaver-gui.js'
+
+jhEvent("#save", "click", async(ev)=>{
+  const data = {
+    _csrf: PW.getCSRFToken(),
+    data: jhValue("#data"),
+    hours: 24*7
+  }
+  const resp = await jhFetch(`/api/onetimesecret`, data)
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  const body = await resp.json()
+  jhValue("#link", `${window.location.origin}/onetimesecret/${body.data.token}`)
+
+  jhQuery("#result").style.visibility = "visible"
+  PW.showToast("success", "Link created")
+})
