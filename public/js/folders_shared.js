@@ -18,7 +18,7 @@ export function currentFolder() {
 }
 
 function folderCreateDialog() {
-  jhValue("#foldercreatedialog sl-input,sl-textarea")
+  jhValue("#foldercreatedialog sl-input,sl-textarea", "")
   folderCreateEnable()
   jhQuery("#foldercreatedialog").show()
 }
