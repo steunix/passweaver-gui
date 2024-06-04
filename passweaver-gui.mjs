@@ -12,7 +12,6 @@ import compression from 'compression'
 import helmet from 'helmet'
 import https from 'https'
 import FS from 'fs'
-import prettyBytes from 'pretty-bytes'
 import Morgan from "morgan"
 import RFS from "rotating-file-stream"
 import favicon from 'serve-favicon'
@@ -274,7 +273,7 @@ app.get("/pages/info", async(req,res)=> {
   page.users = resp.data.users
   page.folders = resp.data.folders
   page.items = resp.data.items
-  page.cacheSize = prettyBytes(resp.data.cacheSize ?? 0)
+  page.cacheSize = resp.data.cacheSize ?? 0
 
   res.render('info', { ...page, ...commonParams(req) })
 })
