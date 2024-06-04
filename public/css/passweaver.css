@@ -76,6 +76,10 @@ body {
   background-color: #636363;
 }
 
+.page-sidebar .link sl-icon {
+  padding-right: 0.5em;
+}
+
 .page-sidebar .current {
     background-color: var(--theme-sidebar-current-bgcolor);
     color: var(--theme-sidebar-current-color);
