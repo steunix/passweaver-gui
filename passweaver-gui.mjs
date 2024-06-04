@@ -311,7 +311,7 @@ app.get("/onetimesecret/:token", async(req,res)=> {
   req.locals = {
     pagetitle: "One time secret",
     pageid: "onetimesecretshow",
-    token: req.params.token
+    token: encodeURIComponent(req.params.token)
   }
   res.render('onetimesecretshow', { ...req.locals, ...commonParams(req) })
 })
