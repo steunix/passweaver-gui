@@ -205,6 +205,7 @@ async function itemRemove(itm) {
 async function itemEditDialog(item) {
   jhQuery("#itemeditdialog").show()
   jhValue("#itemeditdialog sl-input,sl-textarea", "")
+  jhQuery("#editpassword").setAttribute("type","password")
   jhQuery("#edittype").innerHTML = itemTypesOptions
 
   itemEditFill(item)
@@ -264,24 +265,6 @@ async function itemEdit() {
 
   PW.showToast("success", "Item saved")
   await fillItems()
-}
-
-function toggleEditPassword() {
-  if ( jhQuery("#editpassword").getAttribute("type")=="password") {
-    jhQuery("#editpassword").setAttribute("type","text")
-    passwordAccessed(jhValue("#itemeditid"))
-  } else {
-    jhQuery("#editpassword").setAttribute("type","password")
-  }
-}
-
-function toggleViewPassword() {
-  if ( jhQuery("#viewpassword").getAttribute("type")=="password") {
-    jhQuery("#viewpassword").setAttribute("type","text")
-    passwordAccessed(jhValue("#itemviewid"))
-  } else {
-    jhQuery("#viewpassword").setAttribute("type","password")
-  }
 }
 
 async function itemViewFill(item) {
@@ -390,6 +373,8 @@ async function passwordCopy(ev) {
   }
 
   const body = await resp.json()
+  navigator.clipboard.writeText(body.data.data.password)
+
   passwordAccessed(item)
 }
 
@@ -450,14 +435,8 @@ jhEvent("#itemcreatesave", "click",(ev)=>{
 jhEvent("#newtitle", "keyup",(ev)=>{
   itemCreateEnable()
 })
-jhEvent("#toggleviewpassword", "click",(ev)=>{
-  toggleViewPassword()
-})
 
 // Edit
-jhEvent("#toggleeditpassword", "click",(ev)=>{
-  toggleEditPassword()
-})
 jhEvent("#edittitle", "keyup",(ev)=>{
   itemEditEnable()
 })
@@ -504,10 +483,6 @@ jhEvent("#itemsearch", "sl-input", (ev) => {
 if ( jhQuery("#viewitem") ) {
   setTimeout(()=>{ findAndShowItem(jhValue("#viewitem")) }, 200)
 }
-
-jhEvent("#copyviewpassword", "click", (ev)=>{
-  passwordAccessed(jhValue("#itemviewid"))
-})
 
 addEventListener("folders-refresh", async (ev)=>{
   await fillFolders()
