@@ -221,5 +221,8 @@ export function getCSRFToken() {
 
 if ( jhQuery("#pageid") ) {
   const pageid = jhValue("#pageid")
-  jhQuery(`.page-sidebar .link[pageid=${pageid}]`).classList.add("current")
+  const elem = jhQuery(`.page-sidebar .link[pageid=${pageid}]`)
+  if ( elem ) {
+    elem.classList.add("current")
+  }
 }
