@@ -297,13 +297,23 @@ app.get("/pages/preferences", async (req,res)=>{
   res.render('preferences', { ...req.locals, ...commonParams(req) })
 })
 
-// One time secret
+// One time secret create
 app.get("/pages/onetimesecret", async (req,res)=>{
   req.locals = {
-    pagetitle: "onetimesecret",
+    pagetitle: "One time secret",
     pageid: "onetimesecret"
   }
   res.render('onetimesecret', { ...req.locals, ...commonParams(req) })
+})
+
+// One time secret display
+app.get("/onetimesecret/:token", async(req,res)=> {
+  req.locals = {
+    pagetitle: "One time secret",
+    pageid: "onetimesecretshow",
+    token: req.params.token
+  }
+  res.render('onetimesecretshow', { ...req.locals, ...commonParams(req) })
 })
 
 /**
@@ -587,6 +597,12 @@ app.patch("/api/itemtypes/:id", async (req,res)=>{
 // Create one time secret
 app.post("/api/onetimesecret", async (req,res)=>{
   const resp = await PassWeaver.oneTimeSecretCreate(req, req.session, req.body.data, req.body.hours)
+  res.status(200).json(resp)
+})
+
+// Get one time secret
+app.get("/onetimesecretget/:token", async (req,res)=>{
+  const resp = await PassWeaver.oneTimeSecretGet(req, req.session, req.params.token)
   res.status(200).json(resp)
 })
 

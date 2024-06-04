@@ -762,6 +762,6 @@ export async function oneTimeSecretCreate(req, session, data, hours) {
  * @returns
  */
 export async function oneTimeSecretGet(req, session, token) {
-  const resp = await passWeaverAPI(session, "get", `/onetimetoken/${token}`)
+  const resp = await passWeaverAPI(session, "get", `/onetimetokens/${token}`)
   return resp
 }
