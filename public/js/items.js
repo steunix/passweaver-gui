@@ -326,9 +326,9 @@ function personalPasswordAskDialog() {
 function personalPasswordCreateEnable() {
   if (
     jhValue("#newpersonalpassword")=="" || jhValue("#newpersonalpassword").length<8 || jhValue("#newpersonalpassword")!=jhValue("#newpersonalpasswordconfirm") ) {
-      jhValue("#personalpasswordcreate").setAttribute("disabled","disabled")
+      jhQuery("#personalpasswordcreate").setAttribute("disabled","disabled")
   } else {
-    jhValue("#personalpasswordcreate").removeAttribute("disabled")
+    jhQuery("#personalpasswordcreate").removeAttribute("disabled")
   }
 }
 
@@ -342,6 +342,8 @@ async function personalPasswordCreate() {
   if ( !await PW.checkResponse(resp) ) {
     return
   }
+
+  jhQuery("#personalpasswordnew").hide()
 
   PW.showToast("success", "Personal password saved")
   await fillItems()
