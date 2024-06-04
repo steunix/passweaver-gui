@@ -10,11 +10,12 @@ jhEvent("#show", "click", async(ev)=>{
     }
     jhValue("#data", body.data)
   } catch (err) {
+    debugger
     PW.errorDialog("This secret does not exist!")
     jhQuery("#show").style.visibility = "hidden"
-    jhQuery("#data").style.visibility = "hidden"
+    jhQuery("#result").style.visibility = "hidden"
     return
     }
   jhQuery("#show").style.visibility = "hidden"
-  jhQuery("#data").style.visibility = "visible"
+  jhQuery("#result").style.visibility = "visible"
 })
