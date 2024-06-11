@@ -379,8 +379,12 @@ export async function getGroup(session, group) {
  * @returns
  */
 export async function groupUpdate(session, group, body) {
-  const data = {
-    description: body.description
+  var data = {}
+  if ( body?.description ) {
+    data.description = body.description
+  }
+  if ( body?.parent ) {
+    data.parent = body.parent
   }
 
   const resp = await passWeaverAPI(session, "patch", `/groups/${group}`, data)

@@ -125,7 +125,7 @@ async function groupEdit() {
     return
   }
 
-    location.reload()
+  location.reload()
 }
 
 function groupEditEnable() {
@@ -159,11 +159,42 @@ async function groupRemoveUser(id) {
   })
 }
 
-const resp = await fetch("/api/groupstree")
-if ( await PW.checkResponse(resp) ) {
-  const body = await resp.json()
-  PW.treeFill("groupstree",body.data,null,groupClicked)
+async function groupMove(id, newparent) {
+  let data = {
+    _csrf: PW.getCSRFToken(),
+    parent: newparent
+  }
+
+  const resp = await jhFetch(`/api/groupupdate/${id}`, data)
+  if ( !await PW.checkResponse(resp) ) {
+    const items = jhQueryAll("sl-tree-item")
+    for ( const item of items ) {
+      item.classList.remove("dragover")
+    }
+    return
+  }
+
+  location.reload()
 }
+
+async function fillGroups() {
+  jhQuery("#groupstree").innerHTML = ""
+  const resp = await fetch("/api/groupstree")
+  if ( await PW.checkResponse(resp) ) {
+    const body = await resp.json()
+    PW.treeFill("groupstree",body.data,null,groupClicked)
+  }
+}
+
+await fillGroups()
+
+// Drag'n'drop
+jhDraggable("sl-tree-item",async (ev,data)=>{
+  const group = data
+  const newparent = ev.target.getAttribute("data-id")
+
+  await groupMove(group,newparent)
+})
 
 // Event handlers
 jhEvent("#groupremove", "click", (ev)=>{

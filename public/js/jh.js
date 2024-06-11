@@ -3,7 +3,7 @@ function jhResolveQuery(query) {
   if ( typeof query=="string" ) {
     el = document.querySelectorAll(query)
   } else {
-    el = query
+    el = [query]
   }
 
   return el
@@ -66,6 +66,64 @@ function jhValue(query, value) {
     for ( const e of el) {
       e.value = value
     }
+  }
+}
+
+/**
+ * Wrapper for Element.set/getAttribute
+ * @param {string} query Query
+ * @param {string} attr Attribute
+ * @param {string} value Value
+ * @returns
+ */
+function jhAttribute(query, attr, value) {
+  const el = jhResolveQuery(query)
+
+  if ( el===null ) {
+    return
+  }
+
+  if ( value===undefined ) {
+    // Getter, on the first element
+    return el[0].getAttribute(attr)
+  } else {
+    // Setter, on all elements
+    for ( const e of el) {
+      e.setAttribute(attr, value)
+    }
+  }
+}
+
+/**
+ * Makes elements draggable
+ * @param {string} query Query
+ * @param {function} dropCallback Event called on drop
+ */
+function jhDraggable(query, dropCallback) {
+  const el = jhResolveQuery(query)
+
+  if ( el===null ) {
+    return
+  }
+
+  for ( const e of el) {
+    jhAttribute(e, "draggable", true)
+    jhEvent(e, "dragstart", (ev)=>{
+      ev.dataTransfer.setData("text/plain", ev.target.getAttribute("data-id"))
+    })
+    jhEvent(e, "dragover", (ev)=>{
+      ev.preventDefault()
+    })
+    jhEvent(e, "dragenter", (ev)=>{
+      ev.target.classList.add("dragover")
+    })
+    jhEvent(e, "dragleave", (ev)=>{
+      ev.target.classList.remove("dragover")
+    })
+    jhEvent(e, "drop", (ev)=> {
+      const data = ev.dataTransfer.getData('text/plain')
+      dropCallback(ev, data)
+    })
   }
 }
 
