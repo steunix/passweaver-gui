@@ -160,11 +160,13 @@ async function jhFetch(url, payload, method) {
  * @returns
  */
 function jhParents(query, selector) {
-  var el = jhResolveQuery(query)
+  var elems = jhResolveQuery(query)
 
   const parents = [];
-  while ((el = el.parentNode) && el !== document) {
-    if (!selector || el.matches(selector)) parents.push(el);
+  for ( el of elems ) {
+    while ((el = el.parentNode) && el !== document) {
+      if (!selector || el.matches(selector)) parents.push(el);
+    }
   }
   return parents;
 }
