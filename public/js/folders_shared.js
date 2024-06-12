@@ -102,6 +102,23 @@ async function folderEdit() {
   dispatchEvent(refresh)
 }
 
+export async function folderMove(id, newparent) {
+  let data = {
+    _csrf: PW.getCSRFToken(),
+    parent: newparent
+  }
+
+  const resp = await jhFetch(`/api/folderupdate/${id}`, data)
+  if ( !await PW.checkResponse(resp) ) {
+    const items = jhQueryAll("sl-tree-item")
+    for ( const item of items ) {
+      item.classList.remove("dragover")
+    }
+    return
+  }
+
+  location.reload()
+}
 
 // Event handlers
 jhEvent("#foldercreatedescription", "keyup",(ev)=>{

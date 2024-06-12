@@ -124,6 +124,14 @@ async function fillFolders() {
 
 await fillFolders()
 
+// Drag'n'drop
+jhDraggable("sl-tree-item",async (ev,data)=>{
+  const folder = data
+  const newparent = ev.target.getAttribute("data-id")
+
+  await Folders.folderMove(folder,newparent)
+})
+
 jhEvent("#addgroup", "click",(ev)=>{
   GPicker.show(groupPickerChoosen)
 })
