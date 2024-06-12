@@ -4,6 +4,10 @@
   </div>
 
   <input type="hidden" id="pageid" value="<%- pageid %>"></input>
+  <div class="username">
+    <%= userdescription %>
+  </div>
+  <sl-divider></sl-divider>
   <% if ( !admin ) { %>
     <a href="/pages/items" title="Items" class="link" pageid="items">
       <sl-icon name="folder2-open"></sl-icon>

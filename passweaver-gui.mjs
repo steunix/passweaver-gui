@@ -178,7 +178,7 @@ app.post("/access", async (req,res)=>{
 
   const usr = await PassWeaver.getUser(req.session, req.session.user)
 
-  req.session.userdescription = (`${usr.data.lastname} ${usr.data.firstname}`).trim()
+  req.session.userdescription = (`${usr.data.firstname} ${usr.data.lastname}`).trim()
   req.session.email = usr.data.email
 
   // Get user preferences

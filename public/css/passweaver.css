@@ -120,6 +120,13 @@ body {
     min-width: 0;
 }
 
+.username {
+    text-align: center;
+    position: static;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 /** Customization */
 ::-webkit-scrollbar {
     height: 16px;
