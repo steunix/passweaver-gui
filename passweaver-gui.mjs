@@ -13,7 +13,7 @@ import helmet from 'helmet'
 import https from 'https'
 import FS from 'fs'
 import Morgan from "morgan"
-import RFS from "rotating-file-stream"
+import * as RFS from "rotating-file-stream"
 import favicon from 'serve-favicon'
 
 import * as Config from './src/config.mjs'
