@@ -19,6 +19,10 @@ async function fillItemTypes() {
     }
     itemTypesOptions += `</sl-option>`
   }
+
+  jhQuery("#viewtype").innerHTML = itemTypesOptions
+  jhQuery("#edittype").innerHTML = itemTypesOptions
+  jhQuery("#newtype").innerHTML  = itemTypesOptions
 }
 
 async function fillItems() {
@@ -150,7 +154,6 @@ async function folderClicked(ev, selectonly) {
 function itemCreateDialog() {
   jhQuery("#itemcreatedialog").show()
   jhValue("#itemcreatedialog sl-input,sl-textarea,sl-select", "")
-  jhQuery("#newtype").innerHTML = itemTypesOptions
   itemCreateEnable()
 }
 
@@ -203,10 +206,9 @@ async function itemRemove(itm) {
 }
 
 async function itemEditDialog(item) {
+  jhValue("#itemeditdialog sl-input,sl-textarea,sl-select", "")
   jhQuery("#itemeditdialog").show()
-  jhValue("#itemeditdialog sl-input,sl-textarea", "")
   jhQuery("#editpassword").setAttribute("type","password")
-  jhQuery("#edittype").innerHTML = itemTypesOptions
 
   itemEditFill(item)
   itemEditEnable()
@@ -278,6 +280,7 @@ async function itemViewFill(item) {
   const body = await resp.json()
   jhValue("#itemviewid", item)
   jhValue("#viewtitle", body.data.title)
+  jhValue("#viewtype", body.data.type)
   jhValue("#viewemail", body.data.data.email)
   jhValue("#viewdescription", body.data.data.description)
   jhValue("#viewurl", body.data.data.url)
@@ -290,6 +293,7 @@ function itemShow(item) {
   if ( window.getSelection() ) {
     window.getSelection().empty()
   }
+  jhValue("#itemviewdialog sl-input,sl-textarea,sl-select", "")
   jhQuery("#itemviewdialog").show()
   itemViewFill(item)
 }

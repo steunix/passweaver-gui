@@ -145,7 +145,6 @@ export function treeSearch(elemid,searchstring,start) {
       if ( index==searchTreeIndex ) {
 
         // Expand parents
-        debugger
         var parents = jhParents(treeitem, "sl-tree-item")
         for ( const parent of parents ) {
           parent.setAttribute("expanded","expanded")
