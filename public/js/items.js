@@ -215,6 +215,7 @@ async function itemEditDialog(item) {
 async function itemEditFill(item) {
   const resp = await jhFetch(`/api/items/${item}`)
   if ( !await PW.checkResponse(resp) ) {
+    jhQuery("#itemeditdialog").hide()
     return
   }
 
