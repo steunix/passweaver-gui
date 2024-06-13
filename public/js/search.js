@@ -1,6 +1,26 @@
 import * as PW from './passweaver-gui.js'
 
 var itemSearchTimeout
+var itemTypesOptions
+
+async function fillItemTypes() {
+  const resp = await jhFetch(`/api/itemtypes`)
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  itemTypesOptions = ''
+  const body = await resp.json()
+  for ( const itm of body.data ) {
+    itemTypesOptions += `<sl-option id='itemtype-${itm.id}' value='${itm.id}'>${itm.description}`
+    if ( itm.icon ) {
+      itemTypesOptions += `<sl-icon name='${itm.icon}' slot='prefix'>${itm.description}</sl-icon>`
+    }
+    itemTypesOptions += `</sl-option>`
+  }
+
+  jhQuery("#viewtype").innerHTML = itemTypesOptions
+}
 
 async function fillItems() {
   jhQuery("#itemstable tbody").innerHTML = ""
@@ -44,6 +64,7 @@ async function itemViewFill(item) {
 
   const body = await resp.json()
   jhValue("#viewtitle", body.data.title)
+  jhValue("#viewtype", body.data.type)
   jhValue("#viewemail", body.data.data.email)
   jhValue("#viewdescription", body.data.data.description)
   jhValue("#viewurl", body.data.data.url)
@@ -59,6 +80,8 @@ async function itemShow(item) {
   jhQuery("#itemviewdialog").show()
   await itemViewFill(item)
 }
+
+await fillItemTypes()
 
 jhEvent("#itemsearch", "sl-input", async (ev) => {
   if ( itemSearchTimeout ) {
