@@ -125,8 +125,9 @@ async function fillFolders() {
 await fillFolders()
 
 // Drag'n'drop
-jhDraggable("sl-tree-item",async (ev,data)=>{
-  const folder = data
+jhDraggable("sl-tree-item")
+jhDropTarget("sl-tree-item",async (ev,data)=>{
+  const folder = data.data
   const newparent = ev.target.getAttribute("data-id")
 
   await Folders.folderMove(folder,newparent)

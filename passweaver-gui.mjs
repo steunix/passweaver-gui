@@ -361,6 +361,12 @@ app.post("/api/itemupdate/:item", async (req,res)=> {
   res.status(200).json(resp)
 })
 
+// Move item
+app.post("/api/itemmove/:item", async (req,res)=> {
+  const resp = await PassWeaver.itemMove(req.session, req.params.item, req.body)
+  res.status(200).json(resp)
+})
+
 // Clone item
 app.post("/api/items/:item/clone", async (req,res)=> {
   const resp = await PassWeaver.itemClone(req.session, req.params.item)

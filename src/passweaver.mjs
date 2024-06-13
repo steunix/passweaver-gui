@@ -270,6 +270,22 @@ export async function itemUpdate(session, itemid, body) {
 }
 
 /**
+ * Move an item into another folder
+ * @param {Object} session
+ * @param {string} folder
+ * @param {Object} body
+ * @returns
+ */
+export async function itemMove(session, itemid, body) {
+  const item = {
+    folder: body.folder
+  }
+
+  const resp = await passWeaverAPI(session, "patch", `/items/${itemid}`, item)
+  return resp
+}
+
+/**
  * Create a new folder
  * @param {Object} session
  * @param {string} folder

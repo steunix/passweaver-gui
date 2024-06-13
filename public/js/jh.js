@@ -97,10 +97,14 @@ function jhAttribute(query, attr, value) {
 /**
  * Makes elements draggable
  * @param {string} query Query
- * @param {function} dropCallback Event called on drop
+ * @param {string} type Item type
  */
-function jhDraggable(query, dropCallback) {
+function jhDraggable(query,type) {
   const el = jhResolveQuery(query)
+
+  if ( type===undefined ) {
+    type = "default"
+  }
 
   if ( el===null ) {
     return
@@ -109,20 +113,42 @@ function jhDraggable(query, dropCallback) {
   for ( const e of el) {
     jhAttribute(e, "draggable", true)
     jhEvent(e, "dragstart", (ev)=>{
-      ev.dataTransfer.setData("text/plain", ev.target.getAttribute("data-id"))
+      ev.dataTransfer.setData("text/plain", type+":"+ev.target.getAttribute("data-id"))
     })
+  }
+}
+
+/**
+ * Makes elements a drop target
+ * @param {string} query Query
+ * @param {function} dropCallback Event called on drop
+ */
+function jhDropTarget(query, dropCallback) {
+  const el = jhResolveQuery(query)
+
+  if ( el===null ) {
+    return
+  }
+
+  for ( const e of el) {
     jhEvent(e, "dragover", (ev)=>{
       ev.preventDefault()
     })
     jhEvent(e, "dragenter", (ev)=>{
       ev.target.classList.add("dragover")
+      ev.stopPropagation()
     })
     jhEvent(e, "dragleave", (ev)=>{
       ev.target.classList.remove("dragover")
     })
     jhEvent(e, "drop", (ev)=> {
+      ev.stopPropagation()
+      ev.target.classList.remove("dragover")
       const data = ev.dataTransfer.getData('text/plain')
-      dropCallback(ev, data)
+      dropCallback(ev, {
+        type: data.split(":")[0],
+        data: data.split(":")[1]
+      })
     })
   }
 }

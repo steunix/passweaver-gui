@@ -114,6 +114,9 @@ async function fillItems() {
   if ( jhQuery("#itemstable [id^='row-']") ) {
     jhQuery("#folderremove").setAttribute("disabled","disabled")
   }
+
+  // Setup drag'n'drop
+  jhDraggable("#itemstable [id^='row-']","item")
 }
 
 async function folderClicked(ev, selectonly) {
@@ -315,6 +318,21 @@ function itemCopyLink(itm) {
   PW.showToast("primary", "Item link copied to clipboard")
 }
 
+async function itemMove(id, folder) {
+  let itemdata = {
+    _csrf: PW.getCSRFToken(),
+    folder: folder
+  }
+
+  const resp = await jhFetch(`/api/itemmove/${id}`, itemdata)
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  PW.showToast("success", "Item moved")
+  await fillItems()
+}
+
 function findAndShowItem(itm) {
   itemViewFill(itm)
   jhQuery("#itemviewdialog").show()
@@ -428,11 +446,18 @@ await fillFolders()
 await fillItemTypes()
 
 // Drag'n'drop
-jhDraggable("sl-tree-item",async (ev,data)=>{
-  const folder = data
+jhDraggable("sl-tree-item", "folder")
+jhDropTarget("sl-tree-item",async (ev,data)=>{
   const newparent = ev.target.getAttribute("data-id")
 
-  await Folders.folderMove(folder,newparent)
+  if ( data.type=="folder") {
+    const folder = data.data
+    await Folders.folderMove(folder,newparent)
+  }
+  if ( data.type=="item" ) {
+    const item = data.data
+    await itemMove(item,newparent)
+  }
 })
 
 // Create

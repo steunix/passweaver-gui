@@ -189,8 +189,9 @@ async function fillGroups() {
 await fillGroups()
 
 // Drag'n'drop
-jhDraggable("sl-tree-item",async (ev,data)=>{
-  const group = data
+jhDraggable("sl-tree-item")
+jhDropTarget("sl-tree-item",async (ev,data)=>{
+  const group = data.data
   const newparent = ev.target.getAttribute("data-id")
 
   await groupMove(group,newparent)
