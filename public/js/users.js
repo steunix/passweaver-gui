@@ -98,13 +98,13 @@ async function userCreate() {
     secret: jhValue("#newpassword")
   }
 
+  jhQuery("#newuserdialog").hide()
   const resp = await jhFetch("/api/usernew/", userdata)
   if ( !await PW.checkResponse(resp) ) {
     return
   }
 
   fillUsers()
-  jhQuery("#newuserdialog").hide()
   PW.showToast("success", "User created")
 }
 
