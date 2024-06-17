@@ -6,8 +6,12 @@ PassWeaver-gui is an opensource project, released under MIT license.
 
 # Features
 
-- Personal folders
+- Light or dark theme
+- Personal folders for each user
 - Share items through permalinks
+- Share one-time secrets to anyone
+- Folder level permissions
+- User groups
 - Pages are served with HTTPS and optionally HTTP (with limitations, see below)
 - CSP compliant pages
 - Both LDAP and local authentication
@@ -17,7 +21,7 @@ PassWeaver-gui is an opensource project, released under MIT license.
 
 PassWeaver-gui is just a nice frontend to PassWeaver-api and it brings all its capabilities to the final user; everything you can do with your items, folders, users and groups is defined in PassWeaver-api. See docs there for more info about its capabilities.
 
-While PassWeaver-api is a generic and independent piece of software, PassWeaver-gui is its perfect companion.
+While PassWeaver-api is a generic and independent piece of background software, PassWeaver-gui is its perfect UI companion.
 
 # Basics
 
