@@ -138,6 +138,17 @@ async function folderClicked(ev, selectonly) {
     Folders.currentPermissions.write = false
   }
 
+  var cp = [ "danger", "", "No access"]
+  if ( Folders.currentPermissions.read ) {
+    cp = [ "warning", "", "Read only"]
+  }
+  if ( Folders.currentPermissions.write ) {
+    cp = [ "success", "", "Read and write"]
+  }
+  jhQuery("#currentpermissions").setAttribute("variant", cp[0])
+  jhQuery("#currentpermissions").setAttribute("title", cp[2])
+  jhQuery("#currentpermissions").innerHTML = cp[1]
+
   // Load items
   await fillItems()
 
