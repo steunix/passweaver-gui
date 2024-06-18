@@ -166,6 +166,12 @@ async function folderClicked(ev, selectonly) {
 }
 
 function itemCreateDialog() {
+  // Since we cannot reset the visibility of the password field, we just recreate it: so
+  // when dialog is opened a second time, it doesn't remember the previous visibility
+  // of the password
+  const html = jhQuery("#newhack").innerHTML
+  jhQuery("#newhack").innerHTML = html
+
   jhQuery("#itemcreatedialog").show()
   jhValue("#itemcreatedialog sl-input,sl-textarea,sl-select", "")
   itemCreateEnable()
@@ -237,6 +243,12 @@ async function itemEditFill(item) {
 
   const body = await resp.json()
   if ( body.status=="success" ) {
+    // Since we cannot reset the visibility of the password field, we just recreate it: so
+    // when dialog is opened a second time, it doesn't remember the previous visibility
+    // of the password
+    const html = jhQuery("#edithack").innerHTML
+    jhQuery("#edithack").innerHTML = html
+
     jhValue("#itemeditid", item)
     jhValue("#edittype", body.data.type)
     jhValue("#edittitle", body.data.title)
@@ -290,6 +302,12 @@ async function itemViewFill(item) {
     jhQuery("#itemviewdialog").hide()
     return
   }
+
+  // Since we cannot reset the visibility of the password field, we just recreate it: so
+  // when dialog is opened a second time, it doesn't remember the previous visibility
+  // of the password
+  const html = jhQuery("#viewhack").innerHTML
+  jhQuery("#viewhack").innerHTML = html
 
   const body = await resp.json()
   jhValue("#itemviewid", item)
