@@ -28,7 +28,7 @@ async function search() {
   if ( body.data.length ) {
     var row = ""
     for ( const usr of body.data ) {
-      row += `<tr id='row-${usr.id}' data-id='${usr.id}' style='cursor:pointer'>`
+      row += `<tr id='row-${usr.id}' data-id='${usr.id}' style='cursor:pointer;'>`
       row += `<td><sl-icon-button id='user-${usr.id}' data-id='${usr.id}' name="arrow-right-circle"></sl-icon-button></td>`
       row += `<td>${usr.login}</td>`
       row += `<td>${usr.lastname} ${usr.firstname}</td>`

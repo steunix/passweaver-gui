@@ -142,8 +142,13 @@ body {
 #errordialog::part(header) {
     color: red;
 }
+
 #errordialog::part(panel) {
     border-radius: 8px;
+}
+
+sl-dialog::part(header) {
+    border-bottom: 1px solid var(--sl-color-neutral-200);
 }
 
 table {
