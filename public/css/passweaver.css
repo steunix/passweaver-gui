@@ -208,8 +208,18 @@ sl-tree-item::part(label) {
     font-family: var(--theme-font);
     font-size: var(--theme-font-size);
 }
+
 sl-tree-item::part(item):hover {
-  background-color: var(--sl-color-neutral-100);
+  background-color: var(--sl-color-neutral-200);
+}
+
+sl-tree-item::part(item--selected) {
+    background-color: var(--sl-color-neutral-200);
+    font-weight: bold !important;
+}
+
+sl-tree-item[selected]::part(label) {
+    font-weight: bold;
 }
 
 sl-tree {
