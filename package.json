@@ -1,6 +1,6 @@
 {
   "name": "passweaver-gui",
-  "version": "1.0.0rc2",
+  "version": "0.9.0",
   "description": "Collaborative password manager GUI",
   "main": "passweaver-gui.mjs",
   "scripts": {},
