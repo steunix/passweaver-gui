@@ -8,6 +8,7 @@ export function show(callback) {
   jhValue("#grouppickersearch", "")
   jhQuery("#grouppickertable tbody").innerHTML = ""
   jhQuery("#grouppickerdialog").show()
+  search()
 }
 
 export function hide() {
@@ -28,7 +29,7 @@ async function search() {
     var row = ""
     for ( const grp of body.data ) {
       row +=
-        `<tr id='row-${grp.id}' data-id='${grp.id}'>`+
+        `<tr id='row-${grp.id}' data-id='${grp.id}' style='cursor:pointer'>`+
         `<td><sl-icon-button id='choose-${grp.id}' data-id='${grp.id}' name="arrow-right-circle"></sl-icon-button></td>`+
         `<td>${grp.description}</td>`+
         `</tr>`
