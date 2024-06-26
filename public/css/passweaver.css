@@ -91,7 +91,7 @@ body {
 
 .page-sidebar .logo {
     text-align: center;
-    margin: 1.5em 0 1.5em 0;
+    margin: 1.5em 0 0.5em 0;
 }
 
 .header {
@@ -120,7 +120,18 @@ body {
     min-width: 0;
 }
 
+.companyname {
+    text-align: center;
+    font-weight: bold;
+    position: static;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
 .username {
+    font-size: 90%;
+    font-style: italic;
     text-align: center;
     position: static;
     padding-left: 10px;
