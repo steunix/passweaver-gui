@@ -1,5 +1,13 @@
 import * as PW from './passweaver-gui.js'
 
+jhEvent("#data", "keyup", async(ev)=>{
+  if ( jhValue("#data")=="" ) {
+    jhQuery("#save").setAttribute("disabled","disabled")
+  } else {
+    jhQuery("#save").removeAttribute("disabled")
+  }
+})
+
 jhEvent("#save", "click", async(ev)=>{
   const data = {
     _csrf: PW.getCSRFToken(),
