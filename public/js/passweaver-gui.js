@@ -151,7 +151,7 @@ export function treeSearch(elemid,searchstring,start) {
         }
 
         // Select item and show it
-        const selected = jhQueryAll("sl-tree-item [selected]")
+        const selected = jhQueryAll("sl-tree-item[selected]")
         for ( const s of selected ) {
           s.removeAttribute("selected")
         }
