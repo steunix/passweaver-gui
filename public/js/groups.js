@@ -42,7 +42,7 @@ async function fillUsers() {
   }
 
   // Group cannot be removed if not empty
-  if ( jhQueryAll("#userstable tbody tr").length ) {
+  if ( body.data.length ) {
     jhQuery("#groupremove").setAttribute("disabled","disabled")
   } else {
     jhQuery("#groupremove").removeAttribute("disabled")
