@@ -44,6 +44,8 @@ async function fillItems() {
         `<td>${itm.title}</td></tr>`
     }
     jhQuery("#itemstable tbody").innerHTML = row
+  } else {
+    jhQuery("#itemstable tbody").innerHTML = "<tr><td colspan='99'>No matching item found</td></tr>"
   }
 
   // Install event handlers

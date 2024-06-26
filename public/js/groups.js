@@ -37,6 +37,8 @@ async function fillUsers() {
     jhEvent("#userstable tbody [id^=remove]", "click", (ev)=>{
       groupRemoveUser(ev.currentTarget.getAttribute("data-id"))
     })
+  } else {
+    jhQuery("#userstable tbody").innerHTML = "<tr><td colspan='99'>No user in this group</td></tr>"
   }
 
   // Group cannot be removed if not empty
