@@ -214,15 +214,15 @@ function itemCreateEnable() {
 }
 
 async function itemRemove(itm) {
-  PW.confirmDialog("Remove item", "Are you sure you want to remove this item?", async()=> {
+  PW.confirmDialog("Delete item", "Are you sure you want to delete this item?", async()=> {
     const resp = await jhFetch(`/api/itemremove/${itm}`, {_csrf: PW.getCSRFToken()})
-      if ( !await PW.checkResponse(resp) ) {
-        return
-      }
+    if ( !await PW.checkResponse(resp) ) {
+      return
+    }
 
-      await fillItems()
-      PW.showToast("success", "Item removed")
-    })
+    await fillItems()
+    PW.showToast("success", "Item deleted")
+  }, "Delete", "danger")
 }
 
 async function itemEditDialog(item) {

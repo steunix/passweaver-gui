@@ -70,7 +70,7 @@ async function itemTypeCreate() {
 }
 
 async function itemTypeRemove(itemtype) {
-  PW.confirmDialog("Remove item type", "Do you want to delete this item type? All items having this type will be reset to null item type", async()=>{
+  PW.confirmDialog("Delete item type", "Do you want to delete this item type? All items having this type will be reset to null item type", async()=>{
     const data = {
       _csrf: PW.getCSRFToken()
     }
@@ -80,9 +80,9 @@ async function itemTypeRemove(itemtype) {
       return
     }
 
-    PW.showToast("success", "Item type removed")
+    PW.showToast("success", "Item type deleted")
     await fillItemTypes()
-  })
+  }, "Delete", "danger")
 }
 
 async function itemTypeEditDialog(itemtype) {

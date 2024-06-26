@@ -158,7 +158,7 @@ async function groupRemoveUser(id) {
 
     fillUsers()
     PW.showToast("success", "User removed from group")
-  })
+  }, "Remove", "danger")
 }
 
 async function groupMove(id, newparent) {

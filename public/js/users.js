@@ -119,7 +119,7 @@ function userCreateEnable() {
 }
 
 async function userRemove(usr) {
-  PW.confirmDialog("Remove user", "<strong><span style='color:red;'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", async ()=> {
+  PW.confirmDialog("Delete user", "<strong><span style='color:red;'>Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>", async ()=> {
     const resp = await jhFetch(`/api/userremove/${usr}`, {_csrf: PW.getCSRFToken()})
     if ( !await PW.checkResponse(resp) ) {
       return
@@ -127,7 +127,7 @@ async function userRemove(usr) {
 
     fillUsers()
     PW.showToast("success", "User removed")
-  })
+  }, "Delete", "danger")
 }
 
 async function userEditFill(user) {
@@ -205,7 +205,7 @@ async function groupRemove(ev) {
 
     fillGroups()
     PW.showToast("success", "Group removed")
-  })
+  }, "Remove", "danger")
 }
 
 async function groupPickerChoosen(group) {

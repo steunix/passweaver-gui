@@ -49,16 +49,16 @@ async function folderCreate() {
 }
 
 async function folderRemove() {
-  PW.confirmDialog("Remove folder", "Are you sure you want to remove this folder?", async ()=> {
+  PW.confirmDialog("Delete folder", "Are you sure you want to delete this folder?", async ()=> {
     jhQuery("#foldercreatedialog").hide()
     const resp = await jhFetch(`/api/folderremove/${currentFolder()}`, {_csrf: PW.getCSRFToken()})
     if ( !await PW.checkResponse(resp) ) {
       return
     }
 
-    PW.showToast("success", "Folder removed")
+    PW.showToast("success", "Folder deleted")
     dispatchEvent(refresh)
-  })
+  }, "Delete", "danger")
 }
 
 function folderEditDialog() {

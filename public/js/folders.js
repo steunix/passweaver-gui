@@ -86,7 +86,7 @@ async function groupRemove(ev) {
 
     await fillGroups()
     PW.showToast("success", "Group removed")
-  })
+  }, "Remove", "danger")
 }
 
 async function groupToggle(ev) {

@@ -1,12 +1,18 @@
 var treeCallback
 const itemFound = new Event("pw-item-found")
 
-export function confirmDialog(title,text,callback) {
+export function confirmDialog(title,text,callback,savetext,savevariant) {
   const dialog = jhQuery("#confirmdialog")
   dialog.setAttribute("label", title)
   jhQuery("#confirmdialogtext").innerHTML = text
 
   jhQuery("#confirmok").replaceWith(jhQuery("#confirmok").cloneNode(true))
+  if ( savetext !== undefined ) {
+    jhQuery("#confirmok").innerHTML = savetext
+  }
+  if ( savevariant !== undefined ) {
+    jhQuery("#confirmok").setAttribute("variant", savevariant)
+  }
   jhEvent("#confirmok", "click", event=> {
     dialog.hide()
     callback()
