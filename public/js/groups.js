@@ -162,6 +162,10 @@ async function groupRemoveUser(id) {
 }
 
 async function groupMove(id, newparent) {
+  if ( id===newparent ) {
+    return
+  }
+
   let data = {
     _csrf: PW.getCSRFToken(),
     parent: newparent

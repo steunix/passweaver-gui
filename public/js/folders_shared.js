@@ -103,6 +103,11 @@ async function folderEdit() {
 }
 
 export async function folderMove(id, newparent) {
+
+  if ( id===newparent ) {
+    return
+  }
+
   let data = {
     _csrf: PW.getCSRFToken(),
     parent: newparent
