@@ -12,8 +12,8 @@
       </center>
       <form id="loginForm" action="access" method="post">
         <%- include('partials/csrf.ejs') %>
-        <sl-input type="text" autofocus id="username" name="username" label="User"></sl-input>
-        <sl-input type="password" id="password" name="password" label="Password"></sl-input>
+        <sl-input type="text" autofocus id="username" name="username" label="User" required></sl-input>
+        <sl-input type="password" id="password" name="password" label="Password" required></sl-input>
         <sl-divider></sl-divider>
         <% if ( viewitem ) { %>
           <input id="viewitem" name="viewitem" type="hidden" value="<%= viewitem %>"></input>
