@@ -11,7 +11,7 @@
     <div style="display:flex;">
       <div style="display:flex;margin-right:1em;">
         <sl-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" clearable>
-          <sl-icon slot="suffix" name="search"></sl-icon>
+          <sl-icon slot="prefix" name="search"></sl-icon>
         </sl-input>
         <sl-button title="Search previous" id="foldersearchprevious">
           <sl-icon slot="suffix" name="chevron-left"></sl-icon>
@@ -43,7 +43,7 @@
         New item
       </sl-button>
       <sl-input id="itemsearch" placeholder="Filter items" clearable>
-        <sl-icon slot="suffix" name="search"></sl-icon>
+        <sl-icon slot="prefix" name="search"></sl-icon>
       </sl-input>
     </div>
     <table id="itemstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;" class="bordered">
