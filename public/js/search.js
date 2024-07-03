@@ -40,7 +40,7 @@ async function fillItems() {
       row +=
         `<tr id='row-${itm.id}' data-id='${itm.id}'>`+
         `<td><sl-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></sl-icon-button></td>`+
-        `<td class='border-start'>${itm.folder.description}</td>`+
+        `<td class='border-start border-end'>${itm.folder.description}</td>`+
         `<td>${itm.title}</td></tr>`
     }
     jhQuery("#itemstable tbody").innerHTML = row

@@ -76,6 +76,8 @@ async function fillGroups() {
 
     // Event handlers
     jhEvent("[id^=removegroup]", "click", groupRemove)
+  } else {
+    jhQuery("#groupstable tbody").innerHTML = "<tr><td colspan='99'>No group found</td></tr>"
   }
 }
 
