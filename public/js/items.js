@@ -28,8 +28,16 @@ async function fillItemTypes() {
 async function fillItems() {
   const search = jhValue("#itemsearch")
 
+  jhQuery("#itemstable tbody").innerHTML =
+  `<tr>
+    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
+    <td></td>
+    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
+    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
+    <td></td>
+    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
+    </tr>`
   const resp = await jhFetch(`/api/itemslist/${Folders.currentFolder()}?search=${search}`)
-  jhQuery("#itemstable tbody").innerHTML = ""
 
   // Folder may not be accessible
   if ( !await PW.checkResponse(resp,[403,412,417]) ) {
@@ -121,7 +129,7 @@ async function fillItems() {
 
 async function folderClicked(ev, selectonly) {
   // Read folder info
-  jhQuery("#itemstable tbody").innerHTML = ""
+  //jhQuery("#itemstable tbody").innerHTML = ""
   const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}`)
 
   // Folder may not be accessible
