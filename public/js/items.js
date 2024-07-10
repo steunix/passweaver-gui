@@ -23,10 +23,12 @@ async function fillItemTypes() {
   jhQuery("#viewtype").innerHTML = itemTypesOptions
   jhQuery("#edittype").innerHTML = itemTypesOptions
   jhQuery("#newtype").innerHTML  = itemTypesOptions
+  jhQuery("#typesearch").innerHTML  = itemTypesOptions
 }
 
 async function fillItems() {
   const search = jhValue("#itemsearch")
+  const type = jhValue("#typesearch")
 
   jhQuery("#itemstable tbody").innerHTML =
   `<tr>
@@ -37,7 +39,7 @@ async function fillItems() {
     <td></td>
     <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
     </tr>`
-  const resp = await jhFetch(`/api/itemslist/${Folders.currentFolder()}?search=${search}`)
+  const resp = await jhFetch(`/api/itemslist/${Folders.currentFolder()}?search=${search}&type=${type}`)
 
   // Folder may not be accessible
   if ( !await PW.checkResponse(resp,[403,412,417]) ) {
@@ -129,7 +131,7 @@ async function fillItems() {
 
 async function folderClicked(ev, selectonly) {
   // Read folder info
-  //jhQuery("#itemstable tbody").innerHTML = ""
+  jhValue("#typesearch", "")
   const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}`)
 
   // Folder may not be accessible
@@ -495,6 +497,11 @@ jhDropTarget("sl-tree-item",async (ev,data)=>{
     const item = data.data
     await itemMove(item,newparent)
   }
+})
+
+// Search
+jhEvent("#typesearch", "sl-change", ()=>{
+  fillItems()
 })
 
 // Create
