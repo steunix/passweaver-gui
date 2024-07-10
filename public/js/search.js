@@ -39,7 +39,10 @@ async function fillItems() {
     for ( const itm of body.data ) {
       row +=
         `<tr id='row-${itm.id}' data-id='${itm.id}'>`+
-        `<td><sl-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></sl-icon-button></td>`+
+        `<td>`+
+        `<sl-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></sl-icon-button>`+
+        `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`+
+        `</td>`+
         `<td class='border-start border-end'>${itm.folder.description}</td>`+
         `<td>${itm.title}</td></tr>`
     }
@@ -54,6 +57,9 @@ async function fillItems() {
   })
   jhEvent("#itemstable tbody [id^=view]", "click", async (ev)=>{
     await itemShow(ev.currentTarget.getAttribute("data-id"))
+  })
+  jhEvent("#itemstable tbody [id^=link]", "click",(ev)=>{
+    itemCopyLink(ev.currentTarget.getAttribute("data-id"))
   })
 }
 
@@ -81,6 +87,11 @@ async function itemShow(item) {
   }
   jhQuery("#itemviewdialog").show()
   await itemViewFill(item)
+}
+
+function itemCopyLink(itm) {
+  navigator.clipboard.writeText(`${window.location.origin}/pages/items?viewitem=${itm}`)
+  PW.showToast("primary", "Item link copied to clipboard")
 }
 
 await fillItemTypes()
