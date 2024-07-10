@@ -155,8 +155,9 @@ export async function foldersTree(session) {
  * @param {string} search Item title search
  * @returns
  */
-export async function itemsList(session, folder, search) {
-  const resp = await passWeaverAPI(session, "get", `/folders/${folder}/items?search=`+encodeURIComponent(search))
+export async function itemsList(session, folder, search, type) {
+  const resp = await passWeaverAPI(session, "get",
+    `/folders/${folder}/items?search=${encodeURIComponent(search)}&type=${encodeURIComponent(type)}`)
   return resp
 }
 

@@ -321,7 +321,7 @@ app.get("/onetimesecret/:token", async(req,res)=> {
 
 // Items list
 app.get("/api/itemslist/:folder", async (req,res)=>{
-  const list = await PassWeaver.itemsList(req.session, req.params.folder, req.query?.search)
+  const list = await PassWeaver.itemsList(req.session, req.params.folder, req.query?.search, req.query?.type)
   res.status(200).json(list)
 })
 
