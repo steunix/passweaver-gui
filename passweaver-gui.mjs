@@ -130,7 +130,8 @@ function commonParams(req) {
     userdescription: req.session.userdescription,
     admin: req.session.admin,
     viewitem: req.query?.viewitem ?? '',
-    theme: req?.session?.theme ?? "light"
+    theme: req?.session?.theme ?? "light",
+    version: Config.packageJson().version
   }
 }
 

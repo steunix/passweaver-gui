@@ -138,6 +138,16 @@ body {
     padding-right: 10px;
 }
 
+.version {
+    text-align: center;
+    font-size: 80%;
+    font-style: italic;
+    opacity: 50%;
+    position: absolute;
+    bottom: 0.5rem;
+    left: 1rem;
+}
+
 /** Customization */
 ::-webkit-scrollbar {
     height: 16px;
@@ -185,6 +195,9 @@ tr {
 tr:hover {
     background-color: var(--sl-color-neutral-100);
 }
+tr:hover td {
+    background-color: var(--sl-color-neutral-100);
+}
 
 .bordered {
     border-radius: 4px;
@@ -215,7 +228,8 @@ tr:hover {
 }
 
 .itemtitle {
-    background-color: var(--sl-color-neutral-50)
+    background-color: var(--sl-color-neutral-50);
+    cursor: pointer;
 }
 
 /* Shoelace */
