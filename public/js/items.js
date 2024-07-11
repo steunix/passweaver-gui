@@ -181,6 +181,9 @@ function itemCreateDialog() {
   // of the password
   const html = jhQuery("#newhack").innerHTML
   jhQuery("#newhack").innerHTML = html
+  jhEvent("#newgenerate", "click",(ev)=>{
+    itemCreateGeneratePassword()
+  })
 
   jhQuery("#itemcreatedialog").show()
   jhValue("#itemcreatedialog sl-input,sl-textarea,sl-select", "")
@@ -479,6 +482,18 @@ async function fillFolders() {
   jhQuery("sl-tree").innerHTML=""
   const body = await resp.json()
   PW.treeFill("folderstree",body.data,null,folderClicked)
+}
+
+async function itemCreateGeneratePassword() {
+  const resp = await jhFetch("/api/generatepassword")
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  const body = await resp.json()
+  if ( body.status=="success" ) {
+    jhValue("#newpassword", body.data.password)
+  }
 }
 
 await fillFolders()
