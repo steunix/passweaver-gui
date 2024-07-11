@@ -214,6 +214,10 @@ tr:hover {
     font-weight: bold;
 }
 
+.itemtitle {
+    background-color: var(--sl-color-neutral-50)
+}
+
 /* Shoelace */
 sl-tree-item::part(label) {
     font-family: var(--theme-font);

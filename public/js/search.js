@@ -44,7 +44,7 @@ async function fillItems() {
         `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`+
         `</td>`+
         `<td class='border-start border-end'>${itm.folder.description}</td>`+
-        `<td>${itm.title}</td></tr>`
+        `<td class='itemtitle'>${itm.title}</td></tr>`
     }
     jhQuery("#itemstable tbody").innerHTML = row
   } else {

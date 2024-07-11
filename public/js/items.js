@@ -81,7 +81,7 @@ async function fillItems() {
       if ( itm.type ) {
         row+= `<sl-icon name='${itm.itemtype.icon}' title='${itm.itemtype.description}'></sl-icon>`
       }
-      row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end'>${itm.title}</td>`
+      row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end itemtitle'>${itm.title}</td>`
       row += `<td id='user-${itm.id}'>${itm.metadata}</td>`
       row += `<td class='border-end'><sl-copy-button title='Copy user to clipboard' from='user-${itm.id}'></sl-copy-button></td>`
       row += `<td id='password-${itm.id}'>****</td>`
