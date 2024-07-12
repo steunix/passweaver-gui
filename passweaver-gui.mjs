@@ -113,7 +113,7 @@ const logAccess = RFS.createStream(`${cfg.log_dir}/passweaver-gui-access.log`, {
   interval: "1d",
   rotate: 14
 })
-app.use(Morgan('combined', { stream: logAccess }))
+app.use(Morgan('common', { stream: logAccess }))
 
 // Log errors
 const logErrors = RFS.createStream(`${cfg.log_dir}/passweaver-gui-errors.log`, {
