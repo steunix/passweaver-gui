@@ -113,7 +113,10 @@ const logAccess = RFS.createStream(`${cfg.log_dir}/passweaver-gui-access.log`, {
   interval: "1d",
   rotate: 14
 })
-app.use(Morgan('common', { stream: logAccess }))
+app.use(
+  Morgan(`:remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :total-time[0]`,
+  { stream: logAccess })
+)
 
 // Log errors
 const logErrors = RFS.createStream(`${cfg.log_dir}/passweaver-gui-errors.log`, {
