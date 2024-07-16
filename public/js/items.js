@@ -309,7 +309,7 @@ async function itemEdit() {
   await fillItems()
 }
 
-async function itemViewFill(item) {
+async function itemViewFill(item, gotofolder) {
   const resp = await jhFetch(`/api/items/${item}`)
   if ( !await PW.checkResponse(resp) ) {
     jhQuery("#itemviewdialog").hide()
@@ -332,6 +332,10 @@ async function itemViewFill(item) {
   jhValue("#viewuser", body.data.data.user)
   jhValue("#viewpassword", body.data.data.password)
   jhQuery("#viewpassword").setAttribute("type","password")
+
+  if ( gotofolder ) {
+    PW.treeItemSelect(`item-${body.data.folderid}`)
+  }
 }
 
 function itemShow(item) {
@@ -379,7 +383,7 @@ async function itemMove(id, folder) {
 }
 
 function findAndShowItem(itm) {
-  itemViewFill(itm)
+  itemViewFill(itm, true)
   jhQuery("#itemviewdialog").show()
 }
 

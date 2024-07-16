@@ -138,6 +138,25 @@ export function treeFill(id, data, mainid, callback) {
   }
 }
 
+export function treeItemSelect(elemid) {
+  const treeitem = jhQuery(`#${elemid}`)
+
+  // Expand parents
+  var parents = jhParents(treeitem, "sl-tree-item")
+  for ( const parent of parents ) {
+    parent.setAttribute("expanded","expanded")
+  }
+
+  const selected = jhQueryAll("sl-tree-item[selected]")
+  for ( const s of selected ) {
+    s.removeAttribute("selected")
+  }
+  treeitem.setAttribute("selected","selected")
+  setTimeout(()=>{
+    treeitem.scrollIntoView()
+  }, 200)
+}
+
 var searchTreeIndex = 0
 export function treeSearch(elemid,searchstring,start) {
   if ( start===undefined ) {
@@ -151,21 +170,8 @@ export function treeSearch(elemid,searchstring,start) {
     if ( treeitem.getAttribute("data-description").toLowerCase().includes(searchstring) ) {
       if ( index==searchTreeIndex ) {
 
-        // Expand parents
-        var parents = jhParents(treeitem, "sl-tree-item")
-        for ( const parent of parents ) {
-          parent.setAttribute("expanded","expanded")
-        }
-
         // Select item and show it
-        const selected = jhQueryAll("sl-tree-item[selected]")
-        for ( const s of selected ) {
-          s.removeAttribute("selected")
-        }
-        treeitem.setAttribute("selected","selected")
-        setTimeout(()=>{
-          treeitem.scrollIntoView()
-        }, 200)
+        treeItemSelect(treeitem.id)
         dispatchEvent(itemFound)
 
         // Store last viewed item
