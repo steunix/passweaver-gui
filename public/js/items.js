@@ -335,6 +335,7 @@ async function itemViewFill(item, gotofolder) {
 
   if ( gotofolder ) {
     PW.treeItemSelect(`item-${body.data.folderid}`)
+    await fillItems()
   }
 }
 
