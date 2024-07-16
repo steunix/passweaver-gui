@@ -5,6 +5,8 @@ export function confirmDialog(title,text,callback,savetext,savevariant) {
   const dialog = jhQuery("#confirmdialog")
   dialog.setAttribute("label", title)
 
+  jhQuery("#confirmok").replaceWith(jhQuery("#confirmok").cloneNode(true))
+
   jhQuery("#confirmok").innerHTML = "Confirm"
   jhQuery("#confirmok").setAttribute("variant", "primary")
 
