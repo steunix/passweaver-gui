@@ -350,8 +350,11 @@ async function itemClone(itm) {
       return
     }
 
-    PW.showToast("success","Item cloned")
+    const body = await resp.json()
+
+    PW.showToast("success","Item successfully cloned")
     await fillItems()
+    itemEditDialog(body.data.id)
   })
 }
 
