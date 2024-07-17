@@ -10,6 +10,8 @@ export function confirmDialog(title,text,callback,savetext,savevariant) {
   jhQuery("#confirmok").innerHTML = "Confirm"
   jhQuery("#confirmok").setAttribute("variant", "primary")
 
+  jhQuery("#confirmdialogtext").innerHTML = text
+
   if ( savetext !== undefined ) {
     jhQuery("#confirmok").innerHTML = savetext
   }
