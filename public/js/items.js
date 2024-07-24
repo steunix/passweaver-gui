@@ -490,6 +490,7 @@ async function fillFolders() {
   jhQuery("sl-tree").innerHTML=""
   const body = await resp.json()
   PW.treeFill("folderstree",body.data,null,folderClicked)
+  await dndSetup()
 }
 
 async function itemCreateGeneratePassword() {
@@ -508,19 +509,21 @@ await fillFolders()
 await fillItemTypes()
 
 // Drag'n'drop
-jhDraggable("sl-tree-item", "folder")
-jhDropTarget("sl-tree-item",async (ev,data)=>{
-  const newparent = ev.target.getAttribute("data-id")
+async function dndSetup() {
+  jhDraggable("sl-tree-item", "folder")
+  jhDropTarget("sl-tree-item",async (ev,data)=>{
+    const newparent = ev.target.getAttribute("data-id")
 
-  if ( data.type=="folder") {
-    const folder = data.data
-    await Folders.folderMove(folder,newparent)
-  }
-  if ( data.type=="item" ) {
-    const item = data.data
-    await itemMove(item,newparent)
-  }
-})
+    if ( data.type=="folder") {
+      const folder = data.data
+      await Folders.folderMove(folder,newparent)
+    }
+    if ( data.type=="item" ) {
+      const item = data.data
+      await itemMove(item,newparent)
+    }
+  })
+}
 
 // Search
 jhEvent("#typesearch", "sl-change", ()=>{

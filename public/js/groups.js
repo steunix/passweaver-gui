@@ -189,19 +189,22 @@ async function fillGroups() {
   if ( await PW.checkResponse(resp) ) {
     const body = await resp.json()
     PW.treeFill("groupstree",body.data,null,groupClicked)
+    await dndSetup()
   }
 }
 
 await fillGroups()
 
 // Drag'n'drop
-jhDraggable("sl-tree-item")
-jhDropTarget("sl-tree-item",async (ev,data)=>{
-  const group = data.data
-  const newparent = ev.target.getAttribute("data-id")
+async function dndSetup() {
+  jhDraggable("sl-tree-item")
+  jhDropTarget("sl-tree-item",async (ev,data)=>{
+    const group = data.data
+    const newparent = ev.target.getAttribute("data-id")
 
-  await groupMove(group,newparent)
-})
+    await groupMove(group,newparent)
+  })
+}
 
 // Event handlers
 jhEvent("#groupremove", "click", (ev)=>{

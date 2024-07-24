@@ -120,18 +120,21 @@ async function fillFolders() {
     const body = await resp.json()
     jhQuery("sl-tree").innerHTML = ""
     PW.treeFill("folderstree",body.data,null,folderClicked)
+    await dndSetup()
 }
 
 await fillFolders()
 
 // Drag'n'drop
-jhDraggable("sl-tree-item")
-jhDropTarget("sl-tree-item",async (ev,data)=>{
-  const folder = data.data
-  const newparent = ev.target.getAttribute("data-id")
+async function dndSetup() {
+  jhDraggable("sl-tree-item")
+  jhDropTarget("sl-tree-item",async (ev,data)=>{
+    const folder = data.data
+    const newparent = ev.target.getAttribute("data-id")
 
-  await Folders.folderMove(folder,newparent)
-})
+    await Folders.folderMove(folder,newparent)
+  })
+}
 
 jhEvent("#addgroup", "click",(ev)=>{
   GPicker.show(groupPickerChoosen)
