@@ -168,10 +168,11 @@ export function treeSearch(elemid,searchstring,start) {
   }
 
   var treeitems = jhQueryAll(`#${elemid} sl-tree-item`)
+  const searchtoken = searchstring.toLowerCase()
 
   var index = 0
   for ( const treeitem of treeitems ) {
-    if ( treeitem.getAttribute("data-description").toLowerCase().includes(searchstring) ) {
+    if ( treeitem.getAttribute("data-description").toLowerCase().includes(searchtoken) ) {
       if ( index==searchTreeIndex ) {
 
         // Select item and show it
