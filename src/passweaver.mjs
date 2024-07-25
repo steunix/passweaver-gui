@@ -167,8 +167,8 @@ export async function itemsList(session, folder, search, type) {
  * @param {string} search Item title search
  * @returns
  */
-export async function itemsSearch(session, search) {
-  const resp = await passWeaverAPI(session, "get", "/items?search="+encodeURIComponent(search))
+export async function itemsSearch(session, search, type) {
+  const resp = await passWeaverAPI(session, "get", `/items?search=${encodeURIComponent(search)}&type=${encodeURIComponent(type)}`)
   return resp
 }
 

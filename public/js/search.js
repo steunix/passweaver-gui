@@ -20,18 +20,28 @@ async function fillItemTypes() {
   }
 
   jhQuery("#viewtype").innerHTML = itemTypesOptions
+  jhQuery("#typesearch").innerHTML  = itemTypesOptions
 }
 
 async function fillItems() {
-  jhQuery("#itemstable tbody").innerHTML = ""
+  const type = jhValue("#typesearch")
 
   const search = jhValue("#itemsearch")
-  const resp = await jhFetch(`/api/itemssearch?search=${search}`)
+  const resp = await jhFetch(`/api/itemssearch?search=${search}&type=${type}`)
 
   // Folder may not be accessible
   if ( !await PW.checkResponse(resp,403) ) {
     return
   }
+
+  jhQuery("#itemstable tbody").innerHTML =
+  `<tr>
+    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
+    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
+    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
+    <td></td>
+    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
+    </tr>`
 
   const body = await resp.json()
   if ( body.data.length ) {
@@ -44,7 +54,12 @@ async function fillItems() {
         `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`+
         `</td>`+
         `<td class='border-start border-end'>${itm.folder.description}</td>`+
-        `<td class='itemtitle'>${itm.title}</td></tr>`
+        `<td class='border-end'>`
+        if ( itm.type ) {
+          row+= `<sl-icon name='${itm.itemtype.icon}' title='${itm.itemtype.description}'></sl-icon>`
+        }
+        row += `</td>`
+        row += `<td class='itemtitle'>${itm.title}</td></tr>`
     }
     jhQuery("#itemstable tbody").innerHTML = row
   } else {
@@ -103,4 +118,7 @@ jhEvent("#itemsearch", "sl-input", async (ev) => {
   if ( jhValue("#itemsearch").length>2 ) {
     itemSearchTimeout = setTimeout(async() => { await fillItems() },250)
   }
+})
+jhEvent("#typesearch", "sl-change", ()=>{
+  fillItems()
 })

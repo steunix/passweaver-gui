@@ -331,7 +331,7 @@ app.get("/api/itemslist/:folder", async (req,res)=>{
 
 // Items search
 app.get("/api/itemssearch/", async (req,res)=>{
-  const list = await PassWeaver.itemsSearch(req.session, req.query?.search)
+  const list = await PassWeaver.itemsSearch(req.session, req.query?.search, req.query?.type)
   res.status(200).json(list)
 })
 
