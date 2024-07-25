@@ -22,7 +22,7 @@ async function fillGroups() {
       } else {
         if ( itm.canmodify ) {
           row += `<td><sl-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' title='Remove' style='color:red;'></sl-icon-button></td>`
-          row += `<td><sl-icon-button id='togglegroup-${itm.id}' data-id='${itm.id}' name='arrow-left-right' title='Change permissions'></sl-icon-button></td>`
+          row += `<td><sl-icon-button id='togglegroup-${itm.id}' data-id='${itm.id}' name='shield-lock' title='Toggle permissions'></sl-icon-button></td>`
         } else {
           row += "<td></td><td></td>"
         }
