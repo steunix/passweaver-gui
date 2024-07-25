@@ -36,7 +36,7 @@
   </div>
 
   <div class="main2">
-    <h2>Items</h2>
+    <h2>Items<sl-badge id="currentpermissions" pill style="padding-left: 1em; font-size: 30%; position: absolute;"></sl-badge></h2>
     <div style="display:flex;">
       <sl-button id="newitem" title="New item" disabled="disabled">
         <sl-icon slot="prefix" name="plus-lg"></sl-icon>
@@ -50,7 +50,7 @@
     <table id="itemstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;" class="bordered">
       <thead>
         <tr class="sticky">
-          <th>Actions <sl-badge id="currentpermissions" pill style="padding-left: 0.5em;"></sl-badge></th>
+          <th>Actions</th>
           <th>Type</th>
           <th>Title</th>
           <th>User</th>
