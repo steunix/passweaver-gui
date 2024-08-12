@@ -177,7 +177,7 @@ app.post("/access", async (req,res)=>{
   req.session.jwt = resp.data.jwt
   const jwt = jsonwebtoken.decode(req.session.jwt)
 
-  req.session.user = jwt.user
+  req.session.user = jwt.sub
   req.session.admin = jwt.admin
 
   const usr = await PassWeaver.getUser(req.session, req.session.user)
