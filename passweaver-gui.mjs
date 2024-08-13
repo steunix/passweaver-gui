@@ -277,6 +277,7 @@ app.get("/pages/info", async(req,res)=> {
   page.users = resp.data.users
   page.folders = resp.data.folders
   page.items = resp.data.items
+  page.cacheProvider = resp.data.cacheProvider
   page.cacheSize = resp.data.cacheSize ?? 0
 
   res.render('info', { ...page, ...commonParams(req) })
