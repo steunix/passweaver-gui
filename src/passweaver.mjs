@@ -774,8 +774,8 @@ export async function preferencesSet(req, session) {
  * @param {integer} hours Expires after these hours
  * @returns
  */
-export async function oneTimeSecretCreate(req, session, data, hours) {
-  const resp = await passWeaverAPI(session, "post", "/onetimetokens", {data: data, hours: hours})
+export async function oneTimeSecretCreate(req, session, data) {
+  const resp = await passWeaverAPI(session, "post", "/onetimetokens", {data: data, hours: Config.get().onetimetokens.default_hours})
   return resp
 }
 

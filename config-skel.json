@@ -8,5 +8,8 @@
     "certificate": "/path/to/certificate",
     "private_key": "/path/to/private_key",
     "hsts": false
+  },
+  "onetimetokens": {
+    "default_hours": 168
   }
 }

@@ -26,9 +26,16 @@ const configSchema = {
         "hsts": { "type": "boolean" }
       },
       "required": [ "enabled" ]
+    },
+    "onetimetokens": {
+      "type": "object",
+      "properties": {
+        "default_hours": { "type": "integer", "minimum": 1 }
+      },
+      "required": [ "default_hours" ]
     }
   },
-  "required": ["listen_port", "passweaverapi_url", "company_name", "https", "log_dir"]
+  "required": ["listen_port", "passweaverapi_url", "company_name", "https", "log_dir", "onetimetokens"]
 }
 
 // Reads package.json

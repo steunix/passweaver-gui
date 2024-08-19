@@ -303,10 +303,17 @@ app.get("/pages/preferences", async (req,res)=>{
 
 // One time secret create
 app.get("/pages/onetimesecret", async (req,res)=>{
+  const default_hours = Config.get().onetimetokens.default_hours
+  const days = Math.floor(default_hours / 24)
+  const hours = default_hours % ( days * 24)
+  const expire_human = `${days} days and ${hours} hours`
+
   req.locals = {
     pagetitle: "One time secret",
-    pageid: "onetimesecret"
+    pageid: "onetimesecret",
+    expire_human: expire_human
   }
+
   res.render('onetimesecret', { ...req.locals, ...commonParams(req) })
 })
 
@@ -606,7 +613,7 @@ app.patch("/api/itemtypes/:id", async (req,res)=>{
 
 // Create one time secret
 app.post("/api/onetimesecret", async (req,res)=>{
-  const resp = await PassWeaver.oneTimeSecretCreate(req, req.session, req.body.data, req.body.hours)
+  const resp = await PassWeaver.oneTimeSecretCreate(req, req.session, req.body.data)
   res.status(200).json(resp)
 })
 
