@@ -619,7 +619,7 @@ app.post("/api/onetimesecret", async (req,res)=>{
 })
 
 // Get one time secret content
-app.get("/onetimesecretget/:token", async (req,res)=>{
+app.get("/noauth/onetimesecretget/:token", async (req,res)=>{
   const resp = await PassWeaver.oneTimeSecretGet(req, req.session, req.params.token)
   res.status(200).json(resp)
 })
