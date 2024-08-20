@@ -104,14 +104,14 @@ app.use("/public", Express.static('public'))
 // Rate limiter
 app.use("/access", rateLimitMiddleware)
 
-if ( !FS.existsSync(cfg.log_dir) ) {
-  FS.mkdirSync(cfg.log_dir)
+if ( !FS.existsSync(cfg.log.dir) ) {
+  FS.mkdirSync(cfg.log.dir)
 }
 
 // Log requests
-const logAccess = RFS.createStream(`${cfg.log_dir}/passweaver-gui-access.log`, {
-  interval: "1d",
-  rotate: 14
+const logAccess = RFS.createStream(`${cfg.log.dir}/passweaver-gui-access.log`, {
+  interval: cfg.log.rotation,
+  rotate: cfg.log.retention
 })
 app.use(
   Morgan(`:remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :total-time[0]`,
@@ -119,9 +119,9 @@ app.use(
 )
 
 // Log errors
-const logErrors = RFS.createStream(`${cfg.log_dir}/passweaver-gui-errors.log`, {
-  interval: "1d",
-  rotate: 14
+const logErrors = RFS.createStream(`${cfg.log.dir}/passweaver-gui-errors.log`, {
+  interval: cfg.log.rotation,
+  rotate: cfg.log.retention
 })
 
 // Common parameters to pass to pages

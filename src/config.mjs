@@ -16,7 +16,15 @@ const configSchema = {
     "listen_port": { "type": "integer", "minimum": 1, "maximum": 65535 },
     "passweaverapi_url": { "type": "string" },
     "company_name": { "type": "string" },
-    "log_dir": { "type": "string" },
+    "log": {
+      "type": "object",
+      "properties": {
+        "dir": { "type": "string" },
+        "rotation": { "type": "string" },
+        "retention": { "type": "integer", "minimum": 1 }
+      },
+      "required": [ "dir", "rotation", "retention" ]
+    },
     "https": {
       "type": "object",
       "properties": {
@@ -35,7 +43,7 @@ const configSchema = {
       "required": [ "default_hours" ]
     }
   },
-  "required": ["listen_port", "passweaverapi_url", "company_name", "https", "log_dir", "onetimetokens"]
+  "required": ["listen_port", "passweaverapi_url", "company_name", "https", "log", "onetimetokens"]
 }
 
 // Reads package.json
