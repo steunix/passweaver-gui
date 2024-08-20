@@ -294,10 +294,14 @@ app.get("/pages/settings", async (req,res)=>{
 
 // Preferences
 app.get("/pages/preferences", async (req,res)=>{
+  const usr = await PassWeaver.getUser(req.session, req.session.user)
+
   req.locals = {
     pagetitle: "Preferences",
-    pageid: "preferences"
+    pageid: "preferences",
+    authmethod: usr.data.authmethod
   }
+
   res.render('preferences', { ...req.locals, ...commonParams(req) })
 })
 
@@ -572,13 +576,10 @@ app.post("/api/preferences", async(req,res)=>{
   res.status(200).json(resp)
 })
 
-// Error handler
-app.use((err, req, res, next)=> {
-  logErrors.write(`[${(new Date()).toString()}]\n`)
-  logErrors.write(`${req.method} ${req.originalUrl}\n`)
-  logErrors.write(`${err.stack}\n`)
-  logErrors.write(`${err.message}\n`)
-  res.redirect("/logout?error="+encodeURIComponent(err))
+// Change password
+app.post("/api/changepassword", async(req,res)=>{
+  const resp = await PassWeaver.passwordChange(req, req.session, req.body.password)
+  res.status(200).json(resp)
 })
 
 // Item types list
@@ -617,10 +618,19 @@ app.post("/api/onetimesecret", async (req,res)=>{
   res.status(200).json(resp)
 })
 
-// Get one time secret
+// Get one time secret content
 app.get("/onetimesecretget/:token", async (req,res)=>{
   const resp = await PassWeaver.oneTimeSecretGet(req, req.session, req.params.token)
   res.status(200).json(resp)
+})
+
+// Error handler
+app.use((err, req, res, next)=> {
+  logErrors.write(`[${(new Date()).toString()}]\n`)
+  logErrors.write(`${req.method} ${req.originalUrl}\n`)
+  logErrors.write(`${err.stack}\n`)
+  logErrors.write(`${err.message}\n`)
+  res.redirect("/logout?error="+encodeURIComponent(err))
 })
 
 console.log(`Listening on port ${cfg.listen_port}`)

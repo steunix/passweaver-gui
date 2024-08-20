@@ -784,9 +784,23 @@ export async function oneTimeSecretCreate(req, session, data) {
  * @param {Object} req Request
  * @param {Object} session Session
  * @param {string} token Item type id
- * @returns
  */
 export async function oneTimeSecretGet(req, session, token) {
   const resp = await passWeaverAPI(session, "get", `/onetimetokens/${token}`)
+  return resp
+}
+
+/**
+ * Change user password
+ * @param {Object} req Request
+ * @param {Object} session Session
+ * @param {string} newpassword New password
+ */
+export async function passwordChange(req, session, newpassword) {
+  const userData = {
+    secret: newpassword
+  }
+
+  const resp = await passWeaverAPI(session, "patch", `/users/${session.user}`, userData)
   return resp
 }

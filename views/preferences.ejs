@@ -7,20 +7,51 @@
   <%- include('partials/csrf.ejs') %>
 
   <div class="main1">
-    <h2>Preferences</h2>
-    <table>
-      <tr>
-        <th>Theme</th>
-        <td>
-          <sl-select id='theme'>
-            <sl-option value="light">Light</sl-option>
-            <sl-option value="dark">Dark</sl-option>
-          </sl-select>
-        </td>
-      </tr>
-    </table>
-    <sl-divider></sl-divider>
-    <sl-button id='save' variant="primary">Save</sl-button>
+    <sl-tab-group>
+      <sl-tab slot="nav" panel="preferences">Preferences</sl-tab>
+      <sl-tab slot="nav" panel="password">Password</sl-tab>
+
+      <sl-tab-panel name="preferences">
+        <table>
+          <tr>
+            <th>Theme</th>
+            <td>
+              <sl-select id='theme'>
+                <sl-option value="light">Light</sl-option>
+                <sl-option value="dark">Dark</sl-option>
+              </sl-select>
+            </td>
+          </tr>
+        </table>
+        <sl-divider></sl-divider>
+        <sl-button id='save' variant="primary">Save</sl-button>
+      </sl-tab-panel>
+
+      <sl-tab-panel name="password">
+        <% if ( authmethod=="local") { %>
+        <h2>Change password</h2>
+        <h5>At least 8 characters</h5>
+        <table>
+          <tr>
+            <th>New password</th>
+            <td>
+              <sl-input id="newpassword1" type="password" password-toggle></sl-input>
+            </td>
+          </tr>
+          <tr>
+            <th>Confirm new password</th>
+            <td>
+              <sl-input id="newpassword2" type="password" password-toggle></sl-input>
+            </td>
+          </tr>
+        </table>
+        <sl-divider></sl-divider>
+        <sl-button id='passwordchange' variant="primary" disabled>Change password</sl-button>
+      </sl-tab-panel>
+      <% } else { %>
+        <p>Password cannot be changed from this portal</p>
+      <% } %>
+    </sl-tab-group>
   </div>
 </div>
 
