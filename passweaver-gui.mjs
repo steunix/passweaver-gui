@@ -15,6 +15,8 @@ import FS from 'fs'
 import Morgan from "morgan"
 import * as RFS from "rotating-file-stream"
 import favicon from 'serve-favicon'
+import RedisStore from "connect-redis"
+import * as RedisClient from "redis"
 
 import * as Config from './src/config.mjs'
 import * as PassWeaver from './src/passweaver.mjs'
@@ -48,13 +50,34 @@ app.use(compression())
 app.use(Express.urlencoded({ extended: true }))
 
 // Session middleware
-app.use(session({
-  name: "passweavergui",
-  secret: cfg.session_key,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: cfg.https.enabled, maxAge: 1000 * 60 * 60 * 4 }
-}))
+if ( cfg.redis.enabled ) {
+  // Redis
+  var redisClient = RedisClient.createClient({url:cfg.redis.url})
+  redisClient.connect()
+
+  var redisStore = new RedisStore({
+    client: redisClient,
+    prefix: "pwgui:",
+  })
+
+  app.use(session({
+    store: redisStore,
+    name: "passweavergui",
+    secret: cfg.session_key,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: cfg.https.enabled, maxAge: 1000 * 60 * 60 * 4 }
+  }))
+} else {
+  // Node-cache
+  app.use(session({
+    name: "passweavergui",
+    secret: cfg.session_key,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: cfg.https.enabled, maxAge: 1000 * 60 * 60 * 4 }
+  }))
+}
 
 // CSRF protection
 app.use(lusca.csrf({

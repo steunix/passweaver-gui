@@ -13,6 +13,10 @@
     "private_key": "/path/to/private_key",
     "hsts": false
   },
+  "redis": {
+    "enabled": true,
+    "url": "redis://localhost:6379"
+  },
   "onetimetokens": {
     "default_hours": 168
   }

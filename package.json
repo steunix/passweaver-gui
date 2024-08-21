@@ -19,6 +19,8 @@
     "lusca": "^1.7.0",
     "morgan": "^1.10.0",
     "rotating-file-stream": "^3.2.1",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "redis": "4.7.0",
+    "connect-redis": "7.1.1"
   }
 }

@@ -41,9 +41,17 @@ const configSchema = {
         "default_hours": { "type": "integer", "minimum": 1 }
       },
       "required": [ "default_hours" ]
+    },
+    "redis": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "url": { "type": "string" }
+      },
+      "required": [ "enabled" ]
     }
   },
-  "required": ["listen_port", "passweaverapi_url", "company_name", "https", "log", "onetimetokens"]
+  "required": ["listen_port", "passweaverapi_url", "company_name", "https", "log", "onetimetokens", "redis"]
 }
 
 // Reads package.json
