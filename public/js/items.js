@@ -129,7 +129,7 @@ async function fillItems() {
   jhDraggable("#itemstable [id^='row-']","item")
 }
 
-async function folderClicked(ev, selectonly) {
+async function folderClicked(folderid) {
   // Read folder info
   jhValue("#typesearch", "")
   const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}`)
@@ -160,7 +160,9 @@ async function folderClicked(ev, selectonly) {
   jhQuery("#currentpermissions").innerHTML = cp[1]
 
   // Load items
-  await fillItems()
+  if ( Folders.currentPermissions.read ) {
+    await fillItems()
+  }
 
   if ( Folders.currentPermissions.write ) {
     jhQuery("#newitem").removeAttribute("disabled")
