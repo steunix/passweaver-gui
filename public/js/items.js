@@ -130,6 +130,8 @@ async function fillItems() {
 }
 
 async function folderClicked(folderid) {
+  jhQuery("#itemstable tbody").innerHTML = ""
+
   // Read folder info
   jhValue("#typesearch", "")
   const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}`)
