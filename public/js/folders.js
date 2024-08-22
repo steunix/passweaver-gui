@@ -46,7 +46,7 @@ async function fillGroups() {
 }
 
 async function folderClicked(folderid) {
-  const resp = await jhFetch(`/api/folders/${folderid}`)
+  const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}`)
 
   // Folder may not be accessible
   if ( !await PW.checkResponse(resp,403) ) {
