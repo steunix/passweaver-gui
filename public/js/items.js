@@ -130,6 +130,7 @@ async function fillItems() {
 }
 
 async function folderClicked(folderid) {
+  debugger
   jhQuery("#itemstable tbody").innerHTML = ""
 
   // Read folder info
@@ -603,5 +604,5 @@ addEventListener("folders-refresh", async (ev)=>{
 })
 
 addEventListener("pw-item-found", async(ev)=>{
-  await fillItems()
+  folderClicked()
 })

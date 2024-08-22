@@ -143,5 +143,5 @@ addEventListener("folders-refresh", async (ev)=>{
   await fillFolders()
 })
 addEventListener("pw-item-found", async(ev)=>{
-  await fillGroups()
+  folderClicked()
 })
