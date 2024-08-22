@@ -46,7 +46,9 @@ if ( cfg?.https?.hsts ) {
 }
 
 app.use(Express.json())
-app.use(compression())
+
+app.use(compression( {threshold: 10240} ))
+
 app.use(Express.urlencoded({ extended: true }))
 
 // Session middleware
