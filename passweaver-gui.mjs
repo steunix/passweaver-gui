@@ -15,6 +15,8 @@ import FS from 'fs'
 import Morgan from "morgan"
 import * as RFS from "rotating-file-stream"
 import favicon from 'serve-favicon'
+import RedisStore from "connect-redis"
+import * as RedisClient from "redis"
 
 import * as Config from './src/config.mjs'
 import * as PassWeaver from './src/passweaver.mjs'
@@ -44,17 +46,40 @@ if ( cfg?.https?.hsts ) {
 }
 
 app.use(Express.json())
-app.use(compression())
+
+app.use(compression( {threshold: 10240} ))
+
 app.use(Express.urlencoded({ extended: true }))
 
 // Session middleware
-app.use(session({
-  name: "passweavergui",
-  secret: cfg.session_key,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: cfg.https.enabled, maxAge: 1000 * 60 * 60 * 4 }
-}))
+if ( cfg.redis.enabled ) {
+  // Redis
+  var redisClient = RedisClient.createClient({url:cfg.redis.url})
+  redisClient.connect()
+
+  var redisStore = new RedisStore({
+    client: redisClient,
+    prefix: "pwgui:",
+  })
+
+  app.use(session({
+    store: redisStore,
+    name: "passweavergui",
+    secret: cfg.session_key,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: cfg.https.enabled, maxAge: 1000 * 60 * 60 * 4 }
+  }))
+} else {
+  // Node-cache
+  app.use(session({
+    name: "passweavergui",
+    secret: cfg.session_key,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: cfg.https.enabled, maxAge: 1000 * 60 * 60 * 4 }
+  }))
+}
 
 // CSRF protection
 app.use(lusca.csrf({
@@ -104,14 +129,14 @@ app.use("/public", Express.static('public'))
 // Rate limiter
 app.use("/access", rateLimitMiddleware)
 
-if ( !FS.existsSync(cfg.log_dir) ) {
-  FS.mkdirSync(cfg.log_dir)
+if ( !FS.existsSync(cfg.log.dir) ) {
+  FS.mkdirSync(cfg.log.dir)
 }
 
 // Log requests
-const logAccess = RFS.createStream(`${cfg.log_dir}/passweaver-gui-access.log`, {
-  interval: "1d",
-  rotate: 14
+const logAccess = RFS.createStream(`${cfg.log.dir}/passweaver-gui-access.log`, {
+  interval: cfg.log.rotation,
+  rotate: cfg.log.retention
 })
 app.use(
   Morgan(`:remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :total-time[0]`,
@@ -119,9 +144,9 @@ app.use(
 )
 
 // Log errors
-const logErrors = RFS.createStream(`${cfg.log_dir}/passweaver-gui-errors.log`, {
-  interval: "1d",
-  rotate: 14
+const logErrors = RFS.createStream(`${cfg.log.dir}/passweaver-gui-errors.log`, {
+  interval: cfg.log.rotation,
+  rotate: cfg.log.retention
 })
 
 // Common parameters to pass to pages
@@ -294,19 +319,30 @@ app.get("/pages/settings", async (req,res)=>{
 
 // Preferences
 app.get("/pages/preferences", async (req,res)=>{
+  const usr = await PassWeaver.getUser(req.session, req.session.user)
+
   req.locals = {
     pagetitle: "Preferences",
-    pageid: "preferences"
+    pageid: "preferences",
+    authmethod: usr.data.authmethod
   }
+
   res.render('preferences', { ...req.locals, ...commonParams(req) })
 })
 
 // One time secret create
 app.get("/pages/onetimesecret", async (req,res)=>{
+  const default_hours = Config.get().onetimetokens.default_hours
+  const days = Math.floor(default_hours / 24)
+  const hours = default_hours % ( days * 24)
+  const expire_human = `${days} days and ${hours} hours`
+
   req.locals = {
     pagetitle: "One time secret",
-    pageid: "onetimesecret"
+    pageid: "onetimesecret",
+    expire_human: expire_human
   }
+
   res.render('onetimesecret', { ...req.locals, ...commonParams(req) })
 })
 
@@ -565,13 +601,10 @@ app.post("/api/preferences", async(req,res)=>{
   res.status(200).json(resp)
 })
 
-// Error handler
-app.use((err, req, res, next)=> {
-  logErrors.write(`[${(new Date()).toString()}]\n`)
-  logErrors.write(`${req.method} ${req.originalUrl}\n`)
-  logErrors.write(`${err.stack}\n`)
-  logErrors.write(`${err.message}\n`)
-  res.redirect("/logout?error="+encodeURIComponent(err))
+// Change password
+app.post("/api/changepassword", async(req,res)=>{
+  const resp = await PassWeaver.passwordChange(req, req.session, req.body.password)
+  res.status(200).json(resp)
 })
 
 // Item types list
@@ -606,14 +639,23 @@ app.patch("/api/itemtypes/:id", async (req,res)=>{
 
 // Create one time secret
 app.post("/api/onetimesecret", async (req,res)=>{
-  const resp = await PassWeaver.oneTimeSecretCreate(req, req.session, req.body.data, req.body.hours)
+  const resp = await PassWeaver.oneTimeSecretCreate(req, req.session, req.body.data)
   res.status(200).json(resp)
 })
 
-// Get one time secret
-app.get("/onetimesecretget/:token", async (req,res)=>{
+// Get one time secret content
+app.get("/noauth/onetimesecretget/:token", async (req,res)=>{
   const resp = await PassWeaver.oneTimeSecretGet(req, req.session, req.params.token)
   res.status(200).json(resp)
+})
+
+// Error handler
+app.use((err, req, res, next)=> {
+  logErrors.write(`[${(new Date()).toString()}]\n`)
+  logErrors.write(`${req.method} ${req.originalUrl}\n`)
+  logErrors.write(`${err.stack}\n`)
+  logErrors.write(`${err.message}\n`)
+  res.redirect("/logout?error="+encodeURIComponent(err))
 })
 
 console.log(`Listening on port ${cfg.listen_port}`)

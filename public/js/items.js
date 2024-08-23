@@ -74,8 +74,8 @@ async function fillItems() {
         row += `<sl-icon-button id='edit-${itm.id}' title='Edit item' name='pencil' data-id='${itm.id}'></sl-icon-button>`
         row += `<sl-icon-button id='remove-${itm.id}' title='Remove item' name='trash3' style="color:red;" data-id='${itm.id}'></sl-icon-button>`
         row += `<sl-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></sl-icon-button>`
-        row += `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`
       }
+      row += `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`
       row += `</td>`
       row += `<td class='border-end'>`
       if ( itm.type ) {
@@ -129,7 +129,10 @@ async function fillItems() {
   jhDraggable("#itemstable [id^='row-']","item")
 }
 
-async function folderClicked(ev, selectonly) {
+async function folderClicked(folderid) {
+  debugger
+  jhQuery("#itemstable tbody").innerHTML = ""
+
   // Read folder info
   jhValue("#typesearch", "")
   const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}`)
@@ -160,7 +163,9 @@ async function folderClicked(ev, selectonly) {
   jhQuery("#currentpermissions").innerHTML = cp[1]
 
   // Load items
-  await fillItems()
+  if ( Folders.currentPermissions.read ) {
+    await fillItems()
+  }
 
   if ( Folders.currentPermissions.write ) {
     jhQuery("#newitem").removeAttribute("disabled")
@@ -608,5 +613,5 @@ addEventListener("folders-refresh", async (ev)=>{
 })
 
 addEventListener("pw-item-found", async(ev)=>{
-  await fillItems()
+  folderClicked()
 })

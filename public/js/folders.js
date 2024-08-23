@@ -46,7 +46,7 @@ async function fillGroups() {
 }
 
 async function folderClicked(folderid) {
-  const resp = await jhFetch(`/api/folders/${folderid}`)
+  const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}`)
 
   // Folder may not be accessible
   if ( !await PW.checkResponse(resp,403) ) {
@@ -143,5 +143,5 @@ addEventListener("folders-refresh", async (ev)=>{
   await fillFolders()
 })
 addEventListener("pw-item-found", async(ev)=>{
-  await fillGroups()
+  folderClicked()
 })

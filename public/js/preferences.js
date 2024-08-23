@@ -23,3 +23,25 @@ jhEvent("#save", "click", async(ev)=>{
   PW.showToast("success", "Preferences saved")
   location.reload()
 })
+
+jhEvent("#newpassword1,#newpassword2", "keyup", async(ev)=>{
+  if ( jhValue("#newpassword1")!=jhValue("#newpassword2") || jhValue("#newpassword1").length < 8 ) {
+    jhAttribute("#passwordchange","disabled","disabled")
+  } else {
+    jhQuery("#passwordchange").removeAttribute("disabled")
+  }
+})
+
+jhEvent("#passwordchange", "click", async(ev)=>{
+  const data = {
+    _csrf: PW.getCSRFToken(),
+    password: jhValue("#newpassword1")
+  }
+  const resp = await jhFetch(`/api/changepassword`, data)
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  PW.showToast("success", "Password successfully changed")
+  location.reload()
+})

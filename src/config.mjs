@@ -16,7 +16,15 @@ const configSchema = {
     "listen_port": { "type": "integer", "minimum": 1, "maximum": 65535 },
     "passweaverapi_url": { "type": "string" },
     "company_name": { "type": "string" },
-    "log_dir": { "type": "string" },
+    "log": {
+      "type": "object",
+      "properties": {
+        "dir": { "type": "string" },
+        "rotation": { "type": "string" },
+        "retention": { "type": "integer", "minimum": 1 }
+      },
+      "required": [ "dir", "rotation", "retention" ]
+    },
     "https": {
       "type": "object",
       "properties": {
@@ -26,9 +34,24 @@ const configSchema = {
         "hsts": { "type": "boolean" }
       },
       "required": [ "enabled" ]
+    },
+    "onetimetokens": {
+      "type": "object",
+      "properties": {
+        "default_hours": { "type": "integer", "minimum": 1 }
+      },
+      "required": [ "default_hours" ]
+    },
+    "redis": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "url": { "type": "string" }
+      },
+      "required": [ "enabled" ]
     }
   },
-  "required": ["listen_port", "passweaverapi_url", "company_name", "https", "log_dir"]
+  "required": ["listen_port", "passweaverapi_url", "company_name", "https", "log", "onetimetokens", "redis"]
 }
 
 // Reads package.json

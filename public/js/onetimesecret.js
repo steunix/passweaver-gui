@@ -11,8 +11,7 @@ jhEvent("#data", "keyup", async(ev)=>{
 jhEvent("#save", "click", async(ev)=>{
   const data = {
     _csrf: PW.getCSRFToken(),
-    data: jhValue("#data"),
-    hours: 24*7
+    data: jhValue("#data")
   }
   const resp = await jhFetch(`/api/onetimesecret`, data)
   if ( !await PW.checkResponse(resp) ) {

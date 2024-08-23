@@ -2,11 +2,22 @@
   "listen_port": 3001,
   "passweaverapi_url": "http://localhost:3000/api/v1",
   "company_name": "MyCompany",
-  "log_dir": "./log",
+  "log": {
+    "dir": "./log",
+    "rotation": "1d",
+    "retention": 14
+  },
   "https": {
     "enabled": false,
     "certificate": "/path/to/certificate",
     "private_key": "/path/to/private_key",
     "hsts": false
+  },
+  "redis": {
+    "enabled": true,
+    "url": "redis://localhost:6379"
+  },
+  "onetimetokens": {
+    "default_hours": 168
   }
 }
