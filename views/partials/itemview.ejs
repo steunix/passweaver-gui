@@ -1,4 +1,5 @@
 <sl-dialog id="itemviewdialog" label="Item details">
+  <sl-input id="itemviewid"></sl-input>
   <sl-input label="Title" id="viewtitle" name="viewtitle" readonly></sl-input>
   <sl-select label="Type" id="viewtype" name="viewtype" disabled></sl-select>
   <sl-textarea label="Description" id="viewdescription" name="viewdescription" readonly></sl-textarea>
@@ -10,6 +11,6 @@
   <sl-copy-button from="viewuser.value"></sl-copy-button>
   <div id="viewhack">
     <sl-input label="Password" id="viewpassword" name="viewpassword" style="display:inline-block;width:calc(100% - 2.5rem);" type="password" password-toggle readonly></sl-input>
-    <sl-copy-button from="viewpassword.value"></sl-copy-button>
+    <sl-copy-button id="itemviewcopypassword" from="viewpassword.value"></sl-copy-button>
   </div>
 </sl-dialog>

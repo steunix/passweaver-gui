@@ -450,7 +450,7 @@ async function passwordCopy(ev) {
   const body = await resp.json()
   navigator.clipboard.writeText(body.data.data.password)
 
-  passwordAccessed(item)
+  passwordCopied(item)
 }
 
 async function passwordShow(ev) {
@@ -475,9 +475,18 @@ async function passwordShow(ev) {
 async function passwordAccessed(item) {
   const resp = await jhFetch("/api/events", {
     _csrf: PW.getCSRFToken(),
-    event: 'pwdread',
-    itemtype: 'item',
-    itemid: item
+    event: 80,
+    entity: 300,
+    entityid: item
+  })
+}
+
+async function passwordCopied(item) {
+  const resp = await jhFetch("/api/events", {
+    _csrf: PW.getCSRFToken(),
+    event: 81,
+    entity: 300,
+    entityid: item
   })
 }
 

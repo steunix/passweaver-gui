@@ -542,7 +542,7 @@ app.post("/api/personalunlock", async (req,res)=>{
 
 // Events
 app.post("/api/events", async(req,res)=> {
-  const resp = await PassWeaver.addEvent(req, req.session, req.body.event, req.body.itemtype, req.body.itemid)
+  const resp = await PassWeaver.addEvent(req, req.session, req.body.event, req.body.entity, req.body.entityid)
   res.status(200).json(resp)
 })
 

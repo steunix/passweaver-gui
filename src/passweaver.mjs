@@ -645,15 +645,15 @@ export async function personalUnlock(req, session, password) {
  * @param {Object} req Request
  * @param {Object} session Session
  * @param {string} event Event code
- * @param {string} itemtype Event type
- * @param {string} itemid Item ID
+ * @param {string} entity Entity code
+ * @param {string} entityid Entity id
  * @returns
  */
-export async function addEvent(req, session, event, itemtype, itemid) {
+export async function addEvent(req, session, event, entity, entityid) {
   const data = {
     event: event,
-    itemtype: itemtype,
-    itemid: itemid
+    entity: entity,
+    entityid: entityid
   }
 
   const resp = await passWeaverAPI(session, "post", "/events", data)
