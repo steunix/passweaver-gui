@@ -130,7 +130,6 @@ async function fillItems() {
 }
 
 async function folderClicked(folderid) {
-  debugger
   jhQuery("#itemstable tbody").innerHTML = ""
 
   // Read folder info
