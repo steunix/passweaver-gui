@@ -193,7 +193,7 @@ export async function getFolder(session, folder) {
 export async function itemCreate(session, folder, body) {
   const item = {
     title: body.title,
-    type: body.type,
+    type: body.type || undefined,
     metadata: body.user,
     data: JSON.stringify({
       description: body.description,
@@ -261,7 +261,7 @@ export async function itemUpdate(session, itemid, body) {
 
   const item = {
     title: body.title,
-    type: body.type,
+    type: body.type || undefined,
     data: data,
     metadata: body.data.user
   }
