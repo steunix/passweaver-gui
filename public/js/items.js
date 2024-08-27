@@ -602,6 +602,20 @@ if ( jhQuery("#viewitem") ) {
   setTimeout(()=>{ findAndShowItem(jhValue("#viewitem")) }, 200)
 }
 
+jhQuery("#viewpassword").shadowRoot.querySelector("[part=password-toggle-button]").addEventListener("click",(ev)=>{
+  const el = jhQuery("#viewpassword").shadowRoot.querySelector("[part=input]")
+  if ( el.getAttribute("type")=="text" ) {
+    passwordAccessed(jhValue("#itemviewid"))
+  }
+})
+
+jhQuery("#editpassword").shadowRoot.querySelector("[part=password-toggle-button]").addEventListener("click",(ev)=>{
+  const el = jhQuery("#editpassword").shadowRoot.querySelector("[part=input]")
+  if ( el.getAttribute("type")=="text" ) {
+    passwordAccessed(jhValue("#itemeditid"))
+  }
+})
+
 addEventListener("folders-refresh", async (ev)=>{
   await fillFolders()
 })
