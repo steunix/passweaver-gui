@@ -326,6 +326,10 @@ async function itemViewFill(item, gotofolder) {
   const html = jhQuery("#viewhack").innerHTML
   jhQuery("#viewhack").innerHTML = html
 
+  jhEvent("#itemviewcopypassword", "sl-copy", (ev)=>{
+    passwordCopied(jhValue("#itemviewid"))
+  })
+
   const body = await resp.json()
   jhValue("#itemviewid", item)
   jhValue("#viewtitle", body.data.title)
