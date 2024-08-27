@@ -180,17 +180,11 @@ async function folderClicked(folderid) {
 }
 
 function itemCreateDialog() {
-  // Since we cannot reset the visibility of the password field, we just recreate it: so
-  // when dialog is opened a second time, it doesn't remember the previous visibility
-  // of the password
-  const html = jhQuery("#newhack").innerHTML
-  jhQuery("#newhack").innerHTML = html
-  jhEvent("#newgenerate", "click",(ev)=>{
-    itemCreateGeneratePassword()
-  })
-
   jhQuery("#itemcreatedialog").show()
   jhValue("#itemcreatedialog sl-input,sl-textarea,sl-select", "")
+
+  jhQuery("#newpassword").passwordVisible = false
+
   itemCreateEnable()
 }
 
@@ -258,14 +252,10 @@ async function itemEditFill(item) {
     return
   }
 
+  jhQuery("#editpassword").passwordVisible = false
+
   const body = await resp.json()
   if ( body.status=="success" ) {
-    // Since we cannot reset the visibility of the password field, we just recreate it: so
-    // when dialog is opened a second time, it doesn't remember the previous visibility
-    // of the password
-    const html = jhQuery("#edithack").innerHTML
-    jhQuery("#edithack").innerHTML = html
-
     jhValue("#itemeditid", item)
     jhValue("#edittype", body.data.type)
     jhValue("#edittitle", body.data.title)
@@ -320,16 +310,6 @@ async function itemViewFill(item, gotofolder) {
     return
   }
 
-  // Since we cannot reset the visibility of the password field, we just recreate it: so
-  // when dialog is opened a second time, it doesn't remember the previous visibility
-  // of the password
-  const html = jhQuery("#viewhack").innerHTML
-  jhQuery("#viewhack").innerHTML = html
-
-  jhEvent("#itemviewcopypassword", "sl-copy", (ev)=>{
-    passwordCopied(jhValue("#itemviewid"))
-  })
-
   const body = await resp.json()
   jhValue("#itemviewid", item)
   jhValue("#viewtitle", body.data.title)
@@ -353,6 +333,9 @@ function itemShow(item) {
   }
   jhValue("#itemviewdialog sl-input,sl-textarea,sl-select", "")
   jhQuery("#itemviewdialog").show()
+
+  jhQuery("#viewpassword").passwordVisible = false
+
   itemViewFill(item)
 }
 
@@ -605,6 +588,14 @@ jhEvent("#itemsearch", "sl-input", (ev) => {
     clearTimeout(itemSearchTimeout)
   }
   itemSearchTimeout = setTimeout(async()=>{ fillItems() },250)
+})
+
+jhEvent("#itemviewcopypassword", "sl-copy", (ev)=>{
+  passwordCopied(jhValue("#itemviewid"))
+})
+
+jhEvent("#newgenerate", "click",(ev)=>{
+  itemCreateGeneratePassword()
 })
 
 if ( jhQuery("#viewitem") ) {
