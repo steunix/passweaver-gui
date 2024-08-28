@@ -484,7 +484,7 @@ async function passwordAccessed(item) {
   const resp = await jhFetch("/api/events", {
     _csrf: PW.getCSRFToken(),
     event: 80,
-    entity: 300,
+    entity: 30,
     entityid: item
   })
 }
@@ -493,7 +493,7 @@ async function passwordCopied(item) {
   const resp = await jhFetch("/api/events", {
     _csrf: PW.getCSRFToken(),
     event: 81,
-    entity: 300,
+    entity: 30,
     entityid: item
   })
 }
