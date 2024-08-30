@@ -272,7 +272,8 @@ app.get("/pages/folders", async (req,res)=>{
 app.get("/pages/search", async (req,res)=>{
   req.locals = {
     pagetitle: "Search items",
-    pageid: "search"
+    pageid: "search",
+    search: req.query.search || ""
   }
   res.render('search', { ...req.locals, ...commonParams(req) })
 })

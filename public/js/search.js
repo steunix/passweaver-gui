@@ -119,6 +119,11 @@ jhEvent("#itemsearch", "sl-input", async (ev) => {
     itemSearchTimeout = setTimeout(async() => { await fillItems() },250)
   }
 })
+
 jhEvent("#typesearch", "sl-change", ()=>{
   fillItems()
 })
+
+if ( jhValue("#itemsearch").length ) {
+  fillItems()
+}

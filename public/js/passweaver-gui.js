@@ -244,3 +244,17 @@ if ( jhQuery("#pageid") ) {
     elem.classList.add("current")
   }
 }
+
+if ( jhQuery("#globalsearch") ) {
+  jhEvent("#globalsearch", "keypress", (ev)=>{
+    if ( ev.keyCode==13 && jhValue("#globalsearch").length>3 ) {
+      window.location = "/pages/search?search=" + encodeURIComponent(jhValue("#globalsearch"))
+    }
+  })
+}
+
+jhEvent(document, "keydown", (ev)=>{
+  if ( ev.ctrlKey && ev.keyCode==220 ) {
+    jhQuery("#globalsearch").focus()
+  }
+})
