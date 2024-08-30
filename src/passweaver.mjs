@@ -600,7 +600,7 @@ export async function generatePassword(session) {
 /**
  * Create personal password
  * @param {Object} session Session
- * @param {string} passsword Password
+ * @param {string} password Password
  * @returns
  */
 export async function personalPasswordCreate(session, password) {
@@ -623,7 +623,7 @@ export async function personalPasswordCreate(session, password) {
 }
 
 /**
- * Personal login
+ * Unlock personal folders
  * @param {Object} session Session
  * @param {string} passsword Password
  * @returns
