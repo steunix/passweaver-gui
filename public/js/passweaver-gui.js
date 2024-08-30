@@ -251,10 +251,11 @@ if ( jhQuery("#globalsearch") ) {
       window.location = "/pages/search?search=" + encodeURIComponent(jhValue("#globalsearch"))
     }
   })
+
+  jhEvent(document, "keydown", (ev)=>{
+    if ( ev.ctrlKey && ev.keyCode==220 ) {
+      jhQuery("#globalsearch").focus()
+    }
+  })
 }
 
-jhEvent(document, "keydown", (ev)=>{
-  if ( ev.ctrlKey && ev.keyCode==220 ) {
-    jhQuery("#globalsearch").focus()
-  }
-})
