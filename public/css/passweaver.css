@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
 
+:not(:defined) {
+    visibility: hidden;
+}
+
 :root {
     --theme-font: "Roboto Condensed";
     --theme-font-size: 14px;
