@@ -1,31 +1,31 @@
 # About
 
-PassWeaver-gui is standalone WEB interface to PassWeaver-API, bringing collaborative enterprise-scale password management to your browser. It's developed using mainly NodeJS, Express and EJS, and uses Shoelace for WEB Components.
+PassWeaver-GUI is standalone WEB interface to PassWeaver-API, bringing collaborative enterprise-scale password management to your browser. It's developed using mainly NodeJS, Express and EJS, and uses Shoelace for WEB Components.
 
-PassWeaver-gui is an opensource project, released under MIT license.
+PassWeaver-GUI is an opensource project, released under MIT license.
 
 # Features
 
-- Light or dark theme
 - Personal folders for each user
-- Share items through permalinks
 - Share one-time secrets to anyone
+- Share items through permalinks
+- Share one time secrets
 - Folder level permissions
 - User groups
-- Pages are served with HTTPS and optionally HTTP (with limitations, see below)
-- CSP compliant pages
 - Both LDAP and local authentication
+- CSP compliant pages
 - Quick user interface
+- Light or dark theme
 
 # Forewords
 
-PassWeaver-gui is just a nice frontend to PassWeaver-api and it brings all its capabilities to the final user; everything you can do with your items, folders, users and groups is defined in PassWeaver-api. See docs there for more info about its capabilities.
+PassWeaver-GUI is a nice frontend to PassWeaver-API and it brings all its capabilities to the final user; everything you can do with your items, folders, users and groups is defined in PassWeaver-API. See docs there for more info about its capabilities.
 
-While PassWeaver-api is a generic and independent piece of background software, PassWeaver-gui is its perfect UI companion.
+While PassWeaver-API is a generic and independent piece of background software, PassWeaver-GUI is its perfect UI companion.
 
 # Basics
 
-With PassWeaver-gui you will manage these entities:
+With PassWeaver-GUI you will manage these entities:
 
 - Users
 - Groups
@@ -34,15 +34,15 @@ With PassWeaver-gui you will manage these entities:
 
 Items are stored in folders, and folders can contain both items and other folders. Users join groups (one or more), and groups can read or write on a given folder, its items and subfolders.
 
-## Items menu
+## Items
 
-This is the items page:
+This is what the items page looks like:
 
 ![Items page](assets/passweavergui-items.jpeg)
 
-In "Folders" pane you can create a subfolder, modify or delete a folder, if you have permission on it. You can also search for a folder and use the previous/next buttons to navigate the tree.
+In "Folders" left pane you can create a subfolder, modify or delete a folder, if you have permission on it. You can also search for a folder and use the previous/next buttons to navigate the tree.
 
-In "Items" pane you have a list of folder item, with the following actions, if you have proper permission:
+In "Items" right pane you have a list of folder item, with the following actions, if you have proper permission:
 - View item
 - Edit item
 - Delete item
@@ -57,13 +57,15 @@ This is the item details dialog:
 
 ## Search
 
-In the "Search" page you can search items with a matching title or username. Just type a string to search for.
+In the "Search" page you can search items with a matching title or username within all the folders you have access to. Just type a string to search for.
 
 ![Search page](assets/passweavergui-search.jpeg)
 
 ## Generator
 
 ![Generator page](assets/passweavergui-generator.jpeg)
+
+## One time secret
 
 ## Folders
 
