@@ -52,6 +52,7 @@ async function fillItems() {
         `<td>`+
         `<sl-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></sl-icon-button>`+
         `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`+
+        `<sl-icon-button id='folder-${itm.id}' title='Open folder' name='folder2-open' data-id='${itm.id}'></sl-icon-button>`+
         `</td>`+
         `<td class='border-start border-end'>${itm.folder.description}</td>`+
         `<td class='border-end'>`
@@ -75,6 +76,9 @@ async function fillItems() {
   })
   jhEvent("#itemstable tbody [id^=link]", "click",(ev)=>{
     itemCopyLink(ev.currentTarget.getAttribute("data-id"))
+  })
+  jhEvent("#itemstable tbody [id^=folder]", "click",(ev)=>{
+    window.location = `/pages/items?viewitem=${ ev.currentTarget.getAttribute("data-id") }`
   })
 }
 
