@@ -321,11 +321,13 @@ app.get("/pages/settings", async (req,res)=>{
 // Preferences
 app.get("/pages/preferences", async (req,res)=>{
   const usr = await PassWeaver.getUser(req.session, req.session.user)
+  const jwt = jsonwebtoken.decode(req.session.jwt)
 
   req.locals = {
     pagetitle: "Preferences",
     pageid: "preferences",
-    authmethod: usr.data.authmethod
+    authmethod: usr.data.authmethod,
+    unlocked: jwt?.personaltoken
   }
 
   res.render('preferences', { ...req.locals, ...commonParams(req) })
@@ -567,13 +569,19 @@ app.get("/api/generate", async (req,res)=>{
 
 // Create personal password
 app.post("/api/personalpassword", async (req,res)=>{
-  const resp = await PassWeaver.personalPasswordCreate(req.session, req.body.password)
+  const resp = await PassWeaver.personalPasswordCreate(req, req.session, req.body.password)
   res.status(200).json(resp)
 })
 
-// Set personal password
+// Unlock personal folder
 app.post("/api/personalunlock", async (req,res)=>{
   const resp = await PassWeaver.personalUnlock(req, req.session, req.body.password)
+  res.status(200).json(resp)
+})
+
+// Change personal folder password
+app.post("/api/personalpasswordchange", async(req,res)=>{
+  const resp = await PassWeaver.personalPasswordChange(req, req.session, req.body.password)
   res.status(200).json(resp)
 })
 

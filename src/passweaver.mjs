@@ -603,20 +603,15 @@ export async function generatePassword(session) {
  * @param {string} password Password
  * @returns
  */
-export async function personalPasswordCreate(session, password) {
+export async function personalPasswordCreate(req, session, password) {
   var resp = await passWeaverAPI(session, "post", "/personal/password", {
     password: password
   })
 
   // If successfull, unlock personal folder directly
   if ( resp.httpStatusCode=="200" ) {
-    resp = await passWeaverAPI(session, "post", "/personal/unlock", {
-      password: password
-    })
-
-    if ( resp.httpStatusCode=="200" ) {
-      session.jwt = resp.data.jwt
-    }
+    req.session.jwt = resp.data.jwt
+    req.session.save()
   }
 
   return resp
@@ -635,6 +630,27 @@ export async function personalUnlock(req, session, password) {
 
   if ( resp.httpStatusCode=="200" ) {
     req.session.jwt = resp.data.jwt
+    req.session.save()
+  }
+
+  return resp
+}
+
+/**
+ * Change personal password
+ * @param {Object} session Session
+ * @param {string} password Password
+ * @returns
+ */
+export async function personalPasswordChange(req, session, password) {
+  var resp = await passWeaverAPI(session, "patch", "/personal/password", {
+    password: password
+  })
+
+  // If successfull, unlock personal folder directly
+  if ( resp.httpStatusCode=="200" ) {
+    req.session.jwt = resp.data.jwt
+    req.session.save()
   }
 
   return resp

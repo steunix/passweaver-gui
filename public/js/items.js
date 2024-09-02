@@ -389,7 +389,7 @@ function personalPasswordAskDialog() {
 
 function personalPasswordCreateEnable() {
   if (
-    jhValue("#newpersonalpassword")=="" || jhValue("#newpersonalpassword").length<8 || jhValue("#newpersonalpassword")!=jhValue("#newpersonalpasswordconfirm") ) {
+    jhValue("#newpersonalpassword")=="" || jhValue("#newpersonalpassword").length < 8 || jhValue("#newpersonalpassword")!=jhValue("#newpersonalpasswordconfirm") ) {
       jhQuery("#personalpasswordcreate").setAttribute("disabled","disabled")
   } else {
     jhQuery("#personalpasswordcreate").removeAttribute("disabled")

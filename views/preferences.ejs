@@ -10,6 +10,7 @@
     <sl-tab-group>
       <sl-tab slot="nav" panel="preferences">Preferences</sl-tab>
       <sl-tab slot="nav" panel="password">Password</sl-tab>
+      <sl-tab slot="nav" panel="ppassword">Personal folder password</sl-tab>
 
       <sl-tab-panel name="preferences">
         <table>
@@ -28,7 +29,7 @@
       </sl-tab-panel>
 
       <sl-tab-panel name="password">
-        <% if ( authmethod=="local") { %>
+        <% if ( authmethod=="local" ) { %>
         <h2>Change password</h2>
         <h5>At least 8 characters</h5>
         <table>
@@ -47,10 +48,40 @@
         </table>
         <sl-divider></sl-divider>
         <sl-button id='passwordchange' variant="primary" disabled>Change password</sl-button>
+        <% } else { %>
+          <p>Password cannot be changed from this portal</p>
+        <% } %>
       </sl-tab-panel>
-      <% } else { %>
-        <p>Password cannot be changed from this portal</p>
-      <% } %>
+
+      <sl-tab-panel name="ppassword">
+        <% if ( !admin ) { %>
+          <% if ( unlocked ) { %>
+            <h2>Change personal folder password</h2>
+            <h5>At least 8 characters</h5>
+            <table>
+              <tr>
+                <th>New password</th>
+                <td>
+                  <sl-input id="pnewpassword1" type="password" password-toggle></sl-input>
+                </td>
+              </tr>
+              <tr>
+                <th>Confirm new password</th>
+                <td>
+                  <sl-input id="pnewpassword2" type="password" password-toggle></sl-input>
+                </td>
+              </tr>
+            </table>
+            <sl-divider></sl-divider>
+            <sl-button id='ppasswordchange' variant="primary" disabled>Change password</sl-button>
+          <% } else { %>
+            <p>Unlock personal folder first</p>
+          <% } %>
+        <% } else { %>
+          <p>Admins don't have personal folders </p>
+        <% } %>
+      </sl-tab-panel>
+
     </sl-tab-group>
   </div>
 </div>
