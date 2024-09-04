@@ -248,7 +248,7 @@ if ( jhQuery("#pageid") ) {
 
 if ( jhQuery("#globalsearch") ) {
   jhEvent("#globalsearch", "keypress", (ev)=>{
-    if ( ev.keyCode==13 && jhValue("#globalsearch").length>3 ) {
+    if ( ev.keyCode==13 && jhValue("#globalsearch").length>=3 ) {
       window.location = "/pages/search?search=" + encodeURIComponent(jhValue("#globalsearch"))
     }
   })
