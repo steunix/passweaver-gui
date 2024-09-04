@@ -36,10 +36,11 @@ export function confirmDialog(title,text,callback,savetext,savevariant) {
   dialog.show()
 }
 
-export function errorDialog(text) {
+export function errorDialog(text, subject) {
   const dialog = jhQuery("#errordialog")
   jhQuery("#errordialogtext").innerHTML = text
 
+  jhQuery("#errordialog").setAttribute("label", subject || "PassWeaver")
   jhQuery("#errordialogclose").replaceWith(jhQuery("#errordialogclose").cloneNode(true))
   jhEvent("#errordialogclose", "click", event=> {
     dialog.hide()
@@ -53,7 +54,7 @@ export async function checkResponse(resp,ignoreStatus) {
   try {
     body = await respClone.json()
   } catch (err) {
-    errorDialog("Bad request to PassWeaver GUI")
+    errorDialog("Internal error: bad request to PassWeaver GUI")
     return
   }
 

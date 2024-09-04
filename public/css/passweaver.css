@@ -165,7 +165,11 @@ body {
 }
 
 #errordialog::part(header) {
-    color: red;
+    --header-spacing: var(--sl-spacing-small);
+}
+
+#errordialog::part(title) {
+    font-size: 120%;
 }
 
 #errordialog::part(panel) {

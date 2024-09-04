@@ -10,7 +10,7 @@ jhEvent("#show", "click", async(ev)=>{
     }
     jhValue("#data", body.data)
   } catch (err) {
-    PW.errorDialog("This secret does not exist!")
+    PW.errorDialog("This secret does not exist, or it may have already been read. Please check the link.")
     jhQuery("#show").style.visibility = "hidden"
     jhQuery("#result").style.visibility = "hidden"
     return

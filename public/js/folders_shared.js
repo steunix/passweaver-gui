@@ -139,7 +139,7 @@ jhEvent("#folderedit", "click", (ev)=>{
 })
 jhEvent("#foldercreate", "click", (ev)=>{
   if ( currentFolder()==="" ) {
-    PW.errorDialog("Select a parent folder")
+    PW.errorDialog("Select a parent folder in the tree")
     return
   }
   folderCreateDialog()

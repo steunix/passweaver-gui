@@ -239,7 +239,7 @@ jhEvent("#groupeditcancel", "click", (ev)=> {
 
 jhEvent("#newmember", "click", (ev)=>{
   if ( currentGroup()=="" ) {
-    PW.errorDialog("Select a group")
+    PW.errorDialog("Select a group in the tree")
     return
   }
   UPicker.show(userPickerChoosen)

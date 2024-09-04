@@ -422,7 +422,7 @@ async function personalPasswordSet() {
   jhQuery("#personalpasswordset").hide()
   const resp = await jhFetch("/api/personalunlock", data)
   if ( !await PW.checkResponse(resp) ) {
-    PW.errorDialog("Wrong password")
+    PW.errorDialog("Wrong password, please retry")
     return
   }
 

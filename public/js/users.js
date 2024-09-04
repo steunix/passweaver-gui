@@ -253,7 +253,7 @@ jhEvent("#usersearch", "sl-input", (ev) => {
 })
 jhEvent("#addgroup", "click",(ev)=>{
   if ( currentUser==="" ) {
-    PW.errorDialog("Select a user")
+    PW.errorDialog("Select a user from the list")
     return
   }
   GPicker.show(groupPickerChoosen)
