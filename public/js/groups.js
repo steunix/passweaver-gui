@@ -139,12 +139,12 @@ function groupEditEnable() {
 }
 
 async function userPickerChoosen(id) {
+  UPicker.hide()
   const resp = await jhFetch(`/api/groupadduser/${currentGroup()}/${id}`, {_csrf: PW.getCSRFToken()})
   if ( !await PW.checkResponse(resp) ) {
     return
   }
 
-  UPicker.hide()
   fillUsers()
   PW.showToast("success", "User added to the group")
 }

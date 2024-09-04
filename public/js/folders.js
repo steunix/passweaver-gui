@@ -101,12 +101,12 @@ async function groupToggle(ev) {
 }
 
 async function groupPickerChoosen(group) {
+  GPicker.hide()
   const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: PW.getCSRFToken() })
   if ( !await PW.checkResponse(resp) ) {
     return
   }
 
-  GPicker.hide()
   await fillGroups()
   PW.showToast("success", "Group added")
 }
