@@ -428,6 +428,7 @@ async function personalPasswordSet() {
 
   PW.showToast("success", "Personal folder unlocked")
   await fillFolders()
+  await folderClicked()
 }
 
 async function passwordCopy(ev) {
