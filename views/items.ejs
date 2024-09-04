@@ -20,17 +20,19 @@
           <sl-icon slot="suffix" name="chevron-right"></sl-icon>
         </sl-button>
       </div>
-      <sl-button-group>
-        <sl-button id="foldercreate" type="button" title="New folder">
-          <sl-icon slot="prefix" name="plus-lg"></sl-icon>
-        </sl-button>
-        <sl-button id="folderedit" type="button" title="Edit folder">
-          <sl-icon slot="prefix" name="pencil"></sl-icon>
-        </sl-button>
-        <sl-button id="folderremove" type="button" variant="danger" title="Remove folder">
-          <sl-icon slot="prefix" name="trash3"></sl-icon>
-        </sl-button>
-      </sl-button-group>
+      <% if ( manage_folders ) { %>
+        <sl-button-group>
+          <sl-button id="foldercreate" type="button" title="New folder">
+            <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+          </sl-button>
+          <sl-button id="folderedit" type="button" title="Edit folder">
+            <sl-icon slot="prefix" name="pencil"></sl-icon>
+          </sl-button>
+          <sl-button id="folderremove" type="button" variant="danger" title="Remove folder">
+            <sl-icon slot="prefix" name="trash3"></sl-icon>
+          </sl-button>
+        </sl-button-group>
+      <% } %>
     </div>
     <%- include('partials/folderstree.ejs') %>
   </div>

@@ -159,7 +159,8 @@ function commonParams(req) {
     admin: req.session.admin,
     viewitem: req.query?.viewitem ?? '',
     theme: req?.session?.theme ?? "light",
-    version: Config.packageJson().version
+    version: Config.packageJson().version,
+    manage_folders: req.session.admin || Config.get().folders.user_managed
   }
 }
 

@@ -49,9 +49,16 @@ const configSchema = {
         "url": { "type": "string" }
       },
       "required": [ "enabled" ]
+    },
+    "folders": {
+      "type": "object",
+      "properties": {
+        "user_managed": { "type": "boolean" }
+      },
+      "required": [ "user_managed" ]
     }
   },
-  "required": ["listen_port", "passweaverapi_url", "company_name", "https", "log", "onetimetokens", "redis"]
+  "required": ["listen_port", "passweaverapi_url", "company_name", "https", "log", "onetimetokens", "redis", "folders"]
 }
 
 // Reads package.json

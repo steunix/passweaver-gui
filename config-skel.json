@@ -19,5 +19,8 @@
   },
   "onetimetokens": {
     "default_hours": 168
+  },
+  "folders": {
+    "user_managed": true
   }
 }
