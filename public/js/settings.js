@@ -127,6 +127,21 @@ async function itemTypeEdit() {
   await fillItemTypes()
 }
 
+async function clearCache() {
+  const data = {
+    _csrf: PW.getCSRFToken()
+  }
+
+  PW.confirmDialog("Clear cache", "Are you sure to clear the cache?", async()=>{
+    const resp = await jhFetch(`/api/clearcache`, data)
+    if ( !await PW.checkResponse(resp) ) {
+      return
+    }
+
+    PW.showToast("success", "Cache cleared")
+  })
+}
+
 jhEvent("#additemtype", "click", ()=>{
   itemTypeCreateDialog()
 })
@@ -150,3 +165,6 @@ jhEvent("#itemtypeeditdescription", "keyup", ()=>{
   itemTypeEditEnable()
 })
 
+jhEvent("#clearcache", "click", async()=>{
+  await clearCache()
+})

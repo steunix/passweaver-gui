@@ -653,6 +653,12 @@ app.post("/api/onetimesecret", async (req,res)=>{
   res.status(200).json(resp)
 })
 
+// Clear the cache
+app.post("/api/clearcache", async(req,res)=>{
+  const resp = await PassWeaver.clearCache(req.session)
+  res.status(200).json(resp)
+})
+
 // Get one time secret content
 app.get("/noauth/onetimesecretget/:token", async (req,res)=>{
   const resp = await PassWeaver.oneTimeSecretGet(req, req.session, req.params.token)
