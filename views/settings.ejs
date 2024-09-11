@@ -9,6 +9,7 @@
   <div class="main1" >
     <sl-tab-group>
       <sl-tab slot="nav" panel="itemtypes">Item types</sl-tab>
+      <sl-tab slot="nav" panel="cache">Cache</sl-tab>
 
       <sl-tab-panel name="itemtypes">
         <div style="display: flex;">
@@ -30,6 +31,11 @@
           </tbody>
         </table>
       </sl-tab-panel>
+
+      <sl-tab-panel name="cache">
+        <sl-button id="clearcache" type="button" variant="danger" title="Clear cache">Clear cache</sl-button>
+      </sl-tab-panel>
+
     </sl-tab-group>
   </div>
 

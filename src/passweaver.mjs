@@ -820,3 +820,12 @@ export async function passwordChange(req, session, newpassword) {
   const resp = await passWeaverAPI(session, "patch", `/users/${session.user}`, userData)
   return resp
 }
+
+/**
+ * Clear the cache
+ * @param {Object} session Session
+ */
+export async function clearCache(session) {
+  const resp = await passWeaverAPI(session, "post", `/util/clearcache`, {})
+  return resp
+}
