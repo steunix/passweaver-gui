@@ -1,6 +1,6 @@
 {
   "name": "passweaver-gui",
-  "version": "0.9.11",
+  "version": "0.10.0",
   "type": "module",
   "description": "Collaborative password manager GUI",
   "main": "passweaver-gui.mjs",
