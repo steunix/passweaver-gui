@@ -33,9 +33,9 @@ const cfg = Config.get()
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
-      "style-src": ["'self'", "'unsafe-inline'", "fonts.googleapis.com", "cdnjs.cloudflare.com", "cdn.jsdelivr.net"],
-      "connect-src": ["'self'","cdn.jsdelivr.net", "data: blob:"],
+      "script-src": ["'self'"],
+      "style-src": ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
+      "connect-src": ["'self'", "data: blob:"],
       "img-src": ["'self'", "https: data: blob:"]
     }
   }
