@@ -13,7 +13,13 @@ const configSchema = {
   "id": "config",
   "type": "object",
   "properties": {
-    "listen_port": { "type": "integer", "minimum": 1, "maximum": 65535 },
+    "listen": {
+      "type": "object",
+      "properties": {
+        "port": { "type": "integer", "minimum": 0, "maximum": 65535 },
+        "host": { "type": "string" }
+      }
+    },
     "passweaverapi_url": { "type": "string" },
     "company_name": { "type": "string" },
     "log": {
@@ -58,7 +64,7 @@ const configSchema = {
       "required": [ "user_managed" ]
     }
   },
-  "required": ["listen_port", "passweaverapi_url", "company_name", "https", "log", "onetimetokens", "redis", "folders"]
+  "required": ["listen", "passweaverapi_url", "company_name", "https", "log", "onetimetokens", "redis", "folders"]
 }
 
 // Reads package.json

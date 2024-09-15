@@ -1,5 +1,8 @@
 {
-  "listen_port": 3001,
+  "listen": {
+    "host": "",
+    "port": 15000
+  },
   "passweaverapi_url": "http://localhost:3000/api/v1",
   "company_name": "MyCompany",
   "log": {

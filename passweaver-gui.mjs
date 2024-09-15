@@ -677,8 +677,6 @@ app.use((err, req, res, next)=> {
   res.redirect("/logout?error="+encodeURIComponent(err))
 })
 
-console.log(`Listening on port ${cfg.listen_port}`)
-
 // HTTP(S) server startup
 if ( cfg.https.enabled ) {
   https.createServer({
@@ -686,7 +684,9 @@ if ( cfg.https.enabled ) {
     cert: FS.readFileSync(cfg.https.certificate)
     },
     app
-  ).listen(cfg.listen_port)
+  ).listen(cfg.listen.port, cfg.listen.host)
+  console.log(`Listening on '${cfg.listen.host}' port ${cfg.listen.port} (https)`)
 } else {
-  app.listen(cfg.listen_port)
+  app.listen(cfg.listen.port, cfg.listen.host)
+  console.log(`Listening on '${cfg.listen.host}' port ${cfg.listen.port} (http)`)
 }
