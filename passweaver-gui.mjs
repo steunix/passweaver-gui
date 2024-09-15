@@ -123,8 +123,11 @@ app.use("/api", function(req,res,next) {
 // Use EJS
 app.set('view engine', 'ejs');
 
-// Static Middleware
+// Public static
 app.use("/public", Express.static('public'))
+
+// Shoelace static
+app.use("/shoelace", Express.static('./node_modules/@shoelace-style/shoelace'))
 
 // Rate limiter
 app.use("/access", rateLimitMiddleware)

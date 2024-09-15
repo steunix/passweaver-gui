@@ -8,7 +8,9 @@
   "author": "Stefano Rivoir",
   "license": "MIT",
   "dependencies": {
+    "@shoelace-style/shoelace": "^2.16.0",
     "compression": "^1.7.4",
+    "connect-redis": "7.1.1",
     "ejs": "^3.1.10",
     "express": "^5.0.0",
     "express-rate-limit": "^7.0.0",
@@ -19,9 +21,8 @@
     "jsonwebtoken": "^9.0.2",
     "lusca": "^1.7.0",
     "morgan": "^1.10.0",
-    "rotating-file-stream": "^3.2.1",
-    "serve-favicon": "^2.5.0",
     "redis": "4.7.0",
-    "connect-redis": "7.1.1"
+    "rotating-file-stream": "^3.2.1",
+    "serve-favicon": "^2.5.0"
   }
 }
