@@ -367,235 +367,235 @@ app.get("/onetimesecret/:token", async(req,res)=> {
 // Items list
 app.get("/api/itemslist/:folder", async (req,res)=>{
   const list = await PassWeaver.itemsList(req.session, req.params.folder, req.query?.search, req.query?.type)
-  res.status(200).json(list)
+  res.json(list)
 })
 
 // Items search
 app.get("/api/itemssearch/", async (req,res)=>{
   const list = await PassWeaver.itemsSearch(req.session, req.query?.search, req.query?.type)
-  res.status(200).json(list)
+  res.json(list)
 })
 
 // Folder details
 app.get("/api/folders/:folder", async (req,res)=>{
   const info = await PassWeaver.getFolder(req.session, req.params.folder)
-  res.status(200).json(info)
+  res.json(info)
 })
 
 // Get item
 app.get("/api/items/:item", async (req,res)=> {
   const resp = await PassWeaver.itemGet(req.session, req.params.item, req.body)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Create item
 app.post("/api/itemnew/:folder", async (req,res)=> {
   const resp = await PassWeaver.itemCreate(req.session, req.params.folder, req.body)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Delete item
 app.post("/api/itemremove/:item", async (req,res)=> {
   const resp = await PassWeaver.itemRemove(req.session, req.params.item, req.body)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Update item
 app.post("/api/itemupdate/:item", async (req,res)=> {
   const resp = await PassWeaver.itemUpdate(req.session, req.params.item, req.body)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Move item
 app.post("/api/itemmove/:item", async (req,res)=> {
   const resp = await PassWeaver.itemMove(req.session, req.params.item, req.body)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Clone item
 app.post("/api/items/:item/clone", async (req,res)=> {
   const resp = await PassWeaver.itemClone(req.session, req.params.item)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Get folders tree
 app.get("/api/folderstree", async (req,res)=> {
   const resp = await PassWeaver.foldersTree(req.session)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Create folder
 app.post("/api/foldernew/:folder", async (req,res)=> {
   const resp = await PassWeaver.folderCreate(req.session, req.params.folder, req.body)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Delete folder
 app.post("/api/folderremove/:folder", async (req,res)=> {
   const resp = await PassWeaver.folderRemove(req.session, req.params.folder, req.body)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Update folder
 app.post("/api/folderupdate/:folder", async (req,res)=> {
   const resp = await PassWeaver.folderUpdate(req.session, req.params.folder, req.body)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Get groups tree
 app.get("/api/groupstree", async (req,res)=> {
   const resp = await PassWeaver.groupsTree(req.session)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Group members list
 app.get("/api/userslist/:group", async (req,res)=>{
   const list = await PassWeaver.usersList(req.session, req.params.group)
-  res.status(200).json(list)
+  res.json(list)
 })
 
 // Create group
 app.post("/api/groupnew/:group", async (req,res)=> {
   const resp = await PassWeaver.groupCreate(req.session, req.params.group, req.body)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Group details
 app.get("/api/groups/:group", async (req,res)=>{
   const info = await PassWeaver.getGroup(req.session, req.params.group)
-  res.status(200).json(info)
+  res.json(info)
 })
 
 // Update group
 app.post("/api/groupupdate/:group", async (req,res)=> {
   const resp = await PassWeaver.groupUpdate(req.session, req.params.group, req.body)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Delete group
 app.post("/api/groupremove/:group", async (req,res)=> {
   const resp = await PassWeaver.groupRemove(req.session, req.params.group)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Add user to group
 app.post("/api/groupadduser/:group/:user", async (req,res)=> {
   const resp = await PassWeaver.groupAddUser(req.session, req.params.group, req.params.user)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Remove user from group
 app.post("/api/groupremoveuser/:group/:user", async (req,res)=> {
   const resp = await PassWeaver.groupRemoveUser(req.session, req.params.group, req.params.user)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Get users list
 app.get("/api/userslist", async (req,res)=> {
   const list = await PassWeaver.usersList(req.session,null,req.query?.search)
-  res.status(200).json(list)
+  res.json(list)
 })
 
 // Create user
 app.post("/api/usernew", async (req,res)=> {
   const resp = await PassWeaver.userCreate(req.session, req.body);
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Get user
 app.get("/api/users/:item", async (req,res)=> {
   const resp = await PassWeaver.userGet(req.session, req.params.item)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Update user
 app.post("/api/userupdate/:item", async (req,res)=> {
   const resp = await PassWeaver.userUpdate(req.session, req.params.item, req.body)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Delete user
 app.post("/api/userremove/:user", async (req,res)=> {
   const resp = await PassWeaver.userRemove(req.session, req.params.user)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Get user's groups
 app.get("/api/usergroups/:id", async (req,res)=> {
   const resp = await PassWeaver.userGroups(req.session, req.params.id)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Generate random password
 app.get("/api/generatepassword", async(req,res)=> {
   const resp = await PassWeaver.generatePassword(req.session)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Get folder's groups
 app.get("/api/foldergroups/:id", async (req,res)=> {
   const resp = await PassWeaver.folderGroups(req.session, req.params.id)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Get groups list
 app.get("/api/groupslist", async (req,res)=> {
   const list = await PassWeaver.groupsList(req.session,req.query?.search)
-  res.status(200).json(list)
+  res.json(list)
 })
 
 // Add group to folder
 app.post("/api/folders/:folder/groups/:group", async(req,res)=> {
   const resp = await PassWeaver.folderAddGroup(req.session, req.params.folder, req.params.group)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Remove group from folder
 app.delete("/api/folders/:folder/groups/:group", async(req,res)=> {
   const resp = await PassWeaver.folderRemoveGroup(req.session, req.params.folder, req.params.group)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Toggle group permissions on folder
 app.post("/api/folders/:folder/groups/:group/toggle", async(req,res)=> {
   const resp = await PassWeaver.folderToggleGroup(req.session, req.params.folder, req.params.group)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Generate password
 app.get("/api/generate", async (req,res)=>{
   const resp = await PassWeaver.generatePassword()
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Create personal password
 app.post("/api/personalpassword", async (req,res)=>{
   const resp = await PassWeaver.personalPasswordCreate(req, req.session, req.body.password)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Unlock personal folder
 app.post("/api/personalunlock", async (req,res)=>{
   const resp = await PassWeaver.personalUnlock(req, req.session, req.body.password)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Change personal folder password
 app.post("/api/personalpasswordchange", async(req,res)=>{
   const resp = await PassWeaver.personalPasswordChange(req, req.session, req.body.password)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Events
 app.post("/api/events", async(req,res)=> {
   const resp = await PassWeaver.addEvent(req, req.session, req.body.event, req.body.entity, req.body.entityid)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Get user preferences
 app.get("/api/preferences", async(req,res)=>{
   const resp = await PassWeaver.preferencesGet(req, req.session)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Set user preferences
@@ -608,61 +608,61 @@ app.post("/api/preferences", async(req,res)=>{
     req.session.theme = theme
     req.session.save()
   }
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Change password
 app.post("/api/changepassword", async(req,res)=>{
   const resp = await PassWeaver.passwordChange(req, req.session, req.body.password)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Item types list
 app.get("/api/itemtypes", async (req,res)=>{
   const resp = await PassWeaver.itemTypesList(req, req.session)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // New item type
 app.post("/api/itemtypes", async (req,res)=>{
   const resp = await PassWeaver.itemTypeCreate(req, req.session, req.body.description, req.body.icon)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Delete item type
 app.delete("/api/itemtypes/:id", async(req,res)=>{
   const resp = await PassWeaver.itemTypeRemove(req, req.session, req.params.id)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Get item type
 app.get("/api/itemtypes/:id", async(req,res)=>{
   const resp = await PassWeaver.itemTypeGet(req, req.session, req.params.id)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Update item type
 app.patch("/api/itemtypes/:id", async (req,res)=>{
   const resp = await PassWeaver.itemTypeEdit(req, req.session, req.params.id, req.body.description, req.body.icon)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Create one time secret
 app.post("/api/onetimesecret", async (req,res)=>{
   const resp = await PassWeaver.oneTimeSecretCreate(req, req.session, req.body.data)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Clear the cache
 app.post("/api/clearcache", async(req,res)=>{
   const resp = await PassWeaver.clearCache(req.session)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Get one time secret content
 app.get("/noauth/onetimesecretget/:token", async (req,res)=>{
   const resp = await PassWeaver.oneTimeSecretGet(req, req.session, req.params.token)
-  res.status(200).json(resp)
+  res.json(resp)
 })
 
 // Error handler
