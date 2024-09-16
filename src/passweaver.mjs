@@ -658,14 +658,13 @@ export async function personalPasswordChange(req, session, password) {
 
 /**
  * Add an event
- * @param {Object} req Request
  * @param {Object} session Session
  * @param {string} event Event code
  * @param {string} entity Entity code
  * @param {string} entityid Entity id
  * @returns
  */
-export async function addEvent(req, session, event, entity, entityid) {
+export async function addEvent(session, event, entity, entityid) {
   const data = {
     event: event,
     entity: entity,
@@ -678,11 +677,10 @@ export async function addEvent(req, session, event, entity, entityid) {
 
 /**
  * Item types list
- * @param {Object} req Request
  * @param {Object} session Session
  * @returns
  */
-export async function itemTypesList(req, session) {
+export async function itemTypesList(session) {
 
   const resp = await passWeaverAPI(session, "get", "/itemtypes")
   return resp
@@ -690,13 +688,12 @@ export async function itemTypesList(req, session) {
 
 /**
  * New item type
- * @param {Object} req Request
  * @param {Object} session Session
  * @param {string} description Description
  * @param {string} icon Icon
  * @returns
  */
-export async function itemTypeCreate(req, session, description, icon) {
+export async function itemTypeCreate(session, description, icon) {
   const data = {
     description: description,
     icon: icon
@@ -708,12 +705,11 @@ export async function itemTypeCreate(req, session, description, icon) {
 
 /**
  * Delete item type
- * @param {Object} req Request
  * @param {Object} session Session
  * @param {string} id Item type id
  * @returns
  */
-export async function itemTypeRemove(req, session, id) {
+export async function itemTypeRemove(session, id) {
   const resp = await passWeaverAPI(session, "delete", `/itemtypes/${id}`)
   return resp
 }
@@ -725,20 +721,19 @@ export async function itemTypeRemove(req, session, id) {
  * @param {string} id Item type id
  * @returns
  */
-export async function itemTypeGet(req, session, id) {
+export async function itemTypeGet(session, id) {
   const resp = await passWeaverAPI(session, "get", `/itemtypes/${id}`)
   return resp
 }
 
 /**
  * Edit item type
- * @param {Object} req Request
  * @param {Object} session Session
  * @param {string} description Description
  * @param {string} icon Icon
  * @returns
  */
-export async function itemTypeEdit(req, session, id, description, icon) {
+export async function itemTypeEdit(session, id, description, icon) {
   const data = {
     description: description,
     icon: icon
@@ -760,10 +755,9 @@ export async function info(session) {
 
 /**
  * Get user preferences
- * @param {*} req
  * @param {*} session
  */
-export async function preferencesGet(req, session) {
+export async function preferencesGet(session) {
   const resp = await passWeaverAPI(session, "get", `/users/${session.user}/settings`)
   return resp
 }
@@ -790,29 +784,27 @@ export async function preferencesSet(req, session) {
  * @param {integer} hours Expires after these hours
  * @returns
  */
-export async function oneTimeSecretCreate(req, session, data) {
+export async function oneTimeSecretCreate(session, data) {
   const resp = await passWeaverAPI(session, "post", "/onetimetokens", {data: data, hours: Config.get().onetimetokens.default_hours})
   return resp
 }
 
 /**
  * Get one time secret
- * @param {Object} req Request
  * @param {Object} session Session
  * @param {string} token Item type id
  */
-export async function oneTimeSecretGet(req, session, token) {
+export async function oneTimeSecretGet(session, token) {
   const resp = await passWeaverAPI(session, "get", `/onetimetokens/${token}`)
   return resp
 }
 
 /**
  * Change user password
- * @param {Object} req Request
  * @param {Object} session Session
  * @param {string} newpassword New password
  */
-export async function passwordChange(req, session, newpassword) {
+export async function passwordChange(session, newpassword) {
   const userData = {
     secret: newpassword
   }

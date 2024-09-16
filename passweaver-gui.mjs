@@ -212,7 +212,7 @@ app.post("/access", async (req,res)=>{
   req.session.email = usr.data.email
 
   // Get user preferences
-  const prefs = await PassWeaver.preferencesGet(req, req.session)
+  const prefs = await PassWeaver.preferencesGet(req.session)
   const theme = prefs.data.find((el)=>{return el.setting=="theme"})
   if ( theme ) {
     req.session.theme = theme.value
@@ -582,13 +582,13 @@ app.post("/api/personalunlock", async (req,res)=>{
 
 // Change personal folder password
 app.post("/api/personalpasswordchange", async(req,res)=>{
-  const resp = await PassWeaver.personalPasswordChange(req, req.session, req.body.password)
+  const resp = await PassWeaver.personalPasswordChange(req.session, req.body.password)
   res.json(resp)
 })
 
 // Events
 app.post("/api/events", async(req,res)=> {
-  const resp = await PassWeaver.addEvent(req, req.session, req.body.event, req.body.entity, req.body.entityid)
+  const resp = await PassWeaver.addEvent(req.session, req.body.event, req.body.entity, req.body.entityid)
   res.json(resp)
 })
 
@@ -619,37 +619,37 @@ app.post("/api/changepassword", async(req,res)=>{
 
 // Item types list
 app.get("/api/itemtypes", async (req,res)=>{
-  const resp = await PassWeaver.itemTypesList(req, req.session)
+  const resp = await PassWeaver.itemTypesList(req.session)
   res.json(resp)
 })
 
 // New item type
 app.post("/api/itemtypes", async (req,res)=>{
-  const resp = await PassWeaver.itemTypeCreate(req, req.session, req.body.description, req.body.icon)
+  const resp = await PassWeaver.itemTypeCreate(req.session, req.body.description, req.body.icon)
   res.json(resp)
 })
 
 // Delete item type
 app.delete("/api/itemtypes/:id", async(req,res)=>{
-  const resp = await PassWeaver.itemTypeRemove(req, req.session, req.params.id)
+  const resp = await PassWeaver.itemTypeRemove(req.session, req.params.id)
   res.json(resp)
 })
 
 // Get item type
 app.get("/api/itemtypes/:id", async(req,res)=>{
-  const resp = await PassWeaver.itemTypeGet(req, req.session, req.params.id)
+  const resp = await PassWeaver.itemTypeGet(req.session, req.params.id)
   res.json(resp)
 })
 
 // Update item type
 app.patch("/api/itemtypes/:id", async (req,res)=>{
-  const resp = await PassWeaver.itemTypeEdit(req, req.session, req.params.id, req.body.description, req.body.icon)
+  const resp = await PassWeaver.itemTypeEdit(req.session, req.params.id, req.body.description, req.body.icon)
   res.json(resp)
 })
 
 // Create one time secret
 app.post("/api/onetimesecret", async (req,res)=>{
-  const resp = await PassWeaver.oneTimeSecretCreate(req, req.session, req.body.data)
+  const resp = await PassWeaver.oneTimeSecretCreate(req.session, req.body.data)
   res.json(resp)
 })
 
@@ -661,7 +661,7 @@ app.post("/api/clearcache", async(req,res)=>{
 
 // Get one time secret content
 app.get("/noauth/onetimesecretget/:token", async (req,res)=>{
-  const resp = await PassWeaver.oneTimeSecretGet(req, req.session, req.params.token)
+  const resp = await PassWeaver.oneTimeSecretGet(req.session, req.params.token)
   res.json(resp)
 })
 
