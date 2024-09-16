@@ -33,9 +33,9 @@ const cfg = Config.get()
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      "script-src": ["'self'"],
+      "script-src": ["'self'", "cdn.jsdelivr.net"],
       "style-src": ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
-      "connect-src": ["'self'", "data: blob:"],
+      "connect-src": ["'self'", "data: blob:", "cdn.jsdelivr.net"],
       "img-src": ["'self'", "https: data: blob:"]
     }
   }
@@ -125,9 +125,6 @@ app.set('view engine', 'ejs');
 
 // Public static
 app.use("/public", Express.static('public'))
-
-// Shoelace static
-app.use("/shoelace", Express.static('./node_modules/@shoelace-style/shoelace'))
 
 // Rate limiter
 app.use("/access", rateLimitMiddleware)
