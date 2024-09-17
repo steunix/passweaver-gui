@@ -1,20 +1,19 @@
 # About
 
-PassWeaver-GUI is standalone WEB interface to PassWeaver-API, bringing collaborative enterprise-scale password management to your browser. It's developed using mainly NodeJS, Express and EJS, and uses Shoelace for WEB Components.
+PassWeaver-GUI is a WEB interface for PassWeaver-API, bringing you a portable, collaborative and enterprise-scale password management system.
 
-PassWeaver-GUI is an opensource project, released under MIT license.
+PassWeaver-GUI is an opensource project, released under MIT license. See [Technical info](#Technical-specs) for some details.
 
 # Features
 
 - Personal folders for each user
-- Share one-time secrets to anyone
+- Share one-time secrets to anyone, even outside your organization
 - Share items through permalinks
-- Share one time secrets
 - Folder level permissions
 - User groups
 - Both LDAP and local authentication
 - CSP compliant pages
-- Quick user interface
+- Quick and clean user interface
 - Light or dark theme
 
 # Forewords
@@ -166,3 +165,12 @@ In the "Cache" pane, you can reset the API cache causing it to reload users perm
 ![Item types](assets/passweavergui-settings-2-000.jpeg)
 
 This operation is needed only after directly operating on the API database... which is not advisable anyway.
+
+# Technical specs
+
+Passweaver-GUI is developed in NodeJS and uses these great libs (among others):
+- `ExpressJS` (version 5, but 4.x is perfectly fine too)
+- `EJS` for HTML templating
+- `Morgan` for logging
+- `Helmet` and Lusca for CSFR and CSP compliance
+- `Got` for interacting with Passweaver-API
