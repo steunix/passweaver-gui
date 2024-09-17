@@ -27,12 +27,14 @@ While PassWeaver-API is a generic and independent piece of background software, 
 
 With PassWeaver-GUI you will manage these entities:
 
+- Items, holding your secret data
 - Users
 - Groups
 - Folders
-- Items, holding your secret data
 
-Items are stored in folders, and folders can contain both items and other folders. Users join groups (one or more), and groups can read or write on a given folder, its items and subfolders.
+In a few words:
+- items are stored in folders, and folders can contain both items and other folders. - users join groups (one or more), and...
+- groups can read or write on a given folder, its items and subfolders.
 
 ## Items
 
