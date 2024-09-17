@@ -108,7 +108,7 @@ By clicking the "Show secret" button, the secret will be displayed, and the link
 In the "Preferences" page, you can:
 
 - Choose your theme (light or dark)
-- Change your login password (if Authentication is `LDAP`, see [Users](# Users))
+- Change your login password (if Authentication is `LDAP`, see [Users](#Users) )
 - Change your personal folder password
 
 # Admin pages
