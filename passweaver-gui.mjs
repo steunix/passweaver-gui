@@ -443,7 +443,7 @@ app.post("/api/items/:item/clone", async (req,res)=> {
   res.json(resp)
 })
 
-// Clone item
+// Item activity
 app.get("/api/items/:item/activity", async (req,res)=> {
   const resp = await PassWeaver.itemActivity(req.session, req.params.item, req.query?.lastid)
   res.json(resp)
@@ -554,6 +554,12 @@ app.post("/api/userremove/:user", async (req,res)=> {
 // Get user's groups
 app.get("/api/usergroups/:id", async (req,res)=> {
   const resp = await PassWeaver.userGroups(req.session, req.params.id)
+  res.json(resp)
+})
+
+// User activity
+app.get("/api/users/:user/activity", async (req,res)=> {
+  const resp = await PassWeaver.userActivity(req.session, req.params.user, req.query?.lastid)
   res.json(resp)
 })
 

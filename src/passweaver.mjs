@@ -505,6 +505,19 @@ export async function userUpdate(session, user, body) {
 }
 
 /**
+ * Get user activity
+ * @param {Object} session Session
+ * @param {string} user User ID
+ * @param {string} lastid Last id read
+ * @returns
+ */
+export async function userActivity(session, user, lastid) {
+  const li = lastid || ""
+  const resp = await passWeaverAPI(session, "get", `/users/${user}/activity?lastid=${li}`)
+  return resp
+}
+
+/**
  * Get folder groups
  * @param {Object} session
  * @param {string} folder

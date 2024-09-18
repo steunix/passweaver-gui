@@ -23,6 +23,7 @@ async function fillUsers() {
         `<tr data-id='${itm.id}' style='cursor:pointer'>`+
         `<td><sl-icon-button id='edituser-${itm.id}' title='Edit user' name='pencil' data-id='${itm.id}'></sl-icon-button></td>`+
         `<td><sl-icon-button id='removeuser-${itm.id}' title='Delete user' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button></td>`+
+        `<td><sl-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></sl-icon-button></td>`+
         `<td class='border-start'>${itm.login}</td>`+
         `<td>${itm.lastname}</td>`+
         `<td>${itm.firstname}</td>`+
@@ -44,6 +45,9 @@ async function fillUsers() {
     jhEvent("#userstable tbody tr [id^=removeuser]", "click",(ev)=>{
       userRemove(ev.currentTarget.getAttribute("data-id"))
     })
+    jhEvent("#userstable tbody tr [id^=activity]", "click",(ev)=>{
+      userActivity(ev.currentTarget.getAttribute("data-id"))
+    })
     jhEvent("#userstable tbody tr", "click",(ev)=>{
       currentUser = ev.currentTarget.getAttribute("data-id")
 
@@ -54,6 +58,40 @@ async function fillUsers() {
       ev.currentTarget.classList.add("rowselected")
       fillGroups()
     })
+  }
+}
+
+async function fillActivity(usr) {
+  // If a table is already populated, get last id and get next page
+  var lastid = ""
+  const lastrow = jhQuery("#itemactivitytable tbody tr:last-child td[id^=event]")
+  if ( lastrow ) {
+    lastid = lastrow.getAttribute("data-id")
+  }
+
+  const resp = await jhFetch(`/api/users/${usr}/activity?lastid=${lastid}`)
+
+  // Check response
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  const body = await resp.json()
+
+  // Manual check response, because body has already been read
+  if ( body.data.length ) {
+    var row = ""
+    for ( const evt of body.data ) {
+      row += `<tr>`
+      row += `<td id='event-${evt.id}' data-id='${evt.id}'>${evt.timestamp}</td>`
+      row += `<td>${evt.entity_description}</td>`
+      row += `<td>${evt.action_description}</td>`
+      row += `<td>${evt.item_title}</td>`
+    }
+    jhQuery("#useractivitytable tbody").innerHTML += row
+  } else {
+    jhQuery("#useractivitytable tbody").innerHTML += "<tr><td colspan='99'>No other activity found</td></tr>"
+    jhQuery("#useractivityload").setAttribute("disabled","disabled")
   }
 }
 
@@ -221,6 +259,12 @@ async function groupPickerChoosen(group) {
   PW.showToast("success","Group added")
 }
 
+async function userActivity(itm) {
+  jhQuery("#useractivitytable tbody").innerHTML = ""
+  jhQuery("#useractivitydialog").show()
+  fillActivity(itm)
+}
+
 await fillUsers()
 
 // Event handlers
@@ -257,4 +301,8 @@ jhEvent("#addgroup", "click",(ev)=>{
     return
   }
   GPicker.show(groupPickerChoosen)
+})
+
+jhEvent("#useractivityload", "click", (ev)=>{
+  fillActivity(currentUser)
 })
