@@ -76,6 +76,7 @@ async function fillItems() {
         row += `<sl-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></sl-icon-button>`
       }
       row += `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`
+      row += `<sl-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></sl-icon-button>`
       row += `</td>`
       row += `<td class='border-end'>`
       if ( itm.type ) {
@@ -112,6 +113,9 @@ async function fillItems() {
   })
   jhEvent("#itemstable tbody [id^=link]", "click",(ev)=>{
     itemCopyLink(ev.currentTarget.getAttribute("data-id"))
+  })
+  jhEvent("#itemstable tbody [id^=activity]", "click",(ev)=>{
+    itemActivity(ev.currentTarget.getAttribute("data-id"))
   })
   jhEvent("#itemstable tbody [id^=passwordcopy]", "click",(ev)=>{
     passwordCopy(ev)
@@ -542,6 +546,8 @@ async function itemCreateGeneratePassword() {
 async function itemActivity(itm) {
   jhQuery("#itemactivitytable tbody").innerHTML = ""
   jhQuery("#itemactivitydialog").show()
+  jhValue("#itemactivityid", itm)
+  jhQuery("#itemactivityload").removeAttribute("disabled")
   fillActivity(itm)
 }
 
@@ -677,5 +683,5 @@ jhEvent("#itemviewactivity", "click", (ev)=>{
 })
 
 jhEvent("#itemactivityload", "click", (ev)=>{
-  fillActivity(jhValue("#itemviewid"))
+  fillActivity(jhValue("#itemactivityid"))
 })
