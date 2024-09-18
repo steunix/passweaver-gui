@@ -443,6 +443,12 @@ app.post("/api/items/:item/clone", async (req,res)=> {
   res.json(resp)
 })
 
+// Clone item
+app.get("/api/items/:item/activity", async (req,res)=> {
+  const resp = await PassWeaver.itemActivity(req.session, req.params.item, req.query?.lastid)
+  res.json(resp)
+})
+
 // Get folders tree
 app.get("/api/folderstree", async (req,res)=> {
   const resp = await PassWeaver.foldersTree(req.session)

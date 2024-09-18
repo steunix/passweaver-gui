@@ -287,6 +287,19 @@ export async function itemMove(session, itemid, body) {
 }
 
 /**
+ * Get item activity
+ * @param {Object} session Session
+ * @param {string} item Item ID
+ * @param {string} lastid Last id read
+ * @returns
+ */
+export async function itemActivity(session, item, lastid) {
+  const li = lastid || ""
+  const resp = await passWeaverAPI(session, "get", `/items/${item}/activity?lastid=${li}`)
+  return resp
+}
+
+/**
  * Create a new folder
  * @param {Object} session
  * @param {string} folder

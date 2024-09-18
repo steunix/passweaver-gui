@@ -129,6 +129,39 @@ async function fillItems() {
   jhDraggable("#itemstable [id^='row-']","item")
 }
 
+async function fillActivity(itm) {
+  // If a table is already populated, get last id and get next page
+  var lastid = ""
+  const lastrow = jhQuery("#itemactivitytable tbody tr:last-child td[id^=event]")
+  if ( lastrow ) {
+    lastid = lastrow.getAttribute("data-id")
+  }
+
+  const resp = await jhFetch(`/api/items/${itm}/activity?lastid=${lastid}`)
+
+  // Check response
+  if ( !await PW.checkResponse(resp) ) {
+    return
+  }
+
+  const body = await resp.json()
+
+  // Manual check response, because body has already been read
+  if ( body.data.length ) {
+    var row = ""
+    for ( const evt of body.data ) {
+      row += `<tr>`
+      row += `<td id='event-${evt.id}' data-id='${evt.id}'>${evt.timestamp}</td>`
+      row += `<td>${evt.user_description}</td>`
+      row += `<td>${evt.action_description}</td>`
+    }
+    jhQuery("#itemactivitytable tbody").innerHTML += row
+  } else {
+    jhQuery("#itemactivitytable tbody").innerHTML += "<tr><td colspan='99'>No other activity found</td></tr>"
+    jhQuery("#itemactivityload").setAttribute("disabled","disabled")
+  }
+}
+
 async function folderClicked(folderid) {
   jhQuery("#itemstable tbody").innerHTML = ""
 
@@ -506,6 +539,12 @@ async function itemCreateGeneratePassword() {
   }
 }
 
+async function itemActivity(itm) {
+  jhQuery("#itemactivitytable tbody").innerHTML = ""
+  jhQuery("#itemactivitydialog").show()
+  fillActivity(itm)
+}
+
 await fillFolders()
 await fillItemTypes()
 
@@ -631,4 +670,12 @@ addEventListener("folders-refresh", async (ev)=>{
 
 addEventListener("pw-item-found", async(ev)=>{
   folderClicked()
+})
+
+jhEvent("#itemviewactivity", "click", (ev)=>{
+  itemActivity(jhValue("#itemviewid"))
+})
+
+jhEvent("#itemactivityload", "click", (ev)=>{
+  fillActivity(jhValue("#itemviewid"))
 })
