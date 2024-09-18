@@ -595,6 +595,14 @@ jhEvent("#itemviewcopypassword", "sl-copy", (ev)=>{
   passwordCopied(jhValue("#itemviewid"))
 })
 
+jhEvent("#itemviewcopylink", "click", (ev)=>{
+  itemCopyLink(jhValue("#itemviewid"))
+})
+
+jhEvent("#itemeditcopylink", "click", (ev)=>{
+  itemCopyLink(jhValue("#itemeditid"))
+})
+
 jhEvent("#newgenerate", "click",(ev)=>{
   itemCreateGeneratePassword()
 })
