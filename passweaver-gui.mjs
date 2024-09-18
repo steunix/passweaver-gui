@@ -244,6 +244,11 @@ app.get("/pages/items", async (req,res)=>{
 
 // Groups
 app.get("/pages/groups", async (req,res)=>{
+  if ( !req.session.admin ) {
+    res.status(403).send()
+    return
+  }
+
   var page = {
     pagetitle: "Groups",
     pageid: "groups"
@@ -253,6 +258,11 @@ app.get("/pages/groups", async (req,res)=>{
 
 // Users page
 app.get("/pages/users", async(req,res)=> {
+  if ( !req.session.admin ) {
+    res.status(403).send()
+    return
+  }
+
   var page = {
     pagetitle: "Users",
     pageid: "users"
@@ -262,6 +272,11 @@ app.get("/pages/users", async(req,res)=> {
 
 // Folders
 app.get("/pages/folders", async (req,res)=>{
+  if ( !req.session.admin ) {
+    res.status(403).send()
+    return
+  }
+
   req.locals = {
     pagetitle: "Folders permissions",
     pageid: "folders"
@@ -290,6 +305,11 @@ app.get("/pages/generate", async (req,res)=>{
 
 // Info
 app.get("/pages/info", async(req,res)=> {
+  if ( !req.session.admin ) {
+    res.status(403).send()
+    return
+  }
+
   var page = {
     pagetitle: "Info",
     pageid: "info"
@@ -312,6 +332,11 @@ app.get("/pages/info", async(req,res)=> {
 
 // Settings
 app.get("/pages/settings", async (req,res)=>{
+  if ( !req.session.admin ) {
+    res.status(403).send()
+    return
+  }
+
   req.locals = {
     pagetitle: "Settings",
     pageid: "settings"
