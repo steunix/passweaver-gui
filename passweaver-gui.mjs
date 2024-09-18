@@ -594,7 +594,7 @@ app.post("/api/events", async(req,res)=> {
 
 // Get user preferences
 app.get("/api/preferences", async(req,res)=>{
-  const resp = await PassWeaver.preferencesGet(req, req.session)
+  const resp = await PassWeaver.preferencesGet(req.session)
   res.json(resp)
 })
 
