@@ -105,8 +105,9 @@ async function fillGroups() {
 
   const body = await resp.json()
   if ( body.data.length ) {
-    var row = "<tr>"
+    var row = ""
     for ( const itm of body.data ) {
+      row += `<tr data-id='${itm.id}'>`
       row += `<td><sl-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' style='color:red;' title='Remove'></sl-icon-button></td>`
       row += `<td>${itm.description}</td></tr>`
     }
@@ -265,6 +266,63 @@ async function userActivity(itm) {
   fillActivity(itm)
 }
 
+function groupsCopy() {
+  let groups = []
+  const list = jhQueryAll("#groupstable tbody tr")
+
+  if ( !list.length ) {
+    localStorage.setItem(`${PW.getUser()}_copiedgroups`, "")
+    jhQuery("#pastegroups").style.display = "none"
+    jhQuery("#replacegroups").style.display = "none"
+    return
+  }
+
+  for ( const el of list ) {
+    groups.push( el.getAttribute("data-id") )
+  }
+
+  if ( groups.length ) {
+    localStorage.setItem(`${PW.getUser()}_copiedgroups`, groups)
+    PW.showToast("success", "Groups copied")
+    jhQuery("#pastegroups").style.display = ""
+    jhQuery("#replacegroups").style.display = ""
+  }
+}
+
+async function groupsReplace() {
+  PW.confirmDialog("Replace groups", "Are you sure you want to replace this user's groups with the copied ones?", async ()=> {
+    const list = jhQueryAll("#groupstable tbody tr")
+
+    if ( !list.length ) {
+      jhQuery("#pastegroups").style.display = "none"
+      jhQuery("#replacegroups").style.display = "none"
+      return
+    }
+
+    for ( const el of list ) {
+      await jhFetch(`/api/groupremoveuser/${el.getAttribute("data-id")}/${currentUser}`, {_csrf: PW.getCSRFToken()})
+    }
+
+    for ( const el of localStorage.getItem(`${PW.getUser()}_copiedgroups`).split(",") ) {
+      await jhFetch(`/api/groupadduser/${el}/${currentUser}`, {_csrf: PW.getCSRFToken()})
+    }
+
+    fillGroups()
+    PW.showToast("success","Groups replaced")
+  })
+}
+
+async function groupsPaste() {
+  PW.confirmDialog("Paste groups", "Are you sure you want to add the copied groups to this user?", async ()=> {
+    for ( const el of localStorage.getItem(`${PW.getUser()}_copiedgroups`).split(",") ) {
+      await jhFetch(`/api/groupadduser/${el}/${currentUser}`, {_csrf: PW.getCSRFToken()})
+    }
+
+    fillGroups()
+    PW.showToast("success","Groups pasted")
+  })
+}
+
 await fillUsers()
 
 // Event handlers
@@ -305,4 +363,16 @@ jhEvent("#addgroup", "click",(ev)=>{
 
 jhEvent("#useractivityload", "click", (ev)=>{
   fillActivity(currentUser)
+})
+
+jhEvent("#copygroups", "click", (ev)=>{
+  groupsCopy()
+})
+
+jhEvent("#pastegroups", "click", (ev)=>{
+  groupsPaste()
+})
+
+jhEvent("#replacegroups", "click", (ev)=>{
+  groupsReplace()
 })

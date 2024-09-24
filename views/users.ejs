@@ -38,10 +38,24 @@
   <div class="main2">
     <h2>Groups</h2>
     <div style="display: flex;">
-      <sl-button id="addgroup" type="button" title="Add group membership">
-        <sl-icon slot="prefix" name="plus-lg"></sl-icon>
-        Add group
-      </sl-button>
+      <sl-button-group>
+        <sl-button id="addgroup" type="button" title="Add group membership">
+          <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+          Add group
+        </sl-button>
+        <sl-button id="copygroups" type="button" title="Copy groups">
+          <sl-icon slot="prefix" name="copy"></sl-icon>
+          Copy groups
+        </sl-button>
+        <sl-button id="pastegroups" type="button" title="Paste groups" style="display: none;">
+          <sl-icon slot="prefix" name="clipboard-plus"></sl-icon>
+          Paste groups
+        </sl-button>
+        <sl-button id="replacegroups" type="button" title="Replace groups" style="display: none;">
+          <sl-icon slot="prefix" name="clipboard-check"></sl-icon>
+          Replace groups
+        </sl-button>
+      </sl-button-group>
     </div>
     <table id="groupstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;" class="bordered">
       <thead>
