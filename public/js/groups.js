@@ -54,6 +54,11 @@ async function fillUsers() {
 
 function groupClicked(groupid) {
   fillUsers()
+  if ( groupid==="0" ) {
+    jhQuery("#newmember").setAttribute("disabled","disabled")
+  } else {
+    jhQuery("#newmember").removeAttribute("disabled")
+  }
 }
 
 function groupCreateEnable() {
