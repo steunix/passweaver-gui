@@ -108,7 +108,11 @@ async function fillGroups() {
     var row = ""
     for ( const itm of body.data ) {
       row += `<tr data-id='${itm.id}'>`
-      row += `<td><sl-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' style='color:red;' title='Remove'></sl-icon-button></td>`
+      if ( itm.id!="E" ) {
+        row += `<td><sl-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' style='color:red;' title='Remove'></sl-icon-button></td>`
+      } else {
+        row += `<td></td>`
+      }
       row += `<td>${itm.description}</td></tr>`
     }
     jhQuery("#groupstable tbody").innerHTML = row

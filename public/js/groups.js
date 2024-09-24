@@ -24,12 +24,15 @@ async function fillUsers() {
   if ( body.data.length ) {
     var row = ''
     for ( const usr of body.data ) {
-      row +=
-        `<tr>`+
-        `<td><sl-icon-button id='remove-${usr.id}' title='Remove' data-id='${usr.id}' name="trash3" style="color:red;"></sl-icon-button></td>`+
-        `<td class='border-start border-end'>${usr.login}</td>`+
-        `<td>${usr.lastname}</td>`+
-        `<td>${usr.firstname}</td>`
+      row += `<tr>`
+      if ( currentGroup()!="E" ) {
+        row += `<td><sl-icon-button id='remove-${usr.id}' title='Remove' data-id='${usr.id}' name="trash3" style="color:red;"></sl-icon-button></td>`
+      } else {
+        row += `<td></td>`
+      }
+      row += `<td class='border-start border-end'>${usr.login}</td>`+
+      `<td>${usr.lastname}</td>`+
+      `<td>${usr.firstname}</td>`
     }
     jhQuery("#userstable tbody").innerHTML = row
 
