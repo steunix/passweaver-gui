@@ -54,7 +54,7 @@ async function fillUsers() {
 
 function groupClicked(groupid) {
   fillUsers()
-  if ( groupid==="0" ) {
+  if ( groupid==="0" || groupid==="E" ) {
     jhQuery("#newmember").setAttribute("disabled","disabled")
   } else {
     jhQuery("#newmember").removeAttribute("disabled")
