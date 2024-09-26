@@ -21,9 +21,11 @@ async function fillUsers() {
     for ( const itm of body.data ) {
       row +=
         `<tr data-id='${itm.id}' style='cursor:pointer'>`+
-        `<td><sl-icon-button id='edituser-${itm.id}' title='Edit user' name='pencil' data-id='${itm.id}'></sl-icon-button></td>`+
-        `<td><sl-icon-button id='removeuser-${itm.id}' title='Delete user' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button></td>`+
-        `<td><sl-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></sl-icon-button></td>`+
+        `<td>`+
+        `<sl-icon-button id='edituser-${itm.id}' title='Edit user' name='pencil' data-id='${itm.id}'></sl-icon-button>`+
+        `<sl-icon-button id='removeuser-${itm.id}' title='Delete user' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button>`+
+        `<sl-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></sl-icon-button>`+
+        `</td>`+
         `<td class='border-start'>${itm.login}</td>`+
         `<td>${itm.lastname}</td>`+
         `<td>${itm.firstname}</td>`+
