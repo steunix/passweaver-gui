@@ -49,6 +49,7 @@ In "Items" right pane you have a list of folder item, with the following actions
 - Delete item
 - Clone item
 - Copy link
+- View history
 
 You have also buttons for coping the passwords (without the need of showing it) or showing it, without the need of opening the dialog dialog.
 
@@ -126,7 +127,11 @@ Inherited permissions from parent folders cannot be modified.
 
 From this page you can add or delete users, and assign/remove the groups membership.
 
-![Users page](assets/passweavergui-users-000.jpeg)
+![Users page](assets/passweavergui-users-001.jpeg)
+
+By clicking the history button (the clock icon) you can access a list of user's activity:
+
+![User activity](assets/passweavergui-users-activity-000.jpeg)
 
 When creating a user you're prompted this dialog:
 
