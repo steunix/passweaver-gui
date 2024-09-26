@@ -66,7 +66,7 @@ async function fillUsers() {
 async function fillActivity(usr) {
   // If a table is already populated, get last id and get next page
   var lastid = ""
-  const lastrow = jhQuery("#itemactivitytable tbody tr:last-child td[id^=event]")
+  const lastrow = jhQuery("#useractivitytable tbody tr:last-child td[id^=event]")
   if ( lastrow ) {
     lastid = lastrow.getAttribute("data-id")
   }
