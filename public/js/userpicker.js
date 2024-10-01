@@ -1,54 +1,56 @@
+/* global jhEvent, jhQuery, jhValue, jhFetch */
+
 import * as PW from './passweaver-gui.js'
 
-var userPickerTimeout = 0
-var userCallback
+let userPickerTimeout = 0
+let userCallback
 
-export function show(callback) {
+export function show (callback) {
   userCallback = callback
-  jhValue("#userpickersearch", "")
-  jhQuery("#userpickertable tbody").innerHTML = ""
-  jhQuery("#userpickerdialog").show()
+  jhValue('#userpickersearch', '')
+  jhQuery('#userpickertable tbody').innerHTML = ''
+  jhQuery('#userpickerdialog').show()
   search()
 }
 
-export function hide() {
-  jhQuery("#userpickerdialog").hide()
+export function hide () {
+  jhQuery('#userpickerdialog').hide()
 }
 
-async function search() {
-  const text = jhValue("#userpickersearch")
+async function search () {
+  const text = jhValue('#userpickersearch')
 
   const resp = await jhFetch(`/api/userslist/?search=${encodeURIComponent(text)}`)
-  if ( !await PW.checkResponse(resp) ) {
+  if (!await PW.checkResponse(resp)) {
     return
   }
 
-  jhQuery("#userpickertable tbody").innerHTML = ""
+  jhQuery('#userpickertable tbody').innerHTML = ''
   const body = await resp.json()
-  if ( body.data.length ) {
-    var row = ""
-    for ( const usr of body.data ) {
+  if (body.data.length) {
+    let row = ''
+    for (const usr of body.data) {
       row += `<tr id='row-${usr.id}' data-id='${usr.id}' style='cursor:pointer;'>`
-      row += `<td><sl-icon-button id='user-${usr.id}' data-id='${usr.id}' name="arrow-right-circle"></sl-icon-button></td>`
+      row += `<td><sl-icon-button id='user-${usr.id}' data-id='${usr.id}' name='arrow-right-circle'></sl-icon-button></td>`
       row += `<td>${usr.login}</td>`
       row += `<td>${usr.lastname} ${usr.firstname}</td>`
-      row += "</tr>"
+      row += '</tr>'
     }
-    jhQuery("#userpickertable tbody").innerHTML = row
+    jhQuery('#userpickertable tbody').innerHTML = row
   }
 
   // Event handlers
-  jhEvent("#userpickertable tbody tr[id^=row]", "dblclick", (ev)=>{
-    userCallback(ev.currentTarget.getAttribute("data-id"))
+  jhEvent('#userpickertable tbody tr[id^=row]', 'dblclick', (ev) => {
+    userCallback(ev.currentTarget.getAttribute('data-id'))
   })
-  jhEvent("#userpickertable tbody sl-icon-button[id^=user]", "click", (ev)=>{
-    userCallback(ev.currentTarget.getAttribute("data-id"))
+  jhEvent('#userpickertable tbody sl-icon-button[id^=user]', 'click', (ev) => {
+    userCallback(ev.currentTarget.getAttribute('data-id'))
   })
 }
 
-jhEvent("#userpickersearch", "sl-input", (ev) => {
-  if ( userPickerTimeout ) {
+jhEvent('#userpickersearch', 'sl-input', (ev) => {
+  if (userPickerTimeout) {
     clearTimeout(userPickerTimeout)
   }
-  userPickerTimeout = setTimeout(async()=>{ await search() },250)
+  userPickerTimeout = setTimeout(async () => { await search() }, 250)
 })
