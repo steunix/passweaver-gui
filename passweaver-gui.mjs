@@ -124,7 +124,7 @@ app.use('/api', function (req, res, next) {
 app.set('view engine', 'ejs')
 
 // Public static
-app.use('/public', Express.static('public'))
+app.use('/public', Express.static('./public'))
 
 // Rate limiter
 app.use('/access', rateLimitMiddleware)
