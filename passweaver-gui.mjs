@@ -651,7 +651,7 @@ app.post('/api/preferences', async (req, res) => {
 
 // Change password
 app.post('/api/changepassword', async (req, res) => {
-  const resp = await PassWeaver.passwordChange(req, req.session, req.body.password)
+  const resp = await PassWeaver.passwordChange(req.session, req.body.password)
   res.json(resp)
 })
 
