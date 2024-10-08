@@ -34,10 +34,8 @@ body {
 /** CSS Grid */
 .login-container {
     display: grid;
-    grid-template-areas:
-      "header"
-      "main";
-    grid-template-rows: 3em auto;
+    grid-template-areas: "main";
+    grid-template-rows: auto;
     height: 100vh;
     gap: 1px;
 }

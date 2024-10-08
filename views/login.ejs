@@ -1,25 +1,21 @@
 <%- include('partials/header.ejs') %>
 
 <div class="login-container">
-  <div class="header">
-    PassWeaver - <%- company_name %>
-  </div>
-
   <div class="login-content">
-    <div class="pill">
+    <div class="pill bordered" style="padding:2rem;">
       <center>
         <img src="/public/images/passweaver-icon-dark.png" width="60"></img>
+        <p style="font-size:200%;">PassWeaver - <%- company_name %></p>
       </center>
       <form id="loginForm" action="access" method="post">
         <%- include('partials/csrf.ejs') %>
         <sl-input type="text" autofocus id="username" name="username" label="User" required></sl-input>
         <sl-input type="password" id="password" name="password" label="Password" required></sl-input>
-        <sl-divider></sl-divider>
         <% if ( viewitem ) { %>
           <input id="viewitem" name="viewitem" type="hidden" value="<%= viewitem %>"></input>
         <% } %>
         <center>
-          <sl-button id="login" type="submit" variant="primary">Login</sl-button>
+          <sl-button id="login" type="submit" variant="primary" style="padding-top:1rem;">Login</sl-button>
           <% if ( error ) { %>
             <sl-alert variant="danger" open>
               <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
