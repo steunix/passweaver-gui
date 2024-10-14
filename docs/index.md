@@ -27,13 +27,16 @@ While PassWeaver-API is a generic and independent piece of background software, 
 With PassWeaver-GUI you will manage these entities:
 
 - Items, holding your secret data
+- Items type
 - Users
 - Groups
 - Folders
+- One time secrets
 
 In a few words:
-- items are stored in folders, and folders can contain both items and other folders. - users join groups (one or more), and...
-- groups can read or write on a given folder, its items and subfolders.
+- items are stored in folders, and folders can contain both items and other folders.
+- users join groups (one or more), and...
+- groups can read or write a given folder, its items and subfolders.
 
 ## Items
 
@@ -51,9 +54,9 @@ In "Items" right pane you have a list of folder item, with the following actions
 - Copy link
 - View history
 
-You have also buttons for coping the passwords (without the need of showing it) or showing it, without the need of opening the dialog dialog.
+You have also buttons for showing or coping the passwords without event the need of showing them directly from the list.
 
-This is the item details dialog.
+By double clicking on the item title, or by clicking on details or edit buttons, the following popup is shown.
 
 ![Item dialog](assets/passweavergui-item-000.jpeg)
 
@@ -89,7 +92,7 @@ This page lets you generate a random secure password. You can copy it or generat
 
 ## One time secret
 
-With one-time-secret you can share a secret information also outside your organization by creating a public link that will be visible only once.
+With one-time-secret you can share a secret information even outside your organization by creating a public link that will be visible only once.
 
 Type the secret and then press the "Create link" button:
 
@@ -108,12 +111,12 @@ By clicking the "Show secret" button, the secret will be displayed, and the link
 In the "Preferences" page, you can:
 
 - Choose your theme (light or dark)
-- Change your login password (if Authentication is `LDAP`, see [Users](#Users) )
+- Change your login password (if Authentication is `local`, see [Users](#Users) )
 - Change your personal folder password
 
 # Admin pages
 
-Administrators have a different set of pages: they do NOT have access to item, but they have the possibility to manage users and groups, and assign/revoke permissions to folders.
+Administrators have a different set of pages: they do NOT have access to any item, but they have the possibility to manage users and groups, and assign/revoke permissions on folders to groups.
 
 ## Folders
 
@@ -133,7 +136,7 @@ By clicking the history button (the clock icon) you can access a list of user's 
 
 ![User activity](assets/passweavergui-users-activity-000.jpeg)
 
-When creating a user you're prompted this dialog:
+When creating a user you're prompted with this dialog:
 
 ![Users page](assets/passweavergui-users-create-000.jpeg)
 
@@ -177,5 +180,5 @@ Passweaver-GUI is developed in NodeJS and uses these great libs (among others):
 - `ExpressJS` (version 5, but 4.x is perfectly fine too)
 - `EJS` for HTML templating
 - `Morgan` for logging
-- `Helmet` and Lusca for CSFR and CSP compliance
+- `Helmet` and `Lusca` for CSFR and CSP compliance
 - `Got` for interacting with Passweaver-API
