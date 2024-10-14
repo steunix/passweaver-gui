@@ -88,9 +88,9 @@ async function fillActivity (usr) {
     for (const evt of body.data) {
       row += '<tr>'
       row += `<td id='event-${evt.id}' data-id='${evt.id}'>${evt.timestamp}</td>`
-      row += `<td>${evt.entity_description}</td>`
       row += `<td>${evt.action_description}</td>`
-      row += `<td>${evt.item_title}</td>`
+      row += `<td>${evt.entity_description}</td>`
+      row += `<td>${evt.description || ''}</td>`
     }
     jhQuery('#useractivitytable tbody').innerHTML += row
   } else {
