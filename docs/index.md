@@ -1,13 +1,13 @@
 # About
 
-PassWeaver-GUI is a WEB interface for PassWeaver-API, bringing you a portable, collaborative and enterprise-scale password management system.
+PassWeaver-GUI is a WEB interface to PassWeaver-API, bringing you a portable, collaborative and enterprise-scale password management system.
 
 PassWeaver-GUI is an opensource project, released under MIT license. See [Technical info](#Technical-specs) for some details.
 
 # Features
 
 - Personal folders for each user
-- Share one-time secrets to anyone, even outside your organization
+- Share one-time secrets with anyone, even if they have not an account
 - Share items through permalinks
 - Folder level permissions
 - User groups
@@ -18,9 +18,9 @@ PassWeaver-GUI is an opensource project, released under MIT license. See [Techni
 
 # Forewords
 
-PassWeaver-GUI is a nice frontend to PassWeaver-API and it brings all its capabilities to the final user; everything you can do with your items, folders, users and groups is defined in PassWeaver-API. See docs there for more info about its capabilities.
+PassWeaver-GUI is a complete frontend to PassWeaver-API; everything you can do with your items, folders, users and groups is defined in PassWeaver-API. See docs at [this link](https://steunix.github.io/passweaver-api/) for a detailed description of what PassWeaver-API is.
 
-While PassWeaver-API is a generic and independent piece of background software, PassWeaver-GUI is its perfect UI companion.
+While PassWeaver-API is a generic and independent backend API, PassWeaver-GUI is its perfect UI companion.
 
 # Basics
 
@@ -38,15 +38,21 @@ In a few words:
 - users join groups (one or more), and...
 - groups can read or write a given folder, its items and subfolders.
 
+## Login
+
+Access the site using your credentials
+
+![Items page](assets/passweavergui-login-000.jpeg)
+
 ## Items
 
 This is what the items page looks like:
 
-![Items page](assets/passweavergui-items-000.jpeg)
+![Items page](assets/passweavergui-items-001.jpeg)
 
-In "Folders" left pane you can create a subfolder, modify or delete a folder, if you have permission on it. You can also search for a folder and use the previous/next buttons to navigate the tree.
+In "Folders" left pane you can create a subfolder, modify or delete a folder, if you have write permissions. You can also search for a folder and use the previous/next buttons to navigate the tree.
 
-In "Items" right pane you have a list of folder item, with the following actions, if you have proper permissions:
+In "Items" right pane you have a list of folder items with the following actions:
 - View item
 - Edit item
 - Delete item
@@ -54,9 +60,13 @@ In "Items" right pane you have a list of folder item, with the following actions
 - Copy link
 - View history
 
-You have also buttons for showing or coping the passwords without event the need of showing them directly from the list.
+You have also buttons for showing or coping the passwords without the need of showing them.
 
-By double clicking on the item title, or by clicking on details or edit buttons, the following popup is shown.
+You can create items using the blue "plus" button.
+
+Some actions may be unavailable if you don't have write permissions on the folder.
+
+By double clicking the item title, or by clicking on details or edit buttons, the following popup is shown.
 
 ![Item dialog](assets/passweavergui-item-000.jpeg)
 
@@ -66,7 +76,7 @@ When creating a new item, only the "Title" field is mandatory, all the remaining
 
 Each user has a personal folder named after its login. Only the user can unlock this folder because it's protected with an additional password that is set the first time the user clicks on the folder:
 
-![Set personal password](assets/passweavergui-personal-1-000.jpeg)
+![Set personal password](assets/passweavergui-personal-1-001.jpeg)
 
 Note that this password is used to further encrypt user's personal items, so if it get lost **it will not be possible** to decrypt them anymore!
 
@@ -114,9 +124,11 @@ In the "Preferences" page, you can:
 - Change your login password (if Authentication is `local`, see [Users](#Users) )
 - Change your personal folder password
 
+![Preferences](assets/passweavergui-preferences-001.jpeg)
+
 # Admin pages
 
-Administrators have a different set of pages: they do NOT have access to any item, but they have the possibility to manage users and groups, and assign/revoke permissions on folders to groups.
+Administrators have a different set of pages: they do NOT have access to any item, but they have the possibility to create, rename or delete folders (if empty), manage users and groups, and assign/revoke permissions on folders to groups.
 
 ## Folders
 
@@ -126,17 +138,29 @@ Inherited permissions from parent folders cannot be modified.
 
 ![Folders page](assets/passweavergui-folders-000.jpeg)
 
+Admins can create or rename folders and also delete folders, if empty.
+
 ## Users
 
 From this page you can add or delete users, and assign/remove the groups membership.
 
 ![Users page](assets/passweavergui-users-001.jpeg)
 
-By clicking the history button (the clock icon) you can access a list of user's activity:
+By clicking the history button (the clock icon) in user list you can access a history of user's activity:
 
 ![User activity](assets/passweavergui-users-activity-000.jpeg)
 
-When creating a user you're prompted with this dialog:
+Only more recent events are shown, click on "Load more" button in order to load more activity.
+
+You can copy the current users groups in order to assign them to another user:
+- Select a user from the list
+- Click "Copy groups" button
+- Select the target user
+- Click:
+  - Paste groups: add the copied groups to the target users
+  - Replace groups: replace target user's groups with the copied ones
+
+When creating a new user you're prompted with this dialog:
 
 ![Users page](assets/passweavergui-users-create-000.jpeg)
 
@@ -150,7 +174,7 @@ When creating a user you're prompted with this dialog:
 
 ## Groups
 
-From here you can create or delete groups, and add/remove members. You can nest groups, but membership is NOT inherited: the user is only member of explicitly assigned groups.
+From this page you can create or delete groups, and add/remove members. You can nest groups, but membership is NOT inherited: the user is only member of explicitly assigned groups.
 
 ![Groups page](assets/passweavergui-groups-000.jpeg)
 
@@ -177,8 +201,9 @@ This operation is needed only after directly operating on the API database... wh
 # Technical specs
 
 Passweaver-GUI is developed in NodeJS and uses these great libs (among others):
-- `ExpressJS` (version 5, but 4.x is perfectly fine too)
+- `ExpressJS` (version 5, but 4.x is fine too)
 - `EJS` for HTML templating
+- `Shoelace` WEB components
 - `Morgan` for logging
 - `Helmet` and `Lusca` for CSFR and CSP compliance
 - `Got` for interacting with Passweaver-API
