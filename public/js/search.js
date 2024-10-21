@@ -92,6 +92,7 @@ async function itemViewFill (item) {
   }
 
   const body = await resp.json()
+  jhValue('#itemviewid', item)
   jhValue('#viewtitle', body.data.title)
   jhValue('#viewtype', body.data.type)
   jhValue('#viewemail', body.data.data.email)
@@ -115,6 +116,24 @@ function itemCopyLink (itm) {
   PW.showToast('primary', 'Item link copied to clipboard')
 }
 
+async function passwordAccessed (item) {
+  await jhFetch('/api/events', {
+    _csrf: PW.getCSRFToken(),
+    event: 80,
+    entity: 30,
+    entityid: item
+  })
+}
+
+async function passwordCopied (item) {
+  await jhFetch('/api/events', {
+    _csrf: PW.getCSRFToken(),
+    event: 81,
+    entity: 30,
+    entityid: item
+  })
+}
+
 await fillItemTypes()
 
 jhEvent('#itemsearch', 'sl-input', async (ev) => {
@@ -128,6 +147,17 @@ jhEvent('#itemsearch', 'sl-input', async (ev) => {
 
 jhEvent('#typesearch', 'sl-change', () => {
   fillItems()
+})
+
+jhQuery('#viewpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
+  const el = jhQuery('#viewpassword').shadowRoot.querySelector('[part=input]')
+  if (el.getAttribute('type') === 'text') {
+    passwordAccessed(jhValue('#itemviewid'))
+  }
+})
+
+jhEvent('#itemviewcopypassword', 'sl-copy', (ev) => {
+  passwordCopied(jhValue('#itemviewid'))
 })
 
 if (jhValue('#itemsearch').length) {
