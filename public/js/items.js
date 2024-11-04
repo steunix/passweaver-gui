@@ -184,9 +184,11 @@ async function folderClicked (folderid) {
   if (body.data && body.data.permissions) {
     Folders.currentPermissions.read = body.data.permissions.read
     Folders.currentPermissions.write = body.data.permissions.write
+    jhQuery('#sectiontitle').innerHTML = `${body.data.description} - Items`
   } else {
     Folders.currentPermissions.read = false
     Folders.currentPermissions.write = false
+    jhQuery('#sectiontitle').innerHTML = 'Items'
   }
 
   let cp = ['danger', 'No access', 'No access']
