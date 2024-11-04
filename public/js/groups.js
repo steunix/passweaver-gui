@@ -54,13 +54,21 @@ async function fillUsers () {
   }
 }
 
-function groupClicked (groupid) {
+async function groupClicked (groupid) {
   fillUsers()
   if (groupid === '0' || groupid === 'E') {
     jhQuery('#newmember').setAttribute('disabled', 'disabled')
   } else {
     jhQuery('#newmember').removeAttribute('disabled')
   }
+
+  const resp = await jhFetch(`/api/groups/${currentGroup()}`)
+  if (!await PW.checkResponse(resp)) {
+    return
+  }
+
+  const body = await resp.json()
+  jhQuery('#sectiontitle').innerHTML = `${body.data.description} - Members`
 }
 
 function groupCreateEnable () {

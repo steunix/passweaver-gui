@@ -74,6 +74,8 @@ async function folderClicked (folderid) {
     jhQuery('#folderedit').setAttribute('disabled', 'disabled')
   }
 
+  jhQuery('#sectiontitle').innerHTML = `${body.data.description} - Groups`
+
   // Load groups
   await fillGroups()
 }
