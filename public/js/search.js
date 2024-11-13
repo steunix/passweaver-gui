@@ -149,17 +149,19 @@ jhEvent('#typesearch', 'sl-change', () => {
   fillItems()
 })
 
-jhQuery('#viewpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-  const el = jhQuery('#viewpassword').shadowRoot.querySelector('[part=input]')
-  if (el.getAttribute('type') === 'text') {
-    passwordAccessed(jhValue('#itemviewid'))
-  }
-})
-
 jhEvent('#itemviewcopypassword', 'sl-copy', (ev) => {
   passwordCopied(jhValue('#itemviewid'))
 })
 
-if (jhValue('#itemsearch').length) {
-  fillItems()
-}
+setTimeout(() => {
+  jhQuery('#viewpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
+    const el = jhQuery('#viewpassword').shadowRoot.querySelector('[part=input]')
+    if (el.getAttribute('type') === 'text') {
+      passwordAccessed(jhValue('#itemviewid'))
+    }
+  })
+
+  if (jhValue('#itemsearch').length) {
+    fillItems()
+  }
+}, 200)
