@@ -363,8 +363,10 @@ async function itemViewFill (item, gotofolder) {
   jhQuery('#viewpassword').setAttribute('type', 'password')
 
   if (gotofolder) {
-    PW.treeItemSelect(`item-${body.data.folderid}`)
-    await fillItems()
+    jhQuery('#folderstree').updateComplete.then(async () => {
+      PW.treeItemSelect(`item-${body.data.folderid}`)
+      await fillItems()
+    })
   }
 }
 
