@@ -363,10 +363,8 @@ async function itemViewFill (item, gotofolder) {
   jhQuery('#viewpassword').setAttribute('type', 'password')
 
   if (gotofolder) {
-    jhQuery('#folderstree').updateComplete.then(async () => {
-      PW.treeItemSelect(`item-${body.data.folderid}`)
-      await fillItems()
-    })
+    PW.treeItemSelect(`item-${body.data.folderid}`)
+    await folderClicked()
   }
 }
 
@@ -532,7 +530,12 @@ async function fillFolders () {
 
   jhQuery('sl-tree').innerHTML = ''
   const body = await resp.json()
-  PW.treeFill('folderstree', body.data, folderClicked)
+  if (jhQuery('#viewitem')) {
+    // Avoid loading from local.storage if viewitem exists
+    PW.treeFill('folderstree', body.data, folderClicked, false)
+  } else {
+    PW.treeFill('folderstree', body.data, folderClicked, true)
+  }
   await dndSetup()
 }
 
