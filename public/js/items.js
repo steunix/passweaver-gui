@@ -168,7 +168,7 @@ async function fillActivity (itm) {
   }
 }
 
-async function folderClicked (folderid) {
+async function folderClicked () {
   jhQuery('#itemstable tbody').innerHTML = ''
 
   // Read folder info
@@ -532,7 +532,7 @@ async function fillFolders () {
 
   jhQuery('sl-tree').innerHTML = ''
   const body = await resp.json()
-  PW.treeFill('folderstree', body.data, null, folderClicked)
+  PW.treeFill('folderstree', body.data, folderClicked)
   await dndSetup()
 }
 
@@ -555,9 +555,6 @@ async function itemActivity (itm) {
   jhQuery('#itemactivityload').removeAttribute('disabled')
   fillActivity(itm)
 }
-
-await fillFolders()
-await fillItemTypes()
 
 // Drag'n'drop
 async function dndSetup () {
@@ -653,20 +650,6 @@ if (jhQuery('#viewitem')) {
   setTimeout(() => { findAndShowItem(jhValue('#viewitem')) }, 200)
 }
 
-jhQuery('#viewpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-  const el = jhQuery('#viewpassword').shadowRoot.querySelector('[part=input]')
-  if (el.getAttribute('type') === 'text') {
-    passwordAccessed(jhValue('#itemviewid'))
-  }
-})
-
-jhQuery('#editpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-  const el = jhQuery('#editpassword').shadowRoot.querySelector('[part=input]')
-  if (el.getAttribute('type') === 'text') {
-    passwordAccessed(jhValue('#itemeditid'))
-  }
-})
-
 addEventListener('folders-refresh', async (ev) => {
   await fillFolders()
 })
@@ -681,4 +664,21 @@ jhEvent('#itemviewactivity', 'click', (ev) => {
 
 jhEvent('#itemactivityload', 'click', (ev) => {
   fillActivity(jhValue('#itemactivityid'))
+})
+
+await fillFolders()
+await fillItemTypes()
+
+jhQuery('#viewpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
+  const el = jhQuery('#viewpassword').shadowRoot.querySelector('[part=input]')
+  if (el.getAttribute('type') === 'text') {
+    passwordAccessed(jhValue('#itemviewid'))
+  }
+})
+
+jhQuery('#editpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
+  const el = jhQuery('#editpassword').shadowRoot.querySelector('[part=input]')
+  if (el.getAttribute('type') === 'text') {
+    passwordAccessed(jhValue('#itemeditid'))
+  }
 })
