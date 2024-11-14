@@ -206,7 +206,7 @@ async function fillGroups () {
   const resp = await fetch('/api/groupstree')
   if (await PW.checkResponse(resp)) {
     const body = await resp.json()
-    PW.treeFill('groupstree', body.data, null, groupClicked)
+    PW.treeFill('groupstree', body.data, groupClicked)
     await dndSetup()
   }
 }

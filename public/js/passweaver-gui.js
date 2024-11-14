@@ -1,6 +1,5 @@
 /* global jhQuery, jhEvent, jhValue, jhQueryAll, jhParents, dispatchEvent, DOMParser, localStorage */
 
-let treeCallback
 const itemFound = new Event('pw-item-found')
 
 export function confirmDialog (title, text, callback, savetext, savevariant) {
@@ -78,18 +77,36 @@ export async function checkResponse (resp, ignoreStatus) {
   errorDialog(body.message)
 }
 
-function treeSelectionChange (ev) {
-  const sel = jhQuery('sl-tree-item[selected]')
-  const id = sel.getAttribute('data-id')
-  treeCallback(id)
+export async function treeFill (id, data, callback) {
+  treeFillItems(id, data, null)
 
-  // Save last item
+  jhEvent(`#${id}`, 'sl-selection-change', (ev) => {
+    const sel = jhQuery('sl-tree-item[selected]')
+    const id = sel.getAttribute('data-id')
+    callback(id)
+
+    // Save last item
+    const user = getUser()
+    const lskey = `${user}_${ev.target.id}_selected`
+    localStorage.setItem(lskey, sel.id)
+  })
+
   const user = getUser()
-  const lskey = `${user}_${ev.target.id}_selected`
-  localStorage.setItem(lskey, sel.id)
+  const last = localStorage.getItem(`${user}_${id}_selected`)
+  if (last) {
+    // Select last item
+    const lastelem = jhQuery(`#${last}`)
+    if (lastelem) {
+      lastelem.setAttribute('selected', 'selected')
+      setTimeout(() => {
+        lastelem.scrollIntoView()
+      }, 500)
+      callback()
+    }
+  }
 }
 
-export function treeFill (id, data, mainid, callback) {
+export function treeFillItems (id, data, mainid) {
   const user = getUser()
 
   const parent = jhQuery(`#${id}`)
@@ -120,26 +137,7 @@ export function treeFill (id, data, mainid, callback) {
 
     // Recurse with children
     if (item?.children.length) {
-      treeFill(newid, item.children, root, callback)
-    }
-  }
-
-  // Only once, for root element
-  if (!mainid) {
-    treeCallback = callback
-    jhEvent(`#${id}`, 'sl-selection-change', treeSelectionChange)
-
-    const last = localStorage.getItem(`${user}_${id}_selected`)
-    if (last) {
-      // Select last item
-      const lastelem = jhQuery(`#${last}`)
-      if (lastelem) {
-        jhQuery(`#${last}`).setAttribute('selected', 'selected')
-        setTimeout(() => {
-          lastelem.scrollIntoView()
-          callback(last)
-        }, 200)
-      }
+      treeFillItems(newid, item.children, root)
     }
   }
 }

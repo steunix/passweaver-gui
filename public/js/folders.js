@@ -47,7 +47,7 @@ async function fillGroups () {
   }
 }
 
-async function folderClicked (folderid) {
+async function folderClicked () {
   const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}`)
 
   // Folder may not be accessible
@@ -123,7 +123,7 @@ async function fillFolders () {
 
   const body = await resp.json()
   jhQuery('sl-tree').innerHTML = ''
-  PW.treeFill('folderstree', body.data, null, folderClicked)
+  PW.treeFill('folderstree', body.data, folderClicked)
   await dndSetup()
 }
 
