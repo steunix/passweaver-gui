@@ -77,7 +77,7 @@ export async function checkResponse (resp, ignoreStatus) {
   errorDialog(body.message)
 }
 
-export async function treeFill (id, data, callback) {
+export async function treeFill (id, data, callback, uselocalstorage) {
   treeFillItems(id, data, null)
 
   jhEvent(`#${id}`, 'sl-selection-change', (ev) => {
@@ -93,7 +93,7 @@ export async function treeFill (id, data, callback) {
 
   const user = getUser()
   const last = localStorage.getItem(`${user}_${id}_selected`)
-  if (last) {
+  if (uselocalstorage && last) {
     // Select last item
     const lastelem = jhQuery(`#${last}`)
     if (lastelem) {
