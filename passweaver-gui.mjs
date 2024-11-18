@@ -123,9 +123,6 @@ app.use('/api', function (req, res, next) {
 // Use EJS
 app.set('view engine', 'ejs')
 
-// Public static
-app.use('/public', Express.static('./public'))
-
 // Rate limiter
 app.use('/access', rateLimitMiddleware)
 
@@ -143,6 +140,9 @@ app.use(
     { stream: logAccess }
   )
 )
+
+// Public static
+app.use('/public', Express.static('./public'))
 
 // Log errors
 const logErrors = RFS.createStream(`${cfg.log.dir}/passweaver-gui-errors.log`, {
