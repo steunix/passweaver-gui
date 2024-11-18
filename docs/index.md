@@ -198,6 +198,49 @@ In the "Cache" pane, you can reset the API cache causing it to reload users perm
 
 This operation is needed only after directly operating on the API database... which is not advisable anyway.
 
+# Install and run
+
+## Prerequisites
+
+In order to be able to install PassWeaver API, you need:
+  - NodeJS and npm
+  - A running PassWeaver-API
+
+A running Redis instance is warmly advised.
+
+## Install
+
+Download the source, and install all dependencies with npm:
+
+`npm install`
+
+## Configure
+
+Copy `config-skel.json` to `config.json` and adjust the options:
+
+- `listen`:
+  - `port`: port to bind
+  - `host`: IP address to bind (or blank for any address)
+- `passweaverapi_url`: URL for PassWeaver-API (/api/v1 included)
+- `company_name`: Company name
+- `static_maxage`: Static assets (JS/CSS) cache max-age (in ms)
+- `log`:
+  - `dir`: Logs directory. It will be created if necessary.
+  - `rotation`: Rotation interval. For example, "12h" or "1d"
+  - `retention`: Log files retention (number of rotated log files kept)
+- `https`:
+  - `enabled`: HTTPS enabled (true/false)
+  - `certificate`: certificate file path
+  - `private_key`: certificate private key
+  - `hsts`: enable HSTS (true/false)
+- `onetimetokens`:
+  - `default_hours`: Default one-time tockens duration in hours
+- `redis`:
+  - `enabled`: true or false; if false, internal cache is uses
+  - `url`: Redis url
+- `folders`:
+  - `user_managed`: if yes, non-admin can create and delete folders
+
 # Technical specs
 
 Passweaver-GUI is developed in NodeJS and uses these great libs (among others):

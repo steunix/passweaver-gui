@@ -142,7 +142,7 @@ app.use(
 )
 
 // Public static
-app.use('/public', Express.static('./public'))
+app.use('/public', Express.static('./public', { maxAge: cfg.static_maxage }))
 
 // Log errors
 const logErrors = RFS.createStream(`${cfg.log.dir}/passweaver-gui-errors.log`, {

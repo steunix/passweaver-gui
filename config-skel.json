@@ -5,6 +5,7 @@
   },
   "passweaverapi_url": "http://localhost:3000/api/v1",
   "company_name": "MyCompany",
+  "static_maxage": 0,
   "log": {
     "dir": "./log",
     "rotation": "1d",
