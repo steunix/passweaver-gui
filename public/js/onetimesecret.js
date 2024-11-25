@@ -1,28 +1,27 @@
-/* global jhEvent, jhQuery, jhValue, jhFetch */
-
+import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 
-jhEvent('#data', 'keyup', async (ev) => {
-  if (jhValue('#data') === '') {
-    jhQuery('#save').setAttribute('disabled', 'disabled')
+JH.event('#data', 'keyup', async (ev) => {
+  if (JH.value('#data') === '') {
+    JH.query('#save').setAttribute('disabled', 'disabled')
   } else {
-    jhQuery('#save').removeAttribute('disabled')
+    JH.query('#save').removeAttribute('disabled')
   }
 })
 
-jhEvent('#save', 'click', async (ev) => {
+JH.event('#save', 'click', async (ev) => {
   const data = {
     _csrf: PW.getCSRFToken(),
-    data: jhValue('#data')
+    data: JH.value('#data')
   }
-  const resp = await jhFetch('/api/onetimesecret', data)
+  const resp = await JH.http('/api/onetimesecret', data)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
-  jhValue('#link', `${window.location.origin}/onetimesecret/${body.data.token}`)
+  JH.value('#link', `${window.location.origin}/onetimesecret/${body.data.token}`)
 
-  jhQuery('#result').style.visibility = 'visible'
+  JH.query('#result').style.visibility = 'visible'
   PW.showToast('success', 'Link created')
 })

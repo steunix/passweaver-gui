@@ -1,5 +1,6 @@
-/* global jhEvent, jhQuery, jhValue, jhFetch, jhDraggable, jhDropTarget, addEventListener */
+/* global addEventListener */
 
+import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 import * as Folders from './folders_shared.js'
 
@@ -7,7 +8,7 @@ let itemSearchTimeout
 let itemTypesOptions
 
 async function fillItemTypes () {
-  const resp = await jhFetch('/api/itemtypes')
+  const resp = await JH.http('/api/itemtypes')
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -22,17 +23,17 @@ async function fillItemTypes () {
     itemTypesOptions += '</sl-option>'
   }
 
-  jhQuery('#viewtype').innerHTML = itemTypesOptions
-  jhQuery('#edittype').innerHTML = itemTypesOptions
-  jhQuery('#newtype').innerHTML = itemTypesOptions
-  jhQuery('#typesearch').innerHTML = itemTypesOptions
+  JH.query('#viewtype').innerHTML = itemTypesOptions
+  JH.query('#edittype').innerHTML = itemTypesOptions
+  JH.query('#newtype').innerHTML = itemTypesOptions
+  JH.query('#typesearch').innerHTML = itemTypesOptions
 }
 
 async function fillItems () {
-  const search = jhValue('#itemsearch')
-  const type = jhValue('#typesearch')
+  const search = JH.value('#itemsearch')
+  const type = JH.value('#typesearch')
 
-  jhQuery('#itemstable tbody').innerHTML =
+  JH.query('#itemstable tbody').innerHTML =
   `<tr>
     <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
     <td></td>
@@ -41,7 +42,7 @@ async function fillItems () {
     <td></td>
     <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
     </tr>`
-  const resp = await jhFetch(`/api/itemslist/${Folders.currentFolder()}?search=${search}&type=${type}`)
+  const resp = await JH.http(`/api/itemslist/${Folders.currentFolder()}?search=${search}&type=${type}`)
 
   // Folder may not be accessible
   if (!await PW.checkResponse(resp, [403, 412, 417])) {
@@ -92,58 +93,58 @@ async function fillItems () {
       row += `<td><sl-icon-button id='passwordshow-${itm.id}' title='Show/hide password' data-id='${itm.id}' name='eye'></sl-icon-button></td>`
       row += '</tr>'
     }
-    jhQuery('#itemstable tbody').innerHTML = row
+    JH.query('#itemstable tbody').innerHTML = row
   } else {
-    jhQuery('#itemstable tbody').innerHTML = '<tr><td colspan="99">No item found</td></tr>'
+    JH.query('#itemstable tbody').innerHTML = '<tr><td colspan="99">No item found</td></tr>'
   }
 
   // Install event handlers
-  jhEvent('#itemstable tbody [id^=view]', 'click', (ev) => {
+  JH.event('#itemstable tbody [id^=view]', 'click', (ev) => {
     itemShow(ev.currentTarget.getAttribute('data-id'))
   })
-  jhEvent('#itemstable tbody [id^=edit]', 'click', (ev) => {
+  JH.event('#itemstable tbody [id^=edit]', 'click', (ev) => {
     itemEditDialog(ev.currentTarget.getAttribute('data-id'))
   })
-  jhEvent('#itemstable tbody [id^=title]', 'dblclick', (ev) => {
+  JH.event('#itemstable tbody [id^=title]', 'dblclick', (ev) => {
     itemShow(ev.currentTarget.getAttribute('data-id'))
   })
-  jhEvent('#itemstable tbody [id^=remove]', 'click', (ev) => {
+  JH.event('#itemstable tbody [id^=remove]', 'click', (ev) => {
     itemRemove(ev.currentTarget.getAttribute('data-id'))
   })
-  jhEvent('#itemstable tbody [id^=clone]', 'click', (ev) => {
+  JH.event('#itemstable tbody [id^=clone]', 'click', (ev) => {
     itemClone(ev.currentTarget.getAttribute('data-id'))
   })
-  jhEvent('#itemstable tbody [id^=link]', 'click', (ev) => {
+  JH.event('#itemstable tbody [id^=link]', 'click', (ev) => {
     itemCopyLink(ev.currentTarget.getAttribute('data-id'))
   })
-  jhEvent('#itemstable tbody [id^=activity]', 'click', (ev) => {
+  JH.event('#itemstable tbody [id^=activity]', 'click', (ev) => {
     itemActivity(ev.currentTarget.getAttribute('data-id'))
   })
-  jhEvent('#itemstable tbody [id^=passwordcopy]', 'click', (ev) => {
+  JH.event('#itemstable tbody [id^=passwordcopy]', 'click', (ev) => {
     passwordCopy(ev)
   })
-  jhEvent('#itemstable tbody [id^=passwordshow]', 'click', (ev) => {
+  JH.event('#itemstable tbody [id^=passwordshow]', 'click', (ev) => {
     passwordShow(ev)
   })
 
   // Folder cannot be removed if not empty
-  if (jhQuery("#itemstable [id^='row-']")) {
-    jhQuery('#folderremove').setAttribute('disabled', 'disabled')
+  if (JH.query("#itemstable [id^='row-']")) {
+    JH.query('#folderremove').setAttribute('disabled', 'disabled')
   }
 
   // Setup drag'n'drop
-  jhDraggable("#itemstable [id^='row-']", 'item')
+  JH.draggable("#itemstable [id^='row-']", 'item')
 }
 
 async function fillActivity (itm) {
   // If a table is already populated, get last id and get next page
   let lastid = ''
-  const lastrow = jhQuery('#itemactivitytable tbody tr:last-child td[id^=event]')
+  const lastrow = JH.query('#itemactivitytable tbody tr:last-child td[id^=event]')
   if (lastrow) {
     lastid = lastrow.getAttribute('data-id')
   }
 
-  const resp = await jhFetch(`/api/items/${itm}/activity?lastid=${lastid}`)
+  const resp = await JH.http(`/api/items/${itm}/activity?lastid=${lastid}`)
 
   // Check response
   if (!await PW.checkResponse(resp)) {
@@ -161,19 +162,19 @@ async function fillActivity (itm) {
       row += `<td>${evt.user_description}</td>`
       row += `<td>${evt.action_description}</td>`
     }
-    jhQuery('#itemactivitytable tbody').innerHTML += row
+    JH.query('#itemactivitytable tbody').innerHTML += row
   } else {
-    jhQuery('#itemactivitytable tbody').innerHTML += '<tr><td colspan="99">No other activity found</td></tr>'
-    jhQuery('#itemactivityload').setAttribute('disabled', 'disabled')
+    JH.query('#itemactivitytable tbody').innerHTML += '<tr><td colspan="99">No other activity found</td></tr>'
+    JH.query('#itemactivityload').setAttribute('disabled', 'disabled')
   }
 }
 
 async function folderClicked () {
-  jhQuery('#itemstable tbody').innerHTML = ''
+  JH.query('#itemstable tbody').innerHTML = ''
 
   // Read folder info
-  jhValue('#typesearch', '')
-  const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}`)
+  JH.value('#typesearch', '')
+  const resp = await JH.http(`/api/folders/${Folders.currentFolder()}`)
 
   // Folder may not be accessible
   if (!await PW.checkResponse(resp, 403)) {
@@ -184,11 +185,11 @@ async function folderClicked () {
   if (body.data && body.data.permissions) {
     Folders.currentPermissions.read = body.data.permissions.read
     Folders.currentPermissions.write = body.data.permissions.write
-    jhQuery('#sectiontitle').innerHTML = `${body.data.description} - Items`
+    JH.query('#sectiontitle').innerHTML = `${body.data.description} - Items`
   } else {
     Folders.currentPermissions.read = false
     Folders.currentPermissions.write = false
-    jhQuery('#sectiontitle').innerHTML = 'Items'
+    JH.query('#sectiontitle').innerHTML = 'Items'
   }
 
   let cp = ['danger', 'No access', 'No access']
@@ -198,9 +199,9 @@ async function folderClicked () {
   if (Folders.currentPermissions.write) {
     cp = ['success', 'RW ', 'Read and write']
   }
-  jhQuery('#currentpermissions').setAttribute('variant', cp[0])
-  jhQuery('#currentpermissions').setAttribute('title', cp[2])
-  jhQuery('#currentpermissions').innerHTML = cp[1]
+  JH.query('#currentpermissions').setAttribute('variant', cp[0])
+  JH.query('#currentpermissions').setAttribute('title', cp[2])
+  JH.query('#currentpermissions').innerHTML = cp[1]
 
   // Load items
   if (Folders.currentPermissions.read) {
@@ -208,42 +209,42 @@ async function folderClicked () {
   }
 
   if (Folders.currentPermissions.write) {
-    jhQuery('#newitem').removeAttribute('disabled')
-    jhQuery('#foldercreate').removeAttribute('disabled')
-    jhQuery('#folderremove').removeAttribute('disabled')
-    jhQuery('#folderedit').removeAttribute('disabled')
+    JH.query('#newitem').removeAttribute('disabled')
+    JH.query('#foldercreate').removeAttribute('disabled')
+    JH.query('#folderremove').removeAttribute('disabled')
+    JH.query('#folderedit').removeAttribute('disabled')
   } else {
-    jhQuery('#newitem').setAttribute('disabled', 'disabled')
-    jhQuery('#foldercreate').setAttribute('disabled', 'disabled')
-    jhQuery('#folderremove').setAttribute('disabled', 'disabled')
-    jhQuery('#folderedit').setAttribute('disabled', 'disabled')
+    JH.query('#newitem').setAttribute('disabled', 'disabled')
+    JH.query('#foldercreate').setAttribute('disabled', 'disabled')
+    JH.query('#folderremove').setAttribute('disabled', 'disabled')
+    JH.query('#folderedit').setAttribute('disabled', 'disabled')
   }
 }
 
 function itemCreateDialog () {
-  jhQuery('#itemcreatedialog').show()
-  jhValue('#itemcreatedialog sl-input,sl-textarea,sl-select', '')
+  JH.query('#itemcreatedialog').show()
+  JH.value('#itemcreatedialog sl-input,sl-textarea,sl-select', '')
 
-  jhQuery('#newpassword').passwordVisible = false
+  JH.query('#newpassword').passwordVisible = false
 
   itemCreateEnable()
 }
 
 async function itemCreate () {
-  jhQuery('#itemcreatedialog').hide()
+  JH.query('#itemcreatedialog').hide()
 
   const itemdata = {
     _csrf: PW.getCSRFToken(),
-    type: jhValue('#newtype'),
-    title: jhValue('#newtitle'),
-    email: jhValue('#newemail'),
-    description: jhValue('#newdescription'),
-    url: jhValue('#newurl'),
-    user: jhValue('#newuser'),
-    password: jhValue('#newpassword')
+    type: JH.value('#newtype'),
+    title: JH.value('#newtitle'),
+    email: JH.value('#newemail'),
+    description: JH.value('#newdescription'),
+    url: JH.value('#newurl'),
+    user: JH.value('#newuser'),
+    password: JH.value('#newpassword')
   }
 
-  const resp = await jhFetch(`/api/itemnew/${Folders.currentFolder()}`, itemdata)
+  const resp = await JH.http(`/api/itemnew/${Folders.currentFolder()}`, itemdata)
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -258,16 +259,16 @@ async function itemCreate () {
 }
 
 function itemCreateEnable () {
-  if (jhValue('#newtitle') === '') {
-    jhQuery('#itemcreatesave').setAttribute('disabled', 'disabled')
+  if (JH.value('#newtitle') === '') {
+    JH.query('#itemcreatesave').setAttribute('disabled', 'disabled')
   } else {
-    jhQuery('#itemcreatesave').removeAttribute('disabled')
+    JH.query('#itemcreatesave').removeAttribute('disabled')
   }
 }
 
 async function itemRemove (itm) {
   PW.confirmDialog('Delete item', 'Are you sure you want to delete this item?', async () => {
-    const resp = await jhFetch(`/api/itemremove/${itm}`, { _csrf: PW.getCSRFToken() })
+    const resp = await JH.http(`/api/itemremove/${itm}`, { _csrf: PW.getCSRFToken() })
     if (!await PW.checkResponse(resp)) {
       return
     }
@@ -278,64 +279,64 @@ async function itemRemove (itm) {
 }
 
 async function itemEditDialog (item) {
-  jhValue('#itemeditdialog sl-input,sl-textarea,sl-select', '')
-  jhQuery('#itemeditdialog').show()
-  jhQuery('#editpassword').setAttribute('type', 'password')
+  JH.value('#itemeditdialog sl-input,sl-textarea,sl-select', '')
+  JH.query('#itemeditdialog').show()
+  JH.query('#editpassword').setAttribute('type', 'password')
 
   itemEditFill(item)
   itemEditEnable()
 }
 
 async function itemEditFill (item) {
-  const resp = await jhFetch(`/api/items/${item}`)
+  const resp = await JH.http(`/api/items/${item}`)
   if (!await PW.checkResponse(resp)) {
-    jhQuery('#itemeditdialog').hide()
+    JH.query('#itemeditdialog').hide()
     return
   }
 
-  jhQuery('#editpassword').passwordVisible = false
+  JH.query('#editpassword').passwordVisible = false
 
   const body = await resp.json()
   if (body.status === 'success') {
-    jhValue('#itemeditid', item)
-    jhValue('#edittype', body.data.type)
-    jhValue('#edittitle', body.data.title)
-    jhValue('#editemail', body.data.data.email)
-    jhValue('#editdescription', body.data.data.description)
-    jhValue('#editurl', body.data.data.url)
-    jhValue('#edituser', body.data.data.user)
-    jhValue('#editpassword', body.data.data.password)
+    JH.value('#itemeditid', item)
+    JH.value('#edittype', body.data.type)
+    JH.value('#edittitle', body.data.title)
+    JH.value('#editemail', body.data.data.email)
+    JH.value('#editdescription', body.data.data.description)
+    JH.value('#editurl', body.data.data.url)
+    JH.value('#edituser', body.data.data.user)
+    JH.value('#editpassword', body.data.data.password)
   }
 
   itemEditEnable()
 }
 
 function itemEditEnable () {
-  if (jhValue('#edittitle') === '') {
-    jhQuery('#itemeditsave').setAttribute('disabled', 'disabled')
+  if (JH.value('#edittitle') === '') {
+    JH.query('#itemeditsave').setAttribute('disabled', 'disabled')
   } else {
-    jhQuery('#itemeditsave').removeAttribute('disabled')
+    JH.query('#itemeditsave').removeAttribute('disabled')
   }
 }
 
 async function itemEdit () {
-  const id = jhValue('#itemeditid')
+  const id = JH.value('#itemeditid')
 
   const itemdata = {
     _csrf: PW.getCSRFToken(),
-    title: jhValue('#edittitle'),
-    type: jhValue('#edittype'),
+    title: JH.value('#edittitle'),
+    type: JH.value('#edittype'),
     data: {
-      description: jhValue('#editdescription'),
-      email: jhValue('#editemail'),
-      url: jhValue('#editurl'),
-      user: jhValue('#edituser'),
-      password: jhValue('#editpassword')
+      description: JH.value('#editdescription'),
+      email: JH.value('#editemail'),
+      url: JH.value('#editurl'),
+      user: JH.value('#edituser'),
+      password: JH.value('#editpassword')
     }
   }
 
-  jhQuery('#itemeditdialog').hide()
-  const resp = await jhFetch(`/api/itemupdate/${id}`, itemdata)
+  JH.query('#itemeditdialog').hide()
+  const resp = await JH.http(`/api/itemupdate/${id}`, itemdata)
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -345,22 +346,22 @@ async function itemEdit () {
 }
 
 async function itemViewFill (item, gotofolder) {
-  const resp = await jhFetch(`/api/items/${item}`)
+  const resp = await JH.http(`/api/items/${item}`)
   if (!await PW.checkResponse(resp)) {
-    jhQuery('#itemviewdialog').hide()
+    JH.query('#itemviewdialog').hide()
     return
   }
 
   const body = await resp.json()
-  jhValue('#itemviewid', item)
-  jhValue('#viewtitle', body.data.title)
-  jhValue('#viewtype', body.data.type)
-  jhValue('#viewemail', body.data.data.email)
-  jhValue('#viewdescription', body.data.data.description)
-  jhValue('#viewurl', body.data.data.url)
-  jhValue('#viewuser', body.data.data.user)
-  jhValue('#viewpassword', body.data.data.password)
-  jhQuery('#viewpassword').setAttribute('type', 'password')
+  JH.value('#itemviewid', item)
+  JH.value('#viewtitle', body.data.title)
+  JH.value('#viewtype', body.data.type)
+  JH.value('#viewemail', body.data.data.email)
+  JH.value('#viewdescription', body.data.data.description)
+  JH.value('#viewurl', body.data.data.url)
+  JH.value('#viewuser', body.data.data.user)
+  JH.value('#viewpassword', body.data.data.password)
+  JH.query('#viewpassword').setAttribute('type', 'password')
 
   if (gotofolder) {
     PW.treeItemSelect(`item-${body.data.folderid}`)
@@ -372,17 +373,17 @@ function itemShow (item) {
   if (window.getSelection()) {
     window.getSelection().empty()
   }
-  jhValue('#itemviewdialog sl-input,sl-textarea,sl-select', '')
-  jhQuery('#itemviewdialog').show()
+  JH.value('#itemviewdialog sl-input,sl-textarea,sl-select', '')
+  JH.query('#itemviewdialog').show()
 
-  jhQuery('#viewpassword').passwordVisible = false
+  JH.query('#viewpassword').passwordVisible = false
 
   itemViewFill(item)
 }
 
 async function itemClone (itm) {
   PW.confirmDialog('Clone item', 'Do you want to clone this item?', async () => {
-    const resp = await jhFetch(`/api/items/${itm}/clone`, { _csrf: PW.getCSRFToken() })
+    const resp = await JH.http(`/api/items/${itm}/clone`, { _csrf: PW.getCSRFToken() })
     if (!await PW.checkResponse(resp)) {
       return
     }
@@ -406,7 +407,7 @@ async function itemMove (id, folder) {
     folder
   }
 
-  const resp = await jhFetch(`/api/itemmove/${id}`, itemdata)
+  const resp = await JH.http(`/api/itemmove/${id}`, itemdata)
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -417,37 +418,37 @@ async function itemMove (id, folder) {
 
 function findAndShowItem (itm) {
   itemViewFill(itm, true)
-  jhQuery('#itemviewdialog').show()
+  JH.query('#itemviewdialog').show()
 }
 
 function personalPasswordCreateDialog () {
-  jhQuery('#personalpasswordnew').show()
+  JH.query('#personalpasswordnew').show()
 }
 
 function personalPasswordAskDialog () {
-  jhQuery('#personalpasswordset').show()
+  JH.query('#personalpasswordset').show()
 }
 
 function personalPasswordCreateEnable () {
-  if (jhValue('#newpersonalpassword') === '' || jhValue('#newpersonalpassword').length < 8 || jhValue('#newpersonalpassword') !== jhValue('#newpersonalpasswordconfirm')) {
-    jhQuery('#personalpasswordcreate').setAttribute('disabled', 'disabled')
+  if (JH.value('#newpersonalpassword') === '' || JH.value('#newpersonalpassword').length < 8 || JH.value('#newpersonalpassword') !== JH.value('#newpersonalpasswordconfirm')) {
+    JH.query('#personalpasswordcreate').setAttribute('disabled', 'disabled')
   } else {
-    jhQuery('#personalpasswordcreate').removeAttribute('disabled')
+    JH.query('#personalpasswordcreate').removeAttribute('disabled')
   }
 }
 
 async function personalPasswordCreate () {
   const data = {
     _csrf: PW.getCSRFToken(),
-    password: jhValue('#newpersonalpassword')
+    password: JH.value('#newpersonalpassword')
   }
 
-  const resp = await jhFetch('/api/personalpassword', data)
+  const resp = await JH.http('/api/personalpassword', data)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
-  jhQuery('#personalpasswordnew').hide()
+  JH.query('#personalpasswordnew').hide()
 
   PW.showToast('success', 'Personal password saved')
   await fillItems()
@@ -456,11 +457,11 @@ async function personalPasswordCreate () {
 async function personalPasswordSet () {
   const data = {
     _csrf: PW.getCSRFToken(),
-    password: jhValue('#personalpasswordask')
+    password: JH.value('#personalpasswordask')
   }
 
-  jhQuery('#personalpasswordset').hide()
-  const resp = await jhFetch('/api/personalunlock', data)
+  JH.query('#personalpasswordset').hide()
+  const resp = await JH.http('/api/personalunlock', data)
   if (!await PW.checkResponse(resp)) {
     PW.errorDialog('Wrong password, please retry')
     return
@@ -474,7 +475,7 @@ async function personalPasswordSet () {
 async function passwordCopy (ev) {
   const item = ev.currentTarget.getAttribute('data-id')
 
-  const resp = await jhFetch(`/api/items/${item}`)
+  const resp = await JH.http(`/api/items/${item}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -488,24 +489,24 @@ async function passwordCopy (ev) {
 async function passwordShow (ev) {
   const item = ev.currentTarget.getAttribute('data-id')
 
-  if (jhQuery(`#password-${item}`).innerHTML !== '****') {
-    jhQuery(`#password-${item}`).innerHTML = '****'
+  if (JH.query(`#password-${item}`).innerHTML !== '****') {
+    JH.query(`#password-${item}`).innerHTML = '****'
     return
   }
 
-  const resp = await jhFetch(`/api/items/${item}`)
+  const resp = await JH.http(`/api/items/${item}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
-  jhQuery(`#password-${item}`).innerHTML = body.data.data.password
+  JH.query(`#password-${item}`).innerHTML = body.data.data.password
 
   passwordAccessed(item)
 }
 
 async function passwordAccessed (item) {
-  await jhFetch('/api/events', {
+  await JH.http('/api/events', {
     _csrf: PW.getCSRFToken(),
     event: 80,
     entity: 30,
@@ -514,7 +515,7 @@ async function passwordAccessed (item) {
 }
 
 async function passwordCopied (item) {
-  await jhFetch('/api/events', {
+  await JH.http('/api/events', {
     _csrf: PW.getCSRFToken(),
     event: 81,
     entity: 30,
@@ -523,14 +524,14 @@ async function passwordCopied (item) {
 }
 
 async function fillFolders () {
-  const resp = await jhFetch('/api/folderstree')
+  const resp = await JH.http('/api/folderstree')
   if (!await PW.checkResponse(resp)) {
     return
   }
 
-  jhQuery('sl-tree').innerHTML = ''
+  JH.query('sl-tree').innerHTML = ''
   const body = await resp.json()
-  if (jhQuery('#viewitem')) {
+  if (JH.query('#viewitem')) {
     // Avoid loading from local.storage if viewitem exists
     PW.treeFill('folderstree', body.data, folderClicked, false)
   } else {
@@ -540,29 +541,29 @@ async function fillFolders () {
 }
 
 async function itemCreateGeneratePassword () {
-  const resp = await jhFetch('/api/generatepassword')
+  const resp = await JH.http('/api/generatepassword')
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
   if (body.status === 'success') {
-    jhValue('#newpassword', body.data.password)
+    JH.value('#newpassword', body.data.password)
   }
 }
 
 async function itemActivity (itm) {
-  jhQuery('#itemactivitytable tbody').innerHTML = ''
-  jhQuery('#itemactivitydialog').show()
-  jhValue('#itemactivityid', itm)
-  jhQuery('#itemactivityload').removeAttribute('disabled')
+  JH.query('#itemactivitytable tbody').innerHTML = ''
+  JH.query('#itemactivitydialog').show()
+  JH.value('#itemactivityid', itm)
+  JH.query('#itemactivityload').removeAttribute('disabled')
   fillActivity(itm)
 }
 
 // Drag'n'drop
 async function dndSetup () {
-  jhDraggable('sl-tree-item', 'folder')
-  jhDropTarget('sl-tree-item', async (ev, data) => {
+  JH.draggable('sl-tree-item', 'folder')
+  JH.dropTarget('sl-tree-item', async (ev, data) => {
     const newparent = ev.target.getAttribute('data-id')
 
     if (data.type === 'folder') {
@@ -577,80 +578,80 @@ async function dndSetup () {
 }
 
 // Search
-jhEvent('#typesearch', 'sl-change', () => {
+JH.event('#typesearch', 'sl-change', () => {
   fillItems()
 })
 
 // Create
-jhEvent('#newitem', 'click', (ev) => {
+JH.event('#newitem', 'click', (ev) => {
   itemCreateDialog()
 })
-jhEvent('#itemcreatecancel', 'click', (ev) => {
-  jhQuery('#itemcreatedialog').hide()
+JH.event('#itemcreatecancel', 'click', (ev) => {
+  JH.query('#itemcreatedialog').hide()
 })
-jhEvent('#itemcreatesave', 'click', (ev) => {
+JH.event('#itemcreatesave', 'click', (ev) => {
   itemCreate()
 })
 
 // View
-jhEvent('#newtitle', 'keyup', (ev) => {
+JH.event('#newtitle', 'keyup', (ev) => {
   itemCreateEnable()
 })
 
 // Edit
-jhEvent('#edittitle', 'keyup', (ev) => {
+JH.event('#edittitle', 'keyup', (ev) => {
   itemEditEnable()
 })
-jhEvent('#itemeditcancel', 'click', (ev) => {
-  jhQuery('#itemeditdialog').hide()
+JH.event('#itemeditcancel', 'click', (ev) => {
+  JH.query('#itemeditdialog').hide()
 })
-jhEvent('#itemeditsave', 'click', (ev) => {
+JH.event('#itemeditsave', 'click', (ev) => {
   itemEdit()
 })
 
 // Personal
-jhEvent('#personalpasswordcancel', 'click', (ev) => {
-  jhQuery('#personalpasswordnew').hide()
+JH.event('#personalpasswordcancel', 'click', (ev) => {
+  JH.query('#personalpasswordnew').hide()
 })
-jhEvent('#personalpasswordsetcancel', 'click', (ev) => {
-  jhQuery('#personalpasswordset').hide()
+JH.event('#personalpasswordsetcancel', 'click', (ev) => {
+  JH.query('#personalpasswordset').hide()
 })
-jhEvent('#personalpasswordcreate', 'click', (ev) => {
+JH.event('#personalpasswordcreate', 'click', (ev) => {
   personalPasswordCreate()
 })
-jhEvent('#newpersonalpassword,#newpersonalpasswordconfirm', 'keyup', (ev) => {
+JH.event('#newpersonalpassword,#newpersonalpasswordconfirm', 'keyup', (ev) => {
   personalPasswordCreateEnable()
 })
 
-jhEvent('#personalpasswordsetbutton', 'click', (ev) => {
+JH.event('#personalpasswordsetbutton', 'click', (ev) => {
   personalPasswordSet()
 })
 
-jhEvent('#itemsearch', 'sl-input', (ev) => {
+JH.event('#itemsearch', 'sl-input', (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }
   itemSearchTimeout = setTimeout(async () => { fillItems() }, 250)
 })
 
-jhEvent('#itemviewcopypassword', 'sl-copy', (ev) => {
-  passwordCopied(jhValue('#itemviewid'))
+JH.event('#itemviewcopypassword', 'sl-copy', (ev) => {
+  passwordCopied(JH.value('#itemviewid'))
 })
 
-jhEvent('#itemviewcopylink', 'click', (ev) => {
-  itemCopyLink(jhValue('#itemviewid'))
+JH.event('#itemviewcopylink', 'click', (ev) => {
+  itemCopyLink(JH.value('#itemviewid'))
 })
 
-jhEvent('#itemeditcopylink', 'click', (ev) => {
-  itemCopyLink(jhValue('#itemeditid'))
+JH.event('#itemeditcopylink', 'click', (ev) => {
+  itemCopyLink(JH.value('#itemeditid'))
 })
 
-jhEvent('#newgenerate', 'click', (ev) => {
+JH.event('#newgenerate', 'click', (ev) => {
   itemCreateGeneratePassword()
 })
 
-if (jhQuery('#viewitem')) {
-  setTimeout(() => { findAndShowItem(jhValue('#viewitem')) }, 200)
+if (JH.query('#viewitem')) {
+  setTimeout(() => { findAndShowItem(JH.value('#viewitem')) }, 200)
 }
 
 addEventListener('folders-refresh', async (ev) => {
@@ -661,27 +662,27 @@ addEventListener('pw-item-found', async (ev) => {
   folderClicked()
 })
 
-jhEvent('#itemviewactivity', 'click', (ev) => {
-  itemActivity(jhValue('#itemviewid'))
+JH.event('#itemviewactivity', 'click', (ev) => {
+  itemActivity(JH.value('#itemviewid'))
 })
 
-jhEvent('#itemactivityload', 'click', (ev) => {
-  fillActivity(jhValue('#itemactivityid'))
+JH.event('#itemactivityload', 'click', (ev) => {
+  fillActivity(JH.value('#itemactivityid'))
 })
 
 await fillFolders()
 await fillItemTypes()
 
-jhQuery('#viewpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-  const el = jhQuery('#viewpassword').shadowRoot.querySelector('[part=input]')
+JH.query('#viewpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
+  const el = JH.query('#viewpassword').shadowRoot.querySelector('[part=input]')
   if (el.getAttribute('type') === 'text') {
-    passwordAccessed(jhValue('#itemviewid'))
+    passwordAccessed(JH.value('#itemviewid'))
   }
 })
 
-jhQuery('#editpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-  const el = jhQuery('#editpassword').shadowRoot.querySelector('[part=input]')
+JH.query('#editpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
+  const el = JH.query('#editpassword').shadowRoot.querySelector('[part=input]')
   if (el.getAttribute('type') === 'text') {
-    passwordAccessed(jhValue('#itemeditid'))
+    passwordAccessed(JH.value('#itemeditid'))
   }
 })

@@ -1,31 +1,33 @@
-/* global jhQuery, jhEvent, jhValue, jhQueryAll, jhParents, dispatchEvent, DOMParser, localStorage */
+/* global dispatchEvent, DOMParser, localStorage */
+
+import * as JH from './jh.js'
 
 const itemFound = new Event('pw-item-found')
 
 export function confirmDialog (title, text, callback, savetext, savevariant) {
-  const dialog = jhQuery('#confirmdialog')
+  const dialog = JH.query('#confirmdialog')
   dialog.setAttribute('label', title)
 
-  jhQuery('#confirmok').replaceWith(jhQuery('#confirmok').cloneNode(true))
+  JH.query('#confirmok').replaceWith(JH.query('#confirmok').cloneNode(true))
 
-  jhQuery('#confirmok').innerHTML = 'Confirm'
-  jhQuery('#confirmok').setAttribute('variant', 'primary')
+  JH.query('#confirmok').innerHTML = 'Confirm'
+  JH.query('#confirmok').setAttribute('variant', 'primary')
 
-  jhQuery('#confirmdialogtext').innerHTML = text
+  JH.query('#confirmdialogtext').innerHTML = text
 
   if (savetext !== undefined) {
-    jhQuery('#confirmok').innerHTML = savetext
+    JH.query('#confirmok').innerHTML = savetext
   }
   if (savevariant !== undefined) {
-    jhQuery('#confirmok').setAttribute('variant', savevariant)
+    JH.query('#confirmok').setAttribute('variant', savevariant)
   }
-  jhEvent('#confirmok', 'click', event => {
+  JH.event('#confirmok', 'click', event => {
     dialog.hide()
     callback()
   })
 
-  jhQuery('#confirmcancel').replaceWith(jhQuery('#confirmcancel').cloneNode(true))
-  jhEvent('#confirmcancel', 'click', event => {
+  JH.query('#confirmcancel').replaceWith(JH.query('#confirmcancel').cloneNode(true))
+  JH.event('#confirmcancel', 'click', event => {
     dialog.hide()
   })
   dialog.addEventListener('sl-request-close', event => {
@@ -37,12 +39,12 @@ export function confirmDialog (title, text, callback, savetext, savevariant) {
 }
 
 export function errorDialog (text, subject) {
-  const dialog = jhQuery('#errordialog')
-  jhQuery('#errordialogtext').innerHTML = text
+  const dialog = JH.query('#errordialog')
+  JH.query('#errordialogtext').innerHTML = text
 
-  jhQuery('#errordialog').setAttribute('label', subject || 'PassWeaver')
-  jhQuery('#errordialogclose').replaceWith(jhQuery('#errordialogclose').cloneNode(true))
-  jhEvent('#errordialogclose', 'click', event => {
+  JH.query('#errordialog').setAttribute('label', subject || 'PassWeaver')
+  JH.query('#errordialogclose').replaceWith(JH.query('#errordialogclose').cloneNode(true))
+  JH.event('#errordialogclose', 'click', event => {
     dialog.hide()
   })
   dialog.show()
@@ -80,8 +82,8 @@ export async function checkResponse (resp, ignoreStatus) {
 export async function treeFill (id, data, callback, uselocalstorage) {
   treeFillItems(id, data, null)
 
-  jhEvent(`#${id}`, 'sl-selection-change', (ev) => {
-    const sel = jhQuery('sl-tree-item[selected]')
+  JH.event(`#${id}`, 'sl-selection-change', (ev) => {
+    const sel = JH.query('sl-tree-item[selected]')
     const id = sel.getAttribute('data-id')
     callback(id)
 
@@ -95,7 +97,7 @@ export async function treeFill (id, data, callback, uselocalstorage) {
   const last = localStorage.getItem(`${user}_${id}_selected`)
   if (uselocalstorage && last) {
     // Select last item
-    const lastelem = jhQuery(`#${last}`)
+    const lastelem = JH.query(`#${last}`)
     if (lastelem) {
       lastelem.setAttribute('selected', 'selected')
       setTimeout(() => {
@@ -109,7 +111,7 @@ export async function treeFill (id, data, callback, uselocalstorage) {
 export function treeFillItems (id, data, mainid) {
   const user = getUser()
 
-  const parent = jhQuery(`#${id}`)
+  const parent = JH.query(`#${id}`)
   const root = mainid || id
 
   for (const item of data) {
@@ -126,11 +128,11 @@ export function treeFillItems (id, data, mainid) {
     const newitem = cont.querySelector('body').firstChild
 
     parent.append(newitem)
-    jhEvent(`#${newid}`, 'sl-collapse', (ev) => {
+    JH.event(`#${newid}`, 'sl-collapse', (ev) => {
       const lskey = `${user}_${root}_expanded_${ev.target.id}`
       localStorage.removeItem(lskey)
     })
-    jhEvent(`#${newid}`, 'sl-expand', (ev) => {
+    JH.event(`#${newid}`, 'sl-expand', (ev) => {
       const lskey = `${user}_${root}_expanded_${ev.target.id}`
       localStorage.setItem(lskey, '1')
     })
@@ -143,15 +145,15 @@ export function treeFillItems (id, data, mainid) {
 }
 
 export function treeItemSelect (elemid) {
-  const treeitem = jhQuery(`#${elemid}`)
+  const treeitem = JH.query(`#${elemid}`)
 
   // Expand parents
-  const parents = jhParents(treeitem, 'sl-tree-item')
+  const parents = JH.parents(treeitem, 'sl-tree-item')
   for (const parent of parents) {
     parent.setAttribute('expanded', 'expanded')
   }
 
-  const selected = jhQueryAll('sl-tree-item[selected]')
+  const selected = JH.queryAll('sl-tree-item[selected]')
   for (const s of selected) {
     s.removeAttribute('selected')
   }
@@ -167,7 +169,7 @@ export function treeSearch (elemid, searchstring, start) {
     searchTreeIndex = 0
   }
 
-  const treeitems = jhQueryAll(`#${elemid} sl-tree-item`)
+  const treeitems = JH.queryAll(`#${elemid} sl-tree-item`)
   const searchtoken = searchstring.toLowerCase()
 
   let index = 0
@@ -229,31 +231,31 @@ export function showToast (variant, text) {
 }
 
 export function getUser () {
-  return jhValue('#v-user')
+  return JH.value('#v-user')
 }
 
 export function getCSRFToken () {
-  return jhValue('#_csrf')
+  return JH.value('#_csrf')
 }
 
-if (jhQuery('#pageid')) {
-  const pageid = jhValue('#pageid')
-  const elem = jhQuery(`.page-sidebar .link[pageid=${pageid}]`)
+if (JH.query('#pageid')) {
+  const pageid = JH.value('#pageid')
+  const elem = JH.query(`.page-sidebar .link[pageid=${pageid}]`)
   if (elem) {
     elem.classList.add('current')
   }
 }
 
-if (jhQuery('#globalsearch')) {
-  jhEvent('#globalsearch', 'keypress', (ev) => {
-    if (ev.keyCode === 13 && jhValue('#globalsearch').length >= 3) {
-      window.location = '/pages/search?search=' + encodeURIComponent(jhValue('#globalsearch'))
+if (JH.query('#globalsearch')) {
+  JH.event('#globalsearch', 'keypress', (ev) => {
+    if (ev.keyCode === 13 && JH.value('#globalsearch').length >= 3) {
+      window.location = '/pages/search?search=' + encodeURIComponent(JH.value('#globalsearch'))
     }
   })
 
-  jhEvent(document, 'keydown', (ev) => {
+  JH.event(document, 'keydown', (ev) => {
     if (ev.ctrlKey && ev.keyCode === 220) {
-      jhQuery('#globalsearch').focus()
+      JH.query('#globalsearch').focus()
     }
   })
 }

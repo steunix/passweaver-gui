@@ -1,5 +1,6 @@
-/* global jhEvent, jhValue, jhFetch, jhQuery, jhQueryAll, location, dispatchEvent */
+/* global location, dispatchEvent */
 
+import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 
 let folderSearchTimeout
@@ -13,35 +14,35 @@ export const currentPermissions = {
 
 export function currentFolder () {
   try {
-    return jhQuery('sl-tree-item[selected]').getAttribute('data-id')
+    return JH.query('sl-tree-item[selected]').getAttribute('data-id')
   } catch (err) {
     return ''
   }
 }
 
 function folderCreateDialog () {
-  jhValue('#foldercreatedialog sl-input,sl-textarea', '')
+  JH.value('#foldercreatedialog sl-input,sl-textarea', '')
   folderCreateEnable()
-  jhQuery('#foldercreatedialog').show()
+  JH.query('#foldercreatedialog').show()
 }
 
 function folderCreateEnable () {
-  const descr = jhValue('#foldercreatedescription')
+  const descr = JH.value('#foldercreatedescription')
   if (descr === '') {
-    jhQuery('#foldercreatesave').setAttribute('disabled', 'disabled')
+    JH.query('#foldercreatesave').setAttribute('disabled', 'disabled')
   } else {
-    jhQuery('#foldercreatesave').removeAttribute('disabled')
+    JH.query('#foldercreatesave').removeAttribute('disabled')
   }
 }
 
 async function folderCreate () {
   const itemdata = {
     _csrf: PW.getCSRFToken(),
-    description: jhValue('#foldercreatedescription')
+    description: JH.value('#foldercreatedescription')
   }
 
-  jhQuery('#foldercreatedialog').hide()
-  const resp = await jhFetch(`/api/foldernew/${currentFolder()}`, itemdata)
+  JH.query('#foldercreatedialog').hide()
+  const resp = await JH.http(`/api/foldernew/${currentFolder()}`, itemdata)
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -52,8 +53,8 @@ async function folderCreate () {
 
 async function folderRemove () {
   PW.confirmDialog('Delete folder', 'Are you sure you want to delete this folder?', async () => {
-    jhQuery('#foldercreatedialog').hide()
-    const resp = await jhFetch(`/api/folderremove/${currentFolder()}`, { _csrf: PW.getCSRFToken() })
+    JH.query('#foldercreatedialog').hide()
+    const resp = await JH.http(`/api/folderremove/${currentFolder()}`, { _csrf: PW.getCSRFToken() })
     if (!await PW.checkResponse(resp)) {
       return
     }
@@ -64,38 +65,38 @@ async function folderRemove () {
 }
 
 function folderEditDialog () {
-  jhQuery('#foldereditdialog').show()
+  JH.query('#foldereditdialog').show()
   folderEditFill()
 }
 
 function folderEditEnable () {
-  const descr = jhValue('#foldereditdescription')
+  const descr = JH.value('#foldereditdescription')
   if (descr === '') {
-    jhQuery('#foldereditsave').setAttribute('disabled', 'disabled')
+    JH.query('#foldereditsave').setAttribute('disabled', 'disabled')
   } else {
-    jhQuery('#foldereditsave').removeAttribute('disabled')
+    JH.query('#foldereditsave').removeAttribute('disabled')
   }
 }
 
 async function folderEditFill () {
-  const resp = await jhFetch(`/api/folders/${currentFolder()}`)
+  const resp = await JH.http(`/api/folders/${currentFolder()}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
-  jhValue('#foldereditdescription', body.data.description)
+  JH.value('#foldereditdescription', body.data.description)
   folderEditEnable()
 }
 
 async function folderEdit () {
   const data = {
     _csrf: PW.getCSRFToken(),
-    description: jhValue('#foldereditdescription')
+    description: JH.value('#foldereditdescription')
   }
 
-  jhQuery('#foldereditdialog').hide()
-  const resp = await jhFetch(`/api/folderupdate/${currentFolder()}`, data)
+  JH.query('#foldereditdialog').hide()
+  const resp = await JH.http(`/api/folderupdate/${currentFolder()}`, data)
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -114,9 +115,9 @@ export async function folderMove (id, newparent) {
     parent: newparent
   }
 
-  const resp = await jhFetch(`/api/folderupdate/${id}`, data)
+  const resp = await JH.http(`/api/folderupdate/${id}`, data)
   if (!await PW.checkResponse(resp)) {
-    const items = jhQueryAll('sl-tree-item')
+    const items = JH.queryAll('sl-tree-item')
     for (const item of items) {
       item.classList.remove('dragover')
     }
@@ -127,18 +128,18 @@ export async function folderMove (id, newparent) {
 }
 
 // Event handlers
-jhEvent('#foldercreatedescription', 'keyup', (ev) => {
+JH.event('#foldercreatedescription', 'keyup', (ev) => {
   folderCreateEnable()
 })
 
-jhEvent('#folderremove', 'click', (ev) => {
+JH.event('#folderremove', 'click', (ev) => {
   folderRemove()
 })
 
-jhEvent('#folderedit', 'click', (ev) => {
+JH.event('#folderedit', 'click', (ev) => {
   folderEditDialog()
 })
-jhEvent('#foldercreate', 'click', (ev) => {
+JH.event('#foldercreate', 'click', (ev) => {
   if (currentFolder() === '') {
     PW.errorDialog('Select a parent folder in the tree')
     return
@@ -146,40 +147,40 @@ jhEvent('#foldercreate', 'click', (ev) => {
   folderCreateDialog()
 })
 
-jhEvent('#foldercreatesave', 'click', (ev) => {
+JH.event('#foldercreatesave', 'click', (ev) => {
   folderCreate()
 })
-jhEvent('#foldercreatecancel', 'click', (ev) => {
-  jhQuery('#foldercreatedialog').hide()
+JH.event('#foldercreatecancel', 'click', (ev) => {
+  JH.query('#foldercreatedialog').hide()
 })
 
-jhEvent('#foldereditdescription', 'keyup', (ev) => {
+JH.event('#foldereditdescription', 'keyup', (ev) => {
   folderEditEnable()
 })
-jhEvent('#foldereditcancel', 'click', (ev) => {
-  jhQuery('#foldereditdialog').hide()
+JH.event('#foldereditcancel', 'click', (ev) => {
+  JH.query('#foldereditdialog').hide()
 })
-jhEvent('#foldereditsave', 'click', (ev) => {
+JH.event('#foldereditsave', 'click', (ev) => {
   folderEdit()
 })
 
-jhEvent('#foldersearch', 'sl-input', (ev) => {
+JH.event('#foldersearch', 'sl-input', (ev) => {
   if (folderSearchTimeout) {
     clearTimeout(folderSearchTimeout)
   }
   folderSearchTimeout = setTimeout(() => {
-    const search = jhValue('#foldersearch')
+    const search = JH.value('#foldersearch')
     if (!PW.treeSearch('folderstree', search)) {
       PW.showToast('danger', 'Not found')
     }
   }, 250)
 })
 
-jhEvent('#foldersearchnext', 'click', (ev) => {
-  const search = jhValue('#foldersearch')
+JH.event('#foldersearchnext', 'click', (ev) => {
+  const search = JH.value('#foldersearch')
   PW.treeSearchNext('folderstree', search)
 })
-jhEvent('#foldersearchprevious', 'click', (ev) => {
-  const search = jhValue('#foldersearch')
+JH.event('#foldersearchprevious', 'click', (ev) => {
+  const search = JH.value('#foldersearch')
   PW.treeSearchPrevious('folderstree', search)
 })

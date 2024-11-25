@@ -1,16 +1,17 @@
-/* global jhEvent, jhFetch, jhQuery, jhDraggable, jhDropTarget, addEventListener */
+/* global addEventListener */
 
+import * as JH from './jh.js'
 import * as Folders from './folders_shared.js'
 import * as GPicker from './grouppicker.js'
 import * as PW from './passweaver-gui.js'
 
 async function fillGroups () {
-  jhQuery('#groupstable tbody').innerHTML = ''
+  JH.query('#groupstable tbody').innerHTML = ''
   if (!Folders.currentFolder()) {
     return
   }
 
-  const resp = await jhFetch(`/api/foldergroups/${Folders.currentFolder()}`)
+  const resp = await JH.http(`/api/foldergroups/${Folders.currentFolder()}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -34,21 +35,21 @@ async function fillGroups () {
 
       // Check if groups can be added
       if (!itm.canmodify) {
-        jhQuery('#addgroup').setAttribute('disabled', 'disabled')
+        JH.query('#addgroup').setAttribute('disabled', 'disabled')
       } else {
-        jhQuery('#addgroup').removeAttribute('disabled')
+        JH.query('#addgroup').removeAttribute('disabled')
       }
     }
-    jhQuery('#groupstable tbody').innerHTML = row
+    JH.query('#groupstable tbody').innerHTML = row
 
     // Event handlers
-    jhEvent('[id^=removegroup]', 'click', groupRemove)
-    jhEvent('[id^=togglegroup]', 'click', groupToggle)
+    JH.event('[id^=removegroup]', 'click', groupRemove)
+    JH.event('[id^=togglegroup]', 'click', groupToggle)
   }
 }
 
 async function folderClicked () {
-  const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}`)
+  const resp = await JH.http(`/api/folders/${Folders.currentFolder()}`)
 
   // Folder may not be accessible
   if (!await PW.checkResponse(resp, 403)) {
@@ -65,16 +66,16 @@ async function folderClicked () {
   }
 
   if (Folders.currentPermissions.write) {
-    jhQuery('#foldercreate').removeAttribute('disabled')
-    jhQuery('#folderremove').removeAttribute('disabled')
-    jhQuery('#folderedit').removeAttribute('disabled')
+    JH.query('#foldercreate').removeAttribute('disabled')
+    JH.query('#folderremove').removeAttribute('disabled')
+    JH.query('#folderedit').removeAttribute('disabled')
   } else {
-    jhQuery('#foldercreate').setAttribute('disabled', 'disabled')
-    jhQuery('#folderremove').setAttribute('disabled', 'disabled')
-    jhQuery('#folderedit').setAttribute('disabled', 'disabled')
+    JH.query('#foldercreate').setAttribute('disabled', 'disabled')
+    JH.query('#folderremove').setAttribute('disabled', 'disabled')
+    JH.query('#folderedit').setAttribute('disabled', 'disabled')
   }
 
-  jhQuery('#sectiontitle').innerHTML = `${body.data.description} - Groups`
+  JH.query('#sectiontitle').innerHTML = `${body.data.description} - Groups`
 
   // Load groups
   await fillGroups()
@@ -83,7 +84,7 @@ async function folderClicked () {
 async function groupRemove (ev) {
   const group = ev.currentTarget.getAttribute('data-id')
   PW.confirmDialog('Remove group', 'Are you sure you want to remove the group?', async () => {
-    const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: PW.getCSRFToken() }, 'DELETE')
+    const resp = await JH.http(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: PW.getCSRFToken() }, 'DELETE')
     if (!await PW.checkResponse(resp)) {
       return
     }
@@ -95,7 +96,7 @@ async function groupRemove (ev) {
 
 async function groupToggle (ev) {
   const group = ev.currentTarget.getAttribute('data-id')
-  const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}/toggle`, { _csrf: PW.getCSRFToken() })
+  const resp = await JH.http(`/api/folders/${Folders.currentFolder()}/groups/${group}/toggle`, { _csrf: PW.getCSRFToken() })
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -106,7 +107,7 @@ async function groupToggle (ev) {
 
 async function groupPickerChoosen (group) {
   GPicker.hide()
-  const resp = await jhFetch(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: PW.getCSRFToken() })
+  const resp = await JH.http(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: PW.getCSRFToken() })
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -116,13 +117,13 @@ async function groupPickerChoosen (group) {
 }
 
 async function fillFolders () {
-  const resp = await jhFetch('/api/folderstree')
+  const resp = await JH.http('/api/folderstree')
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
-  jhQuery('sl-tree').innerHTML = ''
+  JH.query('sl-tree').innerHTML = ''
   PW.treeFill('folderstree', body.data, folderClicked)
   await dndSetup()
 }
@@ -131,8 +132,8 @@ await fillFolders()
 
 // Drag'n'drop
 async function dndSetup () {
-  jhDraggable('sl-tree-item')
-  jhDropTarget('sl-tree-item', async (ev, data) => {
+  JH.draggable('sl-tree-item')
+  JH.dropTarget('sl-tree-item', async (ev, data) => {
     const folder = data.data
     const newparent = ev.target.getAttribute('data-id')
 
@@ -140,7 +141,7 @@ async function dndSetup () {
   })
 }
 
-jhEvent('#addgroup', 'click', (ev) => {
+JH.event('#addgroup', 'click', (ev) => {
   GPicker.show(groupPickerChoosen)
 })
 addEventListener('folders-refresh', async (ev) => {

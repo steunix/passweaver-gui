@@ -1,12 +1,11 @@
-/* global jhEvent, jhQuery, jhValue, jhFetch */
-
+import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 
 let itemSearchTimeout
 let itemTypesOptions
 
 async function fillItemTypes () {
-  const resp = await jhFetch('/api/itemtypes')
+  const resp = await JH.http('/api/itemtypes')
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -21,22 +20,22 @@ async function fillItemTypes () {
     itemTypesOptions += '</sl-option>'
   }
 
-  jhQuery('#viewtype').innerHTML = itemTypesOptions
-  jhQuery('#typesearch').innerHTML = itemTypesOptions
+  JH.query('#viewtype').innerHTML = itemTypesOptions
+  JH.query('#typesearch').innerHTML = itemTypesOptions
 }
 
 async function fillItems () {
-  const type = jhValue('#typesearch')
+  const type = JH.value('#typesearch')
 
-  const search = jhValue('#itemsearch')
-  const resp = await jhFetch(`/api/itemssearch?search=${search}&type=${type}`)
+  const search = JH.value('#itemsearch')
+  const resp = await JH.http(`/api/itemssearch?search=${search}&type=${type}`)
 
   // Folder may not be accessible
   if (!await PW.checkResponse(resp, 403)) {
     return
   }
 
-  jhQuery('#itemstable tbody').innerHTML =
+  JH.query('#itemstable tbody').innerHTML =
   `<tr>
     <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
     <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
@@ -64,50 +63,50 @@ async function fillItems () {
       row += '</td>'
       row += `<td class='itemtitle'>${itm.title}</td></tr>`
     }
-    jhQuery('#itemstable tbody').innerHTML = row
+    JH.query('#itemstable tbody').innerHTML = row
   } else {
-    jhQuery('#itemstable tbody').innerHTML = '<tr><td colspan="99">No matching item found</td></tr>'
+    JH.query('#itemstable tbody').innerHTML = '<tr><td colspan="99">No matching item found</td></tr>'
   }
 
   // Install event handlers
-  jhEvent('#itemstable tbody tr[id^=row]', 'dblclick', async (ev) => {
+  JH.event('#itemstable tbody tr[id^=row]', 'dblclick', async (ev) => {
     await itemShow(ev.currentTarget.getAttribute('data-id'))
   })
-  jhEvent('#itemstable tbody [id^=view]', 'click', async (ev) => {
+  JH.event('#itemstable tbody [id^=view]', 'click', async (ev) => {
     await itemShow(ev.currentTarget.getAttribute('data-id'))
   })
-  jhEvent('#itemstable tbody [id^=link]', 'click', (ev) => {
+  JH.event('#itemstable tbody [id^=link]', 'click', (ev) => {
     itemCopyLink(ev.currentTarget.getAttribute('data-id'))
   })
-  jhEvent('#itemstable tbody [id^=folder]', 'click', (ev) => {
+  JH.event('#itemstable tbody [id^=folder]', 'click', (ev) => {
     window.location = `/pages/items?viewitem=${ev.currentTarget.getAttribute('data-id')}`
   })
 }
 
 async function itemViewFill (item) {
-  const resp = await jhFetch(`/api/items/${item}`)
+  const resp = await JH.http(`/api/items/${item}`)
   if (!await PW.checkResponse(resp)) {
-    jhQuery('#itemviewdialog').hide()
+    JH.query('#itemviewdialog').hide()
     return
   }
 
   const body = await resp.json()
-  jhValue('#itemviewid', item)
-  jhValue('#viewtitle', body.data.title)
-  jhValue('#viewtype', body.data.type)
-  jhValue('#viewemail', body.data.data.email)
-  jhValue('#viewdescription', body.data.data.description)
-  jhValue('#viewurl', body.data.data.url)
-  jhValue('#viewuser', body.data.data.user)
-  jhQuery('#viewpassword').setAttribute('type', 'password')
-  jhValue('#viewpassword', body.data.data.password)
+  JH.value('#itemviewid', item)
+  JH.value('#viewtitle', body.data.title)
+  JH.value('#viewtype', body.data.type)
+  JH.value('#viewemail', body.data.data.email)
+  JH.value('#viewdescription', body.data.data.description)
+  JH.value('#viewurl', body.data.data.url)
+  JH.value('#viewuser', body.data.data.user)
+  JH.query('#viewpassword').setAttribute('type', 'password')
+  JH.value('#viewpassword', body.data.data.password)
 }
 
 async function itemShow (item) {
   if (window.getSelection()) {
     window.getSelection().empty()
   }
-  jhQuery('#itemviewdialog').show()
+  JH.query('#itemviewdialog').show()
   await itemViewFill(item)
 }
 
@@ -117,7 +116,7 @@ function itemCopyLink (itm) {
 }
 
 async function passwordAccessed (item) {
-  await jhFetch('/api/events', {
+  await JH.http('/api/events', {
     _csrf: PW.getCSRFToken(),
     event: 80,
     entity: 30,
@@ -126,7 +125,7 @@ async function passwordAccessed (item) {
 }
 
 async function passwordCopied (item) {
-  await jhFetch('/api/events', {
+  await JH.http('/api/events', {
     _csrf: PW.getCSRFToken(),
     event: 81,
     entity: 30,
@@ -136,32 +135,32 @@ async function passwordCopied (item) {
 
 await fillItemTypes()
 
-jhEvent('#itemsearch', 'sl-input', async (ev) => {
+JH.event('#itemsearch', 'sl-input', async (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }
-  if (jhValue('#itemsearch').length > 2) {
+  if (JH.value('#itemsearch').length > 2) {
     itemSearchTimeout = setTimeout(async () => { await fillItems() }, 250)
   }
 })
 
-jhEvent('#typesearch', 'sl-change', () => {
+JH.event('#typesearch', 'sl-change', () => {
   fillItems()
 })
 
-jhEvent('#itemviewcopypassword', 'sl-copy', (ev) => {
-  passwordCopied(jhValue('#itemviewid'))
+JH.event('#itemviewcopypassword', 'sl-copy', (ev) => {
+  passwordCopied(JH.value('#itemviewid'))
 })
 
 setTimeout(() => {
-  jhQuery('#viewpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-    const el = jhQuery('#viewpassword').shadowRoot.querySelector('[part=input]')
+  JH.query('#viewpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
+    const el = JH.query('#viewpassword').shadowRoot.querySelector('[part=input]')
     if (el.getAttribute('type') === 'text') {
-      passwordAccessed(jhValue('#itemviewid'))
+      passwordAccessed(JH.value('#itemviewid'))
     }
   })
 
-  if (jhValue('#itemsearch').length) {
+  if (JH.value('#itemsearch').length) {
     fillItems()
   }
 }, 200)
