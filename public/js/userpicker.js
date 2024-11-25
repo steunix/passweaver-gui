@@ -1,5 +1,4 @@
-/* global jhEvent, jhQuery, jhValue, jhFetch */
-
+import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 
 let userPickerTimeout = 0
@@ -7,25 +6,25 @@ let userCallback
 
 export function show (callback) {
   userCallback = callback
-  jhValue('#userpickersearch', '')
-  jhQuery('#userpickertable tbody').innerHTML = ''
-  jhQuery('#userpickerdialog').show()
+  JH.value('#userpickersearch', '')
+  JH.query('#userpickertable tbody').innerHTML = ''
+  JH.query('#userpickerdialog').show()
   search()
 }
 
 export function hide () {
-  jhQuery('#userpickerdialog').hide()
+  JH.query('#userpickerdialog').hide()
 }
 
 async function search () {
-  const text = jhValue('#userpickersearch')
+  const text = JH.value('#userpickersearch')
 
-  const resp = await jhFetch(`/api/userslist/?search=${encodeURIComponent(text)}`)
+  const resp = await JH.http(`/api/userslist/?search=${encodeURIComponent(text)}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
-  jhQuery('#userpickertable tbody').innerHTML = ''
+  JH.query('#userpickertable tbody').innerHTML = ''
   const body = await resp.json()
   if (body.data.length) {
     let row = ''
@@ -36,19 +35,19 @@ async function search () {
       row += `<td>${usr.lastname} ${usr.firstname}</td>`
       row += '</tr>'
     }
-    jhQuery('#userpickertable tbody').innerHTML = row
+    JH.query('#userpickertable tbody').innerHTML = row
   }
 
   // Event handlers
-  jhEvent('#userpickertable tbody tr[id^=row]', 'dblclick', (ev) => {
+  JH.event('#userpickertable tbody tr[id^=row]', 'dblclick', (ev) => {
     userCallback(ev.currentTarget.getAttribute('data-id'))
   })
-  jhEvent('#userpickertable tbody sl-icon-button[id^=user]', 'click', (ev) => {
+  JH.event('#userpickertable tbody sl-icon-button[id^=user]', 'click', (ev) => {
     userCallback(ev.currentTarget.getAttribute('data-id'))
   })
 }
 
-jhEvent('#userpickersearch', 'sl-input', (ev) => {
+JH.event('#userpickersearch', 'sl-input', (ev) => {
   if (userPickerTimeout) {
     clearTimeout(userPickerTimeout)
   }

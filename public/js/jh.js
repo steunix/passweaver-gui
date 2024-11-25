@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-function jhResolveQuery (query) {
+export function resolveQuery (query) {
   let el
   if (typeof query === 'string') {
     el = document.querySelectorAll(query)
@@ -16,7 +16,7 @@ function jhResolveQuery (query) {
  * @param {string} query Query
  * @returns
  */
-function jhQuery (query) {
+export function query (query) {
   return document.querySelector(query)
 }
 
@@ -25,7 +25,7 @@ function jhQuery (query) {
  * @param {string} query Query
  * @returns
  */
-function jhQueryAll (query) {
+export function queryAll (query) {
   return document.querySelectorAll(query)
 }
 
@@ -36,8 +36,8 @@ function jhQueryAll (query) {
  * @param {function} callback Callback
  * @returns
  */
-function jhEvent (query, event, callback) {
-  const el = jhResolveQuery(query)
+export function event (query, event, callback) {
+  const el = resolveQuery(query)
 
   if (el === null) {
     return
@@ -53,8 +53,8 @@ function jhEvent (query, event, callback) {
  * @param {string} query Query
  * @returns
  */
-function jhValue (query, value) {
-  const el = jhResolveQuery(query)
+export function value (query, value) {
+  const el = resolveQuery(query)
 
   if (el === null) {
     return
@@ -78,8 +78,8 @@ function jhValue (query, value) {
  * @param {string} value Value
  * @returns
  */
-function jhAttribute (query, attr, value) {
-  const el = jhResolveQuery(query)
+export function attribute (query, attr, value) {
+  const el = resolveQuery(query)
 
   if (el === null) {
     return
@@ -101,8 +101,8 @@ function jhAttribute (query, attr, value) {
  * @param {string} query Query
  * @param {string} type Item type
  */
-function jhDraggable (query, type) {
-  const el = jhResolveQuery(query)
+export function draggable (query, type) {
+  const el = resolveQuery(query)
 
   if (type === undefined) {
     type = 'default'
@@ -113,8 +113,8 @@ function jhDraggable (query, type) {
   }
 
   for (const e of el) {
-    jhAttribute(e, 'draggable', true)
-    jhEvent(e, 'dragstart', (ev) => {
+    attribute(e, 'draggable', true)
+    event(e, 'dragstart', (ev) => {
       ev.dataTransfer.setData('text/plain', type + ':' + ev.target.getAttribute('data-id'))
     })
   }
@@ -125,25 +125,25 @@ function jhDraggable (query, type) {
  * @param {string} query Query
  * @param {function} dropCallback Event called on drop
  */
-function jhDropTarget (query, dropCallback) {
-  const el = jhResolveQuery(query)
+export function dropTarget (query, dropCallback) {
+  const el = resolveQuery(query)
 
   if (el === null) {
     return
   }
 
   for (const e of el) {
-    jhEvent(e, 'dragover', (ev) => {
+    event(e, 'dragover', (ev) => {
       ev.preventDefault()
     })
-    jhEvent(e, 'dragenter', (ev) => {
+    event(e, 'dragenter', (ev) => {
       ev.target.classList.add('dragover')
       ev.stopPropagation()
     })
-    jhEvent(e, 'dragleave', (ev) => {
+    event(e, 'dragleave', (ev) => {
       ev.target.classList.remove('dragover')
     })
-    jhEvent(e, 'drop', (ev) => {
+    event(e, 'drop', (ev) => {
       ev.stopPropagation()
       ev.target.classList.remove('dragover')
       const data = ev.dataTransfer.getData('text/plain')
@@ -161,7 +161,7 @@ function jhDropTarget (query, dropCallback) {
  * @param {object} payload
  * @returns
  */
-async function jhFetch (url, payload, method) {
+export async function http (url, payload, method) {
   const settings = {
     method: 'GET'
   }
@@ -187,8 +187,8 @@ async function jhFetch (url, payload, method) {
  * @param {string} selector
  * @returns
  */
-function jhParents (query, selector) {
-  const elems = jhResolveQuery(query)
+export function parents (query, selector) {
+  const elems = resolveQuery(query)
 
   const parents = []
   for (let el of elems) {

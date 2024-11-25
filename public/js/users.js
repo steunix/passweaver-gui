@@ -1,5 +1,6 @@
-/* global jhEvent, jhQuery, jhValue, jhFetch, jhQueryAll, localStorage */
+/* global localStorage */
 
+import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 import * as GPicker from './grouppicker.js'
 
@@ -7,16 +8,16 @@ let userSearchTimeout
 let currentUser = ''
 
 async function fillUsers () {
-  const search = jhValue('#usersearch')
-  const resp = await jhFetch(`/api/userslist?search=${search}`)
+  const search = JH.value('#usersearch')
+  const resp = await JH.http(`/api/userslist?search=${search}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
 
-  jhQuery('#groupstable tbody').innerHTML = ''
-  jhQuery('#userstable tbody').innerHTML = ''
+  JH.query('#groupstable tbody').innerHTML = ''
+  JH.query('#userstable tbody').innerHTML = ''
 
   if (body.data.length) {
     let row = ''
@@ -37,25 +38,25 @@ async function fillUsers () {
         `<td class='text-center'><sl-icon name='${itm.active ? 'check-lg' : 'x-lg'}' style='color:${itm.active ? 'green' : 'red'}'/></td>` +
         '</tr>'
     }
-    jhQuery('#userstable tbody').innerHTML = row
+    JH.query('#userstable tbody').innerHTML = row
 
     // Install event handlers
-    jhEvent('#userstable tbody tr', 'dblclick', (ev) => {
+    JH.event('#userstable tbody tr', 'dblclick', (ev) => {
       userDoubleClicked(ev.currentTarget.getAttribute('data-id'))
     })
-    jhEvent('#userstable tbody tr [id^=edituser]', 'click', (ev) => {
+    JH.event('#userstable tbody tr [id^=edituser]', 'click', (ev) => {
       userEditDialog(ev.currentTarget.getAttribute('data-id'))
     })
-    jhEvent('#userstable tbody tr [id^=removeuser]', 'click', (ev) => {
+    JH.event('#userstable tbody tr [id^=removeuser]', 'click', (ev) => {
       userRemove(ev.currentTarget.getAttribute('data-id'))
     })
-    jhEvent('#userstable tbody tr [id^=activity]', 'click', (ev) => {
+    JH.event('#userstable tbody tr [id^=activity]', 'click', (ev) => {
       userActivity(ev.currentTarget.getAttribute('data-id'))
     })
-    jhEvent('#userstable tbody tr', 'click', (ev) => {
+    JH.event('#userstable tbody tr', 'click', (ev) => {
       currentUser = ev.currentTarget.getAttribute('data-id')
 
-      const sel = jhQuery('#userstable tbody tr.rowselected')
+      const sel = JH.query('#userstable tbody tr.rowselected')
       if (sel) {
         sel.classList.remove('rowselected')
       }
@@ -68,12 +69,12 @@ async function fillUsers () {
 async function fillActivity (usr) {
   // If a table is already populated, get last id and get next page
   let lastid = ''
-  const lastrow = jhQuery('#useractivitytable tbody tr:last-child td[id^=event]')
+  const lastrow = JH.query('#useractivitytable tbody tr:last-child td[id^=event]')
   if (lastrow) {
     lastid = lastrow.getAttribute('data-id')
   }
 
-  const resp = await jhFetch(`/api/users/${usr}/activity?lastid=${lastid}`)
+  const resp = await JH.http(`/api/users/${usr}/activity?lastid=${lastid}`)
 
   // Check response
   if (!await PW.checkResponse(resp)) {
@@ -92,17 +93,17 @@ async function fillActivity (usr) {
       row += `<td>${evt.entity_description}</td>`
       row += `<td>${evt.description || ''}</td>`
     }
-    jhQuery('#useractivitytable tbody').innerHTML += row
+    JH.query('#useractivitytable tbody').innerHTML += row
   } else {
-    jhQuery('#useractivitytable tbody').innerHTML += '<tr><td colspan="99">No other activity found</td></tr>'
-    jhQuery('#useractivityload').setAttribute('disabled', 'disabled')
+    JH.query('#useractivitytable tbody').innerHTML += '<tr><td colspan="99">No other activity found</td></tr>'
+    JH.query('#useractivityload').setAttribute('disabled', 'disabled')
   }
 }
 
 async function fillGroups () {
-  jhQuery('#groupstable tbody').innerHTML = ''
+  JH.query('#groupstable tbody').innerHTML = ''
 
-  const resp = await jhFetch(`/api/usergroups/${currentUser}`)
+  const resp = await JH.http(`/api/usergroups/${currentUser}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -119,36 +120,36 @@ async function fillGroups () {
       }
       row += `<td>${itm.description}</td></tr>`
     }
-    jhQuery('#groupstable tbody').innerHTML = row
+    JH.query('#groupstable tbody').innerHTML = row
 
     // Event handlers
-    jhEvent('[id^=removegroup]', 'click', groupRemove)
+    JH.event('[id^=removegroup]', 'click', groupRemove)
   } else {
-    jhQuery('#groupstable tbody').innerHTML = '<tr><td colspan="99">No group found</td></tr>'
+    JH.query('#groupstable tbody').innerHTML = '<tr><td colspan="99">No group found</td></tr>'
   }
 }
 
 function userCreateDialog () {
-  jhQuery('#newuserdialog').show()
-  jhValue('#newuserdialog sl-input,sl-textarea,sl-select', '')
+  JH.query('#newuserdialog').show()
+  JH.value('#newuserdialog sl-input,sl-textarea,sl-select', '')
   userCreateEnable()
 }
 
 async function userCreate () {
   const userdata = {
     _csrf: PW.getCSRFToken(),
-    login: jhValue('#newlogin'),
-    email: jhValue('#newemail'),
-    lastname: jhValue('#newlastname'),
-    firstname: jhValue('#newfirstname'),
-    locale: jhValue('#newlocale'),
-    authmethod: jhValue('#newauthmethod'),
-    active: jhQuery('#newactive').hasAttribute('checked'),
-    secret: jhValue('#newpassword')
+    login: JH.value('#newlogin'),
+    email: JH.value('#newemail'),
+    lastname: JH.value('#newlastname'),
+    firstname: JH.value('#newfirstname'),
+    locale: JH.value('#newlocale'),
+    authmethod: JH.value('#newauthmethod'),
+    active: JH.query('#newactive').hasAttribute('checked'),
+    secret: JH.value('#newpassword')
   }
 
-  jhQuery('#newuserdialog').hide()
-  const resp = await jhFetch('/api/usernew/', userdata)
+  JH.query('#newuserdialog').hide()
+  const resp = await JH.http('/api/usernew/', userdata)
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -158,17 +159,17 @@ async function userCreate () {
 }
 
 function userCreateEnable () {
-  if (jhValue('#newlogin') === '' || jhValue('#newemail') === '' || jhValue('#newlastname') === '' ||
-  jhValue('#newpassword') !== jhValue('#newpasswordconfirm') || jhValue('#newpassword') === '') {
-    jhQuery('#usercreate').setAttribute('disabled', 'disabled')
+  if (JH.value('#newlogin') === '' || JH.value('#newemail') === '' || JH.value('#newlastname') === '' ||
+  JH.value('#newpassword') !== JH.value('#newpasswordconfirm') || JH.value('#newpassword') === '') {
+    JH.query('#usercreate').setAttribute('disabled', 'disabled')
   } else {
-    jhQuery('#usercreate').removeAttribute('disabled')
+    JH.query('#usercreate').removeAttribute('disabled')
   }
 }
 
 async function userRemove (usr) {
   PW.confirmDialog('Delete user', '<strong><span style="color:red;">Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>', async () => {
-    const resp = await jhFetch(`/api/userremove/${usr}`, { _csrf: PW.getCSRFToken() })
+    const resp = await JH.http(`/api/userremove/${usr}`, { _csrf: PW.getCSRFToken() })
     if (!await PW.checkResponse(resp)) {
       return
     }
@@ -179,55 +180,55 @@ async function userRemove (usr) {
 }
 
 async function userEditFill (user) {
-  const resp = await jhFetch(`/api/users/${user}`)
+  const resp = await JH.http(`/api/users/${user}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
 
-  jhValue('#editlogin', body.data.login)
-  jhValue('#editemail', body.data.email)
-  jhValue('#editlastname', body.data.lastname)
-  jhValue('#editfirstname', body.data.firstname)
-  jhValue('#editlocale', body.data.locale)
-  jhValue('#editauthmethod', body.data.authmethod)
+  JH.value('#editlogin', body.data.login)
+  JH.value('#editemail', body.data.email)
+  JH.value('#editlastname', body.data.lastname)
+  JH.value('#editfirstname', body.data.firstname)
+  JH.value('#editlocale', body.data.locale)
+  JH.value('#editauthmethod', body.data.authmethod)
   if (!body.data.active) {
-    jhQuery('#editactive').removeAttribute('checked')
+    JH.query('#editactive').removeAttribute('checked')
   } else {
-    jhQuery('#editactive').setAttribute('checked', 'checked')
+    JH.query('#editactive').setAttribute('checked', 'checked')
   }
 
   userEditEnable()
 }
 
 function userEditEnable () {
-  if (jhValue('#editlogin') === '' || jhValue('#editemail') === '' || jhValue('#editlastname') === '') {
-    jhQuery('#useredit').setAttribute('disabled', 'disabled')
+  if (JH.value('#editlogin') === '' || JH.value('#editemail') === '' || JH.value('#editlastname') === '') {
+    JH.query('#useredit').setAttribute('disabled', 'disabled')
   } else {
-    jhQuery('#useredit').removeAttribute('disabled')
+    JH.query('#useredit').removeAttribute('disabled')
   }
 }
 
 function userEditDialog (userid) {
   userEditFill(userid)
-  jhQuery('#edituserdialog').show()
+  JH.query('#edituserdialog').show()
 }
 
 async function userEdit () {
   const userdata = {
     _csrf: PW.getCSRFToken(),
-    login: jhValue('#editlogin'),
-    email: jhValue('#editemail'),
-    lastname: jhValue('#editlastname'),
-    firstname: jhValue('#editfirstname'),
-    locale: jhValue('#editlocale'),
-    authmethod: jhValue('#editauthmethod'),
-    active: jhQuery('#editactive').hasAttribute('checked')
+    login: JH.value('#editlogin'),
+    email: JH.value('#editemail'),
+    lastname: JH.value('#editlastname'),
+    firstname: JH.value('#editfirstname'),
+    locale: JH.value('#editlocale'),
+    authmethod: JH.value('#editauthmethod'),
+    active: JH.query('#editactive').hasAttribute('checked')
   }
 
-  const resp = await jhFetch(`/api/userupdate/${currentUser}`, userdata)
-  jhQuery('#edituserdialog').hide()
+  const resp = await JH.http(`/api/userupdate/${currentUser}`, userdata)
+  JH.query('#edituserdialog').hide()
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -240,13 +241,13 @@ function userDoubleClicked (user) {
   if (window.getSelection()) {
     window.getSelection().empty()
   }
-  jhQuery(`#edituser-${user}`).click()
+  JH.query(`#edituser-${user}`).click()
 }
 
 async function groupRemove (ev) {
   const group = ev.currentTarget.getAttribute('data-id')
   PW.confirmDialog('Remove user from group', 'Are you sure you want to remove the user from the group?', async () => {
-    const resp = await jhFetch(`/api/groupremoveuser/${group}/${currentUser}`, { _csrf: PW.getCSRFToken() })
+    const resp = await JH.http(`/api/groupremoveuser/${group}/${currentUser}`, { _csrf: PW.getCSRFToken() })
     if (!await PW.checkResponse(resp)) {
       return
     }
@@ -258,7 +259,7 @@ async function groupRemove (ev) {
 
 async function groupPickerChoosen (group) {
   GPicker.hide()
-  const resp = await jhFetch(`/api/groupadduser/${group}/${currentUser}`, { _csrf: PW.getCSRFToken() })
+  const resp = await JH.http(`/api/groupadduser/${group}/${currentUser}`, { _csrf: PW.getCSRFToken() })
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -268,19 +269,19 @@ async function groupPickerChoosen (group) {
 }
 
 async function userActivity (itm) {
-  jhQuery('#useractivitytable tbody').innerHTML = ''
-  jhQuery('#useractivitydialog').show()
+  JH.query('#useractivitytable tbody').innerHTML = ''
+  JH.query('#useractivitydialog').show()
   fillActivity(itm)
 }
 
 function groupsCopy () {
   const groups = []
-  const list = jhQueryAll('#groupstable tbody tr')
+  const list = JH.queryAll('#groupstable tbody tr')
 
   if (!list.length) {
     localStorage.setItem(`${PW.getUser()}_copiedgroups`, '')
-    jhQuery('#pastegroups').style.display = 'none'
-    jhQuery('#replacegroups').style.display = 'none'
+    JH.query('#pastegroups').style.display = 'none'
+    JH.query('#replacegroups').style.display = 'none'
     return
   }
 
@@ -291,27 +292,27 @@ function groupsCopy () {
   if (groups.length) {
     localStorage.setItem(`${PW.getUser()}_copiedgroups`, groups)
     PW.showToast('success', 'Groups copied')
-    jhQuery('#pastegroups').style.display = ''
-    jhQuery('#replacegroups').style.display = ''
+    JH.query('#pastegroups').style.display = ''
+    JH.query('#replacegroups').style.display = ''
   }
 }
 
 async function groupsReplace () {
   PW.confirmDialog('Replace groups', 'Are you sure you want to replace this user\'s groups with the copied ones?', async () => {
-    const list = jhQueryAll('#groupstable tbody tr')
+    const list = JH.queryAll('#groupstable tbody tr')
 
     if (!list.length) {
-      jhQuery('#pastegroups').style.display = 'none'
-      jhQuery('#replacegroups').style.display = 'none'
+      JH.query('#pastegroups').style.display = 'none'
+      JH.query('#replacegroups').style.display = 'none'
       return
     }
 
     for (const el of list) {
-      await jhFetch(`/api/groupremoveuser/${el.getAttribute('data-id')}/${currentUser}`, { _csrf: PW.getCSRFToken() })
+      await JH.http(`/api/groupremoveuser/${el.getAttribute('data-id')}/${currentUser}`, { _csrf: PW.getCSRFToken() })
     }
 
     for (const el of localStorage.getItem(`${PW.getUser()}_copiedgroups`).split(',')) {
-      await jhFetch(`/api/groupadduser/${el}/${currentUser}`, { _csrf: PW.getCSRFToken() })
+      await JH.http(`/api/groupadduser/${el}/${currentUser}`, { _csrf: PW.getCSRFToken() })
     }
 
     fillGroups()
@@ -322,7 +323,7 @@ async function groupsReplace () {
 async function groupsPaste () {
   PW.confirmDialog('Paste groups', 'Are you sure you want to add the copied groups to this user?', async () => {
     for (const el of localStorage.getItem(`${PW.getUser()}_copiedgroups`).split(',')) {
-      await jhFetch(`/api/groupadduser/${el}/${currentUser}`, { _csrf: PW.getCSRFToken() })
+      await JH.http(`/api/groupadduser/${el}/${currentUser}`, { _csrf: PW.getCSRFToken() })
     }
 
     fillGroups()
@@ -333,34 +334,34 @@ async function groupsPaste () {
 await fillUsers()
 
 // Event handlers
-jhEvent('#newlogin,#newemail,#newlastname,#newpassword,#newpasswordconfirm', 'keyup', (ev) => {
+JH.event('#newlogin,#newemail,#newlastname,#newpassword,#newpasswordconfirm', 'keyup', (ev) => {
   userCreateEnable()
 })
-jhEvent('#usercreate', 'click', (ev) => {
+JH.event('#usercreate', 'click', (ev) => {
   userCreate()
 })
-jhEvent('#editlogin,#editemail,#editlastname', 'keyup', (ev) => {
+JH.event('#editlogin,#editemail,#editlastname', 'keyup', (ev) => {
   userEditEnable()
 })
-jhEvent('#useredit', 'click', (ev) => {
+JH.event('#useredit', 'click', (ev) => {
   userEdit()
 })
-jhEvent('#newuser', 'click', (ev) => {
+JH.event('#newuser', 'click', (ev) => {
   userCreateDialog()
 })
-jhEvent('#newuserdialog #cancel', 'click', (ev) => {
-  jhQuery('#newuserdialog').hide()
+JH.event('#newuserdialog #cancel', 'click', (ev) => {
+  JH.query('#newuserdialog').hide()
 })
-jhEvent('#usersearch', 'sl-input', (ev) => {
+JH.event('#usersearch', 'sl-input', (ev) => {
   if (userSearchTimeout) {
     clearTimeout(userSearchTimeout)
   }
   userSearchTimeout = setTimeout(() => {
-    jhQuery('#groupstable tbody').innerHTML = ''
+    JH.query('#groupstable tbody').innerHTML = ''
     fillUsers()
   }, 250)
 })
-jhEvent('#addgroup', 'click', (ev) => {
+JH.event('#addgroup', 'click', (ev) => {
   if (currentUser === '') {
     PW.errorDialog('Select a user from the list')
     return
@@ -368,18 +369,18 @@ jhEvent('#addgroup', 'click', (ev) => {
   GPicker.show(groupPickerChoosen)
 })
 
-jhEvent('#useractivityload', 'click', (ev) => {
+JH.event('#useractivityload', 'click', (ev) => {
   fillActivity(currentUser)
 })
 
-jhEvent('#copygroups', 'click', (ev) => {
+JH.event('#copygroups', 'click', (ev) => {
   groupsCopy()
 })
 
-jhEvent('#pastegroups', 'click', (ev) => {
+JH.event('#pastegroups', 'click', (ev) => {
   groupsPaste()
 })
 
-jhEvent('#replacegroups', 'click', (ev) => {
+JH.event('#replacegroups', 'click', (ev) => {
   groupsReplace()
 })

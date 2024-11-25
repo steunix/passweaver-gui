@@ -1,6 +1,6 @@
-/* global jhEvent, jhQuery */
+import * as JH from './jh.js'
 
-jhEvent('#loginForm', 'submit', () => {
-  jhQuery('#login').setAttribute('disabled', 'disabled')
-  jhQuery('#login').innerHTML = 'Loggin in...'
+JH.event('#loginForm', 'submit', () => {
+  JH.query('#login').setAttribute('disabled', 'disabled')
+  JH.query('#login').innerHTML = 'Loggin in...'
 })

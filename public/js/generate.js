@@ -1,20 +1,19 @@
-/* global jhEvent, jhValue, jhFetch */
-
+import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 
 async function passwordGenerate () {
-  const resp = await jhFetch('/api/generatepassword')
+  const resp = await JH.http('/api/generatepassword')
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
   if (body.status === 'success') {
-    jhValue('#generatedpassword', body.data.password)
+    JH.value('#generatedpassword', body.data.password)
   }
 }
 
 await passwordGenerate()
-jhEvent('#generate', 'click', async (ev) => {
+JH.event('#generate', 'click', async (ev) => {
   await passwordGenerate()
 })

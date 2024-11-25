@@ -1,17 +1,16 @@
-/* global jhQuery, jhEvent, jhValue, jhFetch */
-
+import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 
 let currentItemType
 
 async function fillItemTypes () {
-  const resp = await jhFetch('/api/itemtypes')
+  const resp = await JH.http('/api/itemtypes')
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
-  jhQuery('#itemtypestable tbody').innerHTML = ''
+  JH.query('#itemtypestable tbody').innerHTML = ''
 
   let row = ''
   if (!body.data.length) {
@@ -28,12 +27,12 @@ async function fillItemTypes () {
       `<td><sl-icon name='${itm.icon}'></sl-icon></td>` +
       '</tr>'
   }
-  jhQuery('#itemtypestable tbody').innerHTML = row
+  JH.query('#itemtypestable tbody').innerHTML = row
 
-  jhEvent('[id^=removeitemtype-]', 'click', async (ev) => {
+  JH.event('[id^=removeitemtype-]', 'click', async (ev) => {
     itemTypeRemove(ev.currentTarget.getAttribute('data-id'))
   })
-  jhEvent('[id^=edititemtype-]', 'click', async (ev) => {
+  JH.event('[id^=edititemtype-]', 'click', async (ev) => {
     itemTypeEditDialog(ev.currentTarget.getAttribute('data-id'))
   })
 }
@@ -41,29 +40,29 @@ async function fillItemTypes () {
 await fillItemTypes()
 
 function itemTypeCreateDialog () {
-  jhValue('#itemtypenewdialog sl-input', '')
-  jhQuery('#itemtypenewdialog').show()
+  JH.value('#itemtypenewdialog sl-input', '')
+  JH.query('#itemtypenewdialog').show()
   itemTypeCreateEnable()
 }
 
 function itemTypeCreateEnable () {
-  if (jhValue('#itemtypenewdescription') === '') {
-    jhQuery('#itemtypenewsave').setAttribute('disabled', 'disabled')
+  if (JH.value('#itemtypenewdescription') === '') {
+    JH.query('#itemtypenewsave').setAttribute('disabled', 'disabled')
   } else {
-    jhQuery('#itemtypenewsave').removeAttribute('disabled')
+    JH.query('#itemtypenewsave').removeAttribute('disabled')
   }
 }
 
 async function itemTypeCreate () {
   const data = {
     _csrf: PW.getCSRFToken(),
-    description: jhValue('#itemtypenewdescription'),
-    icon: jhValue('#itemtypenewicon')
+    description: JH.value('#itemtypenewdescription'),
+    icon: JH.value('#itemtypenewicon')
   }
 
-  jhQuery('#itemtypenewdialog').hide()
+  JH.query('#itemtypenewdialog').hide()
 
-  const resp = await jhFetch('/api/itemtypes', data)
+  const resp = await JH.http('/api/itemtypes', data)
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -77,7 +76,7 @@ async function itemTypeRemove (itemtype) {
       _csrf: PW.getCSRFToken()
     }
 
-    const resp = await jhFetch(`/api/itemtypes/${itemtype}`, data, 'DELETE')
+    const resp = await JH.http(`/api/itemtypes/${itemtype}`, data, 'DELETE')
     if (!await PW.checkResponse(resp)) {
       return
     }
@@ -89,7 +88,7 @@ async function itemTypeRemove (itemtype) {
 
 async function itemTypeEditDialog (itemtype) {
   currentItemType = itemtype
-  const resp = await jhFetch(`/api/itemtypes/${itemtype}`)
+  const resp = await JH.http(`/api/itemtypes/${itemtype}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -98,29 +97,29 @@ async function itemTypeEditDialog (itemtype) {
     return
   }
 
-  jhValue('#itemtypeeditdescription', body.data.description)
-  jhValue('#itemtypeediticon', body.data.icon)
-  jhQuery('#itemtypeeditdialog').show()
+  JH.value('#itemtypeeditdescription', body.data.description)
+  JH.value('#itemtypeediticon', body.data.icon)
+  JH.query('#itemtypeeditdialog').show()
   itemTypeEditEnable()
 }
 
 function itemTypeEditEnable () {
-  if (jhValue('#itemtypeeditdescription') === '') {
-    jhQuery('#itemtypeeditsave').setAttribute('disabled', 'disabled')
+  if (JH.value('#itemtypeeditdescription') === '') {
+    JH.query('#itemtypeeditsave').setAttribute('disabled', 'disabled')
   } else {
-    jhQuery('#itemtypeeditsave').removeAttribute('disabled')
+    JH.query('#itemtypeeditsave').removeAttribute('disabled')
   }
 }
 
 async function itemTypeEdit () {
   const data = {
     _csrf: PW.getCSRFToken(),
-    description: jhValue('#itemtypeeditdescription'),
-    icon: jhValue('#itemtypeediticon')
+    description: JH.value('#itemtypeeditdescription'),
+    icon: JH.value('#itemtypeediticon')
   }
 
-  jhQuery('#itemtypeeditdialog').hide()
-  const resp = await jhFetch(`/api/itemtypes/${currentItemType}`, data, 'PATCH')
+  JH.query('#itemtypeeditdialog').hide()
+  const resp = await JH.http(`/api/itemtypes/${currentItemType}`, data, 'PATCH')
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -135,7 +134,7 @@ async function clearCache () {
   }
 
   PW.confirmDialog('Clear cache', 'Are you sure to clear the cache?', async () => {
-    const resp = await jhFetch('/api/clearcache', data)
+    const resp = await JH.http('/api/clearcache', data)
     if (!await PW.checkResponse(resp)) {
       return
     }
@@ -144,29 +143,29 @@ async function clearCache () {
   })
 }
 
-jhEvent('#additemtype', 'click', () => {
+JH.event('#additemtype', 'click', () => {
   itemTypeCreateDialog()
 })
-jhEvent('#itemtypenewcancel', 'click', () => {
-  jhQuery('#itemtypenewdialog').hide()
+JH.event('#itemtypenewcancel', 'click', () => {
+  JH.query('#itemtypenewdialog').hide()
 })
-jhEvent('#itemtypenewdescription', 'keyup', () => {
+JH.event('#itemtypenewdescription', 'keyup', () => {
   itemTypeCreateEnable()
 })
-jhEvent('#itemtypenewsave', 'click', async () => {
+JH.event('#itemtypenewsave', 'click', async () => {
   await itemTypeCreate()
 })
 
-jhEvent('#itemtypeeditcancel', 'click', () => {
-  jhQuery('#itemtypeeditdialog').hide()
+JH.event('#itemtypeeditcancel', 'click', () => {
+  JH.query('#itemtypeeditdialog').hide()
 })
-jhEvent('#itemtypeeditsave', 'click', async () => {
+JH.event('#itemtypeeditsave', 'click', async () => {
   await itemTypeEdit()
 })
-jhEvent('#itemtypeeditdescription', 'keyup', () => {
+JH.event('#itemtypeeditdescription', 'keyup', () => {
   itemTypeEditEnable()
 })
 
-jhEvent('#clearcache', 'click', async () => {
+JH.event('#clearcache', 'click', async () => {
   await clearCache()
 })
