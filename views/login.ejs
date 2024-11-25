@@ -4,7 +4,7 @@
   <div class="login-content">
     <div class="pill bordered" style="padding:2rem;">
       <center>
-        <img src="/public/images/passweaver-icon-dark.png" width="60"></img>
+        <img src="/public/v<%= version %>/images/passweaver-icon-dark.png" width="60"></img>
         <p style="font-size:200%;">PassWeaver - <%- company_name %></p>
       </center>
       <form id="loginForm" action="access" method="post">
@@ -28,6 +28,6 @@
   </div>
 </div>
 
-<script defer type="module" src="/public/js/login.js?v<%= version %>"></script>
+<script defer type="module" src="/public/v<%= version %>/js/login.js"></script>
 
 <%- include('partials/footer.ejs') %>
