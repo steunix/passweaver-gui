@@ -4,6 +4,9 @@
   "type": "module",
   "description": "Collaborative password manager GUI",
   "main": "passweaver-gui.mjs",
+  "engines": {
+    "node": ">=21.0.0"
+  },
   "scripts": {
     "start": "node passweaver-gui.mjs"
   },
