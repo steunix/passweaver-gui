@@ -4,7 +4,6 @@
  * @author Stefano Rivoir <rs4000@gmail.com>
  */
 
-import Got from 'got'
 import * as Config from './config.mjs'
 
 const cfg = Config.get()
@@ -19,94 +18,80 @@ const cfg = Config.get()
  */
 async function passWeaverAPI (session, method, path, data) {
   try {
+    // Response skel
+    const ret = {
+      httpStatusCode: undefined,
+      fatal: false,
+      status: 'success',
+      message: '',
+      data: {}
+    }
+
+    // Options for fetch
     const options = {
-      retry: {
-        limit: 0
-      },
-      timeout: {
-        response: 50000
-      },
+      signal: AbortSignal.timeout(10000),
       headers: {
-        'user-agent': 'got'
+        'User-Agent': 'passweaver-gui',
+        'Content-Type': 'application/json'
       },
-      json: data,
       method
     }
+
+    if (data) {
+      options.body = JSON.stringify(data)
+    }
+
     if (session && session.jwt) {
-      options.headers.Authorization = `Bearer ${session.jwt}`
+      options.headers.authorization = `Bearer ${session.jwt}`
     }
-    const resp = await Got(cfg.passweaverapi_url + path, options)
+    const resp = await fetch(cfg.passweaverapi_url + path, options)
+    const body = await resp.json()
 
-    const ret = JSON.parse(resp.body)
-    ret.fatal = false
-    ret.httpStatusCode = resp.statusCode
+    ret.httpStatusCode = resp.status
+    ret.data = body?.data
 
-    return ret
-  } catch (err) {
-    // PassWeaver API not running
-    if (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT') {
-      return {
-        httpStatusCode: undefined,
-        fatal: true,
-        status: 'failed',
-        message: 'Error connecting to PassWeaver API, contact your administrator.',
-        data: {}
-      }
+    // OK response
+    if (resp.ok) {
+      return ret
     }
-    // Error in API
-    if (err.response && err.response.statusCode === 500) {
-      return {
-        httpStatusCode: err.response.statusCode,
-        fatal: false,
-        status: 'failed',
-        message: 'Bad request to PassWeaver API.',
-        data: {}
-      }
+
+    // Failures
+    ret.status = 'failed'
+    ret.data = {}
+
+    if (resp.status === 500) {
+      ret.fatal = true
+      ret.message = 'Bad request to PassWeaver API.'
     }
 
     // Error 401 may be expired token or bad personal password
-    if (err.response && err.response.statusCode === 401) {
-      const msg = JSON.parse(err.response.body).message
-
-      if (msg === 'Unauthorized') {
-        return {
-          httpStatusCode: err.response.statusCode,
-          fatal: false,
-          status: 'failed',
-          message: 'Invalid password',
-          data: {}
-        }
+    if (resp.status === 401) {
+      // Invalid password
+      if (body.message === 'Unauthorized') {
+        ret.fatal = false
+        ret.message = 'Invalid password'
       }
-
-      // Invalid token (we already have a session, but jwt token is not valid)
-      if (session && session.jwt && msg === 'Invalid token') {
-        return {
-          httpStatusCode: err.response.statusCode,
-          fatal: true,
-          status: 'failed',
-          message: 'Invalid token, you need to login',
-          data: {}
-        }
+      if (body.message === 'Invalid token') {
+        ret.fatal = true
+        ret.message = 'Invalid token, you need to login'
       }
-
-      // Token expired (we already have a session, but jwt token is expired)
-      if (session && session.jwt && msg === 'Token expired') {
-        return {
-          httpStatusCode: err.response.statusCode,
-          fatal: true,
-          status: 'failed',
-          message: 'Session token expired',
-          data: {}
-        }
+      if (body.message === 'Token expired') {
+        ret.fatal = true
+        ret.message = 'Session token expired, you need to login'
       }
     }
 
     // Other response (404, 422, et al) or generic error
+    ret.message = body?.message
+
+    return ret
+  } catch (err) {
+    // PassWeaver API not running
     return {
-      httpStatusCode: err?.response?.statusCode,
-      fatal: false,
+      httpStatusCode: undefined,
+      fatal: true,
       status: 'failed',
-      message: err?.response?.body ? JSON.parse(err.response.body).message : 'Unknown error',
+      message: 'Error connecting to PassWeaver API, contact your administrator.',
       data: {}
     }
   }
