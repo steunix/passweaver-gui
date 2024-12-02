@@ -124,7 +124,7 @@ async function fillFolders () {
 
   const body = await resp.json()
   JH.query('sl-tree').innerHTML = ''
-  PW.treeFill('folderstree', body.data, folderClicked)
+  PW.treeFill('folderstree', body.data, folderClicked, true)
   await dndSetup()
 }
 
