@@ -8,6 +8,13 @@ import * as Config from './config.mjs'
 
 const cfg = Config.get()
 
+const METHOD = {
+  get: 'GET',
+  post: 'POST',
+  patch: 'PATCH',
+  delete: 'DELETE'
+}
+
 /**
  * Call PassWeaver API
  * @param {Object} session Current session
@@ -104,7 +111,7 @@ async function passWeaverAPI (session, method, path, data) {
  * @returns
  */
 export async function login (username, password) {
-  const resp = await passWeaverAPI(null, 'post', '/login', {
+  const resp = await passWeaverAPI(null, METHOD.post, '/login', {
     username,
     password
   })
@@ -118,7 +125,7 @@ export async function login (username, password) {
  * @returns
  */
 export async function getUser (session, id) {
-  const resp = await passWeaverAPI(session, 'get', `/users/${id}`)
+  const resp = await passWeaverAPI(session, METHOD.get, `/users/${id}`)
 
   return resp
 }
@@ -129,7 +136,7 @@ export async function getUser (session, id) {
  * @returns
  */
 export async function foldersTree (session) {
-  const resp = await passWeaverAPI(session, 'get', '/folders/tree')
+  const resp = await passWeaverAPI(session, METHOD.get, '/folders/tree')
   return resp
 }
 
@@ -141,7 +148,7 @@ export async function foldersTree (session) {
  * @returns
  */
 export async function itemsList (session, folder, search, type) {
-  const resp = await passWeaverAPI(session, 'get',
+  const resp = await passWeaverAPI(session, METHOD.get,
     `/folders/${folder}/items?search=${encodeURIComponent(search)}&type=${encodeURIComponent(type)}`)
   return resp
 }
@@ -153,7 +160,7 @@ export async function itemsList (session, folder, search, type) {
  * @returns
  */
 export async function itemsSearch (session, search, type) {
-  const resp = await passWeaverAPI(session, 'get', `/items?search=${encodeURIComponent(search)}&type=${encodeURIComponent(type)}`)
+  const resp = await passWeaverAPI(session, METHOD.get, `/items?search=${encodeURIComponent(search)}&type=${encodeURIComponent(type)}`)
   return resp
 }
 
@@ -164,7 +171,7 @@ export async function itemsSearch (session, search, type) {
  * @returns
  */
 export async function getFolder (session, folder) {
-  const resp = await passWeaverAPI(session, 'get', `/folders/${folder}`)
+  const resp = await passWeaverAPI(session, METHOD.get, `/folders/${folder}`)
   return resp
 }
 
@@ -189,7 +196,7 @@ export async function itemCreate (session, folder, body) {
     })
   }
 
-  const resp = await passWeaverAPI(session, 'post', `/folders/${folder}/items`, item)
+  const resp = await passWeaverAPI(session, METHOD.post, `/folders/${folder}/items`, item)
   return resp
 }
 
@@ -200,7 +207,7 @@ export async function itemCreate (session, folder, body) {
  * @returns
  */
 export async function itemClone (session, item) {
-  const resp = await passWeaverAPI(session, 'post', `/items/${item}/clone`)
+  const resp = await passWeaverAPI(session, METHOD.post, `/items/${item}/clone`)
   return resp
 }
 
@@ -212,7 +219,7 @@ export async function itemClone (session, item) {
  * @returns
  */
 export async function itemRemove (session, item) {
-  const resp = await passWeaverAPI(session, 'delete', `/items/${item}`)
+  const resp = await passWeaverAPI(session, METHOD.delete, `/items/${item}`)
   return resp
 }
 
@@ -224,7 +231,7 @@ export async function itemRemove (session, item) {
  * @returns
  */
 export async function itemGet (session, item) {
-  const resp = await passWeaverAPI(session, 'get', `/items/${item}`)
+  const resp = await passWeaverAPI(session, METHOD.get, `/items/${item}`)
   return resp
 }
 
@@ -251,7 +258,7 @@ export async function itemUpdate (session, itemid, body) {
     metadata: body.data.user
   }
 
-  const resp = await passWeaverAPI(session, 'patch', `/items/${itemid}`, item)
+  const resp = await passWeaverAPI(session, METHOD.patch, `/items/${itemid}`, item)
   return resp
 }
 
@@ -267,7 +274,7 @@ export async function itemMove (session, itemid, body) {
     folder: body.folder
   }
 
-  const resp = await passWeaverAPI(session, 'patch', `/items/${itemid}`, item)
+  const resp = await passWeaverAPI(session, METHOD.patch, `/items/${itemid}`, item)
   return resp
 }
 
@@ -280,7 +287,7 @@ export async function itemMove (session, itemid, body) {
  */
 export async function itemActivity (session, item, lastid) {
   const li = lastid || ''
-  const resp = await passWeaverAPI(session, 'get', `/items/${item}/activity?lastid=${li}`)
+  const resp = await passWeaverAPI(session, METHOD.get, `/items/${item}/activity?lastid=${li}`)
   return resp
 }
 
@@ -296,7 +303,7 @@ export async function folderCreate (session, folder, body) {
     description: body.description
   }
 
-  const resp = await passWeaverAPI(session, 'post', `/folders/${folder}/folders`, data)
+  const resp = await passWeaverAPI(session, METHOD.post, `/folders/${folder}/folders`, data)
   return resp
 }
 
@@ -308,7 +315,7 @@ export async function folderCreate (session, folder, body) {
  * @returns
  */
 export async function folderRemove (session, folder) {
-  const resp = await passWeaverAPI(session, 'delete', `/folders/${folder}`)
+  const resp = await passWeaverAPI(session, METHOD.delete, `/folders/${folder}`)
   return resp
 }
 
@@ -328,7 +335,7 @@ export async function folderUpdate (session, folder, body) {
     data.parent = body.parent
   }
 
-  const resp = await passWeaverAPI(session, 'patch', `/folders/${folder}`, data)
+  const resp = await passWeaverAPI(session, METHOD.patch, `/folders/${folder}`, data)
   return resp
 }
 
@@ -338,7 +345,7 @@ export async function folderUpdate (session, folder, body) {
  * @returns
  */
 export async function groupsTree (session) {
-  const resp = await passWeaverAPI(session, 'get', '/groups/tree')
+  const resp = await passWeaverAPI(session, METHOD.get, '/groups/tree')
   return resp
 }
 
@@ -361,7 +368,7 @@ export async function usersList (session, group, search) {
     url += `/?search=${search}`
   }
 
-  const resp = await passWeaverAPI(session, 'get', url)
+  const resp = await passWeaverAPI(session, METHOD.get, url)
   return resp
 }
 
@@ -377,7 +384,7 @@ export async function groupCreate (session, group, body) {
     description: body.description
   }
 
-  const resp = await passWeaverAPI(session, 'post', `/groups/${group}/groups`, data)
+  const resp = await passWeaverAPI(session, METHOD.post, `/groups/${group}/groups`, data)
   return resp
 }
 
@@ -388,7 +395,7 @@ export async function groupCreate (session, group, body) {
  * @returns
  */
 export async function getGroup (session, group) {
-  const resp = await passWeaverAPI(session, 'get', `/groups/${group}`)
+  const resp = await passWeaverAPI(session, METHOD.get, `/groups/${group}`)
   return resp
 }
 
@@ -408,7 +415,7 @@ export async function groupUpdate (session, group, body) {
     data.parent = body.parent
   }
 
-  const resp = await passWeaverAPI(session, 'patch', `/groups/${group}`, data)
+  const resp = await passWeaverAPI(session, METHOD.patch, `/groups/${group}`, data)
   return resp
 }
 
@@ -420,7 +427,7 @@ export async function groupUpdate (session, group, body) {
  * @returns
  */
 export async function groupRemove (session, group) {
-  const resp = await passWeaverAPI(session, 'delete', `/groups/${group}`)
+  const resp = await passWeaverAPI(session, METHOD.delete, `/groups/${group}`)
   return resp
 }
 
@@ -431,7 +438,7 @@ export async function groupRemove (session, group) {
  * @param {*} user
  */
 export async function groupAddUser (session, group, user) {
-  const resp = await passWeaverAPI(session, 'post', `/groups/${group}/users/${user}`)
+  const resp = await passWeaverAPI(session, METHOD.post, `/groups/${group}/users/${user}`)
   return resp
 }
 
@@ -442,7 +449,7 @@ export async function groupAddUser (session, group, user) {
  * @param {*} user
  */
 export async function groupRemoveUser (session, group, user) {
-  const resp = await passWeaverAPI(session, 'delete', `/groups/${group}/users/${user}`)
+  const resp = await passWeaverAPI(session, METHOD.delete, `/groups/${group}/users/${user}`)
   return resp
 }
 
@@ -453,7 +460,7 @@ export async function groupRemoveUser (session, group, user) {
  * @returns
  */
 export async function userCreate (session, userData) {
-  const resp = await passWeaverAPI(session, 'post', '/users/', userData)
+  const resp = await passWeaverAPI(session, METHOD.post, '/users/', userData)
   return resp
 }
 
@@ -464,7 +471,7 @@ export async function userCreate (session, userData) {
  * @returns
  */
 export async function userGet (session, user) {
-  const resp = await passWeaverAPI(session, 'get', `/users/${user}`)
+  const resp = await passWeaverAPI(session, METHOD.get, `/users/${user}`)
   return resp
 }
 
@@ -487,7 +494,7 @@ export async function userUpdate (session, user, body) {
     active: body.active
   }
 
-  const resp = await passWeaverAPI(session, 'patch', `/users/${user}`, data)
+  const resp = await passWeaverAPI(session, METHOD.patch, `/users/${user}`, data)
   return resp
 }
 
@@ -500,7 +507,7 @@ export async function userUpdate (session, user, body) {
  */
 export async function userActivity (session, user, lastid) {
   const li = lastid || ''
-  const resp = await passWeaverAPI(session, 'get', `/users/${user}/activity?lastid=${li}`)
+  const resp = await passWeaverAPI(session, METHOD.get, `/users/${user}/activity?lastid=${li}`)
   return resp
 }
 
@@ -510,7 +517,7 @@ export async function userActivity (session, user, lastid) {
  * @param {string} folder
  */
 export async function folderGroups (session, folder) {
-  const resp = await passWeaverAPI(session, 'get', `/folders/${folder}/groups`)
+  const resp = await passWeaverAPI(session, METHOD.get, `/folders/${folder}/groups`)
   return resp
 }
 
@@ -520,7 +527,7 @@ export async function folderGroups (session, folder) {
  * @param {string} user User ID
  */
 export async function userGroups (session, user) {
-  const resp = await passWeaverAPI(session, 'get', `/users/${user}/groups`)
+  const resp = await passWeaverAPI(session, METHOD.get, `/users/${user}/groups`)
   return resp
 }
 
@@ -537,7 +544,7 @@ export async function folderAddGroup (session, folder, group) {
     write: false
   }
 
-  const resp = await passWeaverAPI(session, 'post', `/folders/${folder}/groups/${group}`, data)
+  const resp = await passWeaverAPI(session, METHOD.post, `/folders/${folder}/groups/${group}`, data)
   return resp
 }
 
@@ -549,7 +556,7 @@ export async function folderAddGroup (session, folder, group) {
  * @returns
  */
 export async function folderRemoveGroup (session, folder, group) {
-  const resp = await passWeaverAPI(session, 'delete', `/folders/${folder}/groups/${group}`)
+  const resp = await passWeaverAPI(session, METHOD.delete, `/folders/${folder}/groups/${group}`)
   return resp
 }
 
@@ -561,11 +568,11 @@ export async function folderRemoveGroup (session, folder, group) {
  * @returns
  */
 export async function folderToggleGroup (session, folder, group) {
-  const perm = await passWeaverAPI(session, 'get', `/folders/${folder}/groups`)
+  const perm = await passWeaverAPI(session, METHOD.get, `/folders/${folder}/groups`)
 
   for (const g of perm.data) {
     if (g.id === group) {
-      const resp = await passWeaverAPI(session, 'patch', `/folders/${folder}/groups/${group}`, { read: true, write: !g.write })
+      const resp = await passWeaverAPI(session, METHOD.patch, `/folders/${folder}/groups/${group}`, { read: true, write: !g.write })
       return resp
     }
   }
@@ -584,7 +591,7 @@ export async function groupsList (session, search) {
   if (search) {
     url += `/?search=${search}`
   }
-  const resp = await passWeaverAPI(session, 'get', url)
+  const resp = await passWeaverAPI(session, METHOD.get, url)
   return resp
 }
 
@@ -595,7 +602,7 @@ export async function groupsList (session, search) {
  * @returns
  */
 export async function userRemove (session, user) {
-  const resp = await passWeaverAPI(session, 'delete', `/users/${user}`)
+  const resp = await passWeaverAPI(session, METHOD.delete, `/users/${user}`)
   return resp
 }
 
@@ -605,7 +612,7 @@ export async function userRemove (session, user) {
  * @returns
  */
 export async function generatePassword (session) {
-  const resp = await passWeaverAPI(session, 'get', '/util/generatepassword')
+  const resp = await passWeaverAPI(session, METHOD.get, '/util/generatepassword')
   return resp
 }
 
@@ -616,7 +623,7 @@ export async function generatePassword (session) {
  * @returns
  */
 export async function personalPasswordCreate (req, session, password) {
-  const resp = await passWeaverAPI(session, 'post', '/personal/password', {
+  const resp = await passWeaverAPI(session, METHOD.post, '/personal/password', {
     password
   })
 
@@ -636,7 +643,7 @@ export async function personalPasswordCreate (req, session, password) {
  * @returns
  */
 export async function personalUnlock (req, session, password) {
-  const resp = await passWeaverAPI(session, 'post', '/personal/unlock', {
+  const resp = await passWeaverAPI(session, METHOD.post, '/personal/unlock', {
     password
   })
 
@@ -655,7 +662,7 @@ export async function personalUnlock (req, session, password) {
  * @returns
  */
 export async function personalPasswordChange (req, session, password) {
-  const resp = await passWeaverAPI(session, 'patch', '/personal/password', {
+  const resp = await passWeaverAPI(session, METHOD.patch, '/personal/password', {
     password
   })
 
@@ -683,7 +690,7 @@ export async function addEvent (session, event, entity, entityid) {
     entityid
   }
 
-  const resp = await passWeaverAPI(session, 'post', '/events', data)
+  const resp = await passWeaverAPI(session, METHOD.post, '/events', data)
   return resp
 }
 
@@ -693,7 +700,7 @@ export async function addEvent (session, event, entity, entityid) {
  * @returns
  */
 export async function itemTypesList (session) {
-  const resp = await passWeaverAPI(session, 'get', '/itemtypes')
+  const resp = await passWeaverAPI(session, METHOD.get, '/itemtypes')
   return resp
 }
 
@@ -710,7 +717,7 @@ export async function itemTypeCreate (session, description, icon) {
     icon
   }
 
-  const resp = await passWeaverAPI(session, 'post', '/itemtypes', data)
+  const resp = await passWeaverAPI(session, METHOD.post, '/itemtypes', data)
   return resp
 }
 
@@ -721,7 +728,7 @@ export async function itemTypeCreate (session, description, icon) {
  * @returns
  */
 export async function itemTypeRemove (session, id) {
-  const resp = await passWeaverAPI(session, 'delete', `/itemtypes/${id}`)
+  const resp = await passWeaverAPI(session, METHOD.delete, `/itemtypes/${id}`)
   return resp
 }
 
@@ -733,7 +740,7 @@ export async function itemTypeRemove (session, id) {
  * @returns
  */
 export async function itemTypeGet (session, id) {
-  const resp = await passWeaverAPI(session, 'get', `/itemtypes/${id}`)
+  const resp = await passWeaverAPI(session, METHOD.get, `/itemtypes/${id}`)
   return resp
 }
 
@@ -750,7 +757,7 @@ export async function itemTypeEdit (session, id, description, icon) {
     icon
   }
 
-  const resp = await passWeaverAPI(session, 'patch', `/itemtypes/${id}`, data)
+  const resp = await passWeaverAPI(session, METHOD.patch, `/itemtypes/${id}`, data)
   return resp
 }
 
@@ -760,7 +767,7 @@ export async function itemTypeEdit (session, id, description, icon) {
  * @returns
  */
 export async function info (session) {
-  const resp = await passWeaverAPI(session, 'get', '/util/info')
+  const resp = await passWeaverAPI(session, METHOD.get, '/util/info')
   return resp
 }
 
@@ -769,7 +776,7 @@ export async function info (session) {
  * @param {*} session
  */
 export async function preferencesGet (session) {
-  const resp = await passWeaverAPI(session, 'get', `/users/${session.user}/settings`)
+  const resp = await passWeaverAPI(session, METHOD.get, `/users/${session.user}/settings`)
   return resp
 }
 
@@ -783,7 +790,7 @@ export async function preferencesSet (req, session) {
     { setting: 'theme', value: req.body.theme }
   ]
 
-  const resp = await passWeaverAPI(session, 'post', `/users/${session.user}/settings`, prefs)
+  const resp = await passWeaverAPI(session, METHOD.post, `/users/${session.user}/settings`, prefs)
   return resp
 }
 
@@ -796,7 +803,7 @@ export async function preferencesSet (req, session) {
  * @returns
  */
 export async function oneTimeSecretCreate (session, data) {
-  const resp = await passWeaverAPI(session, 'post', '/onetimetokens', { data, hours: Config.get().onetimetokens.default_hours })
+  const resp = await passWeaverAPI(session, METHOD.post, '/onetimetokens', { data, hours: Config.get().onetimetokens.default_hours })
   return resp
 }
 
@@ -806,7 +813,7 @@ export async function oneTimeSecretCreate (session, data) {
  * @param {string} token Item type id
  */
 export async function oneTimeSecretGet (session, token) {
-  const resp = await passWeaverAPI(session, 'get', `/onetimetokens/${token}`)
+  const resp = await passWeaverAPI(session, METHOD.get, `/onetimetokens/${token}`)
   return resp
 }
 
@@ -820,7 +827,7 @@ export async function passwordChange (session, newpassword) {
     secret: newpassword
   }
 
-  const resp = await passWeaverAPI(session, 'patch', `/users/${session.user}`, userData)
+  const resp = await passWeaverAPI(session, METHOD.patch, `/users/${session.user}`, userData)
   return resp
 }
 
@@ -829,6 +836,6 @@ export async function passwordChange (session, newpassword) {
  * @param {Object} session Session
  */
 export async function clearCache (session) {
-  const resp = await passWeaverAPI(session, 'post', '/util/clearcache', {})
+  const resp = await passWeaverAPI(session, METHOD.post, '/util/clearcache', {})
   return resp
 }
