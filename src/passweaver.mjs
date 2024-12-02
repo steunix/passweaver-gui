@@ -609,10 +609,11 @@ export async function userRemove (session, user) {
 /**
  * Generate a password
  * @param {Object} session Session
+ * @param {string} symbols true or false, include symbols or not in the password
  * @returns
  */
-export async function generatePassword (session) {
-  const resp = await passWeaverAPI(session, METHOD.get, '/util/generatepassword')
+export async function generatePassword (session, symbols) {
+  const resp = await passWeaverAPI(session, METHOD.get, `/util/generatepassword?symbols=${symbols || true}`)
   return resp
 }
 
