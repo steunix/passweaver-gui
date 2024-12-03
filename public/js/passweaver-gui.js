@@ -259,3 +259,35 @@ if (JH.query('#globalsearch')) {
     }
   })
 }
+
+export function simpleTreeFill (id, data) {
+  JH.query(`#${id}`).innerHTML = ''
+  simpleTreeFillItems(id, data)
+}
+
+export function simpleTreeFillItems (id, data) {
+  const parent = JH.query(`#${id}`)
+
+  for (const item of data) {
+    const newid = `item-${item.id}`
+
+    let badge = '<sl-badge pill variant="danger">No access</sl-badge>'
+    if (item.permissions.read) {
+      badge = '<sl-badge pill variant="warning">R</sl-badge>'
+    }
+    if (item.permissions.write) {
+      badge = '<sl-badge pill variant="success">RW</sl-badge>'
+    }
+
+    const html = `<sl-tree-item id='${newid}' data-id='${item.id}' expanded data-description='${item.description}'>${item.description}${badge}</sl-tree-item>`
+    const cont = new DOMParser().parseFromString(html, 'text/html')
+    const newitem = cont.querySelector('body').firstChild
+
+    parent.append(newitem)
+
+    // Recurse with children
+    if (item?.children.length) {
+      simpleTreeFillItems(newid, item.children)
+    }
+  }
+}
