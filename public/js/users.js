@@ -28,6 +28,7 @@ async function fillUsers () {
         `<sl-icon-button id='edituser-${itm.id}' title='Edit user' name='pencil' data-id='${itm.id}'></sl-icon-button>` +
         `<sl-icon-button id='removeuser-${itm.id}' title='Delete user' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button>` +
         `<sl-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></sl-icon-button>` +
+        `<sl-icon-button id='folders-${itm.id}' title='Visible folders' name='folder2-open' data-id='${itm.id}'></sl-icon-button>` +
         '</td>' +
         `<td class='border-start'>${itm.login}</td>` +
         `<td>${itm.lastname}</td>` +
@@ -52,6 +53,9 @@ async function fillUsers () {
     })
     JH.event('#userstable tbody tr [id^=activity]', 'click', (ev) => {
       userActivity(ev.currentTarget.getAttribute('data-id'))
+    })
+    JH.event('#userstable tbody tr [id^=folders]', 'click', (ev) => {
+      showUserFolders(ev.currentTarget.getAttribute('data-id'))
     })
     JH.event('#userstable tbody tr', 'click', (ev) => {
       currentUser = ev.currentTarget.getAttribute('data-id')
@@ -329,6 +333,17 @@ async function groupsPaste () {
     fillGroups()
     PW.showToast('success', 'Groups pasted')
   })
+}
+
+async function showUserFolders (user) {
+  JH.query('#folderstreedialog').show()
+  const resp = await JH.http(`/api/users/${user}/folders`)
+  if (!await PW.checkResponse(resp)) {
+    return
+  }
+
+  const body = await resp.json()
+  PW.simpleTreeFill('generictree', body.data)
 }
 
 await fillUsers()

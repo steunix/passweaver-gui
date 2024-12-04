@@ -133,10 +133,11 @@ export async function getUser (session, id) {
 /**
  * Get folders tree for current user
  * @param {Object} session Current session
+ * @param {string} user User id
  * @returns
  */
-export async function foldersTree (session) {
-  const resp = await passWeaverAPI(session, METHOD.get, '/folders/tree')
+export async function foldersTree (session, user) {
+  const resp = await passWeaverAPI(session, METHOD.get, `/users/${user}/folders`)
   return resp
 }
 
