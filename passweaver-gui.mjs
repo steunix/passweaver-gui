@@ -566,7 +566,7 @@ app.get('/api/users/:user/activity', async (req, res) => {
 
 // Generate random password
 app.get('/api/generatepassword', async (req, res) => {
-  const resp = await PassWeaver.generatePassword(req.session)
+  const resp = await PassWeaver.generatePassword(req.session, req.query?.symbols)
   res.json(resp)
 })
 
