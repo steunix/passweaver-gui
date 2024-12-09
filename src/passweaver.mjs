@@ -136,7 +136,7 @@ export async function getUser (session, id) {
  * @param {string} user User id
  * @returns
  */
-export async function foldersTree (session, user) {
+export async function userFoldersTree (session, user) {
   const resp = await passWeaverAPI(session, METHOD.get, `/users/${user}/folders`)
   return resp
 }
@@ -593,6 +593,17 @@ export async function groupsList (session, search) {
     url += `/?search=${search}`
   }
   const resp = await passWeaverAPI(session, METHOD.get, url)
+  return resp
+}
+
+/**
+ * Get folders tree for a group
+ * @param {Object} session Current session
+ * @param {string} group Group ID
+ * @returns
+ */
+export async function groupFoldersTree (session, group) {
+  const resp = await passWeaverAPI(session, METHOD.get, `/groups/${group}/folders`)
   return resp
 }
 

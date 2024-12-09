@@ -30,6 +30,9 @@
         <sl-button pill id="groupremove" type="button" variant="danger" title="Remove group">
           <sl-icon slot="prefix" name="trash3"></sl-icon>
         </sl-button>
+        <sl-button pill id="groupfolders" type="button" title="Show folders">
+          <sl-icon slot="prefix" name="folder2-open"></sl-icon>
+        </sl-button>
       </sl-button-group>
     </div>
     <%- include('partials/groupstree.ejs') %>
@@ -62,6 +65,7 @@
 <%- include("partials/groupnew.ejs") %>
 <%- include("partials/groupedit.ejs") %>
 <%- include("partials/userpicker.ejs") %>
+<%- include("partials/folderstreedialog.ejs") %>
 
 </div>
 

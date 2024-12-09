@@ -450,9 +450,9 @@ app.get('/api/items/:item/activity', async (req, res) => {
   res.json(resp)
 })
 
-// Get folders tree
+// Get folders tree for user
 app.get('/api/users/:user/folders', async (req, res) => {
-  const resp = await PassWeaver.foldersTree(req.session, req.params.user)
+  const resp = await PassWeaver.userFoldersTree(req.session, req.params.user)
   res.json(resp)
 })
 
@@ -519,6 +519,12 @@ app.post('/api/groupadduser/:group/:user', async (req, res) => {
 // Remove user from group
 app.post('/api/groupremoveuser/:group/:user', async (req, res) => {
   const resp = await PassWeaver.groupRemoveUser(req.session, req.params.group, req.params.user)
+  res.json(resp)
+})
+
+// Get folders tree for group
+app.get('/api/groups/:group/folders', async (req, res) => {
+  const resp = await PassWeaver.groupFoldersTree(req.session, req.params.group)
   res.json(resp)
 })
 

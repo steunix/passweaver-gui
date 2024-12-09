@@ -212,6 +212,22 @@ async function fillGroups () {
   }
 }
 
+async function showGroupFolders () {
+  const grp = currentGroup()
+  if (grp === '') {
+    return
+  }
+
+  JH.query('#folderstreedialog').show()
+  const resp = await JH.http(`/api/groups/${grp}/folders`)
+  if (!await PW.checkResponse(resp)) {
+    return
+  }
+
+  const body = await resp.json()
+  PW.simpleTreeFill('generictree', body.data)
+}
+
 await fillGroups()
 
 // Drag'n'drop
@@ -283,6 +299,10 @@ JH.event('#groupsearchnext', 'click', (ev) => {
 JH.event('#groupsearchprevious', 'click', (ev) => {
   const search = JH.value('#groupsearch')
   PW.treeSearchPrevious('groupstree', search)
+})
+
+JH.event('#groupfolders', 'click', (ev) => {
+  showGroupFolders()
 })
 
 addEventListener('pw-item-found', async (ev) => {
