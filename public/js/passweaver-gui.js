@@ -269,14 +269,14 @@ export function simpleTreeFillItems (id, data) {
   const parent = JH.query(`#${id}`)
 
   for (const item of data) {
-    const newid = `item-${item.id}`
+    const newid = `item-${id}-${item.id}`
 
-    let badge = '<sl-badge pill variant="danger">No access</sl-badge>'
-    if (item.permissions.read) {
-      badge = '<sl-badge pill variant="warning">R</sl-badge>'
+    let badge = '<sl-badge style="margin-left:0.5em;" pill variant="danger">No access</sl-badge>'
+    if (item?.permissions?.read) {
+      badge = '<sl-badge style="margin-left:0.5em;" pill variant="warning">R</sl-badge>'
     }
-    if (item.permissions.write) {
-      badge = '<sl-badge pill variant="success">RW</sl-badge>'
+    if (item?.permissions?.write) {
+      badge = '<sl-badge style="margin-left:0.5em;" pill variant="success">RW</sl-badge>'
     }
 
     const html = `<sl-tree-item id='${newid}' data-id='${item.id}' expanded data-description='${item.description}'>${item.description}${badge}</sl-tree-item>`
