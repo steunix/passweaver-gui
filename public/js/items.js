@@ -524,7 +524,7 @@ async function passwordCopied (item) {
 }
 
 async function fillFolders () {
-  const resp = await JH.http('/api/folderstree')
+  const resp = await JH.http(`/api/users/${PW.getUser()}/folders`)
   if (!await PW.checkResponse(resp)) {
     return
   }

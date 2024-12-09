@@ -451,8 +451,8 @@ app.get('/api/items/:item/activity', async (req, res) => {
 })
 
 // Get folders tree
-app.get('/api/folderstree', async (req, res) => {
-  const resp = await PassWeaver.foldersTree(req.session)
+app.get('/api/users/:user/folders', async (req, res) => {
+  const resp = await PassWeaver.foldersTree(req.session, req.params.user)
   res.json(resp)
 })
 
