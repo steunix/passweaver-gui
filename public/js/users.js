@@ -338,7 +338,7 @@ async function groupsPaste () {
 async function showUserFolders (user) {
   JH.query('#generictree').innerHTML = ''
   JH.query('#folderstreedialog').show()
-  const resp = await JH.http(`/api/users/${user}/folders`)
+  const resp = await JH.http(`/api/users/${user}/folders?permissions=true`)
   if (!await PW.checkResponse(resp)) {
     return
   }
