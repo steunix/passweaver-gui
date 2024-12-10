@@ -134,10 +134,11 @@ export async function getUser (session, id) {
  * Get folders tree for current user
  * @param {Object} session Current session
  * @param {string} user User id
+ * @param {boolean} permissions If true, return permissions also
  * @returns
  */
-export async function userFoldersTree (session, user) {
-  const resp = await passWeaverAPI(session, METHOD.get, `/users/${user}/folders`)
+export async function userFoldersTree (session, user, permissions) {
+  const resp = await passWeaverAPI(session, METHOD.get, `/users/${user}/folders?permissions=${permissions}`)
   return resp
 }
 
