@@ -261,7 +261,6 @@ if (JH.query('#globalsearch')) {
 }
 
 export function simpleTreeFill (id, data) {
-  JH.query(`#${id}`).innerHTML = ''
   simpleTreeFillItems(id, data)
 }
 

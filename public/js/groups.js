@@ -218,7 +218,7 @@ async function showGroupFolders () {
     return
   }
 
-  JH.query('#generictree').innerHTML = ''
+  JH.query('#generictree').innerHTML = 'Loading...'
   JH.query('#folderstreedialog').show()
   const resp = await JH.http(`/api/groups/${grp}/folders`)
   if (!await PW.checkResponse(resp)) {
