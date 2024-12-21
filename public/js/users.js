@@ -96,6 +96,7 @@ async function fillActivity (usr) {
       row += `<td>${evt.action_description}</td>`
       row += `<td>${evt.entity_description}</td>`
       row += `<td>${evt.description || ''}</td>`
+      row += `<td>${evt.note || ''}</td>`
     }
     JH.query('#useractivitytable tbody').innerHTML += row
   } else {
