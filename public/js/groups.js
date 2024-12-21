@@ -27,9 +27,9 @@ async function fillUsers () {
   if (body.data.length) {
     let row = ''
     for (const usr of body.data) {
-      row += '<tr>'
+      row += `<tr data-id='${usr.id}'>`
       if (currentGroup() !== 'E') {
-        row += `<td><sl-icon-button id='remove-${usr.id}' title='Remove' data-id='${usr.id}' name='trash3' style='color:red;'></sl-icon-button></td>`
+        row += `<td><sl-icon-button id='remove-${usr.id}' title='Remove from group' data-id='${usr.id}' name='trash3' style='color:red;'></sl-icon-button></td>`
       } else {
         row += '<td></td>'
       }
@@ -59,8 +59,10 @@ async function groupClicked (groupid) {
   fillUsers()
   if (groupid === '0' || groupid === 'E') {
     JH.query('#newmember').setAttribute('disabled', 'disabled')
+    JH.query('#removeallmembers').setAttribute('disabled', 'disabled')
   } else {
     JH.query('#newmember').removeAttribute('disabled')
+    JH.query('#removeallmembers').removeAttribute('disabled')
   }
 
   const resp = await JH.http(`/api/groups/${currentGroup()}`)
@@ -180,6 +182,22 @@ async function groupRemoveUser (id) {
   }, 'Remove', 'danger')
 }
 
+async function groupRemoveAllMembers (id) {
+  PW.confirmDialog('Remove all members from group', 'Are you sure you want to remove all members the group?', async () => {
+    const users = JH.queryAll('#userstable tr:has([data-id])')
+    for (const user of users) {
+      const userid = user.getAttribute('data-id')
+      const resp = await JH.http(`/api/groupremoveuser/${currentGroup()}/${userid}`, { _csrf: PW.getCSRFToken() })
+      if (!await PW.checkResponse(resp)) {
+        return
+      }
+    }
+
+    fillUsers()
+    PW.showToast('success', 'Users removed from group')
+  }, 'Remove', 'danger')
+}
+
 async function groupMove (id, newparent) {
   if (id === newparent) {
     return
@@ -279,6 +297,10 @@ JH.event('#newmember', 'click', (ev) => {
     return
   }
   UPicker.show(userPickerChoosen)
+})
+
+JH.event('#removeallmembers', 'click', (ev) => {
+  groupRemoveAllMembers()
 })
 
 JH.event('#groupsearch', 'sl-input', (ev) => {

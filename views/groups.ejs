@@ -41,10 +41,16 @@
   <div class="main2">
     <h2><span id="sectiontitle">Members</span></h2>
     <div style="display:flex;">
-      <sl-button id="newmember">
-        <sl-icon slot="prefix" name="plus-lg"></sl-icon>
-        Add member
-      </sl-button>
+      <sl-button-group>
+        <sl-button id="newmember">
+          <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+          Add member
+        </sl-button>
+        <sl-button id="removeallmembers">
+          <sl-icon slot="prefix" name="trash2" variant="danger"></sl-icon>
+          Remove all members
+        </sl-button>
+      </sl-button-group>
     </div>
     <table id="userstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;" class="bordered">
       <thead>
