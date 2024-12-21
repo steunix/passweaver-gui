@@ -785,6 +785,15 @@ export async function info (session) {
 }
 
 /**
+ * Version
+ * @returns
+ */
+export async function version () {
+  const resp = await passWeaverAPI(null, METHOD.get, '/version')
+  return resp
+}
+
+/**
  * Get user preferences
  * @param {*} session
  */

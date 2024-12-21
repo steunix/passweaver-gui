@@ -24,10 +24,25 @@ import session from 'express-session'
 import jsonwebtoken from 'jsonwebtoken'
 import rateLimitMiddleware from './src/ratelimiter.mjs'
 import lusca from 'lusca'
+import * as Semver from 'semver'
 
 export const app = Express()
 
 const cfg = Config.get()
+
+// Check for minimum PassWeaver API version
+try {
+  const minpwapiversion = '1.1.1'
+  const resp = await PassWeaver.version()
+  const pwapiversion = resp.data.version
+  if (!Semver.gte(pwapiversion, minpwapiversion)) {
+    console.error(`PassWaver GUI requires PassWeaver API version ${minpwapiversion} at least, found ${pwapiversion}`)
+    process.exit(1)
+  }
+} catch (err) {
+  console.error('Cannot connect to PassWaver API. Verify your settings and PassWeaver API is up and running.')
+  process.exit(1)
+}
 
 // Express middlewares
 app.use(helmet({
