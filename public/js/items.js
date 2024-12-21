@@ -159,8 +159,9 @@ async function fillActivity (itm) {
     for (const evt of body.data) {
       row += '<tr>'
       row += `<td id='event-${evt.id}' data-id='${evt.id}'>${evt.timestamp}</td>`
-      row += `<td>${evt.user_description}</td>`
-      row += `<td>${evt.action_description}</td>`
+      row += `<td>${evt.user_description || ''}</td>`
+      row += `<td>${evt.action_description || ''}</td>`
+      row += `<td>${evt.note || ''}</td>`
     }
     JH.query('#itemactivitytable tbody').innerHTML += row
   } else {
