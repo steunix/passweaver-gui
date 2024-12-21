@@ -276,6 +276,7 @@ async function groupPickerChoosen (group) {
 async function userActivity (itm) {
   JH.query('#useractivitytable tbody').innerHTML = ''
   JH.query('#useractivitydialog').show()
+  JH.query('#useractivityload').removeAttribute('disabled')
   fillActivity(itm)
 }
 
