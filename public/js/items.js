@@ -667,6 +667,10 @@ JH.event('#itemviewactivity', 'click', (ev) => {
   itemActivity(JH.value('#itemviewid'))
 })
 
+JH.event('#itemeditactivity', 'click', (ev) => {
+  itemActivity(JH.value('#itemeditid'))
+})
+
 JH.event('#itemactivityload', 'click', (ev) => {
   fillActivity(JH.value('#itemactivityid'))
 })
