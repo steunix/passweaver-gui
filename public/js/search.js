@@ -91,6 +91,7 @@ async function itemViewFill (item) {
   }
 
   const body = await resp.json()
+  body.data.data = JSON.parse(body.data.data)
   JH.value('#itemviewid', item)
   JH.value('#viewtitle', body.data.title)
   JH.value('#viewtype', body.data.type)
