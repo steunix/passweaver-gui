@@ -8,9 +8,11 @@ PassWeaver-GUI is an opensource project, released under MIT license. See [Techni
 
 - Personal folders for each user
 - Share one-time secrets with anyone, even if they have not an account
+- One-time share complete items
 - Share items through permalinks
 - Folder level permissions
 - User groups
+- Extensive log actions on items
 - Both LDAP and local authentication
 - CSP compliant pages
 - Quick and clean user interface
@@ -48,7 +50,7 @@ Access the site using your credentials
 
 This is what the items page looks like:
 
-![Items page](assets/passweavergui-items-001.jpeg)
+![Items page](assets/passweavergui-items-002.jpeg)
 
 In "Folders" left pane you can create a subfolder, modify or delete a folder, if you have write permissions. You can also search for a folder and use the previous/next buttons to navigate the tree.
 
@@ -58,6 +60,7 @@ In "Items" right pane you have a list of folder items with the following actions
 - Delete item
 - Clone item
 - Copy link
+- One-time share link
 - View history
 
 You have also buttons for showing or coping the passwords without the need of showing them.
@@ -68,7 +71,9 @@ Some actions may be unavailable if you don't have write permissions on the folde
 
 By double clicking the item title, or by clicking on details or edit buttons, the following popup is shown.
 
-![Item dialog](assets/passweavergui-item-000.jpeg)
+![Item dialog](assets/passweavergui-item-001.jpeg)
+
+In the header, you have button to copy the item permalink and to show the item history.
 
 When creating a new item, only the "Title" field is mandatory, all the remaining fields are optional.
 
@@ -94,11 +99,13 @@ You can search items with a matching title, username or folder name (parents inc
 
 ![Search page](assets/passweavergui-search-000.jpeg)
 
+In the actions column, you have buttons to view the item, copy the permalink or access the folder.
+
 ## Generator
 
-This page lets you generate a random secure password. You can copy it or generate another one by clicking on the wand button.
+This page lets you generate a random secure password both with symbols or without. You can copy it or generate another one by clicking on the wand button.
 
-![Generator page](assets/passweavergui-generator-000.jpeg)
+![Generator page](assets/passweavergui-generator-001.jpeg)
 
 ## One time secret
 
@@ -144,13 +151,22 @@ Admins can create or rename folders and also delete folders, if empty.
 
 From this page you can add or delete users, and assign/remove the groups membership.
 
-![Users page](assets/passweavergui-users-001.jpeg)
+![Users page](assets/passweavergui-users-002.jpeg)
+
+### Activity
 
 By clicking the history button (the clock icon) in user list you can access a history of user's activity:
 
 ![User activity](assets/passweavergui-users-activity-000.jpeg)
 
 Only more recent events are shown, click on "Load more" button in order to load more activity.
+
+### Folder visibility
+By clicking the folder icon in user list, you can see what folders he has access to:
+
+![User folders visibility](assets/passweavergui-users-folders-000.jpeg)
+
+### User groups
 
 You can copy the current users groups in order to assign them to another user:
 - Select a user from the list
@@ -176,13 +192,13 @@ When creating a new user you're prompted with this dialog:
 
 From this page you can create or delete groups, and add/remove members. You can nest groups, but membership is NOT inherited: the user is only member of explicitly assigned groups.
 
-![Groups page](assets/passweavergui-groups-000.jpeg)
+![Groups page](assets/passweavergui-groups-001.jpeg)
 
 ## Info
 
 This page gives you some information about API and GUI status
 
-![Info page](assets/passweavergui-info-000.jpeg)
+![Info page](assets/passweavergui-info-001.jpeg)
 
 ## Settings
 
@@ -244,9 +260,8 @@ Copy `config-skel.json` to `config.json` and adjust the options:
 # Technical specs
 
 Passweaver-GUI is developed in NodeJS and uses these great libs (among others):
-- `ExpressJS` (version 5, but 4.x is fine too)
+- `ExpressJS` (version 5)
 - `EJS` for HTML templating
 - `Shoelace` WEB components
 - `Morgan` for logging
 - `Helmet` and `Lusca` for CSFR and CSP compliance
-- `Got` for interacting with Passweaver-API
