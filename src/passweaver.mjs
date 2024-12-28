@@ -826,7 +826,20 @@ export async function preferencesSet (req, session) {
  * @returns
  */
 export async function oneTimeSecretCreate (session, data) {
-  const resp = await passWeaverAPI(session, METHOD.post, '/onetimetokens', { data, hours: Config.get().onetimetokens.default_hours })
+  const resp = await passWeaverAPI(session, METHOD.post, '/onetimetokens', { type: 0, scope: 0, data, hours: Config.get().onetimetokens.default_hours })
+  return resp
+}
+
+/**
+ * Create one time item share
+ * @param {Object} req Request
+ * @param {Object} session Session
+ * @param {string} itemid Item id
+ * @param {integer} hours Expires after these hours
+ * @returns
+ */
+export async function oneTimeShareCreate (session, itemid) {
+  const resp = await passWeaverAPI(session, METHOD.post, '/onetimetokens', { type: 1, scope: 0, itemid, hours: Config.get().onetimetokens.default_hours })
   return resp
 }
 

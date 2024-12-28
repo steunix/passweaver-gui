@@ -79,6 +79,7 @@ async function fillItems () {
         row += `<sl-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></sl-icon-button>`
       }
       row += `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`
+      row += `<sl-icon-button id='onetime-${itm.id}' title='Share once' name='1-circle' data-id='${itm.id}'></sl-icon-button>`
       row += `<sl-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></sl-icon-button>`
       row += '</td>'
       row += '<td class="border-end">'
@@ -119,6 +120,9 @@ async function fillItems () {
   })
   JH.event('#itemstable tbody [id^=activity]', 'click', (ev) => {
     itemActivity(ev.currentTarget.getAttribute('data-id'))
+  })
+  JH.event('#itemstable tbody [id^=onetime]', 'click', (ev) => {
+    itemOneTimeShare(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=passwordcopy]', 'click', (ev) => {
     passwordCopy(ev)
@@ -298,6 +302,7 @@ async function itemEditFill (item) {
   JH.query('#editpassword').passwordVisible = false
 
   const body = await resp.json()
+  body.data.data = JSON.parse(body.data.data)
   if (body.status === 'success') {
     JH.value('#itemeditid', item)
     JH.value('#edittype', body.data.type)
@@ -354,6 +359,7 @@ async function itemViewFill (item, gotofolder) {
   }
 
   const body = await resp.json()
+  body.data.data = JSON.parse(body.data.data)
   JH.value('#itemviewid', item)
   JH.value('#viewtitle', body.data.title)
   JH.value('#viewtype', body.data.type)
@@ -415,6 +421,22 @@ async function itemMove (id, folder) {
 
   PW.showToast('success', 'Item moved')
   await fillItems()
+}
+
+async function itemOneTimeShare (itm) {
+  const data = {
+    _csrf: PW.getCSRFToken(),
+    itemid: itm
+  }
+  const resp = await JH.http('/api/onetimeshare', data)
+  if (!await PW.checkResponse(resp)) {
+    return
+  }
+
+  const body = await resp.json()
+  navigator.clipboard.writeText(`${window.location.origin}/onetimesecret/${body.data.token}`)
+
+  PW.showToast('primary', 'One time share link copied to clipboard')
 }
 
 function findAndShowItem (itm) {
@@ -482,6 +504,7 @@ async function passwordCopy (ev) {
   }
 
   const body = await resp.json()
+  body.data.data = JSON.parse(body.data.data)
   navigator.clipboard.writeText(body.data.data.password)
 
   passwordCopied(item)
@@ -501,6 +524,7 @@ async function passwordShow (ev) {
   }
 
   const body = await resp.json()
+  body.data.data = JSON.parse(body.data.data)
   JH.query(`#password-${item}`).innerHTML = body.data.data.password
 
   passwordAccessed(item)

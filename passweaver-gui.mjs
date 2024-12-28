@@ -712,6 +712,12 @@ app.post('/api/onetimesecret', async (req, res) => {
   res.json(resp)
 })
 
+// Create one time item share
+app.post('/api/onetimeshare', async (req, res) => {
+  const resp = await PassWeaver.oneTimeShareCreate(req.session, req.body.itemid)
+  res.json(resp)
+})
+
 // Clear the cache
 app.post('/api/clearcache', async (req, res) => {
   const resp = await PassWeaver.clearCache(req.session)
