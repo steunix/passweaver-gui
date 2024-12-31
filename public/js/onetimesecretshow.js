@@ -11,6 +11,7 @@ JH.event('#show', 'click', async (ev) => {
 
     const body = await resp.json()
     if (body.data?.type === undefined) {
+      PW.errorDialog('This token does not exist, or it has been already read')
       throw new Error()
     }
     // Secret
@@ -34,7 +35,6 @@ JH.event('#show', 'click', async (ev) => {
     JH.query('#show').style.visibility = 'hidden'
     JH.query('#show').style.display = 'none'
   } catch (err) {
-    PW.errorDialog('This secret does not exist, or it may have already been read. Please check the link.')
     JH.query('#show').style.visibility = 'hidden'
     JH.query('#result0').style.display = 'none'
     JH.query('#result1').style.display = 'none'
