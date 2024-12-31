@@ -60,7 +60,7 @@ In "Items" right pane you have a list of folder items with the following actions
 - Delete item
 - Clone item
 - Copy link
-- One-time share link
+- One-time share link (see below)
 - View history
 
 You have also buttons for showing or coping the passwords without the need of showing them.
@@ -76,6 +76,14 @@ By double clicking the item title, or by clicking on details or edit buttons, th
 In the header, you have button to copy the item permalink and to show the item history.
 
 When creating a new item, only the "Title" field is mandatory, all the remaining fields are optional.
+
+### One time item share
+
+By clicking the "One time share" icon (the circled 1) in item list, you can share this item with someone who normally does not have access to the folder (or even to the application itself): you'll be prompted with a dialog to choose the type of "peer" you are willing to share with:
+
+![Item dialog](assets/passweavergui-onetimeshare-1-000.jpeg)
+
+By clicking "Share" button, a link will be copied in your clipboard: share this link with your peer and he will be able to show this item, only once.
 
 ### Personal folders
 
@@ -109,13 +117,18 @@ This page lets you generate a random secure password both with symbols or withou
 
 ## One time secret
 
-With one-time-secret you can share a secret information even outside your organization by creating a public link that will be visible only once.
+With one-time-secret you can share a secret information by creating a public link that will be visible only once.
 
 Type the secret and then press the "Create link" button:
 
-![One time secret 1](assets/passweavergui-onetimesecret-1-000.jpeg)
+![One time secret 1](assets/passweavergui-onetimesecret-1-001.jpeg)
 
-You can then share the link with your peer, who does not need to have an account on your organization: the link is public and will be usable only once.
+You can decide who is authorized to read this secret:
+- Anyone: anyone who has the link, logged in or not in PassWeaver
+- Anyone logged in PassWeaver
+- A specific logged in user
+
+You can then share the link with your peer: the link is public and will be usable only once.
 
 ![One time secret 2](assets/passweavergui-onetimesecret-2-000.jpeg)
 
