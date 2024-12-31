@@ -822,11 +822,22 @@ export async function preferencesSet (req, session) {
  * @param {Object} req Request
  * @param {Object} session Session
  * @param {string} data Data
- * @param {integer} hours Expires after these hours
+ * @param {string} scope Token scope
+ * @param {string} userid User ID if scope is 2
  * @returns
  */
-export async function oneTimeSecretCreate (session, data) {
-  const resp = await passWeaverAPI(session, METHOD.post, '/onetimetokens', { type: 0, scope: 0, data, hours: Config.get().onetimetokens.default_hours })
+export async function oneTimeSecretCreate (session, data, scope, userid) {
+  const payload = {
+    type: 0,
+    scope: parseInt(scope),
+    data,
+    hours: Config.get().onetimetokens.default_hours
+  }
+  if (scope === '2') {
+    payload.userid = userid
+  }
+
+  const resp = await passWeaverAPI(session, METHOD.post, '/onetimetokens', payload)
   return resp
 }
 

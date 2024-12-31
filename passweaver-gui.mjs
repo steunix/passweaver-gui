@@ -708,7 +708,7 @@ app.patch('/api/itemtypes/:id', async (req, res) => {
 
 // Create one time secret
 app.post('/api/onetimesecret', async (req, res) => {
-  const resp = await PassWeaver.oneTimeSecretCreate(req.session, req.body.data)
+  const resp = await PassWeaver.oneTimeSecretCreate(req.session, req.body.data, req.body.scope, req.body.userid)
   res.json(resp)
 })
 
