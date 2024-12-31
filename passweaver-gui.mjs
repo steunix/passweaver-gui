@@ -1,7 +1,7 @@
 /**
  * PassWeaver-GUI, a GUI for PassWeaver-API password manager
  *
- * (c) 2023 - Stefano Rivoir <rs4000@gmail.com>
+ * (c) 2023-2025 - Stefano Rivoir <rs4000@gmail.com>
  *
  * @module main
  * @author Stefano Rivoir <rs4000@gmail.com>
@@ -32,7 +32,7 @@ const cfg = Config.get()
 
 // Check for minimum PassWeaver API version
 try {
-  const minpwapiversion = '1.2.0'
+  const minpwapiversion = '1.3.0'
   const resp = await PassWeaver.version()
   const pwapiversion = resp.data.version
   if (!Semver.gte(pwapiversion, minpwapiversion)) {
