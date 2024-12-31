@@ -3,6 +3,7 @@
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 import * as Folders from './folders_shared.js'
+import * as UPicker from './userpicker.js'
 
 let itemSearchTimeout
 let itemTypesOptions
@@ -122,7 +123,7 @@ async function fillItems () {
     itemActivity(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=onetime]', 'click', (ev) => {
-    itemOneTimeShare(ev.currentTarget.getAttribute('data-id'))
+    itemOneTimeShareDialog(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=passwordcopy]', 'click', (ev) => {
     passwordCopy(ev)
@@ -423,10 +424,28 @@ async function itemMove (id, folder) {
   await fillItems()
 }
 
-async function itemOneTimeShare (itm) {
+function enableShareSave () {
+  if (JH.value('#scope') === '2' && JH.value('#scopeuser') === '') {
+    JH.query('#sharesave').setAttribute('disabled', 'disabled')
+    return
+  }
+  JH.query('#sharesave').removeAttribute('disabled')
+}
+
+async function itemOneTimeShareDialog (itm) {
+  JH.query('#scopeselect').show()
+  JH.value('#scope', '1')
+  JH.value('#shareitemid', itm)
+  showScopeUser()
+  enableShareSave()
+}
+
+async function itemOneTimeShare () {
   const data = {
     _csrf: PW.getCSRFToken(),
-    itemid: itm
+    scope: JH.value('#scope'),
+    userid: JH.value('#scopeuser'),
+    itemid: JH.value('#shareitemid')
   }
   const resp = await JH.http('/api/onetimeshare', data)
   if (!await PW.checkResponse(resp)) {
@@ -437,6 +456,7 @@ async function itemOneTimeShare (itm) {
   navigator.clipboard.writeText(`${window.location.origin}/onetimesecret/${body.data.token}`)
 
   PW.showToast('primary', 'One time share link copied to clipboard')
+  JH.query('#scopeselect').hide()
 }
 
 function findAndShowItem (itm) {
@@ -714,4 +734,34 @@ JH.query('#editpassword').shadowRoot.querySelector('[part=password-toggle-button
   if (el.getAttribute('type') === 'text') {
     passwordAccessed(JH.value('#itemeditid'))
   }
+})
+
+function showScopeUser () {
+  if (JH.value('#scope') === '2') {
+    JH.query('#selectuser').style.visibility = 'visible'
+  } else {
+    JH.query('#selectuser').style.visibility = 'hidden'
+    JH.value('#scopeuser', '')
+    JH.value('#scopeuserdesc', '')
+  }
+}
+
+JH.event('#scope', 'sl-change', (ev) => {
+  showScopeUser()
+  enableShareSave()
+})
+
+JH.event('#sharesave', 'click', (ev) => {
+  itemOneTimeShare()
+})
+
+function userChoosen (userid, userdesc) {
+  JH.value('#scopeuser', userid)
+  JH.value('#scopeuserdesc', userdesc)
+  UPicker.hide()
+  enableShareSave()
+}
+
+JH.event('#searchuser', 'click', (ev) => {
+  UPicker.show(userChoosen)
 })
