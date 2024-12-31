@@ -846,11 +846,22 @@ export async function oneTimeSecretCreate (session, data, scope, userid) {
  * @param {Object} req Request
  * @param {Object} session Session
  * @param {string} itemid Item id
+ * @param {string} scope Token scope
+ * @param {string} userid User ID if scope is 2
  * @param {integer} hours Expires after these hours
  * @returns
  */
-export async function oneTimeShareCreate (session, itemid) {
-  const resp = await passWeaverAPI(session, METHOD.post, '/onetimetokens', { type: 1, scope: 0, itemid, hours: Config.get().onetimetokens.default_hours })
+export async function oneTimeShareCreate (session, itemid, scope, userid) {
+  const payload = {
+    type: 1,
+    scope: parseInt(scope),
+    itemid,
+    hours: Config.get().onetimetokens.default_hours
+  }
+  if (scope === '2') {
+    payload.userid = userid
+  }
+  const resp = await passWeaverAPI(session, METHOD.post, '/onetimetokens', payload)
   return resp
 }
 

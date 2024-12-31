@@ -1,0 +1,16 @@
+<sl-dialog id="scopeselect" label="Choose share target">
+  <sl-visually-hidden id="shareitemid"></sl-visually-hidden>
+  <p>Select who you want to share with:</p>
+  <sl-radio-group id="scope" name="scope" value="1">
+    <sl-radio-button value="0">Anyone</sl-radio-button>
+    <sl-radio-button value="1">Anyone logged in PassWeaver</sl-radio-button>
+    <sl-radio-button value="2">A single PassWeaver user</sl-radio-button>
+  </sl-radio-group>
+  <br />
+  <div id="selectuser" style="visibility: hidden; display: flex;">
+    <sl-visually-hidden id="scopeuser"></sl-visually-hidden>
+    <sl-button id="searchuser">Select user</sl-button>
+    <sl-input id="scopeuserdesc" readonly></sl-input>
+  </div>
+  <sl-button id='sharesave' variant="primary" disabled>Share</sl-button>
+</sl-dialog>
