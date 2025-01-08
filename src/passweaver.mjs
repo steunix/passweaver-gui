@@ -147,11 +147,18 @@ export async function userFoldersTree (session, user, permissions) {
  * @param {Object} session Current session
  * @param {string} folder Folder id
  * @param {string} search Item title search
+ * @param {string} type Type to search
  * @returns
  */
 export async function itemsList (session, folder, search, type) {
-  const resp = await passWeaverAPI(session, METHOD.get,
-    `/folders/${folder}/items?search=${encodeURIComponent(search)}&type=${encodeURIComponent(type)}`)
+  let endpoint = `/folders/${folder}/items?`
+  if (search) {
+    endpoint += '&search=' + encodeURIComponent(search)
+  }
+  if (type) {
+    endpoint += '&type=' + encodeURIComponent(type)
+  }
+  const resp = await passWeaverAPI(session, METHOD.get, endpoint)
   return resp
 }
 
@@ -162,7 +169,14 @@ export async function itemsList (session, folder, search, type) {
  * @returns
  */
 export async function itemsSearch (session, search, type) {
-  const resp = await passWeaverAPI(session, METHOD.get, `/items?search=${encodeURIComponent(search)}&type=${encodeURIComponent(type)}`)
+  let endpoint = '/items?'
+  if (search) {
+    endpoint += '&search=' + encodeURIComponent(search)
+  }
+  if (type) {
+    endpoint += '&type=' + encodeURIComponent(type)
+  }
+  const resp = await passWeaverAPI(session, METHOD.get, endpoint)
   return resp
 }
 
