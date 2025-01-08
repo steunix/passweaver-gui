@@ -166,15 +166,20 @@ export async function itemsList (session, folder, search, type) {
  * Search items in any folder
  * @param {Object} session Current session
  * @param {string} search Item title search
+ * @param {string} type Type to search
+ * @param {integer} limit Results limit
  * @returns
  */
-export async function itemsSearch (session, search, type) {
+export async function itemsSearch (session, search, type, limit) {
   let endpoint = '/items?'
   if (search) {
     endpoint += '&search=' + encodeURIComponent(search)
   }
   if (type) {
     endpoint += '&type=' + encodeURIComponent(type)
+  }
+  if (limit) {
+    endpoint += '&type=' + encodeURIComponent(limit)
   }
   const resp = await passWeaverAPI(session, METHOD.get, endpoint)
   return resp

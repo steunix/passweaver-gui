@@ -13,13 +13,17 @@ export function init () {
 
   JH.event('#globalsearch', 'sl-blur', async (ev) => {
     setTimeout(() => {
-      JH.query('#searchbox').style.visibility = 'hidden'
+      searchBoxHide()
       JH.value('#globalsearch', '')
     }, 100)
   })
 
   JH.event('#globalsearch', 'sl-clear', async (ev) => {
-    JH.query('#searchbox').style.visibility = 'hidden'
+    searchBoxHide()
+  })
+
+  JH.event('#searchboxmore', 'click', async (ev) => {
+    window.location = `/pages/search?search=${encodeURIComponent(JH.value('#globalsearch'))}`
   })
 
   JH.event('#globalsearch', 'keyup', async (ev) => {
@@ -27,6 +31,7 @@ export function init () {
     JH.query('#searchbox').style.visibility = searchLength === 0 ? 'hidden' : 'visible'
 
     if (searchLength === 0) {
+      searchBoxHide()
       return
     }
 
@@ -43,9 +48,14 @@ export function init () {
   })
 }
 
+function searchBoxHide() {
+  JH.query('#searchbox').style.visibility = 'hidden'
+  JH.query('#searchboxmore').style.visibility = 'hidden'
+}
+
 async function fillItems () {
   const search = JH.value('#globalsearch')
-  const resp = await JH.http(`/api/itemssearch?search=${search}`)
+  const resp = await JH.http(`/api/itemssearch?search=${search}&limit=10`)
 
   // Folder may not be accessible
   if (!await PW.checkResponse(resp, 403)) {
@@ -89,6 +99,7 @@ async function fillItems () {
     JH.query('#searchboxmore').style.visibility = body.data.length > maxResults ? 'visible' : 'hidden'
   } else {
     JH.query('#searchbox tbody').innerHTML = '<tr><td colspan="99">No matching item found</td></tr>'
+    JH.query('#searchboxmore').style.visibility = 'hidden'
   }
 
   // Install event handlers

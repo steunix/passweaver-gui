@@ -259,7 +259,7 @@ tr:hover td {
   border-width: 1px;
   z-index: 1;
   border-radius: 8px;
-  border-color: var(--sl-color-neutral-500);
+  border-color: var(--sl-color-neutral-300);
   background-color: var(--sl-color-neutral-0);
 }
 
