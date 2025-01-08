@@ -1,6 +1,7 @@
 /* global dispatchEvent, DOMParser, localStorage */
 
 import * as JH from './jh.js'
+import * as SB from './searchbox.js'
 
 const itemFound = new Event('pw-item-found')
 
@@ -246,20 +247,6 @@ if (JH.query('#pageid')) {
   }
 }
 
-if (JH.query('#globalsearch')) {
-  JH.event('#globalsearch', 'keypress', (ev) => {
-    if (ev.keyCode === 13 && JH.value('#globalsearch').length >= 3) {
-      window.location = '/pages/search?search=' + encodeURIComponent(JH.value('#globalsearch'))
-    }
-  })
-
-  JH.event(document, 'keydown', (ev) => {
-    if (ev.ctrlKey && ev.keyCode === 220) {
-      JH.query('#globalsearch').focus()
-    }
-  })
-}
-
 export function simpleTreeFill (id, data) {
   simpleTreeFillItems(id, data)
 }
@@ -290,3 +277,6 @@ export function simpleTreeFillItems (id, data) {
     }
   }
 }
+
+// Init search box
+SB.init()
