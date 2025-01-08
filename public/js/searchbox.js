@@ -48,14 +48,15 @@ export function init () {
   })
 }
 
-function searchBoxHide() {
+function searchBoxHide () {
   JH.query('#searchbox').style.visibility = 'hidden'
   JH.query('#searchboxmore').style.visibility = 'hidden'
 }
 
 async function fillItems () {
+  const maxResults = 10
   const search = JH.value('#globalsearch')
-  const resp = await JH.http(`/api/itemssearch?search=${search}&limit=10`)
+  const resp = await JH.http(`/api/itemssearch?search=${search}&limit=${maxResults + 1}`)
 
   // Folder may not be accessible
   if (!await PW.checkResponse(resp, 403)) {
@@ -75,7 +76,6 @@ async function fillItems () {
   if (body.data.length) {
     let row = ''
     let count = 0
-    const maxResults = 10
 
     for (const itm of body.data) {
       row +=

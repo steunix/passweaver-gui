@@ -179,7 +179,7 @@ export async function itemsSearch (session, search, type, limit) {
     endpoint += '&type=' + encodeURIComponent(type)
   }
   if (limit) {
-    endpoint += '&type=' + encodeURIComponent(limit)
+    endpoint += '&limit=' + encodeURIComponent(limit)
   }
   const resp = await passWeaverAPI(session, METHOD.get, endpoint)
   return resp
