@@ -1,6 +1,8 @@
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 
+let searchBoxTimeout
+
 export function init () {
   if (!JH.query('#globalsearch')) {
     return
@@ -8,6 +10,17 @@ export function init () {
   if (!JH.query('#searchbox')) {
     return
   }
+
+  JH.event('#globalsearch', 'sl-blur', async (ev) => {
+    setTimeout(() => {
+      JH.query('#searchbox').style.visibility = 'hidden'
+      JH.value('#globalsearch', '')
+    }, 100)
+  })
+
+  JH.event('#globalsearch', 'sl-clear', async (ev) => {
+    JH.query('#searchbox').style.visibility = 'hidden'
+  })
 
   JH.event('#globalsearch', 'keyup', async (ev) => {
     const searchLength = JH.value('#globalsearch').length
@@ -17,7 +30,10 @@ export function init () {
       return
     }
 
-    await fillItems()
+    if (searchBoxTimeout) {
+      clearTimeout(searchBoxTimeout)
+    }
+    searchBoxTimeout = setTimeout(async () => { await fillItems() }, 250)
   })
 
   JH.event(document, 'keydown', (ev) => {
@@ -48,6 +64,9 @@ async function fillItems () {
   const body = await resp.json()
   if (body.data.length) {
     let row = ''
+    let count = 0
+    const maxResults = 10
+
     for (const itm of body.data) {
       row +=
         `<tr id='row-${itm.id}' data-id='${itm.id}'>` +
@@ -61,8 +80,13 @@ async function fillItems () {
       }
       row += '</td>'
       row += `<td class='itemtitle'>${itm.title}</td></tr>`
+      count++
+      if (count >= maxResults) {
+        break
+      }
     }
     JH.query('#searchbox tbody').innerHTML = row
+    JH.query('#searchboxmore').style.visibility = body.data.length > maxResults ? 'visible' : 'hidden'
   } else {
     JH.query('#searchbox tbody').innerHTML = '<tr><td colspan="99">No matching item found</td></tr>'
   }
