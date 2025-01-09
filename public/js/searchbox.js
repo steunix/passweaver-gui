@@ -103,7 +103,7 @@ async function fillItems () {
   }
 
   // Install event handlers
-  JH.event('#searchbox tbody [id^=folder]', 'click', (ev) => {
+  JH.event('#searchbox tbody [id^=folder]', 'mousedown', (ev) => {
     window.location = `/pages/items?viewitem=${ev.currentTarget.getAttribute('data-id')}`
   })
 }
