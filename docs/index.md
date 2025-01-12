@@ -46,6 +46,12 @@ Access the site using your credentials
 
 ![Items page](assets/passweavergui-login-000.jpeg)
 
+## Searchbox
+
+In the top bar you can fast search items: the top 10 results will be shown:
+
+![Items page](assets/passweavergui-searchbox-000.jpeg)
+
 ## Items
 
 This is what the items page looks like:
