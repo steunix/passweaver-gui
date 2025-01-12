@@ -16,6 +16,7 @@
     "standard": "17.1.2"
   },
   "dependencies": {
+    "@shoelace-style/shoelace": "2.19.1",
     "compression": "1.7.5",
     "connect-redis": "8.0.1",
     "ejs": "3.1.10",
