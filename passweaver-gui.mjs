@@ -15,7 +15,7 @@ import FS from 'fs'
 import Morgan from 'morgan'
 import * as RFS from 'rotating-file-stream'
 import favicon from 'serve-favicon'
-import RedisStore from 'connect-redis'
+import { RedisStore } from 'connect-redis'
 import * as RedisClient from 'redis'
 
 import * as Config from './src/config.mjs'
