@@ -249,6 +249,11 @@ Download the source, and install all dependencies with npm:
 
 `npm install`
 
+## Environment
+
+If you're installing a production environment, don't forget to set variable `NODE_ENV` to `production`, Passweaver GUI and some of its dependencies
+use that variable to optimize operations.
+
 ## Configure
 
 Copy `config-skel.json` to `config.json` and adjust the options:
