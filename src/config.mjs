@@ -75,6 +75,13 @@ const packagejson = JSON.parse(
   )
 )
 
+// Read Shoelace package.json
+const slpackagejson = JSON.parse(
+  await readFile(
+    new URL('../node_modules/@shoelace-style/shoelace/package.json', import.meta.url)
+  )
+)
+
 // Reads the configuration from file
 let json
 try {
@@ -112,9 +119,17 @@ export function get () {
 }
 
 /**
- * Reads the package.json of the project
+ * Get the package.json of the project
  * @returns {Object} Returns package.json content
  */
 export function packageJson () {
   return packagejson
+}
+
+/**
+ * Get the package.json of Shoelace
+ * @returns {Object} Returns package.json content
+ */
+export function shoelacePackageJson () {
+  return slpackagejson
 }
