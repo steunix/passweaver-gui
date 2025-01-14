@@ -83,16 +83,19 @@ export async function checkResponse (resp, ignoreStatus) {
 export async function treeFill (id, data, callback, uselocalstorage) {
   treeFillItems(id, data, null)
 
-  JH.event(`#${id}`, 'sl-selection-change', (ev) => {
-    const sel = JH.query('sl-tree-item[selected]')
-    const id = sel.getAttribute('data-id')
-    callback(id)
+  if (!JH.attribute(`#${id}`, 'evt-sl-selection-change')) {
+    JH.event(`#${id}`, 'sl-selection-change', (ev) => {
+      const sel = JH.query('sl-tree-item[selected]')
+      const id = sel.getAttribute('data-id')
+      callback(id)
 
-    // Save last item
-    const user = getUser()
-    const lskey = `${user}_${ev.target.id}_selected`
-    localStorage.setItem(lskey, sel.id)
-  })
+      // Save last item
+      const user = getUser()
+      const lskey = `${user}_${ev.target.id}_selected`
+      localStorage.setItem(lskey, sel.id)
+    })
+    JH.attribute(`#${id}`, 'evt-sl-selection-change', '1')
+  }
 
   const user = getUser()
   const last = localStorage.getItem(`${user}_${id}_selected`)
