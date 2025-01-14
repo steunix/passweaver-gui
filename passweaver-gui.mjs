@@ -48,9 +48,9 @@ try {
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      'script-src': ["'self'", 'cdn.jsdelivr.net'],
-      'style-src': ["'self'", "'unsafe-inline'", 'fonts.googleapis.com', 'cdn.jsdelivr.net'],
-      'connect-src': ["'self'", 'data: blob:', 'cdn.jsdelivr.net'],
+      'script-src': ["'self'"],
+      'style-src': ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
+      'connect-src': ["'self'", 'data: blob:'],
       'img-src': ["'self'", 'https: data: blob:']
     }
   }
@@ -156,9 +156,11 @@ app.use(
   )
 )
 
-// Public static
-app.use(`/public/v${Config.packageJson().version}`, Express.static('./public', { maxAge: cfg.static_maxage_sec * 1000 }))
-app.use(`/public/v${Config.packageJson().version}/shoelace`, Express.static('./node_modules/@shoelace-style/shoelace', { maxAge: cfg.static_maxage_sec * 1000 }))
+// Static resources
+app.use(`/public/v${Config.packageJson().version}`, Express.static('./public', { maxAge: cfg.static_maxage_sec * 1000, immutable: true }))
+
+// Shoelace has its own version
+app.use(`/public/shoelace/v${Config.shoelacePackageJson().version}/`, Express.static('./node_modules/@shoelace-style/shoelace', { maxAge: '1y', immutable: true }))
 
 // Log errors
 const logErrors = RFS.createStream(`${cfg.log.dir}/passweaver-gui-errors.log`, {
@@ -177,6 +179,7 @@ function commonParams (req) {
     viewitem: req.query?.viewitem ?? '',
     theme: req?.session?.theme ?? 'light',
     version: Config.packageJson().version,
+    slversion: Config.shoelacePackageJson().version,
     manage_folders: req.session.admin || Config.get().folders.user_managed
   }
 }
