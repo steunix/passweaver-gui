@@ -265,7 +265,7 @@ tr:hover td {
 
 .searchboxmore {
   position: absolute;
-  bottom: 1em;
+  top: 1em;
   right: 2em;
   visibility: hidden;
 }
