@@ -12,10 +12,8 @@ export function init () {
   }
 
   JH.event('#globalsearch', 'sl-blur', async (ev) => {
-    setTimeout(() => {
-      searchBoxHide()
-      JH.value('#globalsearch', '')
-    }, 100)
+    searchBoxHide()
+    JH.value('#globalsearch', '')
   })
 
   JH.event('#globalsearch', 'sl-clear', async (ev) => {
@@ -49,8 +47,10 @@ export function init () {
 }
 
 function searchBoxHide () {
-  JH.query('#searchbox').style.visibility = 'hidden'
-  JH.query('#searchboxmore').style.visibility = 'hidden'
+  setTimeout(() => {
+    JH.query('#searchbox').style.visibility = 'hidden'
+    JH.query('#searchboxmore').style.visibility = 'hidden'
+  }, 250)
 }
 
 async function fillItems () {
@@ -67,7 +67,6 @@ async function fillItems () {
   `<tr>
     <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
     <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
-    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
     <td></td>
     <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
     </tr>`
@@ -79,10 +78,7 @@ async function fillItems () {
 
     for (const itm of body.data) {
       row +=
-        `<tr id='row-${itm.id}' data-id='${itm.id}'>` +
-        '<td>' +
-        `<sl-icon-button id='folder-${itm.id}' title='Open folder' name='folder2-open' data-id='${itm.id}'></sl-icon-button>` +
-        '</td>' +
+        `<tr id='sbrow-${itm.id}' data-id='${itm.id}'>` +
         `<td class='border-start border-end'>${itm.folder.description}</td>` +
         '<td class="border-end">'
       if (itm.type) {
@@ -97,13 +93,14 @@ async function fillItems () {
     }
     JH.query('#searchbox tbody').innerHTML = row
     JH.query('#searchboxmore').style.visibility = body.data.length > maxResults ? 'visible' : 'hidden'
+
+    // Install event handlers
+    JH.event('#searchbox tbody [id^=sbrow]', 'mousedown', (ev) => {
+      console.log('redirecting')
+      window.location = `/pages/items?viewitem=${ev.currentTarget.getAttribute('data-id')}`
+    })
   } else {
     JH.query('#searchbox tbody').innerHTML = '<tr><td colspan="99">No matching item found</td></tr>'
     JH.query('#searchboxmore').style.visibility = 'hidden'
   }
-
-  // Install event handlers
-  JH.event('#searchbox tbody [id^=folder]', 'mousedown', (ev) => {
-    window.location = `/pages/items?viewitem=${ev.currentTarget.getAttribute('data-id')}`
-  })
 }
