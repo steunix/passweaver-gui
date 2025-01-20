@@ -389,7 +389,8 @@ app.get('/pages/onetimesecret', async (req, res) => {
   req.locals = {
     pagetitle: 'One time secret',
     pageid: 'onetimesecret',
-    expire_human: expireHuman
+    expire_human: expireHuman,
+    data: req?.query?.data || ''
   }
 
   res.render('onetimesecret', { ...req.locals, ...commonParams(req) })

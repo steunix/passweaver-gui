@@ -25,6 +25,10 @@ async function passwordGenerateNoSymbols () {
   }
 }
 
+function tokenGenerate (data) {
+  window.location = `/pages/onetimesecret?data=${encodeURIComponent(data)}`
+}
+
 await passwordGenerate()
 await passwordGenerateNoSymbols()
 
@@ -34,4 +38,12 @@ JH.event('#generate', 'click', async (ev) => {
 
 JH.event('#generatens', 'click', async (ev) => {
   await passwordGenerateNoSymbols()
+})
+
+JH.event('#onetime', 'click', async (ev) => {
+  tokenGenerate(JH.value('#generatedpassword'))
+})
+
+JH.event('#onetimens', 'click', async (ev) => {
+  tokenGenerate(JH.value('#generatedpasswordns'))
 })
