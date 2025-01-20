@@ -34,15 +34,8 @@ async function fillItems () {
   const search = JH.value('#itemsearch')
   const type = JH.value('#typesearch')
 
-  JH.query('#itemstable tbody').innerHTML =
-  `<tr>
-    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
-    <td></td>
-    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
-    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
-    <td></td>
-    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
-    </tr>`
+  PW.setTableLoading('#itemstable')
+
   const resp = await JH.http(`/api/itemslist/${Folders.currentFolder()}?search=${search}&type=${type}`)
 
   // Folder may not be accessible
@@ -176,7 +169,7 @@ async function fillActivity (itm) {
 }
 
 async function folderClicked () {
-  JH.query('#itemstable tbody').innerHTML = ''
+  PW.setTableLoading('#itemstable')
 
   // Read folder info
   JH.value('#typesearch', '')
@@ -569,12 +562,13 @@ async function passwordCopied (item) {
 }
 
 async function fillFolders () {
+  PW.setTreeviewLoading('#folderstree')
+
   const resp = await JH.http(`/api/users/${PW.getUser()}/folders`)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
-  JH.query('sl-tree').innerHTML = ''
   const body = await resp.json()
   if (JH.query('#viewitem')) {
     // Avoid loading from local.storage if viewitem exists

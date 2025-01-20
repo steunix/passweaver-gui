@@ -11,6 +11,8 @@ async function fillGroups () {
     return
   }
 
+  PW.setTableLoading('#groupstable')
+
   const resp = await JH.http(`/api/foldergroups/${Folders.currentFolder()}`)
   if (!await PW.checkResponse(resp)) {
     return
@@ -49,6 +51,8 @@ async function fillGroups () {
 }
 
 async function folderClicked () {
+  PW.setTableLoading('#groupstable')
+
   const resp = await JH.http(`/api/folders/${Folders.currentFolder()}`)
 
   // Folder may not be accessible
@@ -117,13 +121,14 @@ async function groupPickerChoosen (group) {
 }
 
 async function fillFolders () {
+  PW.setTreeviewLoading('#folderstree')
+
   const resp = await JH.http(`/api/users/${PW.getUser()}/folders`)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
-  JH.query('sl-tree').innerHTML = ''
   PW.treeFill('folderstree', body.data, folderClicked, true)
   await dndSetup()
 }

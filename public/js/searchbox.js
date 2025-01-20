@@ -55,13 +55,6 @@ function searchBoxHide () {
 
 async function fillItems () {
   const maxResults = 10
-  const search = JH.value('#globalsearch')
-  const resp = await JH.http(`/api/itemssearch?search=${search}&limit=${maxResults + 1}`)
-
-  // Folder may not be accessible
-  if (!await PW.checkResponse(resp, 403)) {
-    return
-  }
 
   JH.query('#searchbox tbody').innerHTML =
   `<tr>
@@ -70,6 +63,14 @@ async function fillItems () {
     <td></td>
     <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
     </tr>`
+
+  const search = JH.value('#globalsearch')
+  const resp = await JH.http(`/api/itemssearch?search=${search}&limit=${maxResults + 1}`)
+
+  // Folder may not be accessible
+  if (!await PW.checkResponse(resp, 403)) {
+    return
+  }
 
   const body = await resp.json()
   if (body.data.length) {

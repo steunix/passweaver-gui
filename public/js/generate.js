@@ -2,6 +2,7 @@ import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 
 async function passwordGenerate () {
+  JH.value('#generatedpassword', 'Generating...')
   const resp = await JH.http('/api/generatepassword')
   if (!await PW.checkResponse(resp)) {
     return
@@ -14,6 +15,7 @@ async function passwordGenerate () {
 }
 
 async function passwordGenerateNoSymbols () {
+  JH.value('#generatedpasswordns', 'Generating...')
   const resp = await JH.http('/api/generatepassword?symbols=false')
   if (!await PW.checkResponse(resp)) {
     return

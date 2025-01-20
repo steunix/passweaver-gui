@@ -8,6 +8,8 @@ let userSearchTimeout
 let currentUser = ''
 
 async function fillUsers () {
+  PW.setTableLoading('#userstable')
+
   const search = JH.value('#usersearch')
   const resp = await JH.http(`/api/userslist?search=${search}`)
   if (!await PW.checkResponse(resp)) {
@@ -106,7 +108,7 @@ async function fillActivity (usr) {
 }
 
 async function fillGroups () {
-  JH.query('#groupstable tbody').innerHTML = ''
+  PW.setTableLoading('#groupstable')
 
   const resp = await JH.http(`/api/usergroups/${currentUser}`)
   if (!await PW.checkResponse(resp)) {
