@@ -17,6 +17,8 @@ export function hide () {
 }
 
 async function search () {
+  PW.setTableLoading('#userpickertable')
+
   const text = JH.value('#userpickersearch')
 
   const resp = await JH.http(`/api/userslist/?search=${encodeURIComponent(text)}`)

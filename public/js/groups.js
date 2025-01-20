@@ -15,7 +15,7 @@ function currentGroup () {
 }
 
 async function fillUsers () {
-  JH.query('#userstable tbody').innerHTML = ''
+  PW.setTableLoading('#userstable')
 
   const resp = await fetch(`/api/userslist/${currentGroup()}`)
 
@@ -236,8 +236,9 @@ async function showGroupFolders () {
     return
   }
 
-  JH.query('#generictree').innerHTML = 'Loading...'
+  PW.setTreeviewLoading('#generictree')
   JH.query('#folderstreedialog').show()
+
   const resp = await JH.http(`/api/groups/${grp}/folders`)
   if (!await PW.checkResponse(resp)) {
     return

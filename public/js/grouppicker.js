@@ -17,6 +17,8 @@ export function hide () {
 }
 
 async function search () {
+  PW.setTableLoading('#grouppickertable')
+
   const text = JH.value('#grouppickersearch')
 
   const resp = await JH.http(`/api/groupslist/?search=${encodeURIComponent(text)}`)
