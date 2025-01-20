@@ -25,6 +25,8 @@ async function fillItemTypes () {
 }
 
 async function fillItems () {
+  PW.setTableLoading('#itemstable')
+
   const type = JH.value('#typesearch')
 
   const search = JH.value('#itemsearch')
@@ -34,15 +36,6 @@ async function fillItems () {
   if (!await PW.checkResponse(resp, 403)) {
     return
   }
-
-  JH.query('#itemstable tbody').innerHTML =
-  `<tr>
-    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
-    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
-    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
-    <td></td>
-    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
-    </tr>`
 
   const body = await resp.json()
   if (body.data.length) {
@@ -140,9 +133,7 @@ JH.event('#itemsearch', 'sl-input', async (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }
-  if (JH.value('#itemsearch').length > 2) {
-    itemSearchTimeout = setTimeout(async () => { await fillItems() }, 250)
-  }
+  itemSearchTimeout = setTimeout(async () => { await fillItems() }, 250)
 })
 
 JH.event('#typesearch', 'sl-change', () => {

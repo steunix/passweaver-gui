@@ -5,6 +5,16 @@ import * as SB from './searchbox.js'
 
 const itemFound = new Event('pw-item-found')
 
+export function setTableLoading (selector) {
+  JH.query(`${selector} tbody`).innerHTML =
+    "<tr><td colspan='99'><sl-skeleton effect='pulse'></sl-skeleton></td></tr>"
+}
+
+export function setTreeviewLoading (selector) {
+  JH.query(`${selector}`).innerHTML =
+    '<sl-tree-item>Loading...</sl-tree-item>'
+}
+
 export function confirmDialog (title, text, callback, savetext, savevariant) {
   const dialog = JH.query('#confirmdialog')
   dialog.setAttribute('label', title)
@@ -81,6 +91,7 @@ export async function checkResponse (resp, ignoreStatus) {
 }
 
 export async function treeFill (id, data, callback, uselocalstorage) {
+  JH.query(`#${id}`).innerHTML = ''
   treeFillItems(id, data, null)
 
   if (!JH.attribute(`#${id}`, 'evt-sl-selection-change')) {
@@ -252,6 +263,9 @@ if (JH.query('#pageid')) {
 
 export function simpleTreeFill (id, data) {
   simpleTreeFillItems(id, data)
+  if (data.length === 0) {
+    JH.query(`#${id}`).innerHTML = '<sl-tree-item>No data found</sl-tree-item>'
+  }
 }
 
 export function simpleTreeFillItems (id, data) {
