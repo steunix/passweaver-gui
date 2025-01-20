@@ -13,6 +13,9 @@
       <sl-button title='Generate a new password' id="generate">
         <sl-icon name="magic" slot="prefix"></sl-icon>
       </sl-button>
+      <sl-button title='Generate a one time secret' id="onetime">
+        <sl-icon name="1-circle" slot="prefix"></sl-icon>
+      </sl-button>
       <sl-copy-button title='Copy to clipboard' from="generatedpassword.value"></sl-copy-button>
     </sl-button-group>
     <h3>Without symbols</h3>
@@ -20,6 +23,9 @@
       <sl-input type="text" style="width:15rem;" readonly="readonly" id="generatedpasswordns"></sl-input>
       <sl-button title='Generate a new password' id="generatens">
         <sl-icon name="magic" slot="prefix"></sl-icon>
+      </sl-button>
+      <sl-button title='Generate a one time secret' id="onetimens">
+        <sl-icon name="1-circle" slot="prefix"></sl-icon>
       </sl-button>
       <sl-copy-button title='Copy to clipboard' from="generatedpasswordns.value"></sl-copy-button>
     </sl-button-group>
