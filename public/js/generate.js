@@ -25,8 +25,8 @@ async function passwordGenerateNoSymbols () {
   }
 }
 
-function tokenGenerate (secret) {
-  window.location = `/pages/onetimesecret?secret=${encodeURIComponent(secret)}`
+function tokenGenerate (data) {
+  window.location = `/pages/onetimesecret?data=${encodeURIComponent(data)}`
 }
 
 await passwordGenerate()
