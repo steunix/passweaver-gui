@@ -157,7 +157,10 @@ app.use(
 )
 
 // Static resources
-app.use(`/public/v${Config.packageJson().version}`, Express.static('./public', { maxAge: cfg.static_maxage_sec * 1000, immutable: true }))
+app.use(`/public/v${Config.packageJson().version}`, Express.static('./public', {
+  maxAge: (process.env?.NODE_ENV === 'production' ? '1y' : 0),
+  immutable: true
+}))
 
 // Shoelace has its own version
 app.use(`/public/shoelace/v${Config.shoelacePackageJson().version}/`, Express.static('./node_modules/@shoelace-style/shoelace', { maxAge: '1y', immutable: true }))
