@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 export function resolveQuery (query) {
   let el
   if (typeof query === 'string') {
@@ -104,12 +102,12 @@ export function attribute (query, attr, value) {
 export function draggable (query, type) {
   const el = resolveQuery(query)
 
-  if (type === undefined) {
-    type = 'default'
-  }
-
   if (el === null) {
     return
+  }
+
+  if (type === undefined) {
+    type = 'default'
   }
 
   for (const e of el) {
@@ -190,6 +188,10 @@ export async function http (url, payload, method) {
 export function parents (query, selector) {
   const elems = resolveQuery(query)
 
+  if (elems === null) {
+    return
+  }
+
   const parents = []
   for (let el of elems) {
     while ((el = el.parentNode) && el !== document) {
@@ -198,5 +200,3 @@ export function parents (query, selector) {
   }
   return parents
 }
-
-/* eslint-enable no-unused-vars */
