@@ -8,7 +8,7 @@ PassWeaver-GUI is an opensource project, released under MIT license. See [Techni
 
 - Personal folders for each user
 - Share one-time secrets with anyone, even if they have not an account
-- One-time share complete items
+- One-time share items
 - Share items through permalinks
 - Folder level permissions
 - User groups
@@ -16,11 +16,11 @@ PassWeaver-GUI is an opensource project, released under MIT license. See [Techni
 - Both LDAP and local authentication
 - CSP compliant pages
 - Quick and clean user interface
-- Light or dark theme
+- Light and dark theme setting for each user
 
 # Forewords
 
-PassWeaver-GUI is a complete frontend to PassWeaver-API; everything you can do with your items, folders, users and groups is defined in PassWeaver-API. See docs at [this link](https://steunix.github.io/passweaver-api/) for a detailed description of what PassWeaver-API is.
+PassWeaver-GUI is a complete frontend for PassWeaver-API; everything you can do with your items, folders, users and groups is defined in PassWeaver-API. See docs at [this link](https://steunix.github.io/passweaver-api/) for a detailed description of what PassWeaver-API is.
 
 While PassWeaver-API is a generic and independent backend API, PassWeaver-GUI is its perfect UI companion.
 
@@ -42,7 +42,7 @@ In a few words:
 
 ## Login
 
-Access the site using your credentials
+Access the site using your credentials:
 
 ![Items page](assets/passweavergui-login-000.jpeg)
 
@@ -50,7 +50,7 @@ Access the site using your credentials
 
 In the top bar you can fast search items: the top 10 results will be shown:
 
-![Items page](assets/passweavergui-searchbox-000.jpeg)
+![Items page](assets/passweavergui-searchbox-001.jpeg)
 
 ## Items
 
@@ -69,7 +69,7 @@ In "Items" right pane you have a list of folder items with the following actions
 - One-time share link (see below)
 - View history
 
-You have also buttons for showing or coping the passwords without the need of showing them.
+You have also buttons for showing or copying the passwords without the need of showing them.
 
 You can create items using the blue "plus" button.
 
@@ -79,7 +79,7 @@ By double clicking the item title, or by clicking on details or edit buttons, th
 
 ![Item dialog](assets/passweavergui-item-001.jpeg)
 
-In the header, you have button to copy the item permalink and to show the item history.
+In the header, you have a button to copy the item permalink and to show the item history.
 
 When creating a new item, only the "Title" field is mandatory, all the remaining fields are optional.
 
@@ -118,8 +118,9 @@ In the actions column, you have buttons to view the item, copy the permalink or 
 ## Generator
 
 This page lets you generate a random secure password both with symbols or without. You can copy it or generate another one by clicking on the wand button.
+By clicking the circled "1" icon, you can rapidly create a one time token (see below).
 
-![Generator page](assets/passweavergui-generator-001.jpeg)
+![Generator page](assets/passweavergui-generator-002.jpeg)
 
 ## One time secret
 
@@ -150,7 +151,9 @@ In the "Preferences" page, you can:
 - Change your login password (if Authentication is `local`, see [Users](#Users) )
 - Change your personal folder password
 
-![Preferences](assets/passweavergui-preferences-001.jpeg)
+![Preferences](assets/passweavergui-preferences-1-001.jpeg)
+![Password](assets/passweavergui-preferences-2-001.jpeg)
+![Personal password folder](assets/passweavergui-preferences-3-001.jpeg)
 
 # Admin pages
 
@@ -215,9 +218,9 @@ From this page you can create or delete groups, and add/remove members. You can 
 
 ## Info
 
-This page gives you some information about API and GUI status
+This page displays some information about API and GUI status:
 
-![Info page](assets/passweavergui-info-001.jpeg)
+![Info page](assets/passweavergui-info-002.jpeg)
 
 ## Settings
 
@@ -231,7 +234,7 @@ In the "Cache" pane, you can reset the API cache causing it to reload users perm
 
 ![Item types](assets/passweavergui-settings-2-000.jpeg)
 
-This operation is needed only after directly operating on the API database... which is not advisable anyway.
+Clearing the cache is needed only after directly operating on the database... which is not advisable anyway.
 
 # Install and run
 
@@ -241,26 +244,22 @@ In order to be able to install PassWeaver API, you need:
   - NodeJS and npm
   - A running PassWeaver-API
 
-A running Redis instance is warmly advised.
+A running Redis instance is warmly advised for a production environment.
 
 ## Install
 
-Download the source, and install all dependencies with npm:
+- Download the latest release from [GitHub lastest release](https://github.com/steunix/passweaver-gui/releases/latest)
+- Install all dependencies with npm:
 
-`npm install`
-
-## Environment
-
-If you're installing a production environment, don't forget to set variable `NODE_ENV` to `production`, Passweaver GUI and some of its dependencies
-use that variable to optimize operations.
+`npm ci`
 
 ## Configure
 
 Copy `config-skel.json` to `config.json` and adjust the options:
 
 - `listen`:
-  - `port`: port to bind
-  - `host`: IP address to bind (or blank for any address)
+  - `port`: port to bind the HTTP server
+  - `host`: IP address to bind the HTTP server (or blank for any address)
 - `passweaverapi_url`: URL for PassWeaver-API (/api/v1 included)
 - `company_name`: Company name
 - `log`:
@@ -273,17 +272,27 @@ Copy `config-skel.json` to `config.json` and adjust the options:
   - `private_key`: certificate private key
   - `hsts`: enable HSTS (true/false)
 - `onetimetokens`:
-  - `default_hours`: Default one-time tockens duration in hours
+  - `default_hours`: Default one-time tokens duration in hours
 - `redis`:
-  - `enabled`: true or false; if false, internal cache is uses
+  - `enabled`: true or false; if false, internal cache is used (not good for production)
   - `url`: Redis url
 - `folders`:
   - `user_managed`: if yes, non-admin can create and delete folders
 
+## Environment
+
+If you're installing a production environment, don't forget to set variable `NODE_ENV` to `production`, Passweaver GUI and some of its dependencies use this variable to optimize operations.
+
+# Run
+
+You can run PassWeaver GUI by executing:
+
+`npm start`
+
 # Technical specs
 
 Passweaver-GUI is developed in NodeJS and uses these great libs (among others):
-- `ExpressJS` (version 5)
+- `ExpressJS` (v5)
 - `EJS` for HTML templating
 - `Shoelace` WEB components
 - `Morgan` for logging
