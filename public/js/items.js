@@ -182,11 +182,6 @@ async function folderClicked () {
   }
 
   const body = await resp.json()
-  if (body.httpStatusCode === 403) {
-    JH.query('#itemstable tbody').innerHTML = '<tr><td colspan="99">No item found</td></tr>'
-    return
-  }
-
   if (body.data && body.data.permissions) {
     Folders.currentPermissions.read = body.data.permissions.read
     Folders.currentPermissions.write = body.data.permissions.write
@@ -211,6 +206,8 @@ async function folderClicked () {
   // Load items
   if (Folders.currentPermissions.read) {
     await fillItems()
+  } else {
+    JH.query('#itemstable tbody').innerHTML = '<tr><td colspan="99">No item found</td></tr>'
   }
 
   if (Folders.currentPermissions.write) {
