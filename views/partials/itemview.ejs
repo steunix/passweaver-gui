@@ -6,15 +6,15 @@
   <sl-select label="Type" id="viewtype" name="viewtype" disabled></sl-select>
   <sl-textarea label="Description" id="viewdescription" name="viewdescription" readonly></sl-textarea>
   <sl-input label="Email" id="viewemail" name="viewemail" readonly>
-    <sl-copy-button slot="suffix" from="viewemail.value"></sl-copy-button>
+    <sl-copy-button slot="suffix" title='Copy to clipboard' from="viewemail.value"></sl-copy-button>
   </sl-input>
   <sl-input label="URL / Host" id="viewurl" name="viewurl" readonly>
-    <sl-copy-button slot="suffix" from="viewurl.value"></sl-copy-button>
+    <sl-copy-button slot="suffix" title='Copy to clipboard' from="viewurl.value"></sl-copy-button>
   </sl-input>
   <sl-input label="User" id="viewuser" name="viewuser" readonly>
-    <sl-copy-button slot="suffix" from="viewuser.value"></sl-copy-button>
+    <sl-copy-button slot="suffix" title='Copy to clipboard' from="viewuser.value"></sl-copy-button>
   </sl-input>
   <sl-input label="Password" id="viewpassword" name="viewpassword" type="password" password-toggle readonly>
-    <sl-copy-button slot="suffix" id="itemviewcopypassword" from="viewpassword.value"></sl-copy-button>
+    <sl-copy-button slot="suffix" title='Copy to clipboard' id="itemviewcopypassword" from="viewpassword.value"></sl-copy-button>
   </sl-input>
 </sl-dialog>
