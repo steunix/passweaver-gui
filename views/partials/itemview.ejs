@@ -5,12 +5,16 @@
   <sl-input label="Title" id="viewtitle" name="viewtitle" readonly></sl-input>
   <sl-select label="Type" id="viewtype" name="viewtype" disabled></sl-select>
   <sl-textarea label="Description" id="viewdescription" name="viewdescription" readonly></sl-textarea>
-  <sl-input label="Email" id="viewemail" name="viewemail" style="display:inline-block;width:calc(100% - 2.5rem);" readonly></sl-input>
-  <sl-copy-button from="viewemail.value"></sl-copy-button>
-  <sl-input label="URL / Host" id="viewurl" name="viewurl" readonly style="display:inline-block;width:calc(100% - 2.5rem);"></sl-input>
-  <sl-copy-button from="viewurl.value"></sl-copy-button>
-  <sl-input label="User" id="viewuser" name="viewuser" style="display:inline-block;width:calc(100% - 2.5rem);" readonly></sl-input>
-  <sl-copy-button from="viewuser.value"></sl-copy-button>
-  <sl-input label="Password" id="viewpassword" name="viewpassword" style="display:inline-block;width:calc(100% - 2.5rem);" type="password" password-toggle readonly></sl-input>
-  <sl-copy-button id="itemviewcopypassword" from="viewpassword.value"></sl-copy-button>
+  <sl-input label="Email" id="viewemail" name="viewemail" readonly>
+    <sl-copy-button slot="suffix" from="viewemail.value"></sl-copy-button>
+  </sl-input>
+  <sl-input label="URL / Host" id="viewurl" name="viewurl" readonly>
+    <sl-copy-button slot="suffix" from="viewurl.value"></sl-copy-button>
+  </sl-input>
+  <sl-input label="User" id="viewuser" name="viewuser" readonly>
+    <sl-copy-button slot="suffix" from="viewuser.value"></sl-copy-button>
+  </sl-input>
+  <sl-input label="Password" id="viewpassword" name="viewpassword" type="password" password-toggle readonly>
+    <sl-copy-button slot="suffix" id="itemviewcopypassword" from="viewpassword.value"></sl-copy-button>
+  </sl-input>
 </sl-dialog>
