@@ -22,7 +22,6 @@ const configSchema = {
     },
     passweaverapi_url: { type: 'string' },
     company_name: { type: 'string' },
-    static_maxage_sec: { type: 'integer', minimum: 0 },
     log: {
       type: 'object',
       properties: {
@@ -65,7 +64,7 @@ const configSchema = {
       required: ['user_managed']
     }
   },
-  required: ['listen', 'passweaverapi_url', 'company_name', 'static_maxage_sec', 'https', 'log', 'onetimetokens', 'redis', 'folders']
+  required: ['listen', 'passweaverapi_url', 'company_name', 'https', 'log', 'onetimetokens', 'redis', 'folders']
 }
 
 // Reads package.json

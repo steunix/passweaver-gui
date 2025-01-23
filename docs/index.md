@@ -263,7 +263,6 @@ Copy `config-skel.json` to `config.json` and adjust the options:
   - `host`: IP address to bind (or blank for any address)
 - `passweaverapi_url`: URL for PassWeaver-API (/api/v1 included)
 - `company_name`: Company name
-- `static_maxage_sec`: Static assets (JS/CSS) cache max-age (in seconds)
 - `log`:
   - `dir`: Logs directory. It will be created if necessary.
   - `rotation`: Rotation interval. For example, "12h" or "1d"
