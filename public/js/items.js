@@ -40,6 +40,7 @@ async function fillItems () {
 
   // Folder may not be accessible
   if (!await PW.checkResponse(resp, [403, 412, 417])) {
+    JH.query('#itemstable tbody').innerHTML = '<tr><td colspan="99">No item found</td></tr>'
     return
   }
 
@@ -73,7 +74,7 @@ async function fillItems () {
         row += `<sl-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></sl-icon-button>`
       }
       row += `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`
-      row += `<sl-icon-button id='onetime-${itm.id}' title='Share once' name='1-circle' data-id='${itm.id}'></sl-icon-button>`
+      row += `<sl-icon-button id='onetime-${itm.id}' title='One time share' name='1-circle' data-id='${itm.id}'></sl-icon-button>`
       row += `<sl-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></sl-icon-button>`
       row += '</td>'
       row += '<td class="border-end">'
@@ -181,6 +182,11 @@ async function folderClicked () {
   }
 
   const body = await resp.json()
+  if (body.httpStatusCode === 403) {
+    JH.query('#itemstable tbody').innerHTML = '<tr><td colspan="99">No item found</td></tr>'
+    return
+  }
+
   if (body.data && body.data.permissions) {
     Folders.currentPermissions.read = body.data.permissions.read
     Folders.currentPermissions.write = body.data.permissions.write
