@@ -59,3 +59,5 @@ JH.event('#save', 'click', async (ev) => {
   JH.query('#result').style.visibility = 'visible'
   PW.showToast('success', 'Link created')
 })
+
+enableSave()
