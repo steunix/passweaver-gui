@@ -32,12 +32,12 @@ async function fillUsers () {
         `<sl-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></sl-icon-button>` +
         `<sl-icon-button id='folders-${itm.id}' title='Visible folders' name='folder2-open' data-id='${itm.id}'></sl-icon-button>` +
         '</td>' +
-        `<td class='border-start'>${itm.login}</td>` +
-        `<td>${itm.lastname}</td>` +
-        `<td>${itm.firstname}</td>` +
-        `<td>${itm.email}</td>` +
-        `<td>${itm.locale}</td>` +
-        `<td>${itm.authmethod}</td>` +
+        `<td class='border-start'>${JH.sanitize(itm.login)}</td>` +
+        `<td>${JH.sanitize(itm.lastname)}</td>` +
+        `<td>${JH.sanitize(itm.firstname)}</td>` +
+        `<td>${JH.sanitize(itm.email)}</td>` +
+        `<td>${JH.sanitize(itm.locale)}</td>` +
+        `<td>${JH.sanitize(itm.authmethod)}</td>` +
         `<td class='text-center'><sl-icon name='${itm.active ? 'check-lg' : 'x-lg'}' style='color:${itm.active ? 'green' : 'red'}'/></td>` +
         '</tr>'
     }
@@ -125,7 +125,7 @@ async function fillGroups () {
       } else {
         row += '<td></td>'
       }
-      row += `<td>${itm.description}</td></tr>`
+      row += `<td>${JH.sanitize(itm.description)}</td></tr>`
     }
     JH.query('#groupstable tbody').innerHTML = row
 
