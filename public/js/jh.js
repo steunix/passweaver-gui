@@ -4,6 +4,10 @@
  * @returns
  */
 export function sanitize (str) {
+  if (!str) {
+    return ''
+  }
+
   const symbols = {
     '&': '&amp;',
     '<': '&lt;',
