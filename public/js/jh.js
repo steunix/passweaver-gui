@@ -15,6 +15,12 @@ export function resolveQuery (query) {
  * @returns
  */
 export function query (query) {
+  if (!query) {
+    return []
+  }
+  if (typeof query === 'object') {
+    return query
+  }
   return document.querySelector(query)
 }
 
@@ -24,6 +30,12 @@ export function query (query) {
  * @returns
  */
 export function queryAll (query) {
+  if (!query) {
+    return []
+  }
+  if (typeof query === 'object') {
+    return query
+  }
   return document.querySelectorAll(query)
 }
 

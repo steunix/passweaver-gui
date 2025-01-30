@@ -6,7 +6,7 @@ import * as SB from './searchbox.js'
 const itemFound = new Event('pw-item-found')
 
 export function setTableLoading (selector) {
-  JH.query(`${selector} tbody`).innerHTML =
+  JH.query(selector).querySelector('tbody').innerHTML =
     "<tr><td colspan='99'><sl-skeleton effect='pulse'></sl-skeleton></td></tr>"
 }
 
