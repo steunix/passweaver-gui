@@ -138,7 +138,7 @@ export function treeFillItems (id, data, mainid) {
       props += ' expanded'
     }
 
-    const html = `<sl-tree-item id='${newid}' data-id='${item.id}' ${props} data-description='${item.description}'>${item.description}</sl-tree-item>`
+    const html = `<sl-tree-item id='${newid}' data-id='${item.id}' ${props} data-description='${JH.sanitize(item.description)}'>${JH.sanitize(item.description)}</sl-tree-item>`
     const cont = new DOMParser().parseFromString(html, 'text/html')
     const newitem = cont.querySelector('body').firstChild
 
@@ -282,7 +282,7 @@ export function simpleTreeFillItems (id, data) {
       badge = '<sl-badge style="margin-left:0.5em;" pill variant="success">RW</sl-badge>'
     }
 
-    const html = `<sl-tree-item id='${newid}' data-id='${item.id}' expanded data-description='${item.description}'>${item.description}${badge}</sl-tree-item>`
+    const html = `<sl-tree-item id='${newid}' data-id='${item.id}' expanded data-description='${JH.sanitize(item.description)}'>${JH.sanitize(item.description)}${badge}</sl-tree-item>`
     const cont = new DOMParser().parseFromString(html, 'text/html')
     const newitem = cont.querySelector('body').firstChild
 
