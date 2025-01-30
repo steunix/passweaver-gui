@@ -79,10 +79,10 @@ async function fillItems () {
       row += '</td>'
       row += '<td class="border-end">'
       if (itm.type) {
-        row += `<sl-icon name='${itm.itemtype.icon}' title='${itm.itemtype.description}'></sl-icon>`
+        row += `<sl-icon name='${itm.itemtype.icon}' title='${JH.sanitize(itm.itemtype.description)}'></sl-icon>`
       }
-      row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end itemtitle'>${itm.title}</td>`
-      row += `<td id='user-${itm.id}'>${itm.metadata}</td>`
+      row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end itemtitle'>${JH.sanitize(itm.title)}</td>`
+      row += `<td id='user-${itm.id}'>${JH.sanitize(itm.metadata)}</td>`
       row += `<td class='border-end'><sl-copy-button title='Copy user to clipboard' from='user-${itm.id}'></sl-copy-button></td>`
       row += `<td id='password-${itm.id}'>****</td>`
       row += `<td><sl-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></sl-copy-button></td>`
@@ -541,7 +541,7 @@ async function passwordShow (ev) {
 
   const body = await resp.json()
   body.data.data = JSON.parse(body.data.data)
-  JH.query(`#password-${item}`).innerHTML = body.data.data.password
+  JH.query(`#password-${item}`).innerHTML = JH.sanitize(body.data.data.password)
 
   passwordAccessed(item)
 }

@@ -1,3 +1,30 @@
+/**
+ * Sanitize HTML tags
+ * @param {string} str String to sanitize
+ * @returns
+ */
+export function sanitize (str) {
+  const symbols = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    '\'': '&apos;'
+  }
+  for (const symbol in symbols) {
+    if (str.indexOf(symbol) >= 0) {
+      const newStr = str.replaceAll(symbol, symbols[symbol])
+      return newStr
+    }
+  }
+  return str
+}
+
+/**
+ * Normalize query object, returning an array
+ * @param {any} query Object/string to normalize
+ * @returns
+ */
 export function resolveQuery (query) {
   let el
   if (typeof query === 'string') {
