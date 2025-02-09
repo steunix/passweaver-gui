@@ -78,6 +78,7 @@ const domCache = {
   personalPasswordSetDialog: JH.query('#personalpasswordset'),
   personalPasswordSetButton: JH.query('#personalpasswordsetbutton'),
   personalPasswordSetCancel: JH.query('#personalpasswordsetcancel'),
+  personalPasswordAsk: JH.query('#personalpasswordask'),
   foldersTree: JH.query('#folderstree'),
   viewItem: JH.query('#viewitem'),
   userSearch: JH.query('#searchuser'),
@@ -234,9 +235,9 @@ async function fillActivity (itm) {
     for (const evt of body.data) {
       row += '<tr>'
       row += `<td id='event-${evt.id}' data-id='${evt.id}'>${evt.timestamp}</td>`
-      row += `<td>${evt.user_description || ''}</td>`
-      row += `<td>${evt.action_description || ''}</td>`
-      row += `<td>${evt.note || ''}</td>`
+      row += `<td>${JH.sanitize(evt.user_description || '')}</td>`
+      row += `<td>${JH.sanitize(evt.action_description || '')}</td>`
+      row += `<td>${JH.sanitize(evt.note || '')}</td>`
     }
     domCache.itemActivityTableBody.innerHTML += row
   } else {
@@ -577,7 +578,7 @@ async function personalPasswordCreate () {
 async function personalPasswordSet () {
   const data = {
     _csrf: PW.getCSRFToken(),
-    password: JH.value('#personalpasswordask')
+    password: JH.value(domCache.personalPasswordAsk)
   }
 
   domCache.personalPasswordSetDialog.hide()
@@ -708,7 +709,7 @@ JH.event(domCache.searchTypeSelect, 'sl-change', fillItems)
 JH.event(domCache.newItemButton, 'click', itemCreateDialog)
 
 JH.event(domCache.itemCreateCancelButton, 'click', (ev) => {
-  JH.query('#itemcreatedialog').hide()
+  domCache.itemCreateDialog.hide()
 })
 JH.event(domCache.itemCreateSaveButton, 'click', itemCreate)
 
@@ -717,7 +718,7 @@ JH.event(domCache.newTitle, 'keyup', itemCreateEnable)
 // Edit
 JH.event(domCache.editTitle, 'keyup', itemEditEnable)
 JH.event(domCache.itemEditCancelButton, 'click', (ev) => {
-  JH.query('#itemeditdialog').hide()
+  domCache.itemEditDialog.hide()
 })
 JH.event(domCache.itemEditSaveButton, 'click', itemEdit)
 
@@ -766,7 +767,7 @@ addEventListener('folders-refresh', async (ev) => {
 })
 
 addEventListener('pw-item-found', async (ev) => {
-  folderClicked()
+  await folderClicked()
 })
 
 JH.event(domCache.itemActivityButton, 'click', (ev) => {
