@@ -16,7 +16,7 @@
     "standard": "17.1.2"
   },
   "dependencies": {
-    "@shoelace-style/shoelace": "2.19.1",
+    "@shoelace-style/shoelace": "2.20.0",
     "compression": "1.7.5",
     "connect-redis": "8.0.1",
     "ejs": "3.1.10",
@@ -30,7 +30,7 @@
     "morgan": "1.10.0",
     "redis": "4.7.0",
     "rotating-file-stream": "3.2.5",
-    "semver": "7.7.0",
+    "semver": "7.7.1",
     "serve-favicon": "2.5.0"
   }
 }
