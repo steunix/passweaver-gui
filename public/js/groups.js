@@ -75,20 +75,20 @@ async function fillUsers () {
 
   // Group cannot be removed if not empty
   if (body.data.length) {
-    domCache.groupRemoveButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.groupRemoveButton)
   } else {
-    domCache.groupRemoveButton.removeAttribute('disabled')
+    JH.enable(domCache.groupRemoveButton)
   }
 }
 
 async function groupClicked (groupid) {
   fillUsers()
   if (groupid === '0' || groupid === 'E') {
-    domCache.newMemberButton.setAttribute('disabled', 'disabled')
-    domCache.removeAllMembersButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.newMemberButton)
+    JH.disable(domCache.removeAllMembersButton)
   } else {
-    domCache.newMemberButton.removeAttribute('disabled')
-    domCache.removeAllMembersButton.removeAttribute('disabled')
+    JH.enable(domCache.newMemberButton)
+    JH.enable(domCache.removeAllMembersButton)
   }
 
   const resp = await JH.http(`/api/groups/${currentGroup()}`)
@@ -102,9 +102,9 @@ async function groupClicked (groupid) {
 
 function groupCreateEnable () {
   if (JH.value(domCache.groupCreateDescription) === '') {
-    domCache.groupCreateSaveButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.groupCreateSaveButton)
   } else {
-    domCache.groupCreateSaveButton.removeAttribute('disabled')
+    JH.enable(domCache.groupCreateSaveButton)
   }
 }
 
@@ -180,9 +180,9 @@ async function groupEdit () {
 
 function groupEditEnable () {
   if (JH.value(domCache.groupEditDescription) === '') {
-    domCache.groupEditSaveButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.groupEditSaveButton)
   } else {
-    domCache.groupEditSaveButton.removeAttribute('disabled')
+    JH.enable(domCache.groupEditSaveButton)
   }
 }
 

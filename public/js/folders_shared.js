@@ -47,9 +47,9 @@ function folderCreateDialog () {
 function folderCreateEnable () {
   const descr = JH.value(domCache.folderCreateDescription)
   if (descr === '') {
-    domCache.folderCreateSaveButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.folderCreateSaveButton)
   } else {
-    domCache.folderCreateSaveButton.removeAttribute('disabled')
+    JH.enable(domCache.folderCreateSaveButton)
   }
 }
 
@@ -89,9 +89,9 @@ function folderEditDialog () {
 function folderEditEnable () {
   const descr = JH.value(domCache.folderEditDescription)
   if (descr === '') {
-    domCache.folderEditSaveButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.folderEditSaveButton)
   } else {
-    domCache.folderEditSaveButton.removeAttribute('disabled')
+    JH.enable(domCache.folderEditSaveButton)
   }
 }
 

@@ -94,6 +94,40 @@ export function event (query, event, callback) {
 }
 
 /**
+ * Enable elements
+ * @param {any} query Query
+ * @returns
+ */
+export function enable (query) {
+  const el = resolveQuery(query)
+
+  if (el === null) {
+    return
+  }
+
+  for (const e of el) {
+    e.removeAttribute('disabled')
+  }
+}
+
+/**
+ * Disable elements
+ * @param {any} query Query
+ * @returns
+ */
+export function disable (query) {
+  const el = resolveQuery(query)
+
+  if (el === null) {
+    return
+  }
+
+  for (const e of el) {
+    e.setAttribute('disabled', 'disabled')
+  }
+}
+
+/**
  * Wrapper for Element.value getter/setter
  * @param {string} query Query
  * @returns

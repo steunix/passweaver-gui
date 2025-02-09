@@ -203,11 +203,6 @@ async function fillItems () {
     passwordShow(ev)
   })
 
-  // Folder cannot be removed if not empty
-  if (JH.query("#itemstable [id^='row-']")) {
-    domCache.folderRemoveButton.setAttribute('disabled', 'disabled')
-  }
-
   // Setup drag'n'drop
   JH.draggable("#itemstable [id^='row-']", 'item')
 }
@@ -242,7 +237,7 @@ async function fillActivity (itm) {
     domCache.itemActivityTableBody.innerHTML += row
   } else {
     domCache.itemActivityTableBody.innerHTML += '<tr><td colspan="99">No other activity found</td></tr>'
-    domCache.itemActivityLoadButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.itemActivityLoadButton)
   }
 }
 
@@ -289,15 +284,20 @@ async function folderClicked () {
   }
 
   if (Folders.currentPermissions.write) {
-    domCache.newItemButton.removeAttribute('disabled')
-    domCache.folderCreateButton.removeAttribute('disabled')
-    domCache.folderRemoveButton.removeAttribute('disabled')
-    domCache.folderEditButton.removeAttribute('disabled')
+    JH.enable(domCache.newItemButton)
+    JH.enable(domCache.folderCreateButton)
+    JH.enable(domCache.folderRemoveButton)
+    JH.enable(domCache.folderEditButton)
   } else {
-    domCache.newItemButton.setAttribute('disabled', 'disabled')
-    domCache.folderCreateButton.setAttribute('disabled', 'disabled')
-    domCache.folderRemoveButton.setAttribute('disabled', 'disabled')
-    domCache.folderEditButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.newItemButton)
+    JH.disable(domCache.folderCreateButton)
+    JH.disable(domCache.folderRemoveButton)
+    JH.disable(domCache.folderEditButton)
+  }
+
+  // Folder cannot be removed if not empty
+  if (JH.query("#itemstable [id^='row-']")) {
+    JH.disable(domCache.folderRemoveButton)
   }
 }
 
@@ -340,9 +340,9 @@ async function itemCreate () {
 
 function itemCreateEnable () {
   if (JH.value(domCache.newTitle) === '') {
-    domCache.itemCreateSaveButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.itemCreateSaveButton)
   } else {
-    domCache.itemCreateSaveButton.removeAttribute('disabled')
+    JH.enable(domCache.itemCreateSaveButton)
   }
 }
 
@@ -395,9 +395,9 @@ async function itemEditFill (item) {
 
 function itemEditEnable () {
   if (JH.value(domCache.editTitle) === '') {
-    domCache.editItemSaveButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.editItemSaveButton)
   } else {
-    domCache.editItemSaveButton.removeAttribute('disabled')
+    JH.enable(domCache.editItemSaveButton)
   }
 }
 
@@ -502,10 +502,10 @@ async function itemMove (id, folder) {
 
 function enableShareSave () {
   if (JH.value(domCache.scope) === '2' && JH.value(domCache.scopeUser) === '') {
-    domCache.shareSaveButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.shareSaveButton)
     return
   }
-  domCache.shareSaveButton.removeAttribute('disabled')
+  JH.enable(domCache.shareSaveButton)
 }
 
 async function itemOneTimeShareDialog (itm) {
@@ -552,9 +552,9 @@ function personalPasswordCreateEnable () {
   if (JH.value(domCache.personalPasswordNew) === '' ||
       JH.value(domCache.personalPasswordNew).length < 8 ||
       JH.value(domCache.personalPasswordNew) !== JH.value(domCache.personalPasswordNewConfirm)) {
-    domCache.personalPasswordNewButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.personalPasswordNewButton)
   } else {
-    domCache.personalPasswordNewButton.removeAttribute('disabled')
+    JH.enable(domCache.personalPasswordNewButton)
   }
 }
 
@@ -679,7 +679,7 @@ async function itemCreateGeneratePassword () {
 async function itemActivity (itm) {
   domCache.itemActivityTableBody.innerHTML = ''
   domCache.itemActivityDialog.show()
-  domCache.itemActivityLoadButton.removeAttribute('disabled')
+  JH.enable(domCache.itemActivityLoadButton)
 
   JH.value(domCache.itemActivityId, itm)
   fillActivity(itm)

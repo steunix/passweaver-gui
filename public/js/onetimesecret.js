@@ -16,14 +16,14 @@ const domCache = {
 
 function enableSave () {
   if (JH.value(domCache.dataInput) === '') {
-    domCache.saveButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.saveButton)
     return
   }
   if (JH.value(domCache.scopeInput) === '2' && JH.value(domCache.scopeUserInput) === '') {
-    domCache.saveButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.saveButton)
     return
   }
-  domCache.saveButton.removeAttribute('disabled')
+  JH.enable(domCache.saveButton)
 }
 
 function userChoosen (userid, userdesc) {

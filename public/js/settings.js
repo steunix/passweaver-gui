@@ -64,9 +64,9 @@ function itemTypeCreateDialog () {
 
 function itemTypeCreateEnable () {
   if (JH.value(domCache.itemTypeNewDescription) === '') {
-    domCache.itemTypeNewSaveButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.itemTypeNewSaveButton)
   } else {
-    domCache.itemTypeNewSaveButton.removeAttribute('disabled')
+    JH.enable(domCache.itemTypeNewSaveButton)
   }
 }
 
@@ -122,9 +122,9 @@ async function itemTypeEditDialog (itemtype) {
 
 function itemTypeEditEnable () {
   if (JH.value(domCache.itemTypeEditDescription) === '') {
-    domCache.itemTypeEditSaveButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.itemTypeEditSaveButton)
   } else {
-    domCache.itemTypeEditSaveButton.removeAttribute('disabled')
+    JH.enable(domCache.itemTypeEditSaveButton)
   }
 }
 

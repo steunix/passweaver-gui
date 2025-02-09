@@ -48,9 +48,9 @@ async function fillGroups () {
 
       // Check if groups can be added
       if (!itm.canmodify) {
-        domCache.groupsAddButton.setAttribute('disabled', 'disabled')
+        JH.disable(domCache.groupsAddButton)
       } else {
-        domCache.groupsAddButton.removeAttribute('disabled')
+        JH.enable(domCache.groupsAddButton)
       }
     }
     domCache.groupsTableBody.innerHTML = row
@@ -81,13 +81,13 @@ async function folderClicked () {
   }
 
   if (Folders.currentPermissions.write) {
-    domCache.folderCreateButton.removeAttribute('disabled')
-    domCache.folderRemoveButton.removeAttribute('disabled')
-    domCache.folderEditButton.removeAttribute('disabled')
+    JH.enable(domCache.folderCreateButton)
+    JH.enable(domCache.folderRemoveButton)
+    JH.enable(domCache.folderEditButton)
   } else {
-    domCache.folderCreateButton.setAttribute('disabled', 'disabled')
-    domCache.folderRemoveButton.setAttribute('disabled', 'disabled')
-    domCache.folderEditButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.folderCreateButton)
+    JH.disable(domCache.folderRemoveButton)
+    JH.disable(domCache.folderEditButton)
   }
 
   domCache.sectionTitle.innerHTML = `${body.data.description} - Groups`

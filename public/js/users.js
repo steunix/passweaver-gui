@@ -143,7 +143,7 @@ async function fillActivity (usr) {
     domCache.userActivityTableBody.innerHTML += row
   } else {
     domCache.userActivityTableBody.innerHTML += '<tr><td colspan="99">No other activity found</td></tr>'
-    domCache.userActivityLoadMore.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.userActivityLoadMore)
   }
 }
 
@@ -213,9 +213,9 @@ function userCreateEnable () {
       JH.value(domCache.newPassword) === '' ||
       JH.value(domCache.newLocale) === '' ||
       JH.value(domCache.newAuthMethod) === '') {
-    domCache.userCreateButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.userCreateButton)
   } else {
-    domCache.userCreateButton.removeAttribute('disabled')
+    JH.enable(domCache.userCreateButton)
   }
 }
 
@@ -260,9 +260,9 @@ function userEditEnable () {
       JH.value(domCache.editLastName) === '' ||
       JH.value(domCache.editLocale) === '' ||
       JH.value(domCache.editAuthMethod) === '') {
-    domCache.userEditButton.setAttribute('disabled', 'disabled')
+    JH.disable(domCache.userEditButton)
   } else {
-    domCache.userEditButton.removeAttribute('disabled')
+    JH.enable(domCache.userEditButton)
   }
 }
 
@@ -327,7 +327,7 @@ async function groupPickerChoosen (group) {
 async function userActivity (itm) {
   domCache.userActivityTableBody.innerHTML = ''
   domCache.userActivityDialog.show()
-  domCache.userActivityLoadMore.removeAttribute('disabled')
+  JH.disable(domCache.userActivityLoadMore)
   fillActivity(itm)
 }
 
