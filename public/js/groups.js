@@ -34,8 +34,8 @@ async function fillUsers () {
         row += '<td></td>'
       }
       row += `<td class='border-start border-end'>${usr.login}</td>` +
-      `<td>${usr.lastname}</td>` +
-      `<td>${usr.firstname}</td>`
+      `<td>${JH.sanitize(usr.lastname)}</td>` +
+      `<td>${JH.sanitize(usr.firstname)}</td>`
     }
     JH.query('#userstable tbody').innerHTML = row
 

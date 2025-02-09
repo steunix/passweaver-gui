@@ -57,13 +57,13 @@ async function fillItems () {
         `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>` +
         `<sl-icon-button id='folder-${itm.id}' title='Open folder' name='folder2-open' data-id='${itm.id}'></sl-icon-button>` +
         '</td>' +
-        `<td class='border-start border-end'>${itm.folder.description}</td>` +
+        `<td class='border-start border-end'>${JH.sanitize(itm.folder.description)}</td>` +
         '<td class="border-end">'
       if (itm.type) {
-        row += `<sl-icon name='${itm.itemtype.icon}' title='${itm.itemtype.description}'></sl-icon>`
+        row += `<sl-icon name='${itm.itemtype.icon}' title='${JH.sanitize(itm.itemtype.description)}'></sl-icon>`
       }
       row += '</td>'
-      row += `<td class='itemtitle'>${itm.title}</td></tr>`
+      row += `<td class='itemtitle'>${JH.sanitize(itm.title)}</td></tr>`
     }
     domCache.itemsTableBody.innerHTML = row
   } else {
