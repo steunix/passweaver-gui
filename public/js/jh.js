@@ -1,5 +1,5 @@
 /**
- * Sanitize HTML tags
+ * Sanitize HTML tags in string
  * @param {string} str String to sanitize
  * @returns
  */
@@ -17,31 +17,27 @@ export function sanitize (str) {
   }
   for (const symbol in symbols) {
     if (str.indexOf(symbol) >= 0) {
-      const newStr = str.replaceAll(symbol, symbols[symbol])
-      return newStr
+      str = str.replaceAll(symbol, symbols[symbol])
     }
   }
   return str
 }
 
 /**
- * Normalize query object, returning an array
+ * Normalize query object, returning an array of DOM elements
  * @param {any} query Object/string to normalize
  * @returns
  */
 export function resolveQuery (query) {
-  let el
   if (typeof query === 'string') {
-    el = document.querySelectorAll(query)
-  } else {
-    if (Array.isArray(query)) {
-      el = query
-    } else {
-      el = [query]
-    }
+    return document.querySelectorAll(query)
   }
 
-  return el
+  if (Array.isArray(query)) {
+    return query
+  }
+
+  return [query]
 }
 
 /**
@@ -133,20 +129,20 @@ export function disable (query) {
  * @returns
  */
 export function value (query, value) {
-  const el = resolveQuery(query)
+  const elements = resolveQuery(query)
 
-  if (el === null) {
-    return
+  if (!elements) {
+    return undefined
   }
 
   if (value === undefined) {
     // Getter, on the first element
-    return el[0].value === undefined ? '' : el[0].value
-  } else {
-    // Setter, on all elements
-    for (const e of el) {
-      e.value = value
-    }
+    return elements[0]?.value ?? ''
+  }
+
+  // Setter, on all elements
+  for (const element of elements) {
+    element.value = value
   }
 }
 
@@ -242,26 +238,16 @@ export function dropTarget (query, dropCallback) {
  */
 export async function http (url, payload, method) {
   const settings = {
-    method: 'GET'
-  }
-  if (payload !== undefined) {
-    settings.method = 'POST'
-  }
-  if (method !== undefined) {
-    settings.method = method
-  }
-  if (payload !== undefined) {
-    settings.body = JSON.stringify(payload)
-    settings.headers = {
-      'Content-Type': 'application/json'
-    }
+    method: method || (payload ? 'POST' : 'GET'),
+    headers: payload ? { 'Content-Type': 'application/json' } : undefined,
+    body: payload ? JSON.stringify(payload) : undefined
   }
 
   return await fetch(url, settings)
 }
 
 /**
- * Returns element parents
+ * Returns and array of parent elements
  * @param {object} el
  * @param {string} selector
  * @returns
