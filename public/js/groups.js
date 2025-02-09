@@ -2,7 +2,7 @@
 
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
-import * as UPicker from './userpicker.js'
+import * as CPicker from './picker.js'
 
 let groupSearchTimeout
 
@@ -310,7 +310,7 @@ JH.event(domCache.newMemberButton, 'click', (ev) => {
     PW.errorDialog('Select a group in the tree')
     return
   }
-  UPicker.show(userPickerChoosen)
+  UPicker.show()
 })
 
 JH.event(domCache.removeAllMembersButton, 'click', groupRemoveAllMembers)
@@ -341,3 +341,6 @@ JH.event(domCache.groupFolders, 'click', showGroupFolders)
 addEventListener('pw-item-found', async (ev) => {
   await fillUsers()
 })
+
+// Picker
+const UPicker = new CPicker.Picker('users', userPickerChoosen)

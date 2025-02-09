@@ -2,7 +2,7 @@
 
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
-import * as GPicker from './grouppicker.js'
+import * as CPicker from './picker.js'
 
 let userSearchTimeout
 let currentUser = ''
@@ -428,7 +428,7 @@ JH.event(domCache.groupsAddButton, 'click', (ev) => {
     PW.errorDialog('Select a user from the list')
     return
   }
-  GPicker.show(groupPickerChoosen)
+  GPicker.show()
 })
 
 JH.event(domCache.userActivityLoadMore, 'click', (ev) => {
@@ -438,3 +438,6 @@ JH.event(domCache.userActivityLoadMore, 'click', (ev) => {
 JH.event(domCache.groupsCopyButton, 'click', groupsCopy)
 JH.event(domCache.groupsPasteButton, 'click', groupsPaste)
 JH.event(domCache.groupsReplaceButton, 'click', groupsReplace)
+
+// Picker
+const GPicker = new CPicker.Picker('groups', groupPickerChoosen)

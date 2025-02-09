@@ -1,6 +1,6 @@
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
-import * as UPicker from './userpicker.js'
+import * as CPicker from './picker.js'
 
 const domCache = {
   scopeInput: JH.query('#scope'),
@@ -38,7 +38,7 @@ JH.event(domCache.dataInput, 'keyup', async (ev) => {
 })
 
 JH.event(domCache.userSelectButton, 'click', (ev) => {
-  UPicker.show(userChoosen)
+  UPicker.show()
 })
 
 JH.event(domCache.scopeInput, 'sl-change', (ev) => {
@@ -73,3 +73,6 @@ JH.event(domCache.saveButton, 'click', async (ev) => {
 })
 
 enableSave()
+
+// Picker
+const UPicker = new CPicker.Picker('users', userChoosen)

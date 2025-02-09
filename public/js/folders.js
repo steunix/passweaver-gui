@@ -2,7 +2,7 @@
 
 import * as JH from './jh.js'
 import * as Folders from './folders_shared.js'
-import * as GPicker from './grouppicker.js'
+import * as CPicker from './picker.js'
 import * as PW from './passweaver-gui.js'
 
 const domCache = {
@@ -158,7 +158,7 @@ async function dndSetup () {
 }
 
 JH.event(domCache.groupsAddButton, 'click', (ev) => {
-  GPicker.show(groupPickerChoosen)
+  GPicker.show()
 })
 addEventListener('folders-refresh', async (ev) => {
   await fillFolders()
@@ -166,3 +166,6 @@ addEventListener('folders-refresh', async (ev) => {
 addEventListener('pw-item-found', async (ev) => {
   await folderClicked()
 })
+
+// Picker
+const GPicker = new CPicker.Picker('groups', groupPickerChoosen)

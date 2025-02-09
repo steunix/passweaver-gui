@@ -3,7 +3,7 @@
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 import * as Folders from './folders_shared.js'
-import * as UPicker from './userpicker.js'
+import * as CPicker from './picker.js'
 
 let itemSearchTimeout
 let itemTypesOptions
@@ -825,5 +825,8 @@ function userChoosen (userid, userdesc) {
 }
 
 JH.event(domCache.userSearch, 'click', (ev) => {
-  UPicker.show(userChoosen)
+  UPicker.show()
 })
+
+// Picker
+const UPicker = new CPicker.Picker('users', userChoosen)
