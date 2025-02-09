@@ -77,7 +77,7 @@ Some actions may be unavailable if you don't have write permissions on the folde
 
 By double clicking the item title, or by clicking on details or edit buttons, the following popup is shown.
 
-![Item dialog](assets/passweavergui-item-001.jpeg)
+![Item dialog](assets/passweavergui-item-002.jpeg)
 
 In the header, you have a button to copy the item permalink and to show the item history.
 
@@ -120,7 +120,7 @@ In the actions column, you have buttons to view the item, copy the permalink or 
 This page lets you generate a random secure password both with symbols or without. You can copy it or generate another one by clicking on the wand button.
 By clicking the circled "1" icon, you can rapidly create a one time token (see below).
 
-![Generator page](assets/passweavergui-generator-002.jpeg)
+![Generator page](assets/passweavergui-generator-003.jpeg)
 
 ## One time secret
 
