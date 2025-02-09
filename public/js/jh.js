@@ -34,7 +34,11 @@ export function resolveQuery (query) {
   if (typeof query === 'string') {
     el = document.querySelectorAll(query)
   } else {
-    el = [query]
+    if (Array.isArray(query)) {
+      el = query
+    } else {
+      el = [query]
+    }
   }
 
   return el

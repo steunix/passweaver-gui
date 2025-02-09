@@ -694,15 +694,15 @@ export async function personalUnlock (req, session, password) {
  * @param {string} password Password
  * @returns
  */
-export async function personalPasswordChange (req, session, password) {
+export async function personalPasswordChange (session, password) {
   const resp = await passWeaverAPI(session, METHOD.patch, '/personal/password', {
     password
   })
 
   // If successfull, unlock personal folder directly
   if (resp.httpStatusCode === 200) {
-    req.session.jwt = resp.data.jwt
-    req.session.save()
+    session.jwt = resp.data.jwt
+    session.save()
   }
 
   return resp

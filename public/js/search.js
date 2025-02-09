@@ -10,6 +10,7 @@ const domCache = {
   itemsTableBody: JH.query('#itemstable tbody'),
   search: JH.query('#itemsearch'),
   itemViewDialog: JH.query('#itemviewdialog'),
+  itemViewType: JH.query('#viewtype'),
   passwordCopy: JH.query('#itemviewcopypassword'),
   passwordView: JH.query('#viewpassword')
 }
@@ -30,6 +31,7 @@ async function fillItemTypes () {
     itemTypesOptions += '</sl-option>'
   }
 
+  domCache.itemViewType.innerHTML = itemTypesOptions
   domCache.typeSelect.innerHTML = itemTypesOptions
 }
 
