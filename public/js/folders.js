@@ -5,13 +5,24 @@ import * as Folders from './folders_shared.js'
 import * as GPicker from './grouppicker.js'
 import * as PW from './passweaver-gui.js'
 
+const domCache = {
+  sectionTitle: JH.query('#sectiontitle'),
+  folderCreateButton: JH.query('#foldercreate'),
+  folderRemoveButton: JH.query('#folderremove'),
+  folderEditButton: JH.query('#folderedit'),
+  groupsTable: JH.query('#groupstable'),
+  groupsTableBody: JH.query('#groupstable tbody'),
+  groupsAddButton: JH.query('#addgroup'),
+  foldersTree: JH.query('#folderstree')
+}
+
 async function fillGroups () {
-  JH.query('#groupstable tbody').innerHTML = ''
+  domCache.groupsTableBody.innerHTML = ''
   if (!Folders.currentFolder()) {
     return
   }
 
-  PW.setTableLoading('#groupstable')
+  PW.setTableLoading(domCache.groupsTable)
 
   const resp = await JH.http(`/api/foldergroups/${Folders.currentFolder()}`)
   if (!await PW.checkResponse(resp)) {
@@ -37,12 +48,12 @@ async function fillGroups () {
 
       // Check if groups can be added
       if (!itm.canmodify) {
-        JH.query('#addgroup').setAttribute('disabled', 'disabled')
+        domCache.groupsAddButton.setAttribute('disabled', 'disabled')
       } else {
-        JH.query('#addgroup').removeAttribute('disabled')
+        domCache.groupsAddButton.removeAttribute('disabled')
       }
     }
-    JH.query('#groupstable tbody').innerHTML = row
+    domCache.groupsTableBody.innerHTML = row
 
     // Event handlers
     JH.event('[id^=removegroup]', 'click', groupRemove)
@@ -51,7 +62,7 @@ async function fillGroups () {
 }
 
 async function folderClicked () {
-  PW.setTableLoading('#groupstable')
+  PW.setTableLoading(domCache.groupsTable)
 
   const resp = await JH.http(`/api/folders/${Folders.currentFolder()}`)
 
@@ -70,16 +81,16 @@ async function folderClicked () {
   }
 
   if (Folders.currentPermissions.write) {
-    JH.query('#foldercreate').removeAttribute('disabled')
-    JH.query('#folderremove').removeAttribute('disabled')
-    JH.query('#folderedit').removeAttribute('disabled')
+    domCache.folderCreateButton.removeAttribute('disabled')
+    domCache.folderRemoveButton.removeAttribute('disabled')
+    domCache.folderEditButton.removeAttribute('disabled')
   } else {
-    JH.query('#foldercreate').setAttribute('disabled', 'disabled')
-    JH.query('#folderremove').setAttribute('disabled', 'disabled')
-    JH.query('#folderedit').setAttribute('disabled', 'disabled')
+    domCache.folderCreateButton.setAttribute('disabled', 'disabled')
+    domCache.folderRemoveButton.setAttribute('disabled', 'disabled')
+    domCache.folderEditButton.setAttribute('disabled', 'disabled')
   }
 
-  JH.query('#sectiontitle').innerHTML = `${body.data.description} - Groups`
+  domCache.sectionTitle.innerHTML = `${body.data.description} - Groups`
 
   // Load groups
   await fillGroups()
@@ -121,7 +132,7 @@ async function groupPickerChoosen (group) {
 }
 
 async function fillFolders () {
-  PW.setTreeviewLoading('#folderstree')
+  PW.setTreeviewLoading(domCache.foldersTree)
 
   const resp = await JH.http(`/api/users/${PW.getUser()}/folders`)
   if (!await PW.checkResponse(resp)) {
@@ -146,12 +157,12 @@ async function dndSetup () {
   })
 }
 
-JH.event('#addgroup', 'click', (ev) => {
+JH.event(domCache.groupsAddButton, 'click', (ev) => {
   GPicker.show(groupPickerChoosen)
 })
 addEventListener('folders-refresh', async (ev) => {
   await fillFolders()
 })
 addEventListener('pw-item-found', async (ev) => {
-  folderClicked()
+  await folderClicked()
 })

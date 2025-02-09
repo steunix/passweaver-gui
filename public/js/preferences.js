@@ -43,7 +43,7 @@ JH.event([domCache.newPassword1, domCache.newPassword2], 'keyup', async (ev) => 
   if (JH.value(domCache.newPassword1) !== JH.value(domCache.newPassword2) || JH.value(domCache.newPassword1).length < 8) {
     JH.attribute(domCache.passwordChangeButton, 'disabled', 'disabled')
   } else {
-    JH.query(domCache.passwordChangeButton).removeAttribute('disabled')
+    domCache.passwordChangeButton.removeAttribute('disabled')
   }
 })
 
@@ -65,7 +65,7 @@ JH.event([domCache.persNewPassword1, domCache.persNewPassword2], 'keyup', async 
   if (JH.value(domCache.persNewPassword1) !== JH.value(domCache.persNewPassword2) || JH.value(domCache.persNewPassword1).length < 8) {
     JH.attribute(domCache.persPasswordChangeButton, 'disabled', 'disabled')
   } else {
-    JH.query(domCache.persPasswordChangeButton).removeAttribute('disabled')
+    domCache.persPasswordChangeButton.removeAttribute('disabled')
   }
 })
 
