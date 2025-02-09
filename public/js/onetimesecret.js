@@ -4,7 +4,7 @@ import * as CPicker from './picker.js'
 
 const domCache = {
   scopeInput: JH.query('#scope'),
-  userInput: JH.query('#scopeuser'),
+  scopeUserInput: JH.query('#scopeuser'),
   userDescInput: JH.query('#scopeuserdesc'),
   userSelectButton: JH.query('#searchuser'),
   userSelectDiv: JH.query('#selectuser'),
@@ -19,7 +19,7 @@ function enableSave () {
     domCache.saveButton.setAttribute('disabled', 'disabled')
     return
   }
-  if (JH.value(domCache.scopeInput) === '2' && JH.value(domCache.scopeInput) === '') {
+  if (JH.value(domCache.scopeInput) === '2' && JH.value(domCache.scopeUserInput) === '') {
     domCache.saveButton.setAttribute('disabled', 'disabled')
     return
   }
@@ -27,7 +27,7 @@ function enableSave () {
 }
 
 function userChoosen (userid, userdesc) {
-  JH.value(domCache.userInput, userid)
+  JH.value(domCache.scopeUserInput, userid)
   JH.value(domCache.userDescInput, userdesc)
   UPicker.hide()
   enableSave()
@@ -46,7 +46,7 @@ JH.event(domCache.scopeInput, 'sl-change', (ev) => {
     domCache.userSelectDiv.style.visibility = 'visible'
   } else {
     domCache.userSelectDiv.style.visibility = 'hidden'
-    JH.value(domCache.userInput, '')
+    JH.value(domCache.scopeUserInput, '')
     JH.value(domCache.userDescInput, '')
   }
   enableSave()
@@ -57,7 +57,7 @@ JH.event(domCache.saveButton, 'click', async (ev) => {
     _csrf: PW.getCSRFToken(),
     data: JH.value(domCache.dataInput),
     scope: JH.value(domCache.scopeInput),
-    userid: JH.value(domCache.userInput)
+    userid: JH.value(domCache.scopeUserInput)
   }
 
   const resp = await JH.http('/api/onetimesecret', data)
