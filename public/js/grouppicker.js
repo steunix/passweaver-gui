@@ -4,29 +4,36 @@ import * as PW from './passweaver-gui.js'
 let groupPickerTimeout = 0
 let userCallback
 
+const domCache = {
+  dialog: JH.query('#grouppickerdialog'),
+  search: JH.query('#grouppickersearch'),
+  table: JH.query('#grouppickertable'),
+  tableBody: JH.query('#grouppickertable tbody')
+}
+
 export function show (callback) {
   userCallback = callback
-  JH.value('#grouppickersearch', '')
-  JH.query('#grouppickertable tbody').innerHTML = ''
-  JH.query('#grouppickerdialog').show()
+  domCache.search.value = ''
+  domCache.tableBody.innerHTML = ''
+  domCache.dialog.show()
   search()
 }
 
 export function hide () {
-  JH.query('#grouppickerdialog').hide()
+  domCache.dialog.hide()
 }
 
 async function search () {
-  PW.setTableLoading('#grouppickertable')
+  PW.setTableLoading(domCache.table)
 
-  const text = JH.value('#grouppickersearch')
+  const text = JH.value(domCache.search)
 
   const resp = await JH.http(`/api/groupslist/?search=${encodeURIComponent(text)}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
-  JH.query('#grouppickertable tbody').innerHTML = ''
+  domCache.tableBody.innerHTML = ''
   const body = await resp.json()
   if (body.data.length) {
     let row = ''
@@ -37,7 +44,7 @@ async function search () {
         `<td>${grp.description}</td>` +
         '</tr>'
     }
-    JH.query('#grouppickertable tbody').innerHTML = row
+    domCache.tableBody.innerHTML = row
 
     // Install event handlers
     JH.event('#grouppickertable tbody tr[id^=row]', 'dblclick', (ev) => {
@@ -49,7 +56,7 @@ async function search () {
   }
 }
 
-JH.event('#grouppickersearch', 'sl-input', (ev) => {
+JH.event(domCache.search, 'sl-input', (ev) => {
   if (groupPickerTimeout) {
     clearTimeout(groupPickerTimeout)
   }

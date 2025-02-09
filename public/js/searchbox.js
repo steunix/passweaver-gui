@@ -3,30 +3,37 @@ import * as PW from './passweaver-gui.js'
 
 let searchBoxTimeout
 
+const domCache = {
+  globalSearch: JH.query('#globalsearch'),
+  searchBox: JH.query('#searchbox'),
+  searchBoxBody: JH.query('#searchbox tbody'),
+  searchBoxMore: JH.query('#searchboxmore')
+}
+
 export function init () {
-  if (!JH.query('#globalsearch')) {
+  if (!domCache.globalSearch) {
     return
   }
-  if (!JH.query('#searchbox')) {
+  if (!domCache.searchBox) {
     return
   }
 
-  JH.event('#globalsearch', 'sl-blur', async (ev) => {
+  JH.event(domCache.globalSearch, 'sl-blur', async (ev) => {
     searchBoxHide()
-    JH.value('#globalsearch', '')
+    JH.value(domCache.globalSearch, '')
   })
 
-  JH.event('#globalsearch', 'sl-clear', async (ev) => {
+  JH.event(domCache.globalSearch, 'sl-clear', async (ev) => {
     searchBoxHide()
   })
 
-  JH.event('#searchboxmore', 'click', async (ev) => {
+  JH.event(domCache.searchBoxMore, 'click', async (ev) => {
     window.location = `/pages/search?search=${encodeURIComponent(JH.value('#globalsearch'))}`
   })
 
-  JH.event('#globalsearch', 'keyup', async (ev) => {
-    const searchLength = JH.value('#globalsearch').length
-    JH.query('#searchbox').style.visibility = searchLength === 0 ? 'hidden' : 'visible'
+  JH.event(domCache.globalSearch, 'keyup', async (ev) => {
+    const searchLength = JH.value(domCache.globalSearch).length
+    domCache.searchBox.style.visibility = searchLength === 0 ? 'hidden' : 'visible'
 
     if (searchLength === 0) {
       searchBoxHide()
@@ -41,30 +48,24 @@ export function init () {
 
   JH.event(document, 'keydown', (ev) => {
     if (ev.ctrlKey && ev.keyCode === 220) {
-      JH.query('#globalsearch').focus()
+      domCache.globalSearch.focus()
     }
   })
 }
 
 function searchBoxHide () {
   setTimeout(() => {
-    JH.query('#searchbox').style.visibility = 'hidden'
-    JH.query('#searchboxmore').style.visibility = 'hidden'
+    domCache.searchBox.style.visibility = 'hidden'
+    domCache.searchBoxMore.style.visibility = 'hidden'
   }, 250)
 }
 
 async function fillItems () {
   const maxResults = 10
 
-  JH.query('#searchbox tbody').innerHTML =
-  `<tr>
-    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
-    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
-    <td></td>
-    <td><sl-skeleton style='width:5rem;height:1rem;display:flex;'></sl-skeleton></td>
-    </tr>`
+  PW.setTableLoading(domCache.searchBox)
 
-  const search = JH.value('#globalsearch')
+  const search = JH.value(domCache.globalSearch)
   const resp = await JH.http(`/api/itemssearch?search=${search}&limit=${maxResults + 1}`)
 
   // Folder may not be accessible
@@ -92,8 +93,9 @@ async function fillItems () {
         break
       }
     }
-    JH.query('#searchbox tbody').innerHTML = row
-    JH.query('#searchboxmore').style.visibility = body.data.length > maxResults ? 'visible' : 'hidden'
+
+    domCache.searchBoxBody.innerHTML = row
+    domCache.searchBoxMore.style.visibility = body.data.length > maxResults ? 'visible' : 'hidden'
 
     // Install event handlers
     JH.event('#searchbox tbody [id^=sbrow]', 'mousedown', (ev) => {
@@ -101,7 +103,7 @@ async function fillItems () {
       window.location = `/pages/items?viewitem=${ev.currentTarget.getAttribute('data-id')}`
     })
   } else {
-    JH.query('#searchbox tbody').innerHTML = '<tr><td colspan="99">No matching item found</td></tr>'
-    JH.query('#searchboxmore').style.visibility = 'hidden'
+    domCache.searchBoxBody.innerHTML = '<tr><td colspan="99">No matching item found</td></tr>'
+    domCache.searchBoxMore.style.visibility = 'hidden'
   }
 }

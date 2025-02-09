@@ -4,29 +4,37 @@ import * as PW from './passweaver-gui.js'
 let userPickerTimeout = 0
 let userCallback
 
+const domCache = {
+  dialog: JH.query('#userpickerdialog'),
+  search: JH.query('#userpickersearch'),
+  table: JH.query('#userpickertable'),
+  tableBody: JH.query('#userpickertable tbody')
+}
+
 export function show (callback) {
   userCallback = callback
-  JH.value('#userpickersearch', '')
-  JH.query('#userpickertable tbody').innerHTML = ''
-  JH.query('#userpickerdialog').show()
+
+  domCache.search.value = ''
+  domCache.tableBody.innerHTML = ''
+  domCache.dialog.show()
   search()
 }
 
 export function hide () {
-  JH.query('#userpickerdialog').hide()
+  domCache.dialog.hide()
 }
 
 async function search () {
-  PW.setTableLoading('#userpickertable')
+  PW.setTableLoading(domCache.table)
 
-  const text = JH.value('#userpickersearch')
+  const text = JH.value(domCache.search)
 
   const resp = await JH.http(`/api/userslist/?search=${encodeURIComponent(text)}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
-  JH.query('#userpickertable tbody').innerHTML = ''
+  domCache.tableBody.innerHTML = ''
   const body = await resp.json()
   if (body.data.length) {
     let row = ''
@@ -49,7 +57,7 @@ async function search () {
   })
 }
 
-JH.event('#userpickersearch', 'sl-input', (ev) => {
+JH.event(domCache.search, 'sl-input', (ev) => {
   if (userPickerTimeout) {
     clearTimeout(userPickerTimeout)
   }
