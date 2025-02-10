@@ -2,9 +2,35 @@
 
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
-import * as UPicker from './userpicker.js'
+import * as CPicker from './picker.js'
 
 let groupSearchTimeout
+
+const domCache = {
+  sectionTitle: JH.query('#sectiontitle'),
+  groupsTree: JH.query('#groupstree'),
+  groupCreateButton: JH.query('#groupcreate'),
+  groupCreateDialog: JH.query('#groupcreatedialog'),
+  groupCreateSaveButton: JH.query('#groupcreatesave'),
+  groupCreateDescription: JH.query('#groupcreatedescription'),
+  groupCreateCancelButton: JH.query('#groupcreatecancel'),
+  groupRemoveButton: JH.query('#groupremove'),
+  groupEditButton: JH.query('#groupedit'),
+  groupEditDialog: JH.query('#groupeditdialog'),
+  groupEditDescription: JH.query('#groupeditdescription'),
+  groupEditSaveButton: JH.query('#groupeditsave'),
+  groupEditCancelButton: JH.query('#groupeditcancel'),
+  newMemberButton: JH.query('#newmember'),
+  removeAllMembersButton: JH.query('#removeallmembers'),
+  groupSearch: JH.query('#groupsearch'),
+  groupSearchNext: JH.query('#groupsearchnext'),
+  groupSearchPrevious: JH.query('#groupsearchprevious'),
+  groupFolders: JH.query('#groupfolders'),
+  usersTable: JH.query('#userstable'),
+  usersTableBody: JH.query('#userstable tbody'),
+  genericTree: JH.query('#generictree'),
+  foldersTreeDialog: JH.query('#folderstreedialog')
+}
 
 function currentGroup () {
   try {
@@ -15,7 +41,7 @@ function currentGroup () {
 }
 
 async function fillUsers () {
-  PW.setTableLoading('#userstable')
+  PW.setTableLoading(domCache.usersTable)
 
   const resp = await fetch(`/api/userslist/${currentGroup()}`)
 
@@ -37,32 +63,32 @@ async function fillUsers () {
       `<td>${JH.sanitize(usr.lastname)}</td>` +
       `<td>${JH.sanitize(usr.firstname)}</td>`
     }
-    JH.query('#userstable tbody').innerHTML = row
+    domCache.usersTableBody.innerHTML = row
 
     // Install event handlers
     JH.event('#userstable tbody [id^=remove]', 'click', (ev) => {
       groupRemoveUser(ev.currentTarget.getAttribute('data-id'))
     })
   } else {
-    JH.query('#userstable tbody').innerHTML = '<tr><td colspan="99">No user in this group</td></tr>'
+    domCache.usersTableBody.innerHTML = '<tr><td colspan="99">No user in this group</td></tr>'
   }
 
   // Group cannot be removed if not empty
   if (body.data.length) {
-    JH.query('#groupremove').setAttribute('disabled', 'disabled')
+    JH.disable(domCache.groupRemoveButton)
   } else {
-    JH.query('#groupremove').removeAttribute('disabled')
+    JH.enable(domCache.groupRemoveButton)
   }
 }
 
 async function groupClicked (groupid) {
   fillUsers()
   if (groupid === '0' || groupid === 'E') {
-    JH.query('#newmember').setAttribute('disabled', 'disabled')
-    JH.query('#removeallmembers').setAttribute('disabled', 'disabled')
+    JH.disable(domCache.newMemberButton)
+    JH.disable(domCache.removeAllMembersButton)
   } else {
-    JH.query('#newmember').removeAttribute('disabled')
-    JH.query('#removeallmembers').removeAttribute('disabled')
+    JH.enable(domCache.newMemberButton)
+    JH.enable(domCache.removeAllMembersButton)
   }
 
   const resp = await JH.http(`/api/groups/${currentGroup()}`)
@@ -71,27 +97,27 @@ async function groupClicked (groupid) {
   }
 
   const body = await resp.json()
-  JH.query('#sectiontitle').innerHTML = `${body.data.description} - Members`
+  domCache.sectionTitle.innerHTML = `${body.data.description} - Members`
 }
 
 function groupCreateEnable () {
-  if (JH.value('#groupcreatedescription') === '') {
-    JH.query('#groupcreatesave').setAttribute('disabled', 'disabled')
+  if (JH.value(domCache.groupCreateDescription) === '') {
+    JH.disable(domCache.groupCreateSaveButton)
   } else {
-    JH.query('#groupcreatesave').removeAttribute('disabled')
+    JH.enable(domCache.groupCreateSaveButton)
   }
 }
 
 function groupCreateDialog () {
   JH.value('#groupcreatedialog sl-input,sl-textarea', '')
   groupCreateEnable()
-  JH.query('#groupcreatedialog').show()
+  domCache.groupCreateDialog.show()
 }
 
 async function groupCreate () {
   const userdata = {
     _csrf: PW.getCSRFToken(),
-    description: JH.value('#groupcreatedescription')
+    description: JH.value(domCache.groupCreateDescription)
   }
 
   const resp = await JH.http(`/api/groupnew/${currentGroup()}`, userdata)
@@ -121,7 +147,7 @@ async function groupRemove () {
 
 function groupEditDialog () {
   groupEditFill()
-  JH.query('#groupeditdialog').show()
+  domCache.groupEditDialog.show()
 }
 
 async function groupEditFill () {
@@ -132,7 +158,7 @@ async function groupEditFill () {
 
   const body = await resp.json()
   if (body.status === 'success') {
-    JH.value('#groupeditdescription', body.data.description)
+    JH.value(domCache.groupEditDescription, body.data.description)
     groupEditEnable()
   }
 }
@@ -140,11 +166,12 @@ async function groupEditFill () {
 async function groupEdit () {
   const data = {
     _csrf: PW.getCSRFToken(),
-    description: JH.value('#groupeditdescription')
+    description: JH.value(domCache.groupEditDescription)
   }
 
   const resp = await JH.http(`/api/groupupdate/${currentGroup()}`, data)
   if (!await PW.checkResponse(resp)) {
+    domCache.groupEditDialog.hide()
     return
   }
 
@@ -152,10 +179,10 @@ async function groupEdit () {
 }
 
 function groupEditEnable () {
-  if (JH.value('#groupeditdescription') === '') {
-    JH.query('#groupeditsave').setAttribute('disabled', 'disabled')
+  if (JH.value(domCache.groupEditDescription) === '') {
+    JH.disable(domCache.groupEditSaveButton)
   } else {
-    JH.query('#groupeditsave').removeAttribute('disabled')
+    JH.enable(domCache.groupEditSaveButton)
   }
 }
 
@@ -221,7 +248,7 @@ async function groupMove (id, newparent) {
 }
 
 async function fillGroups () {
-  JH.query('#groupstree').innerHTML = ''
+  PW.setTreeviewLoading(domCache.groupsTree)
   const resp = await fetch('/api/groupstree')
   if (await PW.checkResponse(resp)) {
     const body = await resp.json()
@@ -236,8 +263,8 @@ async function showGroupFolders () {
     return
   }
 
-  PW.setTreeviewLoading('#generictree')
-  JH.query('#folderstreedialog').show()
+  PW.setTreeviewLoading(domCache.genericTree)
+  domCache.foldersTreeDialog.show()
 
   const resp = await JH.http(`/api/groups/${grp}/folders`)
   if (!await PW.checkResponse(resp)) {
@@ -262,73 +289,58 @@ async function dndSetup () {
 }
 
 // Event handlers
-JH.event('#groupremove', 'click', (ev) => {
-  groupRemove()
-})
-JH.event('#groupedit', 'click', (ev) => {
-  groupEditDialog()
-})
-JH.event('#groupcreate', 'click', (ev) => {
-  groupCreateDialog()
+JH.event(domCache.groupRemoveButton, 'click', groupRemove)
+JH.event(domCache.groupEditButton, 'click', groupEditDialog)
+JH.event(domCache.groupCreateButton, 'click', groupCreateDialog)
+
+JH.event(domCache.groupCreateDescription, 'keyup', groupCreateEnable)
+JH.event(domCache.groupCreateSaveButton, 'click', groupCreate)
+JH.event(domCache.groupCreateCancelButton, 'click', (ev) => {
+  domCache.groupCreateDialog.hide()
 })
 
-JH.event('#groupcreatedescription', 'keyup', (ev) => {
-  groupCreateEnable()
-})
-JH.event('#groupcreatesave', 'click', (ev) => {
-  groupCreate()
-})
-JH.event('#groupcreatecancel', 'click', (ev) => {
-  JH.query('#groupcreatedialog').hide()
+JH.event(domCache.groupEditDescription, 'keyup', groupEditEnable)
+JH.event(domCache.groupEditSaveButton, 'click', groupEdit)
+JH.event(domCache.groupEditCancelButton, 'click', (ev) => {
+  domCache.groupEditDialog.hide()
 })
 
-JH.event('#groupeditdescription', 'keyup', (ev) => {
-  groupEditEnable()
-})
-JH.event('#groupeditsave', 'click', (ev) => {
-  groupEdit()
-})
-JH.event('#groupeditcancel', 'click', (ev) => {
-  JH.query('#groupeditdialog').hide()
-})
-
-JH.event('#newmember', 'click', (ev) => {
+JH.event(domCache.newMemberButton, 'click', (ev) => {
   if (currentGroup() === '') {
     PW.errorDialog('Select a group in the tree')
     return
   }
-  UPicker.show(userPickerChoosen)
+  UPicker.show()
 })
 
-JH.event('#removeallmembers', 'click', (ev) => {
-  groupRemoveAllMembers()
-})
+JH.event(domCache.removeAllMembersButton, 'click', groupRemoveAllMembers)
 
-JH.event('#groupsearch', 'sl-input', (ev) => {
+JH.event(domCache.groupSearch, 'sl-input', (ev) => {
   if (groupSearchTimeout) {
     clearTimeout(groupSearchTimeout)
   }
   groupSearchTimeout = setTimeout(() => {
-    const search = JH.value('#groupsearch')
+    const search = JH.value(domCache.groupSearch)
     if (!PW.treeSearch('groupstree', search)) {
       PW.showToast('danger', 'Not found')
     }
   }, 250)
 })
-JH.event('#groupsearchnext', 'click', (ev) => {
-  const search = JH.value('#groupsearch')
+JH.event(domCache.groupSearchNext, 'click', (ev) => {
+  const search = JH.value(domCache.groupSearch)
   PW.treeSearchNext('groupstree', search)
 })
 
-JH.event('#groupsearchprevious', 'click', (ev) => {
-  const search = JH.value('#groupsearch')
+JH.event(domCache.groupSearchPrevious, 'click', (ev) => {
+  const search = JH.value(domCache.groupSearch)
   PW.treeSearchPrevious('groupstree', search)
 })
 
-JH.event('#groupfolders', 'click', (ev) => {
-  showGroupFolders()
-})
+JH.event(domCache.groupFolders, 'click', showGroupFolders)
 
 addEventListener('pw-item-found', async (ev) => {
   await fillUsers()
 })
+
+// Picker
+const UPicker = new CPicker.Picker('users', userPickerChoosen)

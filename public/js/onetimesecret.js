@@ -1,51 +1,63 @@
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
-import * as UPicker from './userpicker.js'
+import * as CPicker from './picker.js'
+
+const domCache = {
+  scopeInput: JH.query('#scope'),
+  scopeUserInput: JH.query('#scopeuser'),
+  userDescInput: JH.query('#scopeuserdesc'),
+  userSelectButton: JH.query('#searchuser'),
+  userSelectDiv: JH.query('#selectuser'),
+  saveButton: JH.query('#save'),
+  dataInput: JH.query('#data'),
+  link: JH.query('#link'),
+  resultDiv: JH.query('#result')
+}
 
 function enableSave () {
-  if (JH.value('#data') === '') {
-    JH.query('#save').setAttribute('disabled', 'disabled')
+  if (JH.value(domCache.dataInput) === '') {
+    JH.disable(domCache.saveButton)
     return
   }
-  if (JH.value('#scope') === '2' && JH.value('#scopeuser') === '') {
-    JH.query('#save').setAttribute('disabled', 'disabled')
+  if (JH.value(domCache.scopeInput) === '2' && JH.value(domCache.scopeUserInput) === '') {
+    JH.disable(domCache.saveButton)
     return
   }
-  JH.query('#save').removeAttribute('disabled')
+  JH.enable(domCache.saveButton)
 }
 
 function userChoosen (userid, userdesc) {
-  JH.value('#scopeuser', userid)
-  JH.value('#scopeuserdesc', userdesc)
+  JH.value(domCache.scopeUserInput, userid)
+  JH.value(domCache.userDescInput, userdesc)
   UPicker.hide()
   enableSave()
 }
 
-JH.event('#data', 'keyup', async (ev) => {
+JH.event(domCache.dataInput, 'keyup', async (ev) => {
   enableSave()
 })
 
-JH.event('#searchuser', 'click', (ev) => {
-  UPicker.show(userChoosen)
+JH.event(domCache.userSelectButton, 'click', (ev) => {
+  UPicker.show()
 })
 
-JH.event('#scope', 'sl-change', (ev) => {
-  if (JH.value('#scope') === '2') {
-    JH.query('#selectuser').style.visibility = 'visible'
+JH.event(domCache.scopeInput, 'sl-change', (ev) => {
+  if (JH.value(domCache.scopeInput) === '2') {
+    domCache.userSelectDiv.style.visibility = 'visible'
   } else {
-    JH.query('#selectuser').style.visibility = 'hidden'
-    JH.value('#scopeuser', '')
-    JH.value('#scopeuserdesc', '')
+    domCache.userSelectDiv.style.visibility = 'hidden'
+    JH.value(domCache.scopeUserInput, '')
+    JH.value(domCache.userDescInput, '')
   }
   enableSave()
 })
 
-JH.event('#save', 'click', async (ev) => {
+JH.event(domCache.saveButton, 'click', async (ev) => {
   const data = {
     _csrf: PW.getCSRFToken(),
-    data: JH.value('#data'),
-    scope: JH.value('#scope'),
-    userid: JH.value('#scopeuser')
+    data: JH.value(domCache.dataInput),
+    scope: JH.value(domCache.scopeInput),
+    userid: JH.value(domCache.scopeUserInput)
   }
 
   const resp = await JH.http('/api/onetimesecret', data)
@@ -54,10 +66,13 @@ JH.event('#save', 'click', async (ev) => {
   }
 
   const body = await resp.json()
-  JH.value('#link', `${window.location.origin}/onetimesecret/${body.data.token}`)
+  JH.value(domCache.link, `${window.location.origin}/onetimesecret/${body.data.token}`)
 
-  JH.query('#result').style.visibility = 'visible'
+  domCache.resultDiv.style.visibility = 'visible'
   PW.showToast('success', 'Link created')
 })
 
 enableSave()
+
+// Picker
+const UPicker = new CPicker.Picker('users', userChoosen)

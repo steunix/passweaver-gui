@@ -5,40 +5,62 @@ import * as SB from './searchbox.js'
 
 const itemFound = new Event('pw-item-found')
 
+const domCache = {
+  errorDialog: JH.query('#errordialog'),
+  errorDialogText: JH.query('#errordialogtext'),
+  errorDialogClose: JH.query('#errordialogclose'),
+  confirmDialog: JH.query('#confirmdialog'),
+  confirmOkButton: JH.query('#confirmok'),
+  confirmCancelButton: JH.query('#confirmcancel'),
+  confirmDialogText: JH.query('#confirmdialogtext'),
+  user: JH.query('#v-user'),
+  csrf: JH.query('#_csrf'),
+  pageid: JH.query('#pageid')
+}
+
 export function setTableLoading (selector) {
-  JH.query(`${selector} tbody`).innerHTML =
+  JH.query(selector).querySelector('tbody').innerHTML =
     "<tr><td colspan='99'><sl-skeleton effect='pulse'></sl-skeleton></td></tr>"
 }
 
 export function setTreeviewLoading (selector) {
-  JH.query(`${selector}`).innerHTML =
+  JH.query(selector).innerHTML =
     '<sl-tree-item>Loading...</sl-tree-item>'
 }
 
 export function confirmDialog (title, text, callback, savetext, savevariant) {
-  const dialog = JH.query('#confirmdialog')
+  const dialog = domCache.confirmDialog
   dialog.setAttribute('label', title)
 
-  JH.query('#confirmok').replaceWith(JH.query('#confirmok').cloneNode(true))
+  // Remove existing event listeners
+  domCache.confirmOkButton.replaceWith(domCache.confirmOkButton.cloneNode(true))
 
-  JH.query('#confirmok').innerHTML = 'Confirm'
-  JH.query('#confirmok').setAttribute('variant', 'primary')
+  // Refresh dom cache
+  domCache.confirmOkButton = JH.query('#confirmok')
 
-  JH.query('#confirmdialogtext').innerHTML = text
+  domCache.confirmOkButton.innerHTML = 'Confirm'
+  domCache.confirmOkButton.setAttribute('variant', 'primary')
+
+  domCache.confirmDialogText.innerHTML = text
 
   if (savetext !== undefined) {
-    JH.query('#confirmok').innerHTML = savetext
+    domCache.confirmOkButton.innerHTML = savetext
   }
   if (savevariant !== undefined) {
-    JH.query('#confirmok').setAttribute('variant', savevariant)
+    domCache.confirmOkButton.setAttribute('variant', savevariant)
   }
-  JH.event('#confirmok', 'click', event => {
+  JH.event(domCache.confirmOkButton, 'click', (ev) => {
     dialog.hide()
     callback()
   })
 
-  JH.query('#confirmcancel').replaceWith(JH.query('#confirmcancel').cloneNode(true))
-  JH.event('#confirmcancel', 'click', event => {
+  // Remove existing event listeners
+  domCache.confirmCancelButton.replaceWith(domCache.confirmCancelButton.cloneNode(true))
+
+  // Refresh dom cache
+  domCache.confirmCancelButton = JH.query('#confirmcancel')
+
+  JH.event(domCache.confirmCancelButton, 'click', event => {
     dialog.hide()
   })
   dialog.addEventListener('sl-request-close', event => {
@@ -50,12 +72,17 @@ export function confirmDialog (title, text, callback, savetext, savevariant) {
 }
 
 export function errorDialog (text, subject) {
-  const dialog = JH.query('#errordialog')
-  JH.query('#errordialogtext').innerHTML = text
+  const dialog = domCache.errorDialog
+  domCache.errorDialogText.innerHTML = text
 
-  JH.query('#errordialog').setAttribute('label', subject || 'PassWeaver')
-  JH.query('#errordialogclose').replaceWith(JH.query('#errordialogclose').cloneNode(true))
-  JH.event('#errordialogclose', 'click', event => {
+  // Remove existing event listeners
+  domCache.errorDialogClose.replaceWith(domCache.errorDialogClose.cloneNode(true))
+
+  // Refresh dom cache
+  domCache.errorDialogClose = JH.query('#errordialogclose')
+
+  domCache.errorDialog.setAttribute('label', subject || 'PassWeaver')
+  JH.event(domCache.errorDialogClose, 'click', event => {
     dialog.hide()
   })
   dialog.show()
@@ -246,15 +273,15 @@ export function showToast (variant, text) {
 }
 
 export function getUser () {
-  return JH.value('#v-user')
+  return JH.value(domCache.user)
 }
 
 export function getCSRFToken () {
-  return JH.value('#_csrf')
+  return JH.value(domCache.csrf)
 }
 
-if (JH.query('#pageid')) {
-  const pageid = JH.value('#pageid')
+if (domCache.pageid) {
+  const pageid = JH.value(domCache.pageid)
   const elem = JH.query(`.page-sidebar .link[pageid=${pageid}]`)
   if (elem) {
     elem.classList.add('current')
@@ -262,6 +289,7 @@ if (JH.query('#pageid')) {
 }
 
 export function simpleTreeFill (id, data) {
+  JH.query(`#${id}`).innerHTML = ''
   simpleTreeFillItems(id, data)
   if (data.length === 0) {
     JH.query(`#${id}`).innerHTML = '<sl-tree-item>No data found</sl-tree-item>'

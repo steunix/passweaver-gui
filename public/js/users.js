@@ -2,15 +2,55 @@
 
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
-import * as GPicker from './grouppicker.js'
+import * as CPicker from './picker.js'
 
 let userSearchTimeout
 let currentUser = ''
 
-async function fillUsers () {
-  PW.setTableLoading('#userstable')
+const domCache = {
+  usersTable: JH.query('#userstable'),
+  usersTableBody: JH.query('#userstable tbody'),
+  usersSearch: JH.query('#usersearch'),
+  groupsTable: JH.query('#groupstable'),
+  groupsTableBody: JH.query('#groupstable tbody'),
+  searchInput: JH.query('#usersearch'),
+  userActivityTableBody: JH.query('#useractivitytable tbody'),
+  userActivityLoadMore: JH.query('#useractivityload'),
+  userActivityDialog: JH.query('#useractivitydialog'),
+  newUserButton: JH.query('#newuser'),
+  newUserDialog: JH.query('#newuserdialog'),
+  newLogin: JH.query('#newlogin'),
+  newEmail: JH.query('#newemail'),
+  newLastName: JH.query('#newlastname'),
+  newFirstName: JH.query('#newfirstname'),
+  newLocale: JH.query('#newlocale'),
+  newAuthMethod: JH.query('#newauthmethod'),
+  newActive: JH.query('#newactive'),
+  newPassword: JH.query('#newpassword'),
+  newPasswordConfirm: JH.query('#newpasswordconfirm'),
+  userCreateButton: JH.query('#usercreate'),
+  newUserCancelButton: JH.query('#newuserdialog #cancel'),
+  editLogin: JH.query('#editlogin'),
+  editEmail: JH.query('#editemail'),
+  editLastName: JH.query('#editlastname'),
+  editFirstName: JH.query('#editfirstname'),
+  editLocale: JH.query('#editlocale'),
+  editAuthMethod: JH.query('#editauthmethod'),
+  editActive: JH.query('#editactive'),
+  userEditButton: JH.query('#useredit'),
+  userEditDialog: JH.query('#edituserdialog'),
+  genericTree: JH.query('#generictree'),
+  foldersTreeDialog: JH.query('#folderstreedialog'),
+  groupsAddButton: JH.query('#addgroup'),
+  groupsCopyButton: JH.query('#copygroups'),
+  groupsPasteButton: JH.query('#pastegroups'),
+  groupsReplaceButton: JH.query('#replacegroups')
+}
 
-  const search = JH.value('#usersearch')
+async function fillUsers () {
+  PW.setTableLoading(domCache.usersTable)
+
+  const search = JH.value(domCache.searchInput)
   const resp = await JH.http(`/api/userslist?search=${search}`)
   if (!await PW.checkResponse(resp)) {
     return
@@ -18,8 +58,8 @@ async function fillUsers () {
 
   const body = await resp.json()
 
-  JH.query('#groupstable tbody').innerHTML = ''
-  JH.query('#userstable tbody').innerHTML = ''
+  domCache.groupsTableBody.innerHTML = ''
+  domCache.usersTableBody.innerHTML = ''
 
   if (body.data.length) {
     let row = ''
@@ -41,7 +81,7 @@ async function fillUsers () {
         `<td class='text-center'><sl-icon name='${itm.active ? 'check-lg' : 'x-lg'}' style='color:${itm.active ? 'green' : 'red'}'/></td>` +
         '</tr>'
     }
-    JH.query('#userstable tbody').innerHTML = row
+    domCache.usersTableBody.innerHTML = row
 
     // Install event handlers
     JH.event('#userstable tbody tr', 'dblclick', (ev) => {
@@ -95,20 +135,20 @@ async function fillActivity (usr) {
     for (const evt of body.data) {
       row += '<tr>'
       row += `<td id='event-${evt.id}' data-id='${evt.id}'>${evt.timestamp}</td>`
-      row += `<td>${evt.action_description}</td>`
-      row += `<td>${evt.entity_description}</td>`
-      row += `<td>${evt.description || ''}</td>`
-      row += `<td>${evt.note || ''}</td>`
+      row += `<td>${JH.sanitize(evt.action_description)}</td>`
+      row += `<td>${JH.sanitize(evt.entity_description)}</td>`
+      row += `<td>${JH.sanitize(evt.description || '')}</td>`
+      row += `<td>${JH.sanitize(evt.note || '')}</td>`
     }
-    JH.query('#useractivitytable tbody').innerHTML += row
+    domCache.userActivityTableBody.innerHTML += row
   } else {
-    JH.query('#useractivitytable tbody').innerHTML += '<tr><td colspan="99">No other activity found</td></tr>'
-    JH.query('#useractivityload').setAttribute('disabled', 'disabled')
+    domCache.userActivityTableBody.innerHTML += '<tr><td colspan="99">No other activity found</td></tr>'
+    JH.disable(domCache.userActivityLoadMore)
   }
 }
 
 async function fillGroups () {
-  PW.setTableLoading('#groupstable')
+  PW.setTableLoading(domCache.groupsTable)
 
   const resp = await JH.http(`/api/usergroups/${currentUser}`)
   if (!await PW.checkResponse(resp)) {
@@ -127,17 +167,17 @@ async function fillGroups () {
       }
       row += `<td>${JH.sanitize(itm.description)}</td></tr>`
     }
-    JH.query('#groupstable tbody').innerHTML = row
+    domCache.groupsTableBody.innerHTML = row
 
     // Event handlers
     JH.event('[id^=removegroup]', 'click', groupRemove)
   } else {
-    JH.query('#groupstable tbody').innerHTML = '<tr><td colspan="99">No group found</td></tr>'
+    domCache.groupsTableBody.innerHTML = '<tr><td colspan="99">No group found</td></tr>'
   }
 }
 
 function userCreateDialog () {
-  JH.query('#newuserdialog').show()
+  domCache.newUserDialog.show()
   JH.value('#newuserdialog sl-input,sl-textarea,sl-select', '')
   userCreateEnable()
 }
@@ -145,17 +185,17 @@ function userCreateDialog () {
 async function userCreate () {
   const userdata = {
     _csrf: PW.getCSRFToken(),
-    login: JH.value('#newlogin'),
-    email: JH.value('#newemail'),
-    lastname: JH.value('#newlastname'),
-    firstname: JH.value('#newfirstname'),
-    locale: JH.value('#newlocale'),
-    authmethod: JH.value('#newauthmethod'),
-    active: JH.query('#newactive').hasAttribute('checked'),
-    secret: JH.value('#newpassword')
+    login: JH.value(domCache.newLogin),
+    email: JH.value(domCache.newEmail),
+    lastname: JH.value(domCache.newLastName),
+    firstname: JH.value(domCache.newFirstName),
+    locale: JH.value(domCache.newLocale),
+    authmethod: JH.value(domCache.newAuthMethod),
+    active: domCache.newActive.hasAttribute('checked'),
+    secret: JH.value(domCache.newPassword)
   }
 
-  JH.query('#newuserdialog').hide()
+  domCache.newUserDialog.hide()
   const resp = await JH.http('/api/usernew/', userdata)
   if (!await PW.checkResponse(resp)) {
     return
@@ -166,11 +206,16 @@ async function userCreate () {
 }
 
 function userCreateEnable () {
-  if (JH.value('#newlogin') === '' || JH.value('#newemail') === '' || JH.value('#newlastname') === '' ||
-  JH.value('#newpassword') !== JH.value('#newpasswordconfirm') || JH.value('#newpassword') === '') {
-    JH.query('#usercreate').setAttribute('disabled', 'disabled')
+  if (JH.value(domCache.newLogin) === '' ||
+      JH.value(domCache.newEmail) === '' ||
+      JH.value(domCache.newLastName) === '' ||
+      JH.value(domCache.newPassword) !== JH.value(domCache.newPasswordConfirm) ||
+      JH.value(domCache.newPassword) === '' ||
+      JH.value(domCache.newLocale) === '' ||
+      JH.value(domCache.newAuthMethod) === '') {
+    JH.disable(domCache.userCreateButton)
   } else {
-    JH.query('#usercreate').removeAttribute('disabled')
+    JH.enable(domCache.userCreateButton)
   }
 }
 
@@ -194,48 +239,52 @@ async function userEditFill (user) {
 
   const body = await resp.json()
 
-  JH.value('#editlogin', body.data.login)
-  JH.value('#editemail', body.data.email)
-  JH.value('#editlastname', body.data.lastname)
-  JH.value('#editfirstname', body.data.firstname)
-  JH.value('#editlocale', body.data.locale)
-  JH.value('#editauthmethod', body.data.authmethod)
+  JH.value(domCache.editLogin, body.data.login)
+  JH.value(domCache.editEmail, body.data.email)
+  JH.value(domCache.editLastName, body.data.lastname)
+  JH.value(domCache.editFirstName, body.data.firstname)
+  JH.value(domCache.editLocale, body.data.locale)
+  JH.value(domCache.editAuthMethod, body.data.authmethod)
   if (!body.data.active) {
-    JH.query('#editactive').removeAttribute('checked')
+    domCache.editActive.removeAttribute('checked')
   } else {
-    JH.query('#editactive').setAttribute('checked', 'checked')
+    domCache.editActive.setAttribute('checked', 'checked')
   }
 
   userEditEnable()
 }
 
 function userEditEnable () {
-  if (JH.value('#editlogin') === '' || JH.value('#editemail') === '' || JH.value('#editlastname') === '') {
-    JH.query('#useredit').setAttribute('disabled', 'disabled')
+  if (JH.value(domCache.editLogin) === '' ||
+      JH.value(domCache.editEmail) === '' ||
+      JH.value(domCache.editLastName) === '' ||
+      JH.value(domCache.editLocale) === '' ||
+      JH.value(domCache.editAuthMethod) === '') {
+    JH.disable(domCache.userEditButton)
   } else {
-    JH.query('#useredit').removeAttribute('disabled')
+    JH.enable(domCache.userEditButton)
   }
 }
 
 function userEditDialog (userid) {
   userEditFill(userid)
-  JH.query('#edituserdialog').show()
+  domCache.userEditDialog.show()
 }
 
 async function userEdit () {
   const userdata = {
     _csrf: PW.getCSRFToken(),
-    login: JH.value('#editlogin'),
-    email: JH.value('#editemail'),
-    lastname: JH.value('#editlastname'),
-    firstname: JH.value('#editfirstname'),
-    locale: JH.value('#editlocale'),
-    authmethod: JH.value('#editauthmethod'),
-    active: JH.query('#editactive').hasAttribute('checked')
+    login: JH.value(domCache.editLogin),
+    email: JH.value(domCache.editEmail),
+    lastname: JH.value(domCache.editLastName),
+    firstname: JH.value(domCache.editFirstName),
+    locale: JH.value(domCache.editLocale),
+    authmethod: JH.value(domCache.editAuthMethod),
+    active: domCache.editActive.hasAttribute('checked')
   }
 
   const resp = await JH.http(`/api/userupdate/${currentUser}`, userdata)
-  JH.query('#edituserdialog').hide()
+  domCache.userEditDialog.hide()
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -276,9 +325,9 @@ async function groupPickerChoosen (group) {
 }
 
 async function userActivity (itm) {
-  JH.query('#useractivitytable tbody').innerHTML = ''
-  JH.query('#useractivitydialog').show()
-  JH.query('#useractivityload').removeAttribute('disabled')
+  domCache.userActivityTableBody.innerHTML = ''
+  domCache.userActivityDialog.show()
+  JH.disable(domCache.userActivityLoadMore)
   fillActivity(itm)
 }
 
@@ -288,8 +337,8 @@ function groupsCopy () {
 
   if (!list.length) {
     localStorage.setItem(`${PW.getUser()}_copiedgroups`, '')
-    JH.query('#pastegroups').style.display = 'none'
-    JH.query('#replacegroups').style.display = 'none'
+    domCache.groupsPasteButton.style.display = 'none'
+    domCache.groupsReplaceButton.style.display = 'none'
     return
   }
 
@@ -300,8 +349,8 @@ function groupsCopy () {
   if (groups.length) {
     localStorage.setItem(`${PW.getUser()}_copiedgroups`, groups)
     PW.showToast('success', 'Groups copied')
-    JH.query('#pastegroups').style.display = ''
-    JH.query('#replacegroups').style.display = ''
+    domCache.groupsPasteButton.style.display = ''
+    domCache.groupsReplaceButton.style.display = ''
   }
 }
 
@@ -310,8 +359,8 @@ async function groupsReplace () {
     const list = JH.queryAll('#groupstable tbody tr')
 
     if (!list.length) {
-      JH.query('#pastegroups').style.display = 'none'
-      JH.query('#replacegroups').style.display = 'none'
+      domCache.groupsPasteButton.style.display = 'none'
+      domCache.groupsReplaceButton.style.display = 'none'
       return
     }
 
@@ -340,8 +389,9 @@ async function groupsPaste () {
 }
 
 async function showUserFolders (user) {
-  JH.query('#generictree').innerHTML = 'Loading...'
-  JH.query('#folderstreedialog').show()
+  PW.setTreeviewLoading(domCache.genericTree)
+  domCache.foldersTreeDialog.show()
+
   const resp = await JH.http(`/api/users/${user}/folders?permissions=true`)
   if (!await PW.checkResponse(resp)) {
     return
@@ -354,53 +404,40 @@ async function showUserFolders (user) {
 await fillUsers()
 
 // Event handlers
-JH.event('#newlogin,#newemail,#newlastname,#newpassword,#newpasswordconfirm', 'keyup', (ev) => {
-  userCreateEnable()
+JH.event([domCache.newLogin, domCache.newEmail, domCache.newLastName, domCache.newPassword, domCache.newPasswordConfirm], 'keyup', userCreateEnable)
+JH.event([domCache.newLocale, domCache.newAuthMethod], 'sl-change', userCreateEnable)
+JH.event(domCache.userCreateButton, 'click', userCreate)
+JH.event([domCache.editLogin, domCache.editEmail, domCache.editLastName], 'keyup', userEditEnable)
+JH.event(domCache.userEditButton, 'click', userEdit)
+JH.event(domCache.newUserButton, 'click', userCreateDialog)
+
+JH.event(domCache.newUserCancelButton, 'click', (ev) => {
+  domCache.newUserDialog.hide()
 })
-JH.event('#usercreate', 'click', (ev) => {
-  userCreate()
-})
-JH.event('#editlogin,#editemail,#editlastname', 'keyup', (ev) => {
-  userEditEnable()
-})
-JH.event('#useredit', 'click', (ev) => {
-  userEdit()
-})
-JH.event('#newuser', 'click', (ev) => {
-  userCreateDialog()
-})
-JH.event('#newuserdialog #cancel', 'click', (ev) => {
-  JH.query('#newuserdialog').hide()
-})
-JH.event('#usersearch', 'sl-input', (ev) => {
+JH.event(domCache.usersSearch, 'sl-input', (ev) => {
   if (userSearchTimeout) {
     clearTimeout(userSearchTimeout)
   }
   userSearchTimeout = setTimeout(() => {
-    JH.query('#groupstable tbody').innerHTML = ''
+    domCache.groupsTableBody.innerHTML = ''
     fillUsers()
   }, 250)
 })
-JH.event('#addgroup', 'click', (ev) => {
+JH.event(domCache.groupsAddButton, 'click', (ev) => {
   if (currentUser === '') {
     PW.errorDialog('Select a user from the list')
     return
   }
-  GPicker.show(groupPickerChoosen)
+  GPicker.show()
 })
 
-JH.event('#useractivityload', 'click', (ev) => {
+JH.event(domCache.userActivityLoadMore, 'click', (ev) => {
   fillActivity(currentUser)
 })
 
-JH.event('#copygroups', 'click', (ev) => {
-  groupsCopy()
-})
+JH.event(domCache.groupsCopyButton, 'click', groupsCopy)
+JH.event(domCache.groupsPasteButton, 'click', groupsPaste)
+JH.event(domCache.groupsReplaceButton, 'click', groupsReplace)
 
-JH.event('#pastegroups', 'click', (ev) => {
-  groupsPaste()
-})
-
-JH.event('#replacegroups', 'click', (ev) => {
-  groupsReplace()
-})
+// Picker
+const GPicker = new CPicker.Picker('groups', groupPickerChoosen)

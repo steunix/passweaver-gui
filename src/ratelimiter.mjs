@@ -1,7 +1,8 @@
 /**
  * Rate limiter module
- * @module src/random
+ * @module src/ratelimiter
  * @author Stefano Rivoir <rs4000@gmail.com>
+ * @copyright (c) 2023-2025 - Stefano Rivoir <rs4000@gmail.com>
  */
 
 import { rateLimit } from 'express-rate-limit'

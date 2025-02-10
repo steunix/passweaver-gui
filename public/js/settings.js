@@ -3,6 +3,23 @@ import * as PW from './passweaver-gui.js'
 
 let currentItemType
 
+const domCache = {
+  itemTypesTable: JH.query('#itemtypestable'),
+  itemTypesTableBody: JH.query('#itemtypestable tbody'),
+  itemTypeNewDialog: JH.query('#itemtypenewdialog'),
+  itemTypeNewDescription: JH.query('#itemtypenewdescription'),
+  itemTypeNewIcon: JH.query('#itemtypenewicon'),
+  itemTypeNewSaveButton: JH.query('#itemtypenewsave'),
+  itemTypeNewCancelButton: JH.query('#itemtypenewcancel'),
+  itemTypeEditDialog: JH.query('#itemtypeeditdialog'),
+  itemTypeEditDescription: JH.query('#itemtypeeditdescription'),
+  itemTypeEditIcon: JH.query('#itemtypeediticon'),
+  itemTypeEditSaveButton: JH.query('#itemtypeeditsave'),
+  itemTypeEditCancelButton: JH.query('#itemtypeeditcancel'),
+  clearCacheButton: JH.query('#clearcache'),
+  itemTypeNewButton: JH.query('#additemtype')
+}
+
 async function fillItemTypes () {
   const resp = await JH.http('/api/itemtypes')
   if (!await PW.checkResponse(resp)) {
@@ -10,7 +27,7 @@ async function fillItemTypes () {
   }
 
   const body = await resp.json()
-  JH.query('#itemtypestable tbody').innerHTML = ''
+  domCache.itemTypesTableBody.innerHTML = ''
 
   let row = ''
   if (!body.data.length) {
@@ -27,7 +44,7 @@ async function fillItemTypes () {
       `<td><sl-icon name='${itm.icon}'></sl-icon></td>` +
       '</tr>'
   }
-  JH.query('#itemtypestable tbody').innerHTML = row
+  domCache.itemTypesTableBody.innerHTML = row
 
   JH.event('[id^=removeitemtype-]', 'click', async (ev) => {
     itemTypeRemove(ev.currentTarget.getAttribute('data-id'))
@@ -41,26 +58,26 @@ await fillItemTypes()
 
 function itemTypeCreateDialog () {
   JH.value('#itemtypenewdialog sl-input', '')
-  JH.query('#itemtypenewdialog').show()
+  domCache.itemTypeNewDialog.show()
   itemTypeCreateEnable()
 }
 
 function itemTypeCreateEnable () {
-  if (JH.value('#itemtypenewdescription') === '') {
-    JH.query('#itemtypenewsave').setAttribute('disabled', 'disabled')
+  if (JH.value(domCache.itemTypeNewDescription) === '') {
+    JH.disable(domCache.itemTypeNewSaveButton)
   } else {
-    JH.query('#itemtypenewsave').removeAttribute('disabled')
+    JH.enable(domCache.itemTypeNewSaveButton)
   }
 }
 
 async function itemTypeCreate () {
   const data = {
     _csrf: PW.getCSRFToken(),
-    description: JH.value('#itemtypenewdescription'),
-    icon: JH.value('#itemtypenewicon')
+    description: JH.value(domCache.itemTypeNewDescription),
+    icon: JH.value(domCache.itemTypeNewIcon)
   }
 
-  JH.query('#itemtypenewdialog').hide()
+  domCache.itemTypeNewDialog.hide()
 
   const resp = await JH.http('/api/itemtypes', data)
   if (!await PW.checkResponse(resp)) {
@@ -97,28 +114,28 @@ async function itemTypeEditDialog (itemtype) {
     return
   }
 
-  JH.value('#itemtypeeditdescription', body.data.description)
-  JH.value('#itemtypeediticon', body.data.icon)
-  JH.query('#itemtypeeditdialog').show()
+  domCache.itemTypeEditDescription.value = body.data.description
+  domCache.itemTypeEditIcon.value = body.data.icon
+  domCache.itemTypeEditDialog.show()
   itemTypeEditEnable()
 }
 
 function itemTypeEditEnable () {
-  if (JH.value('#itemtypeeditdescription') === '') {
-    JH.query('#itemtypeeditsave').setAttribute('disabled', 'disabled')
+  if (JH.value(domCache.itemTypeEditDescription) === '') {
+    JH.disable(domCache.itemTypeEditSaveButton)
   } else {
-    JH.query('#itemtypeeditsave').removeAttribute('disabled')
+    JH.enable(domCache.itemTypeEditSaveButton)
   }
 }
 
 async function itemTypeEdit () {
   const data = {
     _csrf: PW.getCSRFToken(),
-    description: JH.value('#itemtypeeditdescription'),
-    icon: JH.value('#itemtypeediticon')
+    description: JH.value(domCache.itemTypeEditDescription),
+    icon: JH.value(domCache.itemTypeEditIcon)
   }
 
-  JH.query('#itemtypeeditdialog').hide()
+  domCache.itemTypeEditDialog.hide()
   const resp = await JH.http(`/api/itemtypes/${currentItemType}`, data, 'PATCH')
   if (!await PW.checkResponse(resp)) {
     return
@@ -143,29 +160,24 @@ async function clearCache () {
   })
 }
 
-JH.event('#additemtype', 'click', () => {
-  itemTypeCreateDialog()
+JH.event(domCache.itemTypeNewButton, 'click', itemTypeCreateDialog)
+JH.event(domCache.itemTypeNewCancelButton, 'click', () => {
+  domCache.itemTypeNewDialog.hide()
 })
-JH.event('#itemtypenewcancel', 'click', () => {
-  JH.query('#itemtypenewdialog').hide()
-})
-JH.event('#itemtypenewdescription', 'keyup', () => {
-  itemTypeCreateEnable()
-})
-JH.event('#itemtypenewsave', 'click', async () => {
+
+JH.event(domCache.itemTypeNewDescription, 'keyup', itemTypeCreateEnable)
+JH.event(domCache.itemTypeNewSaveButton, 'click', async () => {
   await itemTypeCreate()
 })
 
-JH.event('#itemtypeeditcancel', 'click', () => {
-  JH.query('#itemtypeeditdialog').hide()
+JH.event(domCache.itemTypeEditCancelButton, 'click', () => {
+  domCache.itemTypeEditDialog.hide()
 })
-JH.event('#itemtypeeditsave', 'click', async () => {
+JH.event(domCache.itemTypeEditSaveButton, 'click', async () => {
   await itemTypeEdit()
 })
-JH.event('#itemtypeeditdescription', 'keyup', () => {
-  itemTypeEditEnable()
-})
+JH.event(domCache.itemTypeEditDescription, 'keyup', itemTypeEditEnable)
 
-JH.event('#clearcache', 'click', async () => {
+JH.event(domCache.clearCacheButton, 'click', async () => {
   await clearCache()
 })

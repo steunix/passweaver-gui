@@ -4,6 +4,18 @@ import * as PW from './passweaver-gui.js'
 let itemSearchTimeout
 let itemTypesOptions
 
+const domCache = {
+  typeSelect: JH.query('#typesearch'),
+  itemsTable: JH.query('#itemstable'),
+  itemsTableBody: JH.query('#itemstable tbody'),
+  search: JH.query('#itemsearch'),
+  itemViewDialog: JH.query('#itemviewdialog'),
+  itemViewType: JH.query('#viewtype'),
+  itemViewId: JH.query('#itemviewid'),
+  passwordCopy: JH.query('#itemviewcopypassword'),
+  passwordView: JH.query('#viewpassword')
+}
+
 async function fillItemTypes () {
   const resp = await JH.http('/api/itemtypes')
   if (!await PW.checkResponse(resp)) {
@@ -20,16 +32,16 @@ async function fillItemTypes () {
     itemTypesOptions += '</sl-option>'
   }
 
-  JH.query('#viewtype').innerHTML = itemTypesOptions
-  JH.query('#typesearch').innerHTML = itemTypesOptions
+  domCache.itemViewType.innerHTML = itemTypesOptions
+  domCache.typeSelect.innerHTML = itemTypesOptions
 }
 
 async function fillItems () {
-  PW.setTableLoading('#itemstable')
+  PW.setTableLoading(domCache.itemsTable)
 
-  const type = JH.value('#typesearch')
+  const type = JH.value(domCache.typeSelect)
 
-  const search = JH.value('#itemsearch')
+  const search = JH.value(domCache.search)
   const resp = await JH.http(`/api/itemssearch?search=${search}&type=${type}`)
 
   // Folder may not be accessible
@@ -56,9 +68,9 @@ async function fillItems () {
       row += '</td>'
       row += `<td class='itemtitle'>${JH.sanitize(itm.title)}</td></tr>`
     }
-    JH.query('#itemstable tbody').innerHTML = row
+    domCache.itemsTableBody.innerHTML = row
   } else {
-    JH.query('#itemstable tbody').innerHTML = '<tr><td colspan="99">No matching item found</td></tr>'
+    domCache.itemsTableBody.innerHTML = '<tr><td colspan="99">No matching item found</td></tr>'
   }
 
   // Install event handlers
@@ -79,7 +91,7 @@ async function fillItems () {
 async function itemViewFill (item) {
   const resp = await JH.http(`/api/items/${item}`)
   if (!await PW.checkResponse(resp)) {
-    JH.query('#itemviewdialog').hide()
+    domCache.itemViewDialog.hide()
     return
   }
 
@@ -100,7 +112,7 @@ async function itemShow (item) {
   if (window.getSelection()) {
     window.getSelection().empty()
   }
-  JH.query('#itemviewdialog').show()
+  domCache.itemViewDialog.show()
   await itemViewFill(item)
 }
 
@@ -129,30 +141,28 @@ async function passwordCopied (item) {
 
 await fillItemTypes()
 
-JH.event('#itemsearch', 'sl-input', async (ev) => {
+JH.event(domCache.search, 'sl-input', async (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }
   itemSearchTimeout = setTimeout(async () => { await fillItems() }, 250)
 })
 
-JH.event('#typesearch', 'sl-change', () => {
-  fillItems()
-})
+JH.event(domCache.typeSelect, 'sl-change', fillItems)
 
-JH.event('#itemviewcopypassword', 'sl-copy', (ev) => {
-  passwordCopied(JH.value('#itemviewid'))
+JH.event(domCache.passwordCopy, 'sl-copy', (ev) => {
+  passwordCopied(JH.value(domCache.itemViewId))
 })
 
 setTimeout(() => {
-  JH.query('#viewpassword').shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-    const el = JH.query('#viewpassword').shadowRoot.querySelector('[part=input]')
+  domCache.passwordView.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
+    const el = domCache.passwordView.shadowRoot.querySelector('[part=input]')
     if (el.getAttribute('type') === 'text') {
-      passwordAccessed(JH.value('#itemviewid'))
+      passwordAccessed(JH.value(domCache.itemViewId))
     }
   })
 
-  if (JH.value('#itemsearch').length) {
+  if (JH.value(domCache.search).length) {
     fillItems()
   }
 }, 200)
