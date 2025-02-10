@@ -135,10 +135,10 @@ async function fillActivity (usr) {
     for (const evt of body.data) {
       row += '<tr>'
       row += `<td id='event-${evt.id}' data-id='${evt.id}'>${evt.timestamp}</td>`
-      row += `<td>${evt.action_description}</td>`
-      row += `<td>${evt.entity_description}</td>`
-      row += `<td>${evt.description || ''}</td>`
-      row += `<td>${evt.note || ''}</td>`
+      row += `<td>${JH.sanitize(evt.action_description)}</td>`
+      row += `<td>${JH.sanitize(evt.entity_description)}</td>`
+      row += `<td>${JH.sanitize(evt.description || '')}</td>`
+      row += `<td>${JH.sanitize(evt.note || '')}</td>`
     }
     domCache.userActivityTableBody.innerHTML += row
   } else {
