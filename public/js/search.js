@@ -11,6 +11,7 @@ const domCache = {
   search: JH.query('#itemsearch'),
   itemViewDialog: JH.query('#itemviewdialog'),
   itemViewType: JH.query('#viewtype'),
+  itemViewId: JH.query('#itemviewid'),
   passwordCopy: JH.query('#itemviewcopypassword'),
   passwordView: JH.query('#viewpassword')
 }
@@ -140,26 +141,24 @@ async function passwordCopied (item) {
 
 await fillItemTypes()
 
-JH.event('#itemsearch', 'sl-input', async (ev) => {
+JH.event(domCache.search, 'sl-input', async (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }
   itemSearchTimeout = setTimeout(async () => { await fillItems() }, 250)
 })
 
-JH.event(domCache.typeSelect, 'sl-change', () => {
-  fillItems()
-})
+JH.event(domCache.typeSelect, 'sl-change', fillItems)
 
 JH.event(domCache.passwordCopy, 'sl-copy', (ev) => {
-  passwordCopied(JH.value('#itemviewid'))
+  passwordCopied(JH.value(domCache.itemViewId))
 })
 
 setTimeout(() => {
   domCache.passwordView.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
     const el = domCache.passwordView.shadowRoot.querySelector('[part=input]')
     if (el.getAttribute('type') === 'text') {
-      passwordAccessed(JH.value('#itemviewid'))
+      passwordAccessed(JH.value(domCache.itemViewId))
     }
   })
 
