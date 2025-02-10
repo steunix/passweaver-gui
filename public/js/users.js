@@ -389,7 +389,7 @@ async function groupsPaste () {
 }
 
 async function showUserFolders (user) {
-  domCache.genericTree.innerHTML = 'Loading...'
+  PW.setTreeviewLoading(domCache.genericTree)
   domCache.foldersTreeDialog.show()
 
   const resp = await JH.http(`/api/users/${user}/folders?permissions=true`)
