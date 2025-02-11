@@ -1,3 +1,5 @@
+/* global NodeList */
+
 /**
  * Sanitize HTML tags in string
  * @param {string} str String to sanitize
@@ -31,6 +33,10 @@ export function sanitize (str) {
 export function resolveQuery (query) {
   if (typeof query === 'string') {
     return document.querySelectorAll(query)
+  }
+
+  if (query instanceof NodeList) {
+    return query
   }
 
   if (Array.isArray(query)) {

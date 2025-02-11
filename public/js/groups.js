@@ -8,18 +8,15 @@ let groupSearchTimeout
 
 const domCache = {
   sectionTitle: JH.query('#sectiontitle'),
+  groupDialog: JH.query('#groupdialog'),
+  groupDialogDescription: JH.query('#groupdescription'),
+  groupDialogSave: JH.query('#groupsave'),
+  groupDialogCancel: JH.query('#groupcancel'),
+  groupDialogId: JH.query('#groupdialogid'),
   groupsTree: JH.query('#groupstree'),
   groupCreateButton: JH.query('#groupcreate'),
-  groupCreateDialog: JH.query('#groupcreatedialog'),
-  groupCreateSaveButton: JH.query('#groupcreatesave'),
-  groupCreateDescription: JH.query('#groupcreatedescription'),
-  groupCreateCancelButton: JH.query('#groupcreatecancel'),
   groupRemoveButton: JH.query('#groupremove'),
   groupEditButton: JH.query('#groupedit'),
-  groupEditDialog: JH.query('#groupeditdialog'),
-  groupEditDescription: JH.query('#groupeditdescription'),
-  groupEditSaveButton: JH.query('#groupeditsave'),
-  groupEditCancelButton: JH.query('#groupeditcancel'),
   newMemberButton: JH.query('#newmember'),
   removeAllMembersButton: JH.query('#removeallmembers'),
   groupSearch: JH.query('#groupsearch'),
@@ -81,6 +78,22 @@ async function fillUsers () {
   }
 }
 
+function groupDialogShow (id) {
+  JH.value(JH.query(domCache.groupDialog).querySelectorAll('sl-input'), '')
+
+  if (id?.length) {
+    groupEditFill(id)
+    JH.value(domCache.groupDialogId, id)
+  }
+
+  domCache.groupDialog.show()
+  groupSaveEnable()
+}
+
+function groupDialogHide () {
+  domCache.groupDialog.hide()
+}
+
 async function groupClicked (groupid) {
   fillUsers()
   if (groupid === '0' || groupid === 'E') {
@@ -100,37 +113,22 @@ async function groupClicked (groupid) {
   domCache.sectionTitle.innerHTML = `${body.data.description} - Members`
 }
 
-function groupCreateEnable () {
-  if (JH.value(domCache.groupCreateDescription) === '') {
-    JH.disable(domCache.groupCreateSaveButton)
-  } else {
-    JH.enable(domCache.groupCreateSaveButton)
-  }
-}
-
-function groupCreateDialog () {
-  JH.value('#groupcreatedialog sl-input,sl-textarea', '')
-  groupCreateEnable()
-  domCache.groupCreateDialog.show()
-}
-
-async function groupCreate () {
+async function groupSave () {
   const userdata = {
     _csrf: PW.getCSRFToken(),
-    description: JH.value(domCache.groupCreateDescription)
+    description: JH.value(domCache.groupDialogDescription)
   }
 
-  const resp = await JH.http(`/api/groupnew/${currentGroup()}`, userdata)
+  groupDialogHide()
+
+  const groupid = JH.value(domCache.groupDialogId)
+  const api = groupid.length ? `groupupdate/${groupid}` : `groupnew/${currentGroup()}`
+  const resp = await JH.http(`/api/${api}`, userdata)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
-  const body = await resp.json()
-  if (body.data.id) {
-    location.reload()
-  } else {
-    PW.errorDialog(body.message)
-  }
+  fillGroups()
 }
 
 async function groupRemove () {
@@ -145,44 +143,24 @@ async function groupRemove () {
   })
 }
 
-function groupEditDialog () {
-  groupEditFill()
-  domCache.groupEditDialog.show()
-}
-
-async function groupEditFill () {
-  const resp = await JH.http(`/api/groups/${currentGroup()}`)
+async function groupEditFill (id) {
+  const resp = await JH.http(`/api/groups/${id}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
   if (body.status === 'success') {
-    JH.value(domCache.groupEditDescription, body.data.description)
-    groupEditEnable()
+    JH.value(domCache.groupDialogDescription, body.data.description)
+    groupSaveEnable()
   }
 }
 
-async function groupEdit () {
-  const data = {
-    _csrf: PW.getCSRFToken(),
-    description: JH.value(domCache.groupEditDescription)
-  }
-
-  const resp = await JH.http(`/api/groupupdate/${currentGroup()}`, data)
-  if (!await PW.checkResponse(resp)) {
-    domCache.groupEditDialog.hide()
-    return
-  }
-
-  location.reload()
-}
-
-function groupEditEnable () {
-  if (JH.value(domCache.groupEditDescription) === '') {
-    JH.disable(domCache.groupEditSaveButton)
+function groupSaveEnable () {
+  if (JH.value(domCache.groupDialogDescription) === '') {
+    JH.disable(domCache.groupDialogSave)
   } else {
-    JH.enable(domCache.groupEditSaveButton)
+    JH.enable(domCache.groupDialogSave)
   }
 }
 
@@ -290,20 +268,12 @@ async function dndSetup () {
 
 // Event handlers
 JH.event(domCache.groupRemoveButton, 'click', groupRemove)
-JH.event(domCache.groupEditButton, 'click', groupEditDialog)
-JH.event(domCache.groupCreateButton, 'click', groupCreateDialog)
+JH.event(domCache.groupEditButton, 'click', ev => { groupDialogShow(currentGroup()) })
+JH.event(domCache.groupCreateButton, 'click', ev => { groupDialogShow() })
 
-JH.event(domCache.groupCreateDescription, 'keyup', groupCreateEnable)
-JH.event(domCache.groupCreateSaveButton, 'click', groupCreate)
-JH.event(domCache.groupCreateCancelButton, 'click', (ev) => {
-  domCache.groupCreateDialog.hide()
-})
-
-JH.event(domCache.groupEditDescription, 'keyup', groupEditEnable)
-JH.event(domCache.groupEditSaveButton, 'click', groupEdit)
-JH.event(domCache.groupEditCancelButton, 'click', (ev) => {
-  domCache.groupEditDialog.hide()
-})
+JH.event(domCache.groupDialogDescription, 'keyup', groupSaveEnable)
+JH.event(domCache.groupDialogSave, 'click', groupSave)
+JH.event(domCache.groupDialogCancel, 'click', groupDialogHide)
 
 JH.event(domCache.newMemberButton, 'click', (ev) => {
   if (currentGroup() === '') {
