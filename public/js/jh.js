@@ -178,6 +178,24 @@ export function attribute (query, attr, value) {
 }
 
 /**
+ * Wrapper for Element.removeAttribute
+ * @param {string} query Query
+ * @param {string} attr Attribute
+ * @returns
+ */
+export function removeAttribute (query, attr) {
+  const el = resolveQuery(query)
+
+  if (el === null) {
+    return
+  }
+
+  for (const e of el) {
+    e.removeAttribute(attr)
+  }
+}
+
+/**
  * Makes elements draggable
  * @param {string} query Query
  * @param {string} type Item type

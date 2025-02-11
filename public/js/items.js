@@ -11,8 +11,6 @@ let itemTypesOptions
 const domCache = {
   sectionTitle: JH.query('#sectiontitle'),
   currentPermissions: JH.query('#currentpermissions'),
-  viewTypeSelect: JH.query('#viewtype'),
-  editTypeSelect: JH.query('#edittype'),
   itemSearchText: JH.query('#itemsearch'),
   searchTypeSelect: JH.query('#typesearch'),
   itemsTable: JH.query('#itemstable'),
@@ -28,42 +26,6 @@ const domCache = {
   folderEditButton: JH.query('#folderedit'),
   folderRemoveButton: JH.query('#folderremove'),
   itemCreateDialog: JH.query('#itemcreatedialog'),
-  newTitle: JH.query('#newtitle'),
-  newTypeSelect: JH.query('#newtype'),
-  newType: JH.query('#newtype'),
-  newEmail: JH.query('#newemail'),
-  newDescription: JH.query('#newdescription'),
-  newUrl: JH.query('#newurl'),
-  newUser: JH.query('#newuser'),
-  newPassword: JH.query('#newpassword'),
-  newGenerateButton: JH.query('#newgenerate'),
-  itemCreateSaveButton: JH.query('#itemcreatesave'),
-  itemCreateCancelButton: JH.query('#itemcreatecancel'),
-  itemEditDialog: JH.query('#itemeditdialog'),
-  itemEditCancelButton: JH.query('#itemeditcancel'),
-  itemEditSaveButton: JH.query('#itemeditsave'),
-  editId: JH.query('#itemeditid'),
-  editTitle: JH.query('#edittitle'),
-  editType: JH.query('#edittype'),
-  editEmail: JH.query('#editemail'),
-  editDescription: JH.query('#editdescription'),
-  editUrl: JH.query('#editurl'),
-  editUser: JH.query('#edituser'),
-  editPassword: JH.query('#editpassword'),
-  editCopyLink: JH.query('#itemeditcopylink'),
-  editViewActivity: JH.query('#itemeditactivity'),
-  editItemSaveButton: JH.query('#itemeditsave'),
-  itemViewDialog: JH.query('#itemviewdialog'),
-  viewId: JH.query('#itemviewid'),
-  viewTitle: JH.query('#viewtitle'),
-  viewType: JH.query('#viewtype'),
-  viewEmail: JH.query('#viewemail'),
-  viewDescription: JH.query('#viewdescription'),
-  viewUrl: JH.query('#viewurl'),
-  viewUser: JH.query('#viewuser'),
-  viewPassword: JH.query('#viewpassword'),
-  viewCopyPassword: JH.query('#itemviewcopypassword'),
-  viewCopyLink: JH.query('#itemviewcopylink'),
   scopeSelect: JH.query('#scopeselect'),
   scopeUser: JH.query('#scopeuser'),
   scopeUserDescription: JH.query('#scopeuserdesc'),
@@ -82,7 +44,22 @@ const domCache = {
   foldersTree: JH.query('#folderstree'),
   viewItem: JH.query('#viewitem'),
   userSearch: JH.query('#searchuser'),
-  selectUser: JH.query('#selectuser')
+  selectUser: JH.query('#selectuser'),
+  itemDialog: JH.query('#itemdialog'),
+  itemDialogCopyLink: JH.query('#idcopylink'),
+  itemDialogActivity: JH.query('#idactivity'),
+  itemDialogId: JH.query('#idid'),
+  itemDialogTitle: JH.query('#idtitle'),
+  itemDialogType: JH.query('#idtype'),
+  itemDialogDescription: JH.query('#iddescription'),
+  itemDialogEmail: JH.query('#idemail'),
+  itemDialogUrl: JH.query('#idurl'),
+  itemDialogUser: JH.query('#iduser'),
+  itemDialogPassword: JH.query('#idpassword'),
+  itemDialogGenerate: JH.query('#idgenerate'),
+  itemDialogCopyPassword: JH.query('#idcopypassword'),
+  itemDialogSave: JH.query('#idsave'),
+  itemDialogCancel: JH.query('#idcancel')
 }
 
 async function fillItemTypes () {
@@ -176,10 +153,10 @@ async function fillItems () {
     itemShow(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=edit]', 'click', (ev) => {
-    itemEditDialog(ev.currentTarget.getAttribute('data-id'))
+    itemShow(ev.currentTarget.getAttribute('data-id'), true)
   })
   JH.event('#itemstable tbody [id^=title]', 'dblclick', (ev) => {
-    itemShow(ev.currentTarget.getAttribute('data-id'))
+    itemShow(ev.currentTarget.getAttribute('data-id'), true)
   })
   JH.event('#itemstable tbody [id^=remove]', 'click', (ev) => {
     itemRemove(ev.currentTarget.getAttribute('data-id'))
@@ -301,13 +278,44 @@ async function folderClicked () {
   }
 }
 
-function itemCreateDialog () {
-  domCache.itemCreateDialog.show()
-  JH.value('#itemcreatedialog sl-input,sl-textarea,sl-select', '')
+function itemDialogEnable (enable) {
+  if (enable === true) {
+    JH.attribute('#itemdialog sl-input,sl-textarea,sl-select', 'readonly', 'readonly')
+  } else {
+    JH.removeAttribute('#itemdialog sl-input,sl-textarea,sl-select', 'readonly')
+  }
+}
 
-  domCache.newPassword.setAttribute('type', 'password')
+async function itemDialogShow (id, readonly, gotofolder) {
+  itemDialogReset()
 
-  itemCreateEnable()
+  domCache.itemDialogPassword.setAttribute('type', 'password')
+
+  if (id.length) {
+    JH.value(domCache.itemDialogId, id)
+    itemDialogFill(id, gotofolder)
+  }
+
+  itemDialogEnable(!readonly)
+
+  itemSaveEnable()
+  domCache.itemDialog.show()
+}
+
+function itemDialogHide () {
+  domCache.itemDialog.hide()
+}
+
+function itemDialogReset () {
+  JH.value('#itemdialog sl-input,sl-textarea,sl-select', '')
+}
+
+function itemSaveEnable () {
+  if (JH.value(domCache.itemDialogTitle) === '') {
+    JH.disable(domCache.itemDialogSave)
+  } else {
+    JH.enable(domCache.itemDialogSave)
+  }
 }
 
 async function itemCreate () {
@@ -315,13 +323,13 @@ async function itemCreate () {
 
   const itemdata = {
     _csrf: PW.getCSRFToken(),
-    type: JH.value(domCache.newType),
-    title: JH.value(domCache.newTitle),
-    email: JH.value(domCache.newEmail),
-    description: JH.value(domCache.newDescription),
-    url: JH.value(domCache.newUrl),
-    user: JH.value(domCache.newUser),
-    password: JH.value(domCache.newPassword)
+    type: JH.value(domCache.itemDialogType),
+    title: JH.value(domCache.itemDialogTitle),
+    email: JH.value(domCache.itemDialogEmail),
+    description: JH.value(domCache.itemDialogDescription),
+    url: JH.value(domCache.itemDialogUrl),
+    user: JH.value(domCache.itemDialogUser),
+    password: JH.value(domCache.itemDialogPassword)
   }
 
   const resp = await JH.http(`/api/itemnew/${Folders.currentFolder()}`, itemdata)
@@ -338,14 +346,6 @@ async function itemCreate () {
   }
 }
 
-function itemCreateEnable () {
-  if (JH.value(domCache.newTitle) === '') {
-    JH.disable(domCache.itemCreateSaveButton)
-  } else {
-    JH.enable(domCache.itemCreateSaveButton)
-  }
-}
-
 async function itemRemove (itm) {
   PW.confirmDialog('Delete item', 'Are you sure you want to delete this item?', async () => {
     const resp = await JH.http(`/api/itemremove/${itm}`, { _csrf: PW.getCSRFToken() })
@@ -358,66 +358,54 @@ async function itemRemove (itm) {
   }, 'Delete', 'danger')
 }
 
-async function itemEditDialog (item) {
-  JH.value('#itemeditdialog sl-input,sl-textarea,sl-select', '')
-
-  domCache.itemEditDialog.show()
-  domCache.editPassword.setAttribute('type', 'password')
-
-  itemEditFill(item)
-  itemEditEnable()
-}
-
-async function itemEditFill (item) {
+async function itemDialogFill (item, gotofolder) {
   const resp = await JH.http(`/api/items/${item}`)
   if (!await PW.checkResponse(resp)) {
-    domCache.itemEditDialog.hide()
+    itemDialogHide()
     return
   }
 
-  JH.query(domCache.editPassword).passwordVisible = false
+  domCache.editPassword.passwordVisible = false
 
   const body = await resp.json()
   body.data.data = JSON.parse(body.data.data)
   if (body.status === 'success') {
-    JH.value(domCache.editId, item)
-    JH.value(domCache.editType, body.data.type)
-    JH.value(domCache.editTitle, body.data.title)
-    JH.value(domCache.editEmail, body.data.data.email)
-    JH.value(domCache.editDescription, body.data.data.description)
-    JH.value(domCache.editUrl, body.data.data.url)
-    JH.value(domCache.editUser, body.data.data.user)
-    JH.value(domCache.editPassword, body.data.data.password)
+    JH.value(domCache.itemDialogId, item)
+    JH.value(domCache.itemDialogType, body.data.type)
+    JH.value(domCache.itemDialogTitle, body.data.title)
+    JH.value(domCache.itemDialogEmail, body.data.data.email)
+    JH.value(domCache.itemDialogDescription, body.data.data.description)
+    JH.value(domCache.itemDialogUrl, body.data.data.url)
+    JH.value(domCache.itemDialogUser, body.data.data.user)
+    JH.value(domCache.itemDialogPassword, body.data.data.password)
   }
 
-  itemEditEnable()
-}
-
-function itemEditEnable () {
-  if (JH.value(domCache.editTitle) === '') {
-    JH.disable(domCache.editItemSaveButton)
-  } else {
-    JH.enable(domCache.editItemSaveButton)
+  if (gotofolder) {
+    PW.treeItemSelect(`item-${body.data.folderid}`)
+    await folderClicked()
   }
+
+  itemSaveEnable()
 }
 
 async function itemEdit () {
-  const id = JH.value(domCache.editId)
+  const id = JH.value(domCache.itemDialogId)
 
   const itemdata = {
     _csrf: PW.getCSRFToken(),
-    title: JH.value(domCache.editTitle),
-    type: JH.value(domCache.editType),
+    title: JH.value(domCache.itemDialogTitle),
+    type: JH.value(domCache.itemDialogType),
     data: {
-      description: JH.value(domCache.editDescription),
-      email: JH.value(domCache.editEmail),
-      url: JH.value(domCache.editUrl),
-      user: JH.value(domCache.editUser),
-      password: JH.value(domCache.editPassword)
+      description: JH.value(domCache.itemDialogDescription),
+      email: JH.value(domCache.itemDialogEmail),
+      url: JH.value(domCache.itemDialogUrl),
+      user: JH.value(domCache.itemDialogUser),
+      password: JH.value(domCache.itemDialogPassword)
     }
   }
 
-  domCache.itemEditDialog.hide()
+  itemDialogHide()
+
   const resp = await JH.http(`/api/itemupdate/${id}`, itemdata)
   if (!await PW.checkResponse(resp)) {
     return
@@ -427,42 +415,12 @@ async function itemEdit () {
   await fillItems()
 }
 
-async function itemViewFill (item, gotofolder) {
-  const resp = await JH.http(`/api/items/${item}`)
-  if (!await PW.checkResponse(resp)) {
-    domCache.itemViewDialog.hide()
-    return
-  }
-
-  const body = await resp.json()
-  body.data.data = JSON.parse(body.data.data)
-
-  JH.value(domCache.viewId, item)
-  JH.value(domCache.viewTitle, body.data.title)
-  JH.value(domCache.viewType, body.data.type)
-  JH.value(domCache.viewEmail, body.data.data.email)
-  JH.value(domCache.viewDescription, body.data.data.description)
-  JH.value(domCache.viewUrl, body.data.data.url)
-  JH.value(domCache.viewUser, body.data.data.user)
-  JH.value(domCache.viewPassword, body.data.data.password)
-  domCache.viewPassword.setAttribute('type', 'password')
-
-  if (gotofolder) {
-    PW.treeItemSelect(`item-${body.data.folderid}`)
-    await folderClicked()
-  }
-}
-
-function itemShow (item) {
+function itemShow (item, readonly) {
   if (window.getSelection()) {
     window.getSelection().empty()
   }
-  JH.value('#itemviewdialog sl-input,sl-textarea,sl-select', '')
 
-  domCache.itemViewDialog.show()
-  domCache.viewPassword.passwordVisible = false
-
-  itemViewFill(item)
+  itemDialogShow(item, readonly)
 }
 
 async function itemClone (itm) {
@@ -476,7 +434,7 @@ async function itemClone (itm) {
 
     PW.showToast('success', 'Item successfully cloned')
     await fillItems()
-    itemEditDialog(body.data.id)
+    itemDialogShow(body.data.id, false)
   })
 }
 
@@ -536,8 +494,7 @@ async function itemOneTimeShare () {
 }
 
 function findAndShowItem (itm) {
-  itemViewFill(itm, true)
-  domCache.itemViewDialog.show()
+  itemDialogShow(itm, true, true)
 }
 
 function personalPasswordCreateDialog () {
@@ -706,17 +663,19 @@ async function dndSetup () {
 JH.event(domCache.searchTypeSelect, 'sl-change', fillItems)
 
 // Create
-JH.event(domCache.newItemButton, 'click', itemCreateDialog)
+JH.event(domCache.newItemButton, 'click', (ev) => {
+  itemDialogShow(undefined, false, false)
+})
 
 JH.event(domCache.itemCreateCancelButton, 'click', (ev) => {
   domCache.itemCreateDialog.hide()
 })
 JH.event(domCache.itemCreateSaveButton, 'click', itemCreate)
 
-JH.event(domCache.newTitle, 'keyup', itemCreateEnable)
+JH.event(domCache.newTitle, 'keyup', itemSaveEnable)
 
 // Edit
-JH.event(domCache.editTitle, 'keyup', itemEditEnable)
+JH.event(domCache.editTitle, 'keyup', itemSaveEnable)
 JH.event(domCache.itemEditCancelButton, 'click', (ev) => {
   domCache.itemEditDialog.hide()
 })

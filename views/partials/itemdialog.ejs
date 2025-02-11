@@ -1,0 +1,23 @@
+<sl-dialog id="itemdialog" label="Item details">
+  <sl-icon-button slot="header-actions" title="Copy item link" name="link-45deg" id="idcopylink"></sl-icon-button>
+  <sl-icon-button slot="header-actions" title="Item activity" name="clock-history" id="idactivity"></sl-icon-button>
+  <sl-input id="id" style="display:none;"></sl-input>
+  <sl-input label="Title" id="idtitle"></sl-input>
+  <sl-select label="Type" id="idtype"></sl-select>
+  <sl-textarea label="Description" id="iddescription"></sl-textarea>
+  <sl-input label="Email" id="idemail">
+    <sl-copy-button slot="suffix" title='Copy to clipboard' from="idemail.value"></sl-copy-button>
+  </sl-input>
+  <sl-input label="URL / Host" id="idurl">
+    <sl-copy-button slot="suffix" title='Copy to clipboard' from="idurl.value"></sl-copy-button>
+  </sl-input>
+  <sl-input label="User" id="iduser">
+    <sl-copy-button slot="suffix" title='Copy to clipboard' from="iduser.value"></sl-copy-button>
+  </sl-input>
+  <sl-input label="Password" id="idpassword" type="idpassword" password-toggle>
+    <sl-icon-button slot="suffix" name="magic" title='Generate a new password' id="idgenerate"></sl-icon-button>
+    <sl-copy-button slot="suffix" title='Copy to clipboard' id="idcopypassword" from="idpassword.value"></sl-copy-button>
+  </sl-input>
+  <sl-button id="idsave" disabled="disabled" slot="footer" variant="primary">Save</sl-button>
+  <sl-button id="idcancel" slot="footer">Cancel</sl-button>
+</sl-dialog>
