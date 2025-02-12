@@ -6,3 +6,9 @@ passweaver-gui.code-workspace
 sessions
 config.json
 log
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
