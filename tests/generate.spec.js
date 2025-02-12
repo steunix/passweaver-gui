@@ -28,7 +28,7 @@ test('Generate passwords', async ({ page }) => {
 
   // Generate symbols password
   await page.locator('#generate').click()
-  await page.waitForResponse(/api\/generate/)
+  await page.waitForTimeout(100)
 
   const gen1 = await page.evaluate(() => document.querySelector('#generatedpassword').value)
   await expect(gen1).toHaveLength(15)
@@ -41,7 +41,7 @@ test('Generate passwords', async ({ page }) => {
 
   // Generate no-symbols password
   await page.locator('#generatens').click()
-  await page.waitForResponse(/api\/generate/)
+  await page.waitForTimeout(100)
 
   const gen2 = await page.evaluate(() => document.querySelector('#generatedpasswordns').value)
   await expect(gen2).toHaveLength(15)
@@ -76,6 +76,8 @@ test('Generate onetime secrets from passwords', async ({ page }) => {
   // Check page has changed
   pagetitle = await page.locator('.page-container').getAttribute('id')
   await expect(pagetitle).toBe('page_onetimesecret')
+
+  await page.waitForTimeout(100)
 
   // Ensure the data is already compiled
   const data = await page.evaluate(() => document.querySelector('#data').value)
