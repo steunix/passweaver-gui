@@ -1,7 +1,4 @@
-// @ts-check
 import { test, expect } from '@playwright/test'
-
-const host = 'http://localhost:3151'
 
 async function userLogin (page) {
   await page.getByLabel('User').fill('user1')
@@ -15,40 +12,31 @@ async function adminLogin (page) {
   await page.locator('#login').click()
 }
 
-async function logout (page) {
-  const menu = await page.locator('[pageid=logout]')
-  await menu.click()
-}
-
 test('Check login title', async ({ page }) => {
-  await page.goto(host)
+  await page.goto('/')
 
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/PassWeaver/)
 })
 
 test('Login as user', async ({ page }) => {
-  await page.goto(host)
+  await page.goto('/')
   await userLogin(page)
 
   const pagetitle = await page.locator('.page-container').getAttribute('id')
   await expect(pagetitle).toBe('page_items')
-
-  await logout(page)
 })
 
 test('Login as admin', async ({ page }) => {
-  await page.goto(host)
+  await page.goto('/')
   await adminLogin(page)
 
   const pagetitle = await page.locator('.page-container').getAttribute('id')
   await expect(pagetitle).toBe('page_folders')
-
-  await logout(page)
 })
 
 test('Navigate user menu', async ({ page }) => {
-  await page.goto(host)
+  await page.goto('/')
   await userLogin(page)
 
   let menu
@@ -92,7 +80,7 @@ test('Navigate user menu', async ({ page }) => {
 })
 
 test('Navigate admin menu', async ({ page }) => {
-  await page.goto(host)
+  await page.goto('/')
   await adminLogin(page)
 
   let menu
