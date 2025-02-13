@@ -77,7 +77,7 @@ test('Generate onetime secrets from passwords', async ({ page }) => {
   pagetitle = await page.locator('.page-container').getAttribute('id')
   await expect(pagetitle).toBe('page_onetimesecret')
 
-  await page.waitForTimeout(100)
+  await page.waitForTimeout(200)
 
   // Ensure the data is already compiled
   const data = await page.evaluate(() => document.querySelector('#data').value)
