@@ -293,7 +293,7 @@ async function itemDialogShow (id, readonly, gotofolder) {
 
   domCache.itemDialogPassword.setAttribute('type', 'password')
 
-  if (id.length) {
+  if (id?.length) {
     JH.value(domCache.itemDialogId, id)
     itemDialogFill(id, gotofolder)
   }
@@ -393,33 +393,6 @@ async function itemDialogFill (item, gotofolder) {
   }
 
   itemSaveEnable()
-}
-
-async function itemEdit () {
-  const id = JH.value(domCache.itemDialogId)
-
-  const itemdata = {
-    _csrf: PW.getCSRFToken(),
-    title: JH.value(domCache.itemDialogTitle),
-    type: JH.value(domCache.itemDialogType),
-    data: {
-      description: JH.value(domCache.itemDialogDescription),
-      email: JH.value(domCache.itemDialogEmail),
-      url: JH.value(domCache.itemDialogUrl),
-      user: JH.value(domCache.itemDialogUser),
-      password: JH.value(domCache.itemDialogPassword)
-    }
-  }
-
-  itemDialogHide()
-
-  const resp = await JH.http(`/api/itemupdate/${id}`, itemdata)
-  if (!await PW.checkResponse(resp)) {
-    return
-  }
-
-  PW.showToast('success', 'Item saved')
-  await fillItems()
 }
 
 function itemShow (item, readonly) {
@@ -628,7 +601,7 @@ async function fillFolders () {
   await dndSetup()
 }
 
-async function itemCreateGeneratePassword () {
+async function itemDialogGeneratePassword () {
   const resp = await JH.http('/api/generatepassword')
   if (!await PW.checkResponse(resp)) {
     return
@@ -636,7 +609,7 @@ async function itemCreateGeneratePassword () {
 
   const body = await resp.json()
   if (body.status === 'success') {
-    JH.value(domCache.newPassword, body.data.password)
+    JH.value(domCache.itemDialogPassword, body.data.password)
   }
 }
 
@@ -709,7 +682,7 @@ JH.event(domCache.itemDialogCopyLink, 'click', (ev) => {
   itemCopyLink(JH.value(domCache.itemDialogId))
 })
 
-JH.event(domCache.itemDialogGenerate, 'click', itemCreateGeneratePassword)
+JH.event(domCache.itemDialogGenerate, 'click', itemDialogGeneratePassword)
 
 if (domCache.viewItem) {
   setTimeout(() => {
