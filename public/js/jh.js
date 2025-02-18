@@ -1,3 +1,5 @@
+/* global NodeList */
+
 /**
  * Sanitize HTML tags in string
  * @param {string} str String to sanitize
@@ -31,6 +33,10 @@ export function sanitize (str) {
 export function resolveQuery (query) {
   if (typeof query === 'string') {
     return document.querySelectorAll(query)
+  }
+
+  if (query instanceof NodeList) {
+    return query
   }
 
   if (Array.isArray(query)) {
@@ -172,6 +178,24 @@ export function attribute (query, attr, value) {
 }
 
 /**
+ * Wrapper for Element.removeAttribute
+ * @param {string} query Query
+ * @param {string} attr Attribute
+ * @returns
+ */
+export function removeAttribute (query, attr) {
+  const el = resolveQuery(query)
+
+  if (el === null) {
+    return
+  }
+
+  for (const e of el) {
+    e.removeAttribute(attr)
+  }
+}
+
+/**
  * Makes elements draggable
  * @param {string} query Query
  * @param {string} type Item type
@@ -266,4 +290,43 @@ export function parents (query, selector) {
     }
   }
   return parents
+}
+
+/**
+ * Show elements
+ * @param {any} query Query
+ * @param {boolean} fshow Show if true, hide if false
+ * @returns
+ */
+export function show (query, fshow) {
+  if (fshow === false) {
+    return hide(query)
+  }
+
+  const el = resolveQuery(query)
+
+  if (el === null) {
+    return
+  }
+
+  for (const e of el) {
+    e.style.display = ''
+  }
+}
+
+/**
+ * Hide elements
+ * @param {any} query Query
+ * @returns
+ */
+export function hide (query) {
+  const el = resolveQuery(query)
+
+  if (el === null) {
+    return
+  }
+
+  for (const e of el) {
+    e.style.display = 'none'
+  }
 }

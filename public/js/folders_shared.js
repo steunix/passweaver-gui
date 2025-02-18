@@ -14,17 +14,14 @@ export const currentPermissions = {
 
 const domCache = {
   sectionTitle: JH.query('#sectiontitle'),
-  folderCreateButton: JH.query('#foldercreate'),
-  folderCreateDialog: JH.query('#foldercreatedialog'),
-  folderCreateSaveButton: JH.query('#foldercreatesave'),
-  folderCreateDescription: JH.query('#foldercreatedescription'),
-  folderCreateCancelButton: JH.query('#foldercreatecancel'),
-  folderEditButton: JH.query('#folderedit'),
-  folderEditDialog: JH.query('#foldereditdialog'),
-  folderEditSaveButton: JH.query('#foldereditsave'),
-  folderEditDescription: JH.query('#foldereditdescription'),
-  folderEditCancelButton: JH.query('#foldereditcancel'),
+  folderDialog: JH.query('#folderdialog'),
+  folderDialogId: JH.query('#folderdialogid'),
+  folderDialogDescription: JH.query('#folderdescription'),
+  folderDialogSave: JH.query('#foldersave'),
+  folderDialogCancel: JH.query('#foldercancel'),
   folderRemoveButton: JH.query('#folderremove'),
+  folderCreateButton: JH.query('#foldercreate'),
+  folderEditButton: JH.query('#folderedit'),
   folderSearch: JH.query('#foldersearch'),
   folderSearchNext: JH.query('#foldersearchnext'),
   folderSearchPrevious: JH.query('#foldersearchprevious')
@@ -38,29 +35,41 @@ export function currentFolder () {
   }
 }
 
-function folderCreateDialog () {
-  JH.value('#foldercreatedialog sl-input,sl-textarea', '')
-  folderCreateEnable()
-  domCache.folderCreateDialog.show()
+function folderDialogShow (id) {
+  JH.value(JH.query(domCache.folderDialog).querySelectorAll('sl-input'), '')
+
+  if (id?.length) {
+    folderEditFill(id)
+    JH.value(domCache.folderDialogId, id)
+  }
+
+  domCache.folderDialog.show()
+  folderSaveEnable()
 }
 
-function folderCreateEnable () {
-  const descr = JH.value(domCache.folderCreateDescription)
-  if (descr === '') {
-    JH.disable(domCache.folderCreateSaveButton)
+function folderDialogHide () {
+  domCache.folderDialog.hide()
+}
+
+function folderSaveEnable () {
+  if (JH.value(domCache.folderDialogDescription) === '') {
+    JH.disable(domCache.folderDialogSave)
   } else {
-    JH.enable(domCache.folderCreateSaveButton)
+    JH.enable(domCache.folderDialogSave)
   }
 }
 
-async function folderCreate () {
-  const itemdata = {
+async function folderSave () {
+  const userdata = {
     _csrf: PW.getCSRFToken(),
-    description: JH.value('#foldercreatedescription')
+    description: JH.value(domCache.folderDialogDescription)
   }
 
-  domCache.folderCreateDialog.hide()
-  const resp = await JH.http(`/api/foldernew/${currentFolder()}`, itemdata)
+  folderDialogHide()
+
+  const folderid = JH.value(domCache.folderDialogId)
+  const api = folderid.length ? `folderupdate/${folderid}` : `foldernew/${currentFolder()}`
+  const resp = await JH.http(`/api/${api}`, userdata)
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -81,45 +90,15 @@ async function folderRemove () {
   }, 'Delete', 'danger')
 }
 
-function folderEditDialog () {
-  domCache.folderEditDialog.show()
-  folderEditFill()
-}
-
-function folderEditEnable () {
-  const descr = JH.value(domCache.folderEditDescription)
-  if (descr === '') {
-    JH.disable(domCache.folderEditSaveButton)
-  } else {
-    JH.enable(domCache.folderEditSaveButton)
-  }
-}
-
-async function folderEditFill () {
-  const resp = await JH.http(`/api/folders/${currentFolder()}`)
+async function folderEditFill (id) {
+  const resp = await JH.http(`/api/folders/${id}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
-  JH.value(domCache.folderEditDescription, body.data.description)
-  folderEditEnable()
-}
-
-async function folderEdit () {
-  const data = {
-    _csrf: PW.getCSRFToken(),
-    description: JH.value('#foldereditdescription')
-  }
-
-  domCache.folderEditDialog.hide()
-  const resp = await JH.http(`/api/folderupdate/${currentFolder()}`, data)
-  if (!await PW.checkResponse(resp)) {
-    return
-  }
-
-  PW.showToast('success', 'Folder updated')
-  dispatchEvent(refresh)
+  JH.value(domCache.folderDialogDescription, body.data.description)
+  folderSaveEnable()
 }
 
 export async function folderMove (id, newparent) {
@@ -145,31 +124,24 @@ export async function folderMove (id, newparent) {
 }
 
 // Event handlers
-JH.event(domCache.folderCreateDescription, 'keyup', folderCreateEnable)
 JH.event(domCache.folderRemoveButton, 'click', folderRemove)
 
-JH.event(domCache.folderEditButton, 'click', folderEditDialog)
+JH.event(domCache.folderEditButton, 'click', ev => { folderDialogShow(currentFolder()) })
 
 JH.event(domCache.folderCreateButton, 'click', (ev) => {
   if (currentFolder() === '') {
     PW.errorDialog('Select a parent folder in the tree')
     return
   }
-  folderCreateDialog()
+  folderDialogShow()
 })
 
-JH.event(domCache.folderCreateSaveButton, 'click', folderCreate)
-JH.event(domCache.folderCreateCancelButton, 'click', (ev) => {
-  domCache.folderCreateDialog.hide()
-})
+JH.event(domCache.folderDialogDescription, 'keyup', folderSaveEnable)
 
-JH.event(domCache.folderEditDescription, 'keyup', folderEditEnable)
-JH.event(domCache.folderEditCancelButton, 'click', (ev) => {
-  domCache.folderEditDialog.hide()
-})
-JH.event(domCache.folderEditSaveButton, 'click', folderEdit)
+JH.event(domCache.folderDialogSave, 'click', folderSave)
+JH.event(domCache.folderDialogCancel, 'click', folderDialogHide)
 
-JH.event('#foldersearch', 'sl-input', (ev) => {
+JH.event(domCache.folderSearch, 'sl-input', (ev) => {
   if (folderSearchTimeout) {
     clearTimeout(folderSearchTimeout)
   }
