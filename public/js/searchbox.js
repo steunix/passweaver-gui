@@ -20,7 +20,6 @@ export function init () {
 
   JH.event(domCache.globalSearch, 'sl-blur', async (ev) => {
     searchBoxHide()
-    JH.value(domCache.globalSearch, '')
   })
 
   JH.event(domCache.globalSearch, 'sl-clear', async (ev) => {
@@ -28,7 +27,7 @@ export function init () {
   })
 
   JH.event(domCache.searchBoxMore, 'click', async (ev) => {
-    window.location = `/pages/search?search=${encodeURIComponent(JH.value('#globalsearch'))}`
+    window.location = `/pages/search?search=${encodeURIComponent(JH.value(domCache.globalSearch))}`
   })
 
   JH.event(domCache.globalSearch, 'keyup', async (ev) => {
@@ -57,6 +56,7 @@ function searchBoxHide () {
   setTimeout(() => {
     domCache.searchBox.style.visibility = 'hidden'
     domCache.searchBoxMore.style.visibility = 'hidden'
+    JH.value(domCache.globalSearch, '')
   }, 250)
 }
 
