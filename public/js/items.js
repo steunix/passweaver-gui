@@ -320,32 +320,37 @@ function itemSaveEnable () {
   }
 }
 
-async function itemCreate () {
-  domCache.itemCreateDialog.hide()
+async function itemSave () {
+  const id = JH.value(domCache.itemDialogId)
+
+  itemDialogHide()
 
   const itemdata = {
     _csrf: PW.getCSRFToken(),
-    type: JH.value(domCache.itemDialogType),
     title: JH.value(domCache.itemDialogTitle),
-    email: JH.value(domCache.itemDialogEmail),
-    description: JH.value(domCache.itemDialogDescription),
-    url: JH.value(domCache.itemDialogUrl),
-    user: JH.value(domCache.itemDialogUser),
-    password: JH.value(domCache.itemDialogPassword)
+    type: JH.value(domCache.itemDialogType),
+    data: {
+      description: JH.value(domCache.itemDialogDescription),
+      email: JH.value(domCache.itemDialogEmail),
+      url: JH.value(domCache.itemDialogUrl),
+      user: JH.value(domCache.itemDialogUser),
+      password: JH.value(domCache.itemDialogPassword)
+    }
   }
 
-  const resp = await JH.http(`/api/itemnew/${Folders.currentFolder()}`, itemdata)
+  let resp
+  if (id.length) {
+    resp = await JH.http(`/api/itemupdate/${id}`, itemdata)
+  } else {
+    resp = await JH.http(`/api/itemnew/${Folders.currentFolder()}`, itemdata)
+  }
+
   if (!await PW.checkResponse(resp)) {
     return
   }
 
-  const body = await resp.json()
-  if (body.data.id) {
-    await fillItems()
-    PW.showToast('success', 'Item created')
-  } else {
-    PW.errorDialog(body.message)
-  }
+  await fillItems()
+  PW.showToast('success', id ? 'Item updated' : 'Item created')
 }
 
 async function itemRemove (itm) {
@@ -672,7 +677,7 @@ JH.event(domCache.newItemButton, 'click', (ev) => {
 JH.event(domCache.itemDialogCancel, 'click', (ev) => {
   domCache.itemDialog.hide()
 })
-JH.event(domCache.itemDialogSave, 'click', itemCreate)
+JH.event(domCache.itemDialogSave, 'click', itemSave)
 
 JH.event(domCache.itemDialogTitle, 'keyup', itemSaveEnable)
 

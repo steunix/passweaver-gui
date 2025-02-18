@@ -205,17 +205,19 @@ export async function getFolder (session, folder) {
  * @returns
  */
 export async function itemCreate (session, folder, body) {
+  const data = JSON.stringify({
+    description: body.data.description,
+    email: body.data.email,
+    url: body.data.url,
+    user: body.data.user,
+    password: body.data.password
+  })
+
   const item = {
     title: body.title,
     type: body.type || undefined,
-    metadata: body.user,
-    data: JSON.stringify({
-      description: body.description,
-      email: body.email,
-      url: body.url,
-      user: body.user,
-      password: body.password
-    })
+    data,
+    metadata: body.data.user
   }
 
   const resp = await passWeaverAPI(session, METHOD.post, `/folders/${folder}/items`, item)

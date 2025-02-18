@@ -310,7 +310,7 @@ export function show (query, fshow) {
   }
 
   for (const e of el) {
-    e.style.display = 'block'
+    e.style.display = ''
   }
 }
 
