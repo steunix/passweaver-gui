@@ -78,9 +78,7 @@ async function fillItemTypes () {
     itemTypesOptions += '</sl-option>'
   }
 
-  domCache.viewTypeSelect.innerHTML = itemTypesOptions
-  domCache.editTypeSelect.innerHTML = itemTypesOptions
-  domCache.newTypeSelect.innerHTML = itemTypesOptions
+  domCache.itemDialogType.innerHTML = itemTypesOptions
   domCache.searchTypeSelect.innerHTML = itemTypesOptions
 }
 
@@ -150,10 +148,10 @@ async function fillItems () {
 
   // Install event handlers
   JH.event('#itemstable tbody [id^=view]', 'click', (ev) => {
-    itemShow(ev.currentTarget.getAttribute('data-id'))
+    itemShow(ev.currentTarget.getAttribute('data-id'), true)
   })
   JH.event('#itemstable tbody [id^=edit]', 'click', (ev) => {
-    itemShow(ev.currentTarget.getAttribute('data-id'), true)
+    itemShow(ev.currentTarget.getAttribute('data-id'), false)
   })
   JH.event('#itemstable tbody [id^=title]', 'dblclick', (ev) => {
     itemShow(ev.currentTarget.getAttribute('data-id'), true)
@@ -279,10 +277,14 @@ async function folderClicked () {
 }
 
 function itemDialogEnable (enable) {
-  if (enable === true) {
-    JH.attribute('#itemdialog sl-input,sl-textarea,sl-select', 'readonly', 'readonly')
+  if (enable) {
+    JH.removeAttribute('#itemdialog sl-input,sl-textarea', 'readonly')
+    JH.removeAttribute(domCache.itemDialogType, 'disabled')
+    JH.show([domCache.itemDialogSave, domCache.itemDialogGenerate])
   } else {
-    JH.removeAttribute('#itemdialog sl-input,sl-textarea,sl-select', 'readonly')
+    JH.attribute('#itemdialog sl-input,sl-textarea,sl-select', 'readonly', 'readonly')
+    JH.attribute(domCache.itemDialogType, 'disabled', 'disabled')
+    JH.hide([domCache.itemDialogSave, domCache.itemDialogGenerate])
   }
 }
 
@@ -297,8 +299,8 @@ async function itemDialogShow (id, readonly, gotofolder) {
   }
 
   itemDialogEnable(!readonly)
-
   itemSaveEnable()
+
   domCache.itemDialog.show()
 }
 
@@ -365,7 +367,7 @@ async function itemDialogFill (item, gotofolder) {
     return
   }
 
-  domCache.editPassword.passwordVisible = false
+  domCache.itemDialogPassword.passwordVisible = false
 
   const body = await resp.json()
   body.data.data = JSON.parse(body.data.data)
@@ -667,19 +669,12 @@ JH.event(domCache.newItemButton, 'click', (ev) => {
   itemDialogShow(undefined, false, false)
 })
 
-JH.event(domCache.itemCreateCancelButton, 'click', (ev) => {
-  domCache.itemCreateDialog.hide()
+JH.event(domCache.itemDialogCancel, 'click', (ev) => {
+  domCache.itemDialog.hide()
 })
-JH.event(domCache.itemCreateSaveButton, 'click', itemCreate)
+JH.event(domCache.itemDialogSave, 'click', itemCreate)
 
-JH.event(domCache.newTitle, 'keyup', itemSaveEnable)
-
-// Edit
-JH.event(domCache.editTitle, 'keyup', itemSaveEnable)
-JH.event(domCache.itemEditCancelButton, 'click', (ev) => {
-  domCache.itemEditDialog.hide()
-})
-JH.event(domCache.itemEditSaveButton, 'click', itemEdit)
+JH.event(domCache.itemDialogTitle, 'keyup', itemSaveEnable)
 
 // Personal
 JH.event(domCache.personalPasswordNewCancel, 'click', (ev) => {
@@ -701,19 +696,15 @@ JH.event(domCache.itemSearchText, 'sl-input', (ev) => {
   itemSearchTimeout = setTimeout(async () => { fillItems() }, 250)
 })
 
-JH.event(domCache.viewCopyPassword, 'sl-copy', (ev) => {
-  passwordCopied(JH.value(domCache.viewId))
+JH.event(domCache.itemDialogCopyPassword, 'sl-copy', (ev) => {
+  passwordCopied(JH.value(domCache.itemDialogId))
 })
 
-JH.event(domCache.viewCopyLink, 'click', (ev) => {
-  itemCopyLink(JH.value(domCache.viewId))
+JH.event(domCache.itemDialogCopyLink, 'click', (ev) => {
+  itemCopyLink(JH.value(domCache.itemDialogId))
 })
 
-JH.event(domCache.editCopyLink, 'click', (ev) => {
-  itemCopyLink(JH.value(domCache.editId))
-})
-
-JH.event(domCache.newGenerateButton, 'click', itemCreateGeneratePassword)
+JH.event(domCache.itemDialogGenerate, 'click', itemCreateGeneratePassword)
 
 if (domCache.viewItem) {
   setTimeout(() => {
@@ -729,12 +720,8 @@ addEventListener('pw-item-found', async (ev) => {
   await folderClicked()
 })
 
-JH.event(domCache.itemActivityButton, 'click', (ev) => {
-  itemActivity(JH.value(domCache.viewId))
-})
-
-JH.event(domCache.editViewActivity, 'click', (ev) => {
-  itemActivity(JH.value(domCache.editId))
+JH.event(domCache.itemDialogActivity, 'click', (ev) => {
+  itemActivity(JH.value(domCache.itemDialogId))
 })
 
 JH.event(domCache.itemActivityLoadButton, 'click', (ev) => {
@@ -744,17 +731,10 @@ JH.event(domCache.itemActivityLoadButton, 'click', (ev) => {
 await fillFolders()
 await fillItemTypes()
 
-domCache.viewPassword.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-  const el = domCache.viewPassword.shadowRoot.querySelector('[part=input]')
+domCache.itemDialogPassword.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
+  const el = domCache.itemDialogPassword.shadowRoot.querySelector('[part=input]')
   if (el.getAttribute('type') === 'text') {
-    passwordAccessed(JH.value(domCache.viewId))
-  }
-})
-
-domCache.editPassword.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-  const el = domCache.editPassword.shadowRoot.querySelector('[part=input]')
-  if (el.getAttribute('type') === 'text') {
-    passwordAccessed(JH.value(domCache.editId))
+    passwordAccessed(JH.value(domCache.itemDialogId))
   }
 })
 

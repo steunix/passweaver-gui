@@ -291,3 +291,42 @@ export function parents (query, selector) {
   }
   return parents
 }
+
+/**
+ * Show elements
+ * @param {any} query Query
+ * @param {boolean} fshow Show if true, hide if false
+ * @returns
+ */
+export function show (query, fshow) {
+  if (fshow === false) {
+    return hide(query)
+  }
+
+  const el = resolveQuery(query)
+
+  if (el === null) {
+    return
+  }
+
+  for (const e of el) {
+    e.style.display = 'block'
+  }
+}
+
+/**
+ * Hide elements
+ * @param {any} query Query
+ * @returns
+ */
+export function hide (query) {
+  const el = resolveQuery(query)
+
+  if (el === null) {
+    return
+  }
+
+  for (const e of el) {
+    e.style.display = 'none'
+  }
+}
