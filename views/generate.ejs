@@ -1,6 +1,6 @@
 <%- include('partials/header.ejs') %>
 
-<div class="page-container">
+<div class="page-container" id="page_generate">
 
   <%- include('partials/topbar.ejs') %>
   <%- include('partials/sidebar.ejs') %>
@@ -10,7 +10,7 @@
     <h3>With symbols</h3>
     <sl-button-group>
       <sl-input type="text" style="width:15rem;" readonly="readonly" id="generatedpassword">
-        <sl-copy-button slot="suffix" title='Copy to clipboard' from="generatedpassword.value"></sl-copy-button>
+        <sl-copy-button slot="suffix" title='Copy to clipboard' id="copypassword" from="generatedpassword.value"></sl-copy-button>
       </sl-input>
       <sl-button title='Generate a new password' id="generate">
         <sl-icon name="magic" slot="prefix"></sl-icon>
@@ -22,7 +22,7 @@
     <h3>Without symbols</h3>
     <sl-button-group>
       <sl-input type="text" style="width:15rem;" readonly="readonly" id="generatedpasswordns">
-        <sl-copy-button slot="suffix" title='Copy to clipboard' from="generatedpasswordns.value"></sl-copy-button>
+        <sl-copy-button slot="suffix" title='Copy to clipboard' id="copypasswordns" from="generatedpasswordns.value"></sl-copy-button>
       </sl-input>
       <sl-button title='Generate a new password' id="generatens">
         <sl-icon name="magic" slot="prefix"></sl-icon>
