@@ -13,13 +13,13 @@
   "author": "Stefano Rivoir",
   "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "^1.50.1",
-    "@types/node": "^22.13.1",
+    "@playwright/test": "1.50.1",
+    "@types/node": "22.13.8",
     "standard": "17.1.2"
   },
   "dependencies": {
     "@shoelace-style/shoelace": "2.20.0",
-    "compression": "1.7.5",
+    "compression": "1.8.0",
     "connect-redis": "8.0.1",
     "ejs": "3.1.10",
     "express": "5.0.1",
