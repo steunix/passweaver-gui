@@ -210,7 +210,9 @@ async function fillActivity (itm) {
       row += `<td>${JH.sanitize(evt.note || '')}</td>`
     }
     domCache.itemActivityTableBody.innerHTML += row
-  } else {
+  }
+
+  if (!body.data.length || body.data.length < 50) {
     domCache.itemActivityTableBody.innerHTML += '<tr><td colspan="99">No other activity found</td></tr>'
     JH.disable(domCache.itemActivityLoadButton)
   }
