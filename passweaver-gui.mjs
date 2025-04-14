@@ -732,9 +732,33 @@ app.post('/api/clearcache', async (req, res) => {
   res.json(resp)
 })
 
+// Get readonly status
+app.get('/api/readonlystatus', async (req, res) => {
+  const resp = await PassWeaver.readOnlyStatus(req.session)
+  res.json(resp)
+})
+
+// Get system lock status
+app.get('/api/systemlockstatus', async (req, res) => {
+  const resp = await PassWeaver.systemLockStatus(req.session)
+  res.json(resp)
+})
+
 // Get one time secret content
 app.get('/noauth/onetimesecretget/:token', async (req, res) => {
   const resp = await PassWeaver.oneTimeSecretGet(req.session, req.params.token)
+  res.json(resp)
+})
+
+// System set readonly
+app.post('/api/systemreadonly', async (req, res) => {
+  const resp = await PassWeaver.systemReadOnly(req.session, req.body.readonly)
+  res.json(resp)
+})
+
+// System set lock
+app.post('/api/systemlock', async (req, res) => {
+  const resp = await PassWeaver.systemLock(req.session, req.body.lock)
   res.json(resp)
 })
 
