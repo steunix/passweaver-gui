@@ -75,7 +75,22 @@
             <sl-divider></sl-divider>
             <sl-button id='ppasswordchange' variant="primary" disabled>Change password</sl-button>
           <% } else { %>
-            <p>Unlock personal folder first</p>
+            <p>In order to change your personal password, you have to unlock your personal folder first</p>
+            <hr>
+            <sl-card>
+              <div slot="header">
+                <span><strong>Have you lost your personal password?</strong></span>
+              </div>
+              <p>You can reset your personal password, but...</p>
+              <sl-alert open variant="danger">
+                <strong>WARNING!!!</strong><br/>Resetting your personal password will make all your personal items IRREMEDIABLY inaccessible and you will have to delete them.
+              </sl-alert>
+              <br/>
+              <sl-switch id="presetswitch">I'm sure, enable the button below</sl-switch>
+              <br/>
+              <br/>
+              <sl-button id="preset" variant="danger" disabled>Reset personal password</sl-button>
+            </sl-card>
           <% } %>
         <% } else { %>
           <p>Admins don't have personal folders </p>
