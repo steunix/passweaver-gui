@@ -641,6 +641,12 @@ app.post('/api/personalpassword', async (req, res) => {
   res.json(resp)
 })
 
+// Reset personal password
+app.post('/api/personalpasswordreset', async (req, res) => {
+  const resp = await PassWeaver.personalPasswordReset(req, req.session, req.body.password)
+  res.json(resp)
+})
+
 // Unlock personal folder
 app.post('/api/personalunlock', async (req, res) => {
   const resp = await PassWeaver.personalUnlock(req, req.session, req.body.password)

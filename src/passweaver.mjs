@@ -673,6 +673,17 @@ export async function personalPasswordCreate (req, session, password) {
 }
 
 /**
+ * Reset personal password
+ * @param {Object} session Session
+ * @param {string} password Password
+ * @returns
+ */
+export async function personalPasswordReset (req, session, password) {
+  const resp = await passWeaverAPI(session, METHOD.delete, '/personal/password')
+  return resp
+}
+
+/**
  * Unlock personal folders
  * @param {Object} session Session
  * @param {string} passsword Password

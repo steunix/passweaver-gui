@@ -11,7 +11,9 @@ const domCache = {
   passwordChangeButton: JH.query('#passwordchange'),
   persNewPassword1: JH.query('#pnewpassword1'),
   persNewPassword2: JH.query('#pnewpassword2'),
-  persPasswordChangeButton: JH.query('#ppasswordchange')
+  persPasswordChangeButton: JH.query('#ppasswordchange'),
+  persPasswordResetButton: JH.query('#preset'),
+  persPasswordResetSwitch: JH.query('#presetswitch')
 }
 
 const resp = await JH.http('/api/preferences')
@@ -61,12 +63,25 @@ JH.event(domCache.passwordChangeButton, 'click', async (ev) => {
   location.reload()
 })
 
-JH.event([domCache.persNewPassword1, domCache.persNewPassword2], 'keyup', async (ev) => {
-  if (JH.value(domCache.persNewPassword1) !== JH.value(domCache.persNewPassword2) || JH.value(domCache.persNewPassword1).length < 8) {
-    JH.disable(domCache.persPasswordChangeButton)
-  } else {
-    JH.enable(domCache.persPasswordChangeButton)
-  }
+JH.event(domCache.persPasswordResetButton, 'click', async (ev) => {
+  PW.confirmDialog(
+    'Personal password reset',
+    '<strong>WARNING!!! LAST CHANCE TO CHANGE YOUR MIND!!!<br/><br/>Resetting your personal password will make all your personal items UNREADABLE. The operation is IRREVERSIBLE, are you sure?</strong>', async () => {
+      const data = {
+        _csrf: PW.getCSRFToken()
+      }
+      const resp = await JH.http('/api/personalpasswordreset', data)
+      if (!await PW.checkResponse(resp)) {
+        return
+      }
+      PW.showToast('success', 'Personal password reset successfully')
+      window.location.reload()
+    }
+  )
+})
+
+JH.event(domCache.persPasswordResetSwitch, 'click', async (ev) => {
+  JH.enable(domCache.persPasswordResetButton, ev.target.checked)
 })
 
 JH.event(domCache.persPasswordChangeButton, 'click', async (ev) => {
