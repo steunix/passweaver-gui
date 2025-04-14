@@ -919,3 +919,41 @@ export async function clearCache (session) {
   const resp = await passWeaverAPI(session, METHOD.post, '/util/clearcache', {})
   return resp
 }
+
+/**
+ * Get read only status
+ * @param {Object} session Session
+ */
+export async function readOnlyStatus (session) {
+  const resp = await passWeaverAPI(session, METHOD.get, '/util/systemreadonly')
+  return resp
+}
+
+/**
+ * Set system read only status
+ * @param {Object} session Session
+ * @param {boolean} readonly Read only status
+ */
+export async function systemReadOnly (session, readonly) {
+  const resp = await passWeaverAPI(session, METHOD.post, `/util/${readonly ? 'systemreadonly' : 'systemreadwrite'}`)
+  return resp
+}
+
+/**
+ * Get system lock status
+ * @param {Object} session Session
+ */
+export async function systemLockStatus (session) {
+  const resp = await passWeaverAPI(session, METHOD.get, '/util/systemlock')
+  return resp
+}
+
+/**
+ * Set system lock status
+ * @param {Object} session Session
+ * @param {boolean} lock Lock status
+ */
+export async function systemLock (session, lock) {
+  const resp = await passWeaverAPI(session, METHOD.post, `/util/${lock ? 'systemlock' : 'systemunlock'}`)
+  return resp
+}

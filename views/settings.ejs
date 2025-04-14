@@ -10,6 +10,8 @@
     <sl-tab-group>
       <sl-tab slot="nav" panel="itemtypes">Item types</sl-tab>
       <sl-tab slot="nav" panel="cache">Cache</sl-tab>
+      <sl-tab slot="nav" panel="readonly">Readonly</sl-tab>
+      <sl-tab slot="nav" panel="systemlock">Lock system</sl-tab>
 
       <sl-tab-panel name="itemtypes">
         <div style="display: flex;">
@@ -34,6 +36,20 @@
 
       <sl-tab-panel name="cache">
         <sl-button id="clearcache" type="button" variant="danger" title="Clear cache">Clear cache</sl-button>
+      </sl-tab-panel>
+
+      <sl-tab-panel name="readonly">
+        <sl-alert open variant="neutral" id="readonlystatus">Readonly is in unknown state</sl-alert>
+        <br/>
+        <sl-button id="readonlymode" type="button" variant="danger" title="Set readonly mode">Set readonly mode</sl-button>
+        <sl-button id="readwritemode" type="button" variant="primary" title="Set readwrite mode">Set readwrite mode</sl-button>
+      </sl-tab-panel>
+
+      <sl-tab-panel name="systemlock">
+        <sl-alert open variant="neutral" id="systemlockstatus">System lock is in unknown state</sl-alert>
+        <br/>
+        <sl-button id="systemlock" type="button" variant="danger" title="Lock system">Lock system</sl-button>
+        <sl-button id="systemunlock" type="button" variant="primary" title="Unlock system">Unlock system</sl-button>
       </sl-tab-panel>
 
     </sl-tab-group>
