@@ -10,6 +10,7 @@ PassWeaver-GUI is an opensource project, released under MIT license. See [Techni
 - Share one-time secrets with anyone, even if they have not an account
 - One-time share items
 - Share items through permalinks
+- Read only mode
 - Folder level permissions
 - User groups
 - Extensive log actions on items
@@ -184,6 +185,7 @@ By clicking the history button (the clock icon) in user list you can access a hi
 Only more recent events are shown, click on "Load more" button in order to load more activity.
 
 ### Folder visibility
+
 By clicking the folder icon in user list, you can see what folders he has access to:
 
 ![User folders visibility](assets/passweavergui-users-folders-000.jpeg)
@@ -224,17 +226,35 @@ This page displays some information about API and GUI status:
 
 ## Settings
 
-From this page you can manage the item types:
+### Item types
 
-![Item types](assets/passweavergui-settings-1-000.jpeg)
+From this page you can manage item types:
+
+![Item types](assets/passweavergui-settings-1-001.jpeg)
 
 Note that when you delete and item types, every item that used that type will be reset to 'null'.
 
-In the "Cache" pane, you can reset the API cache causing it to reload users permissions and visible folders.
+### Clear cache
 
-![Item types](assets/passweavergui-settings-2-000.jpeg)
+In the "Cache" tab, you can reset the API cache causing it to reload users permissions and visible folders.
+
+![Clear cache](assets/passweavergui-settings-2-001.jpeg)
 
 Clearing the cache is needed only after directly operating on the database... which is not advisable anyway.
+
+### Read-only mode
+
+Admins can set the system in a read-only status: this will make all write operations (even admin ones like creating new users) result in an error.
+
+![Read only](assets/passweavergui-settings-3-000.jpeg)
+
+### Lock system
+
+When locking the system, only admins will be able to login; all currently logged in users will be logged out automatically.
+
+Note that when you click the "Lock system", you will be logged out as well (but being an admin, you will be able to log back in).
+
+![System lock](assets/passweavergui-settings-4-000.jpeg)
 
 # Install and run
 
