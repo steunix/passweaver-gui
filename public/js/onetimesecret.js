@@ -8,7 +8,7 @@ const domCache = {
   userDescInput: JH.query('#scopeuserdesc'),
   userSelectButton: JH.query('#searchuser'),
   userSelectDiv: JH.query('#selectuser'),
-  saveButton: JH.query('#save'),
+  createLinkButton: JH.query('#save'),
   dataInput: JH.query('#data'),
   link: JH.query('#link'),
   resultDiv: JH.query('#result')
@@ -16,14 +16,14 @@ const domCache = {
 
 function enableSave () {
   if (JH.value(domCache.dataInput) === '') {
-    JH.disable(domCache.saveButton)
+    JH.disable(domCache.createLinkButton)
     return
   }
   if (JH.value(domCache.scopeInput) === '2' && JH.value(domCache.scopeUserInput) === '') {
-    JH.disable(domCache.saveButton)
+    JH.disable(domCache.createLinkButton)
     return
   }
-  JH.enable(domCache.saveButton)
+  JH.enable(domCache.createLinkButton)
 }
 
 function userChoosen (userid, userdesc) {
@@ -31,6 +31,34 @@ function userChoosen (userid, userdesc) {
   JH.value(domCache.userDescInput, userdesc)
   UPicker.hide()
   enableSave()
+}
+
+function linkShow () {
+  domCache.resultDiv.style.display = 'block'
+}
+
+function linkHide () {
+  domCache.resultDiv.style.display = 'none'
+}
+
+async function createLink () {
+  const data = {
+    _csrf: PW.getCSRFToken(),
+    data: JH.value(domCache.dataInput),
+    scope: JH.value(domCache.scopeInput),
+    userid: JH.value(domCache.scopeUserInput)
+  }
+
+  const resp = await JH.http('/api/onetimesecret', data)
+  if (!await PW.checkResponse(resp)) {
+    return
+  }
+
+  const body = await resp.json()
+  JH.value(domCache.link, `${window.location.origin}/onetimesecret/${body.data.token}`)
+  linkShow()
+
+  PW.showToast('success', 'Link created')
 }
 
 JH.event(domCache.dataInput, 'keyup', async (ev) => {
@@ -49,29 +77,13 @@ JH.event(domCache.scopeInput, 'change', (ev) => {
     JH.value(domCache.scopeUserInput, '')
     JH.value(domCache.userDescInput, '')
   }
+  linkHide()
   enableSave()
 })
 
-JH.event(domCache.saveButton, 'click', async (ev) => {
-  const data = {
-    _csrf: PW.getCSRFToken(),
-    data: JH.value(domCache.dataInput),
-    scope: JH.value(domCache.scopeInput),
-    userid: JH.value(domCache.scopeUserInput)
-  }
+JH.event(domCache.createLinkButton, 'click', createLink)
 
-  const resp = await JH.http('/api/onetimesecret', data)
-  if (!await PW.checkResponse(resp)) {
-    return
-  }
-
-  const body = await resp.json()
-  JH.value(domCache.link, `${window.location.origin}/onetimesecret/${body.data.token}`)
-
-  domCache.resultDiv.style.visibility = 'visible'
-  PW.showToast('success', 'Link created')
-})
-
+linkHide()
 enableSave()
 
 // Picker
