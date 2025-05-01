@@ -56,9 +56,9 @@ async function fillItems () {
       row +=
         `<tr id='row-${itm.id}' data-id='${itm.id}'>` +
         '<td>' +
-        `<wa-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></wa-icon-button>` +
-        `<wa-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></wa-icon-button>` +
-        `<wa-icon-button id='folder-${itm.id}' title='Open folder' name='folder2-open' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon-button id='view-${itm.id}' title='View item' name='rectangle-list' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon-button id='link-${itm.id}' title='Copy item link' name='link' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon-button id='folder-${itm.id}' title='Open folder' name='folder-open' data-id='${itm.id}'></wa-icon-button>` +
         '</td>' +
         `<td class='border-start border-end'>${JH.sanitize(itm.folder.description)}</td>` +
         '<td class="border-end">'
@@ -141,14 +141,14 @@ async function passwordCopied (item) {
 
 await fillItemTypes()
 
-JH.event(domCache.search, 'wa-input', async (ev) => {
+JH.event(domCache.search, 'input', async (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }
   itemSearchTimeout = setTimeout(async () => { await fillItems() }, 250)
 })
 
-JH.event(domCache.typeSelect, 'wa-change', fillItems)
+JH.event(domCache.typeSelect, 'change', fillItems)
 
 JH.event(domCache.passwordCopy, 'wa-copy', (ev) => {
   passwordCopied(JH.value(domCache.itemViewId))

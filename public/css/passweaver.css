@@ -250,7 +250,8 @@ tr:hover td {
 }
 
 .itemtitle {
-  background-color: var(--wa-color-neutral-50);
+  background-color: var(--wa-color-neutral-95);
+  font-weight: bold;
   cursor: pointer;
 }
 
