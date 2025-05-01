@@ -12,15 +12,9 @@
       <div style="display:flex;margin-right:1em;">
         <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" clearable>
           <wa-icon slot="prefix" name="search"></wa-icon>
+          <wa-icon-button slot="suffix" title="Search previous" id="foldersearchprevious" name="angle-left"></wa-icon-button>
+          <wa-icon-button slot="suffix" title="Search next" id="foldersearchnext" name="angle-right"></wa-icon-button>
         </wa-input>
-        <wa-button-group>
-          <wa-button title="Search previous" appearance="outlined" id="foldersearchprevious">
-            <wa-icon slot="prefix" name="chevron-left"></wa-icon>
-          </wa-button>
-          <wa-button title="Search next" appearance="outlined" id="foldersearchnext">
-            <wa-icon slot="prefix" name="chevron-right"></wa-icon>
-          </wa-button>
-        </wa-button-group>
       </div>
       <% if ( manage_folders ) { %>
         <wa-button-group>
@@ -36,7 +30,6 @@
         </wa-button-group>
       <% } %>
     </div>
-    <br/>
     <%- include('partials/folderstree.ejs') %>
   </div>
 
