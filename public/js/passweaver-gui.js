@@ -50,7 +50,7 @@ export function confirmDialog (title, text, callback, savetext, savevariant) {
     domCache.confirmOkButton.setAttribute('variant', savevariant)
   }
   JH.event(domCache.confirmOkButton, 'click', (ev) => {
-    dialog.hide()
+    dialog.open = false
     callback()
   })
 
@@ -251,6 +251,8 @@ export function treeSearchPrevious (elemid, searchstring) {
 }
 
 export function showToast (variant, text) {
+  // TODO: Toast is not yet implemented in WebAwesome
+  /*
   const icon = {
     success: 'check2-circle',
     primary: 'info-circle',
@@ -267,6 +269,7 @@ export function showToast (variant, text) {
 
   document.body.append(alert)
   alert.toast()
+  */
 }
 
 export function getUser () {

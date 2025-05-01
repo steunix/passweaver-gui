@@ -18,7 +18,6 @@ const domCache = {
   folderDialogId: JH.query('#folderdialogid'),
   folderDialogDescription: JH.query('#folderdescription'),
   folderDialogSave: JH.query('#foldersave'),
-  folderDialogCancel: JH.query('#foldercancel'),
   folderRemoveButton: JH.query('#folderremove'),
   folderCreateButton: JH.query('#foldercreate'),
   folderEditButton: JH.query('#folderedit'),
@@ -139,7 +138,6 @@ JH.event(domCache.folderCreateButton, 'click', (ev) => {
 JH.event(domCache.folderDialogDescription, 'keyup', folderSaveEnable)
 
 JH.event(domCache.folderDialogSave, 'click', folderSave)
-JH.event(domCache.folderDialogCancel, 'click', folderDialogHide)
 
 JH.event(domCache.folderSearch, 'wa-input', (ev) => {
   if (folderSearchTimeout) {

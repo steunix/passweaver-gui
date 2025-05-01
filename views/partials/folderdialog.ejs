@@ -1,6 +1,6 @@
-<wa-dialog id="folderdialog" label="Folder" class="dialog-deny-close">
+<wa-dialog id="folderdialog" with-header with-footer label="Folder" class="dialog-deny-close">
   <wa-input id="folderdialogid" style="display:none;"></wa-input>
   <wa-input id="folderdescription" label="Description" required autofocus maxlength="100"></wa-input>
-  <wa-button id="foldersave" slot="footer" variant="primary" disabled="disabled">Save</wa-button>
-  <wa-button id="foldercancel" slot="footer">Cancel</wa-button>
+  <wa-button id="foldersave" slot="footer" variant="brand" disabled="disabled">Save</wa-button>
+  <wa-button id="foldercancel" data-dialog="close" slot="footer">Cancel</wa-button>
 </wa-dialog>
