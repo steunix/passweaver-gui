@@ -47,7 +47,7 @@ function folderDialogShow (id) {
 }
 
 function folderDialogHide () {
-  domCache.folderDialog.hide()
+  domCache.folderDialog.open = false
 }
 
 function folderSaveEnable () {

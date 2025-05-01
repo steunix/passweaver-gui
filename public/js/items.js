@@ -36,10 +36,8 @@ const domCache = {
   personalPasswordNewButton: JH.query('#personalpasswordcreate'),
   personalPasswordNew: JH.query('#newpersonalpassword'),
   personalPasswordNewConfirm: JH.query('#newpersonalpasswordconfirm'),
-  personalPasswordNewCancel: JH.query('#personalpasswordcancel'),
   personalPasswordSetDialog: JH.query('#personalpasswordset'),
   personalPasswordSetButton: JH.query('#personalpasswordsetbutton'),
-  personalPasswordSetCancel: JH.query('#personalpasswordsetcancel'),
   personalPasswordAsk: JH.query('#personalpasswordask'),
   foldersTree: JH.query('#folderstree'),
   viewItem: JH.query('#viewitem'),
@@ -306,7 +304,7 @@ async function itemDialogShow (id, readonly, gotofolder) {
 }
 
 function itemDialogHide () {
-  domCache.itemDialog.hide()
+  domCache.itemDialog.open = false
 }
 
 function itemDialogReset () {
@@ -471,7 +469,7 @@ async function itemOneTimeShare () {
   navigator.clipboard.writeText(`${window.location.origin}/onetimesecret/${body.data.token}`)
 
   PW.showToast('primary', 'One time share link copied to clipboard')
-  domCache.scopeSelect.hide()
+  domCache.scopeSelect.open = false
 }
 
 function findAndShowItem (itm) {
@@ -507,7 +505,7 @@ async function personalPasswordCreate () {
     return
   }
 
-  domCache.personalPasswordNewDialog.hide()
+  domCache.personalPasswordNewDialog.open = false
 
   PW.showToast('success', 'Personal password saved')
   await fillItems()
@@ -519,7 +517,7 @@ async function personalPasswordSet () {
     password: JH.value(domCache.personalPasswordAsk)
   }
 
-  domCache.personalPasswordSetDialog.hide()
+  domCache.personalPasswordSetDialog.open = false
   const resp = await JH.http('/api/personalunlock', data)
   if (!await PW.checkResponse(resp)) {
     PW.errorDialog('Wrong password, please retry')
@@ -653,12 +651,6 @@ JH.event(domCache.itemDialogSave, 'click', itemSave)
 JH.event(domCache.itemDialogTitle, 'keyup', itemSaveEnable)
 
 // Personal
-JH.event(domCache.personalPasswordNewCancel, 'click', (ev) => {
-  domCache.personalPasswordNewDialog.hide()
-})
-JH.event(domCache.personalPasswordSetCancel, 'click', (ev) => {
-  domCache.personalPasswordSetDialog.hide()
-})
 JH.event(domCache.personalPasswordNewButton, 'click', personalPasswordCreate)
 
 JH.event([domCache.personalPasswordNew, domCache.personalPasswordNewConfirm], 'keyup', personalPasswordCreateEnable)
