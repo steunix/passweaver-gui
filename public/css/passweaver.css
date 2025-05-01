@@ -246,10 +246,10 @@ tr:hover td {
 }
 
 .rowselected {
-  border-inline-start-color: var(--wa-color-primary-600);
+  border-inline-start-color: var(--wa-color-brand-50);
   border-inline-width: 3px;
   border-inline-style: solid;
-  background-color: var(--wa-color-neutral-200);
+  background-color: var(--wa-color-neutral-90);
   font-weight: bold;
 }
 
