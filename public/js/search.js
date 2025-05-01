@@ -91,7 +91,7 @@ async function fillItems () {
 async function itemViewFill (item) {
   const resp = await JH.http(`/api/items/${item}`)
   if (!await PW.checkResponse(resp)) {
-    domCache.itemViewDialog.hide()
+    domCache.itemViewDialog.open = false
     return
   }
 

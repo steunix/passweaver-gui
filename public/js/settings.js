@@ -106,7 +106,7 @@ async function itemTypeCreate () {
     icon: JH.value(domCache.itemTypeNewIcon)
   }
 
-  domCache.itemTypeNewDialog.hide()
+  domCache.itemTypeNewDialog.open = false
 
   const resp = await JH.http('/api/itemtypes', data)
   if (!await PW.checkResponse(resp)) {
@@ -164,7 +164,7 @@ async function itemTypeEdit () {
     icon: JH.value(domCache.itemTypeEditIcon)
   }
 
-  domCache.itemTypeEditDialog.hide()
+  domCache.itemTypeEditDialog.open = false
   const resp = await JH.http(`/api/itemtypes/${currentItemType}`, data, 'PATCH')
   if (!await PW.checkResponse(resp)) {
     return

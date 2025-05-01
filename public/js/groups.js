@@ -91,7 +91,7 @@ function groupDialogShow (id) {
 }
 
 function groupDialogHide () {
-  domCache.groupDialog.hide()
+  domCache.groupDialog.open = false
 }
 
 async function groupClicked (groupid) {
