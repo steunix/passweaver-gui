@@ -148,7 +148,7 @@ export function value (query, value) {
 
   // Setter, on all elements
   for (const element of elements) {
-    element.value = value
+    element.value = value || ''
   }
 }
 
