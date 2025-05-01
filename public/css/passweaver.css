@@ -20,7 +20,8 @@
   --indent-guide-width: 1px;
   --wa-input-font-family: var(--theme-font);
   --wa-input-required-content-color: red;
-  --wa-spacing-x-small: 0.3rem;
+  --wa-space-xs: 0.3rem;
+  --wa-space-xl: 0.5rem;
 }
 
 body {
