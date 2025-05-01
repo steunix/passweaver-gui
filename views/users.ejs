@@ -12,8 +12,8 @@
       <wa-input id="usersearch" type="text" placeholder="Search users" autofocus="autofocus" clearable>
         <wa-icon slot="prefix" name="search"></wa-icon>
       </wa-input>
-      <wa-button id="newuser" type="button" title="Create a new user" style="margin-left:1em">
-        <wa-icon slot="prefix" name="plus-lg"></wa-icon>
+      <wa-button id="newuser" variant="brand" title="Create a new user" style="margin-left:1em">
+        <wa-icon slot="prefix" name="plus"></wa-icon>
         New user
       </wa-button>
     </div>
@@ -39,20 +39,20 @@
     <h2>Groups</h2>
     <div style="display: flex;">
       <wa-button-group>
-        <wa-button id="addgroup" type="button" title="Add group membership">
-          <wa-icon slot="prefix" name="plus-lg"></wa-icon>
+        <wa-button id="addgroup" appearance="outlined" title="Add group membership">
+          <wa-icon slot="prefix" name="plus"></wa-icon>
           Add group
         </wa-button>
-        <wa-button id="copygroups" type="button" title="Copy groups">
+        <wa-button id="copygroups" appearance="outlined" title="Copy groups">
           <wa-icon slot="prefix" name="copy"></wa-icon>
           Copy groups
         </wa-button>
-        <wa-button id="pastegroups" type="button" title="Paste groups" style="display: none;">
-          <wa-icon slot="prefix" name="clipboard-plus"></wa-icon>
+        <wa-button id="pastegroups" appearance="outlined" title="Paste groups" style="display: none;">
+          <wa-icon slot="prefix" name="paste"></wa-icon>
           Paste groups
         </wa-button>
-        <wa-button id="replacegroups" type="button" title="Replace groups" style="display: none;">
-          <wa-icon slot="prefix" name="clipboard-check"></wa-icon>
+        <wa-button id="replacegroups" appearance="outlined" title="Replace groups" style="display: none;">
+          <wa-icon slot="prefix" name="file-import"></wa-icon>
           Replace groups
         </wa-button>
       </wa-button-group>

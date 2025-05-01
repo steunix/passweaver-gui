@@ -1,4 +1,4 @@
-<wa-dialog id="newuserdialog" label="New user" class="dialog-deny-close">
+<wa-dialog id="newuserdialog" with-header with-footer label="New user" class="dialog-deny-close">
   <wa-input label="Login" id="newlogin" name="newlogin" required="required" autofocus maxlength="50"></wa-input>
   <wa-input type="email" label="Email" id="newemail" required="required" name="newemail" maxlength="50"></wa-input>
   <wa-input label="Last name" id="newlastname" name="newlastname" required="required" maxlength="100"></wa-input>
@@ -12,7 +12,10 @@
   </wa-select>
   <wa-input label="Password" type="password" id="newpassword" name="newpassword" password-toggle required="required" maxlength="100"></wa-input>
   <wa-input label="Confirm password" type="password" id="newpasswordconfirm" name="newpasswordconfirm" password-toggle required="required" maxlength="100"></wa-input>
-  <wa-checkbox id="newactive" name="newactive" checked>Active</wa-checkbox>
-  <wa-button id="usercreate" slot="footer" variant="primary">Save</wa-button>
-  <wa-button id="cancel" slot="footer">Cancel</wa-button>
+  <wa-select label="Status" id="newactive" name="newactive" required="required">
+    <wa-option value="A" selected="selected">Active</wa-option>
+    <wa-option value="N">Not active</wa-option>
+  </wa-select>
+  <wa-button id="usercreate" slot="footer" variant="brand">Save</wa-button>
+  <wa-button id="cancel" data-dialog="close" slot="footer">Cancel</wa-button>
 </wa-dialog>

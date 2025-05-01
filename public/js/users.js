@@ -29,7 +29,6 @@ const domCache = {
   newPassword: JH.query('#newpassword'),
   newPasswordConfirm: JH.query('#newpasswordconfirm'),
   userCreateButton: JH.query('#usercreate'),
-  newUserCancelButton: JH.query('#newuserdialog #cancel'),
   editLogin: JH.query('#editlogin'),
   editEmail: JH.query('#editemail'),
   editLastName: JH.query('#editlastname'),
@@ -67,10 +66,10 @@ async function fillUsers () {
       row +=
         `<tr data-id='${itm.id}' style='cursor:pointer'>` +
         '<td>' +
-        `<wa-icon-button id='edituser-${itm.id}' title='Edit user' name='pencil' data-id='${itm.id}'></wa-icon-button>` +
-        `<wa-icon-button id='removeuser-${itm.id}' title='Delete user' name='trash3' style='color:red;' data-id='${itm.id}'></wa-icon-button>` +
-        `<wa-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></wa-icon-button>` +
-        `<wa-icon-button id='folders-${itm.id}' title='Visible folders' name='folder2-open' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon-button id='edituser-${itm.id}' title='Edit user' name='edit' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon-button id='removeuser-${itm.id}' title='Delete user' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon-button id='activity-${itm.id}' title='Activity' name='clock' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon-button id='folders-${itm.id}' title='Visible folders' name='folder-tree' data-id='${itm.id}'></wa-icon-button>` +
         '</td>' +
         `<td class='border-start'>${JH.sanitize(itm.login)}</td>` +
         `<td>${JH.sanitize(itm.lastname)}</td>` +
@@ -78,7 +77,7 @@ async function fillUsers () {
         `<td>${JH.sanitize(itm.email)}</td>` +
         `<td>${JH.sanitize(itm.locale)}</td>` +
         `<td>${JH.sanitize(itm.authmethod)}</td>` +
-        `<td class='text-center'><wa-icon name='${itm.active ? 'check-lg' : 'x-lg'}' style='color:${itm.active ? 'green' : 'red'}'/></td>` +
+        `<td class='text-center'><wa-icon name='${itm.active ? 'check' : 'xmark'}' style='color:${itm.active ? 'green' : 'red'}'/></td>` +
         '</tr>'
     }
     domCache.usersTableBody.innerHTML = row
@@ -161,7 +160,7 @@ async function fillGroups () {
     for (const itm of body.data) {
       row += `<tr data-id='${itm.id}'>`
       if (itm.id !== 'E') {
-        row += `<td><wa-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' style='color:red;' title='Remove'></wa-icon-button></td>`
+        row += `<td><wa-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash' style='color:red;' title='Remove'></wa-icon-button></td>`
       } else {
         row += '<td></td>'
       }
@@ -179,6 +178,7 @@ async function fillGroups () {
 function userCreateDialog () {
   domCache.newUserDialog.show()
   JH.value('#newuserdialog wa-input,wa-textarea,wa-select', '')
+  domCache.newActive.value = 'A'
   userCreateEnable()
 }
 
@@ -195,7 +195,7 @@ async function userCreate () {
     secret: JH.value(domCache.newPassword)
   }
 
-  domCache.newUserDialog.hide()
+  domCache.newUserDialog.open = false
   const resp = await JH.http('/api/usernew/', userdata)
   if (!await PW.checkResponse(resp)) {
     return
@@ -245,11 +245,7 @@ async function userEditFill (user) {
   JH.value(domCache.editFirstName, body.data.firstname)
   JH.value(domCache.editLocale, body.data.locale)
   JH.value(domCache.editAuthMethod, body.data.authmethod)
-  if (!body.data.active) {
-    domCache.editActive.removeAttribute('checked')
-  } else {
-    domCache.editActive.setAttribute('checked', 'checked')
-  }
+  JH.value(domCache.editActive, body.data.active ? 'A' : 'N')
 
   userEditEnable()
 }
@@ -280,11 +276,11 @@ async function userEdit () {
     firstname: JH.value(domCache.editFirstName),
     locale: JH.value(domCache.editLocale),
     authmethod: JH.value(domCache.editAuthMethod),
-    active: domCache.editActive.hasAttribute('checked')
+    active: JH.value(domCache.editActive) === 'A'
   }
 
   const resp = await JH.http(`/api/userupdate/${currentUser}`, userdata)
-  domCache.userEditDialog.hide()
+  domCache.userEditDialog.open = false
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -411,9 +407,6 @@ JH.event([domCache.editLogin, domCache.editEmail, domCache.editLastName], 'keyup
 JH.event(domCache.userEditButton, 'click', userEdit)
 JH.event(domCache.newUserButton, 'click', userCreateDialog)
 
-JH.event(domCache.newUserCancelButton, 'click', (ev) => {
-  domCache.newUserDialog.hide()
-})
 JH.event(domCache.usersSearch, 'wa-input', (ev) => {
   if (userSearchTimeout) {
     clearTimeout(userSearchTimeout)

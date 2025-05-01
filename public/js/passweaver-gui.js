@@ -39,7 +39,7 @@ export function confirmDialog (title, text, callback, savetext, savevariant) {
   domCache.confirmOkButton = JH.query('#confirmok')
 
   domCache.confirmOkButton.innerHTML = 'Confirm'
-  domCache.confirmOkButton.setAttribute('variant', 'primary')
+  domCache.confirmOkButton.setAttribute('variant', 'brand')
 
   domCache.confirmDialogText.innerHTML = text
 
