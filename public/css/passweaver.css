@@ -294,12 +294,16 @@ wa-tree-item::part(label) {
   font-size: var(--theme-font-size);
 }
 
+wa-tree-item::part(item) {
+  cursor: pointer;
+}
+
 wa-tree-item::part(item):hover {
-  background-color: var(--wa-color-neutral-200);
+  background-color: var(--wa-color-neutral-90);
 }
 
 wa-tree-item::part(item--selected) {
-  background-color: var(--wa-color-neutral-200);
+  background-color: var(--wa-color-neutral-90);
   font-weight: bold !important;
 }
 
