@@ -11,7 +11,6 @@ const domCache = {
   groupDialog: JH.query('#groupdialog'),
   groupDialogDescription: JH.query('#groupdescription'),
   groupDialogSave: JH.query('#groupsave'),
-  groupDialogCancel: JH.query('#groupcancel'),
   groupDialogId: JH.query('#groupdialogid'),
   groupsTree: JH.query('#groupstree'),
   groupCreateButton: JH.query('#groupcreate'),
@@ -273,7 +272,6 @@ JH.event(domCache.groupCreateButton, 'click', ev => { groupDialogShow() })
 
 JH.event(domCache.groupDialogDescription, 'keyup', groupSaveEnable)
 JH.event(domCache.groupDialogSave, 'click', groupSave)
-JH.event(domCache.groupDialogCancel, 'click', groupDialogHide)
 
 JH.event(domCache.newMemberButton, 'click', (ev) => {
   if (currentGroup() === '') {
