@@ -28,7 +28,7 @@ export class Picker {
   }
 
   hide () {
-    this.domCache.dialog.hide()
+    this.domCache.dialog.open = false
   }
 
   async search () {

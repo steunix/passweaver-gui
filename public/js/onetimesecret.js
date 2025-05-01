@@ -41,11 +41,11 @@ JH.event(domCache.userSelectButton, 'click', (ev) => {
   UPicker.show()
 })
 
-JH.event(domCache.scopeInput, 'wa-change', (ev) => {
+JH.event(domCache.scopeInput, 'change', (ev) => {
   if (JH.value(domCache.scopeInput) === '2') {
-    domCache.userSelectDiv.style.visibility = 'visible'
+    domCache.userSelectDiv.style.display = 'flex'
   } else {
-    domCache.userSelectDiv.style.visibility = 'hidden'
+    domCache.userSelectDiv.style.display = 'none'
     JH.value(domCache.scopeUserInput, '')
     JH.value(domCache.userDescInput, '')
   }
