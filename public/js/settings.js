@@ -10,12 +10,10 @@ const domCache = {
   itemTypeNewDescription: JH.query('#itemtypenewdescription'),
   itemTypeNewIcon: JH.query('#itemtypenewicon'),
   itemTypeNewSaveButton: JH.query('#itemtypenewsave'),
-  itemTypeNewCancelButton: JH.query('#itemtypenewcancel'),
   itemTypeEditDialog: JH.query('#itemtypeeditdialog'),
   itemTypeEditDescription: JH.query('#itemtypeeditdescription'),
   itemTypeEditIcon: JH.query('#itemtypeediticon'),
   itemTypeEditSaveButton: JH.query('#itemtypeeditsave'),
-  itemTypeEditCancelButton: JH.query('#itemtypeeditcancel'),
   readOnlyStatus: JH.query('#readonlystatus'),
   readOnlySetButton: JH.query('#readonlymode'),
   readOnlyUnsetButton: JH.query('#readwritemode'),
@@ -212,18 +210,12 @@ async function systemReadonly (readonly) {
 }
 
 JH.event(domCache.itemTypeNewButton, 'click', itemTypeCreateDialog)
-JH.event(domCache.itemTypeNewCancelButton, 'click', () => {
-  domCache.itemTypeNewDialog.hide()
-})
 
 JH.event(domCache.itemTypeNewDescription, 'keyup', itemTypeCreateEnable)
 JH.event(domCache.itemTypeNewSaveButton, 'click', async () => {
   await itemTypeCreate()
 })
 
-JH.event(domCache.itemTypeEditCancelButton, 'click', () => {
-  domCache.itemTypeEditDialog.hide()
-})
 JH.event(domCache.itemTypeEditSaveButton, 'click', async () => {
   await itemTypeEdit()
 })
