@@ -13,7 +13,7 @@
   <wa-divider></wa-divider>
   <% if ( !admin ) { %>
     <a href="/pages/items" title="Items" class="link" pageid="items">
-      <wa-icon name="folder2-open"></wa-icon>
+      <wa-icon name="list"></wa-icon>
       Items
     </a>
     <a href="/pages/search" title="Search" class="link" pageid="search">
@@ -23,7 +23,7 @@
   <% } %>
   <% if ( admin ) { %>
     <a href="/pages/folders" title="Folders" class="link" pageid="folders">
-      <wa-icon name="folder2-open"></wa-icon>
+      <wa-icon name="folder-tree"></wa-icon>
       Folders
     </a>
     <a href="/pages/users" title="Users" class="link" pageid="users">
@@ -31,17 +31,17 @@
       Users
     </a>
     <a href="/pages/groups" title="Groups" class="link" pageid="groups">
-      <wa-icon name="people"></wa-icon>
+      <wa-icon name="user-group"></wa-icon>
       Groups
     </a>
   <% } %>
   <a href="/pages/generate" title="Generator" class="link" pageid="generate">
-    <wa-icon name="magic"></wa-icon>
+    <wa-icon name="wand-sparkles"></wa-icon>
     Generator
   </a>
-  <a href="/pages/onetimesecret" title="1time secret" class="link" pageid="onetimesecret">
-    <wa-icon name="1-circle"></wa-icon>
-    1time secret
+  <a href="/pages/onetimesecret" title="One-time secret" class="link" pageid="onetimesecret">
+    <wa-icon name="1"></wa-icon>
+    1 time secret
   </a>
   <% if ( admin ) { %>
     <wa-divider></wa-divider>
@@ -60,7 +60,7 @@
     Preferences
   </a>
   <a href="/logout" title="Logout" class="link" pageid="logout">
-    <wa-icon name="box-arrow-right" page="Logout"></wa-icon>
+    <wa-icon name="right-from-bracket" page="Logout"></wa-icon>
     Logout
   </a>
   <div class="version">PassWeaver GUI v<%= version %><br><a href='https://steunix.github.io/passweaver-gui/' target="_blank">Documentation</a></div>
