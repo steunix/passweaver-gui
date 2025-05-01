@@ -281,7 +281,7 @@ tr:hover td {
   visibility: hidden;
 }
 
-/* Shoelace */
+/* WebAwesome */
 wa-tree-item::part(label) {
   font-family: var(--theme-font);
   font-size: var(--theme-font-size);
