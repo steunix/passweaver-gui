@@ -206,7 +206,7 @@ table {
 
 th {
   text-align: start;
-  background-color: var(--wa-color-gray-100);
+  background-color: var(--wa-color-neutral-95);
 }
 
 th,td {
@@ -215,8 +215,8 @@ th,td {
 
 tr {
   border-inline-start-color: transparent;
-  border-inline-end-color: transparent;
-  border-inline-width: 3px;
+  border-inline-start-width: 3px;
+  border-inline-end-width: 0;
   border-inline-style: solid;
 }
 
@@ -225,13 +225,6 @@ tr:hover {
 }
 tr:hover td {
   background-color: var(--wa-color-neutral-100);
-}
-
-.bordered {
-  border-radius: 4px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--wa-color-neutral-80)
 }
 
 .bold {
