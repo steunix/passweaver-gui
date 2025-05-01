@@ -79,9 +79,6 @@ export function errorDialog (text, subject) {
   domCache.errorDialogClose = JH.query('#errordialogclose')
 
   domCache.errorDialog.setAttribute('label', subject || 'PassWeaver')
-  JH.event(domCache.errorDialogClose, 'click', event => {
-    dialog.hide()
-  })
   dialog.show()
 }
 
