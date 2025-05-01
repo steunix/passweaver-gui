@@ -118,19 +118,19 @@ async function fillItems () {
     for (const itm of body.data) {
       row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
       row += '<td class="border-end">'
-      row += `<wa-icon-button id='view-${itm.id}' name='file-earmark' title='View item' data-id='${itm.id}'></wa-icon-button>`
+      row += `<wa-icon-button id='view-${itm.id}' name='rectangle-list' title='View item' data-id='${itm.id}'></wa-icon-button>`
       if (Folders.currentPermissions.write) {
-        row += `<wa-icon-button id='edit-${itm.id}' title='Edit item' name='pencil' data-id='${itm.id}'></wa-icon-button>`
-        row += `<wa-icon-button id='remove-${itm.id}' title='Remove item' name='trash3' style="color:red;" data-id='${itm.id}'></wa-icon-button>`
-        row += `<wa-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></wa-icon-button>`
+        row += `<wa-icon-button id='edit-${itm.id}' title='Edit item' name='edit' data-id='${itm.id}'></wa-icon-button>`
+        row += `<wa-icon-button id='remove-${itm.id}' title='Remove item' name='trash' style="color:red;" data-id='${itm.id}'></wa-icon-button>`
+        row += `<wa-icon-button id='clone-${itm.id}' title='Clone item' name='clone' data-id='${itm.id}'></wa-icon-button>`
       }
-      row += `<wa-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></wa-icon-button>`
-      row += `<wa-icon-button id='onetime-${itm.id}' title='One time share' name='1-circle' data-id='${itm.id}'></wa-icon-button>`
-      row += `<wa-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></wa-icon-button>`
+      row += `<wa-icon-button id='link-${itm.id}' title='Copy item link' name='link' data-id='${itm.id}'></wa-icon-button>`
+      row += `<wa-icon-button id='onetime-${itm.id}' title='One time share' name='1' data-id='${itm.id}'></wa-icon-button>`
+      row += `<wa-icon-button id='activity-${itm.id}' title='Activity' name='clock' data-id='${itm.id}'></wa-icon-button>`
       row += '</td>'
       row += '<td class="border-end">'
       if (itm.type) {
-        row += `<wa-icon name='${itm.itemtype.icon}' title='${JH.sanitize(itm.itemtype.description)}'></wa-icon>`
+        row += `<wa-badge appearance='outlined'><wa-icon name='${itm.itemtype.icon}' title='${JH.sanitize(itm.itemtype.description)}'></wa-icon>${JH.sanitize(itm.itemtype.description)}</wa-badge>`
       }
       row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end itemtitle'>${JH.sanitize(itm.title)}</td>`
       row += `<td id='user-${itm.id}'>${JH.sanitize(itm.metadata)}</td>`
