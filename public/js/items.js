@@ -639,7 +639,7 @@ async function dndSetup () {
 }
 
 // Search
-JH.event(domCache.searchTypeSelect, 'wa-change', fillItems)
+JH.event(domCache.searchTypeSelect, 'change', fillItems)
 
 // Create
 JH.event(domCache.newItemButton, 'click', (ev) => {
