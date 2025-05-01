@@ -21,7 +21,7 @@
   --cell-padding: 0.4em;
   --indent-guide-width: 1px;
   --wa-input-font-family: var(--theme-font);
-  --wa-input-required-content-color: red;
+  --wa-form-control-required-content-color: red;
   --wa-space-xs: 0.3rem;
   --xwa-space-xl: 0.5rem;
 }
