@@ -5,6 +5,8 @@
 }
 
 :root {
+  --wa-font-family-body: "Roboto Condensed";
+  --wa-size: 14px;
   --theme-font: "Roboto Condensed";
   --theme-font-size: 14px;
   --theme-color: #ea9e34;
@@ -27,9 +29,8 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: var(--theme-font);
-  font-size: var(--theme-font-size);
-  color: var(--wa-color-neutral-700);
+  font-size: var(--theme-font-size) !important;
+  --color: var(--wa-color-neutral-700);
 }
 
 /** CSS Grid */
@@ -82,6 +83,11 @@ body {
 
 .dragover {
   background-color: var(--wa-color-primary-100);
+}
+
+.page-sidebar wa-icon {
+  font-size: 0.8rem;
+  width: 1rem;
 }
 
 .page-sidebar .link wa-icon {
