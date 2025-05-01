@@ -1,5 +1,5 @@
 <wa-dialog id="scopeselect" label="Choose share target">
-  <wa-visually-hidden id="shareitemid"></wa-visually-hidden>
+  <wa-input style="display:none;" id="shareitemid"></wa-input>
   <p>Select who you want to share this secret with:</p>
   <wa-radio-group id="scope" name="scope" value="1">
     <wa-radio-button value="0">Anyone</wa-radio-button>
@@ -8,7 +8,7 @@
   </wa-radio-group>
   <br />
   <div id="selectuser" style="visibility: hidden; display: flex;">
-    <wa-visually-hidden id="scopeuser"></wa-visually-hidden>
+    <wa-input style="display:none;" id="scopeuser"></wa-input>
     <wa-button id="searchuser" variant="warning">Select user</wa-button>
     <wa-input id="scopeuserdesc" readonly></wa-input>
   </div>
