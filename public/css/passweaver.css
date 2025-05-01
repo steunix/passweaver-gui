@@ -184,19 +184,19 @@ h2 {
   border-radius: 4px;
 }
 
-#errordialog::part(header) {
+#xerrordialog::part(header) {
   --header-spacing: var(--wa-spacing-small);
 }
 
-#errordialog::part(title) {
+#xerrordialog::part(title) {
   font-size: 120%;
 }
 
-#errordialog::part(panel) {
+#xerrordialog::part(panel) {
   border-radius: 8px;
 }
 
-wa-dialog::part(header) {
+xwa-dialog::part(header) {
   border-bottom: 1px solid var(--wa-color-neutral-200);
 }
 
@@ -232,11 +232,11 @@ tr:hover td {
 }
 
 .border-start {
-  border-left: 1px solid var(--wa-color-neutral-200);
+  border-left: 1px solid var(--wa-color-neutral-90);
 }
 
 .border-end {
-  border-right: 1px solid var(--wa-color-neutral-200);
+  border-right: 1px solid var(--wa-color-neutral-90);
 }
 
 .sticky {
@@ -313,5 +313,5 @@ wa-input,wa-button,wa-select,wa-textarea {
 }
 
 *::part(form-control-label) {
-  font-size: 90%;
+  font-size: 95%;
 }
