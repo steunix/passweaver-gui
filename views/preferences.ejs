@@ -25,22 +25,9 @@
         <% if ( authmethod=="local" ) { %>
         <h2>Change password</h2>
         <h5>At least 8 characters</h5>
-        <table>
-          <tr>
-            <th>New password</th>
-            <td>
-              <wa-input id="newpassword1" type="password" password-toggle></wa-input>
-            </td>
-          </tr>
-          <tr>
-            <th>Confirm new password</th>
-            <td>
-              <wa-input id="newpassword2" type="password" password-toggle></wa-input>
-            </td>
-          </tr>
-        </table>
-        <wa-divider></wa-divider>
-        <wa-button id='passwordchange' variant="primary" disabled>Change password</wa-button>
+        <wa-input id="newpassword1" type="password" password-toggle label="New password"></wa-input>
+        <wa-input id="newpassword2" type="password" password-toggle label="Confirm new password"></wa-input>
+        <wa-button id='passwordchange' variant="brand" disabled>Change password</wa-button>
         <% } else { %>
           <p>Password cannot be changed from here, ask your administrator</p>
         <% } %>
