@@ -119,6 +119,7 @@ body {
 
 .main1 {
   grid-area: main1;
+  padding-top: 0.5rem;
   padding-left: 1em;
   padding-right: 1em;
   max-height: calc(100vh - 4rem);
@@ -127,11 +128,16 @@ body {
 .main2 {
   grid-area: main2;
   padding-left: 1em;
+  padding-top: 0.5rem;
   max-height: calc(100vh - 4rem);
   min-width: 0;
   border-width: 0 0 0 2px;
   border-style: solid;
-  border-color: var(--wa-color-gray-100);
+  border-color: var(--wa-color-neutral-90);
+}
+
+h2 {
+  color: var(--wa-color-brand-40);
 }
 
 .companyname {
