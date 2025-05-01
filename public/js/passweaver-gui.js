@@ -60,9 +60,6 @@ export function confirmDialog (title, text, callback, savetext, savevariant) {
   // Refresh dom cache
   domCache.confirmCancelButton = JH.query('#confirmcancel')
 
-  JH.event(domCache.confirmCancelButton, 'click', event => {
-    dialog.hide()
-  })
   dialog.addEventListener('wa-request-close', event => {
     if (event.detail.source === 'overlay') {
       event.preventDefault()
