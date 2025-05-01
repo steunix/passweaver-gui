@@ -17,10 +17,10 @@
         <center>
           <wa-button id="login" type="submit" variant="neutral" style="margin-top:1rem;">Login</wa-button>
           <% if ( error ) { %>
-            <wa-alert variant="danger" open>
-              <wa-icon slot="icon" name="exclamation-octagon"></wa-icon>
+            <wa-callout variant="danger" open>
+              <wa-icon slot="icon" name="circle-exclamation"></wa-icon>
               <%= error %>
-            </wa-alert>
+            </wa-callout>
           <% } %>
         </center>
       </form>
