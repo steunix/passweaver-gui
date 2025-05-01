@@ -18,7 +18,7 @@ export function init () {
     return
   }
 
-  JH.event(domCache.globalSearch, 'wa-blur', async (ev) => {
+  JH.event(domCache.globalSearch, 'blur', async (ev) => {
     searchBoxHide()
   })
 
@@ -81,13 +81,15 @@ async function fillItems () {
     for (const itm of body.data) {
       row +=
         `<tr id='sbrow-${itm.id}' data-id='${itm.id}'>` +
-        `<td class='border-start border-end'>${itm.folder.description}</td>` +
-        '<td class="border-end">'
+        `<td class='itemtitle'>${itm.title}</td>` +
+        '<td style="width:1px;" class="border-end">'
       if (itm.type) {
-        row += `<wa-icon name='${itm.itemtype.icon}' title='${itm.itemtype.description}'></wa-icon>`
+        row += `<wa-badge appearance="outlined" variant='neutral'><wa-icon name='${itm.itemtype.icon}'></wa-icon>${itm.itemtype.description}</wa-badge>`
       }
       row += '</td>'
-      row += `<td class='itemtitle'>${itm.title}</td></tr>`
+      row += `<td class='border-start border-end'>${itm.folder.description}</td>`
+      row += '</tr>'
+
       count++
       if (count >= maxResults) {
         break

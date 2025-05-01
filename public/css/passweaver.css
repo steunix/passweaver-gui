@@ -270,8 +270,8 @@ tr:hover td {
   border-width: 1px;
   z-index: 1;
   border-radius: 8px;
-  border-color: var(--wa-color-neutral-300);
-  background-color: var(--wa-color-neutral-0);
+  border-color: var(--wa-color-neutral-70);
+  background-color: var(--wa-color-surface-default);
 }
 
 .searchboxmore {

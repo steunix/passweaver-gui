@@ -63,7 +63,7 @@ async function fillItems () {
         `<td class='border-start border-end'>${JH.sanitize(itm.folder.description)}</td>` +
         '<td class="border-end">'
       if (itm.type) {
-        row += `<wa-badge appearance='outlined'><wa-icon name='${itm.itemtype.icon}'></wa-icon>${JH.sanitize(itm.itemtype.description)}</wa-badge>`
+        row += `<wa-badge appearance='outlined' variant='neutral'><wa-icon name='${itm.itemtype.icon}'></wa-icon>${JH.sanitize(itm.itemtype.description)}</wa-badge>`
       }
       row += '</td>'
       row += `<td class='itemtitle'>${JH.sanitize(itm.title)}</td></tr>`
