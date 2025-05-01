@@ -228,6 +228,10 @@ tr:hover td {
   border-color: var(--wa-color-neutral-80)
 }
 
+.bold {
+  font-weight: bold;
+}
+
 .border-start {
   border-left: 1px solid var(--wa-color-neutral-200);
 }
