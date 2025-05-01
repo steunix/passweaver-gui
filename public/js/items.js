@@ -58,8 +58,7 @@ const domCache = {
   itemDialogPassword: JH.query('#idpassword'),
   itemDialogGenerate: JH.query('#idgenerate'),
   itemDialogCopyPassword: JH.query('#idcopypassword'),
-  itemDialogSave: JH.query('#idsave'),
-  itemDialogCancel: JH.query('#idcancel')
+  itemDialogSave: JH.query('#idsave')
 }
 
 async function fillItemTypes () {
@@ -649,9 +648,6 @@ JH.event(domCache.newItemButton, 'click', (ev) => {
   itemDialogShow(undefined, false, false)
 })
 
-JH.event(domCache.itemDialogCancel, 'click', (ev) => {
-  domCache.itemDialog.hide()
-})
 JH.event(domCache.itemDialogSave, 'click', itemSave)
 
 JH.event(domCache.itemDialogTitle, 'keyup', itemSaveEnable)

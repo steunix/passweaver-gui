@@ -1,6 +1,6 @@
-<wa-dialog id="itemdialog" label="Item details">
-  <wa-icon-button slot="header-actions" title="Copy item link" name="link-45deg" id="idcopylink"></wa-icon-button>
-  <wa-icon-button slot="header-actions" title="Item activity" name="clock-history" id="idactivity"></wa-icon-button>
+<wa-dialog id="itemdialog" with-header with-footer label="Item details">
+  <wa-icon-button slot="header-actions" title="Copy item link" name="link" id="idcopylink"></wa-icon-button>
+  <wa-icon-button slot="header-actions" title="Item activity" name="clock" id="idactivity"></wa-icon-button>
   <wa-input id="idid" style="display:none;"></wa-input>
   <wa-input label="Title" id="idtitle" required autofocus></wa-input>
   <wa-select label="Type" id="idtype"></wa-select>
@@ -18,6 +18,6 @@
     <wa-icon-button slot="suffix" name="magic" title='Generate a new password' id="idgenerate"></wa-icon-button>
     <wa-copy-button slot="suffix" title='Copy to clipboard' id="idcopypassword" from="idpassword.value"></wa-copy-button>
   </wa-input>
-  <wa-button id="idsave" slot="footer" variant="primary">Save</wa-button>
-  <wa-button id="idcancel" slot="footer">Cancel</wa-button>
+  <wa-button id="idsave" slot="footer" variant="brand">Save</wa-button>
+  <wa-button id="idcancel" data-dialog="close" slot="footer">Cancel</wa-button>
 </wa-dialog>
