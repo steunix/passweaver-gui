@@ -67,11 +67,11 @@ async function fillItemTypes () {
   for (const itm of body.data) {
     row +=
       `<tr data-id='${itm.id}' style='cursor:pointer'>` +
-      `<td><sl-icon-button id='edititemtype-${itm.id}' title='Edit item type' name='pencil' data-id='${itm.id}'></sl-icon-button></td>` +
-      `<td class='border-end'><sl-icon-button id='removeitemtype-${itm.id}' title='Delete item type' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button></td>` +
+      `<td><wa-icon-button id='edititemtype-${itm.id}' title='Edit item type' name='pencil' data-id='${itm.id}'></wa-icon-button></td>` +
+      `<td class='border-end'><wa-icon-button id='removeitemtype-${itm.id}' title='Delete item type' name='trash3' style='color:red;' data-id='${itm.id}'></wa-icon-button></td>` +
       `<td>${itm.description}</td>` +
       `<td>${itm.icon}</td>` +
-      `<td><sl-icon name='${itm.icon}'></sl-icon></td>` +
+      `<td><wa-icon name='${itm.icon}'></wa-icon></td>` +
       '</tr>'
   }
   domCache.itemTypesTableBody.innerHTML = row
@@ -88,7 +88,7 @@ await fillItemTypes()
 await fillStatuses()
 
 function itemTypeCreateDialog () {
-  JH.value('#itemtypenewdialog sl-input', '')
+  JH.value('#itemtypenewdialog wa-input', '')
   domCache.itemTypeNewDialog.show()
   itemTypeCreateEnable()
 }

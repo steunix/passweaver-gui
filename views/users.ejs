@@ -9,13 +9,13 @@
   <div class="main1" >
     <h2>Users</h2>
     <div style="display:flex;">
-      <sl-input id="usersearch" type="text" placeholder="Search users" autofocus="autofocus" clearable>
-        <sl-icon slot="prefix" name="search"></sl-icon>
-      </sl-input>
-      <sl-button id="newuser" type="button" title="Create a new user" style="margin-left:1em">
-        <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+      <wa-input id="usersearch" type="text" placeholder="Search users" autofocus="autofocus" clearable>
+        <wa-icon slot="prefix" name="search"></wa-icon>
+      </wa-input>
+      <wa-button id="newuser" type="button" title="Create a new user" style="margin-left:1em">
+        <wa-icon slot="prefix" name="plus-lg"></wa-icon>
         New user
-      </sl-button>
+      </wa-button>
     </div>
     <table id="userstable" class="bordered" style="display:block; max-height: calc(100vh - var(--bottom-margin)); overflow-y: auto;">
       <thead>
@@ -38,24 +38,24 @@
   <div class="main2">
     <h2>Groups</h2>
     <div style="display: flex;">
-      <sl-button-group>
-        <sl-button id="addgroup" type="button" title="Add group membership">
-          <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+      <wa-button-group>
+        <wa-button id="addgroup" type="button" title="Add group membership">
+          <wa-icon slot="prefix" name="plus-lg"></wa-icon>
           Add group
-        </sl-button>
-        <sl-button id="copygroups" type="button" title="Copy groups">
-          <sl-icon slot="prefix" name="copy"></sl-icon>
+        </wa-button>
+        <wa-button id="copygroups" type="button" title="Copy groups">
+          <wa-icon slot="prefix" name="copy"></wa-icon>
           Copy groups
-        </sl-button>
-        <sl-button id="pastegroups" type="button" title="Paste groups" style="display: none;">
-          <sl-icon slot="prefix" name="clipboard-plus"></sl-icon>
+        </wa-button>
+        <wa-button id="pastegroups" type="button" title="Paste groups" style="display: none;">
+          <wa-icon slot="prefix" name="clipboard-plus"></wa-icon>
           Paste groups
-        </sl-button>
-        <sl-button id="replacegroups" type="button" title="Replace groups" style="display: none;">
-          <sl-icon slot="prefix" name="clipboard-check"></sl-icon>
+        </wa-button>
+        <wa-button id="replacegroups" type="button" title="Replace groups" style="display: none;">
+          <wa-icon slot="prefix" name="clipboard-check"></wa-icon>
           Replace groups
-        </sl-button>
-      </sl-button-group>
+        </wa-button>
+      </wa-button-group>
     </div>
     <table id="groupstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;" class="bordered">
       <thead>

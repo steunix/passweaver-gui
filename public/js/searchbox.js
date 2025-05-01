@@ -18,11 +18,11 @@ export function init () {
     return
   }
 
-  JH.event(domCache.globalSearch, 'sl-blur', async (ev) => {
+  JH.event(domCache.globalSearch, 'wa-blur', async (ev) => {
     searchBoxHide()
   })
 
-  JH.event(domCache.globalSearch, 'sl-clear', async (ev) => {
+  JH.event(domCache.globalSearch, 'wa-clear', async (ev) => {
     searchBoxHide()
   })
 
@@ -84,7 +84,7 @@ async function fillItems () {
         `<td class='border-start border-end'>${itm.folder.description}</td>` +
         '<td class="border-end">'
       if (itm.type) {
-        row += `<sl-icon name='${itm.itemtype.icon}' title='${itm.itemtype.description}'></sl-icon>`
+        row += `<wa-icon name='${itm.itemtype.icon}' title='${itm.itemtype.description}'></wa-icon>`
       }
       row += '</td>'
       row += `<td class='itemtitle'>${itm.title}</td></tr>`

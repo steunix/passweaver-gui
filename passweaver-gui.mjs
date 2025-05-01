@@ -48,10 +48,10 @@ try {
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      'script-src': ["'self'"],
-      'style-src': ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
-      'connect-src': ["'self'", 'data: blob:'],
-      'img-src': ["'self'", 'https: data: blob:']
+      'script-src': ["'self'", 'early.webawesome.com', 'ka-f.fontawesome.com'],
+      'style-src': ["'self'", "'unsafe-inline'", 'fonts.googleapis.com', 'early.webawesome.com', 'ka-f.fontawesome.com'],
+      'connect-src': ["'self'", 'data: blob:', 'ka-f.fontawesome.com'],
+      'img-src': ["'self'", 'https: data: blob:', 'ka-f.fontawesome.com']
     }
   }
 }))

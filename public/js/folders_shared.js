@@ -29,14 +29,14 @@ const domCache = {
 
 export function currentFolder () {
   try {
-    return JH.query('sl-tree-item[selected]').getAttribute('data-id')
+    return JH.query('wa-tree-item[selected]').getAttribute('data-id')
   } catch (err) {
     return ''
   }
 }
 
 function folderDialogShow (id) {
-  JH.value(JH.query(domCache.folderDialog).querySelectorAll('sl-input'), '')
+  JH.value(JH.query(domCache.folderDialog).querySelectorAll('wa-input'), '')
 
   if (id?.length) {
     folderEditFill(id)
@@ -113,7 +113,7 @@ export async function folderMove (id, newparent) {
 
   const resp = await JH.http(`/api/folderupdate/${id}`, data)
   if (!await PW.checkResponse(resp)) {
-    const items = JH.queryAll('sl-tree-item')
+    const items = JH.queryAll('wa-tree-item')
     for (const item of items) {
       item.classList.remove('dragover')
     }
@@ -141,7 +141,7 @@ JH.event(domCache.folderDialogDescription, 'keyup', folderSaveEnable)
 JH.event(domCache.folderDialogSave, 'click', folderSave)
 JH.event(domCache.folderDialogCancel, 'click', folderDialogHide)
 
-JH.event(domCache.folderSearch, 'sl-input', (ev) => {
+JH.event(domCache.folderSearch, 'wa-input', (ev) => {
   if (folderSearchTimeout) {
     clearTimeout(folderSearchTimeout)
   }

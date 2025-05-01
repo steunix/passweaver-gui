@@ -10,30 +10,30 @@
     <h2>Groups</h2>
     <div style="display:flex;">
       <div style="display:flex;margin-right:1em;">
-        <sl-input id="groupsearch" type="text" placeholder="Search group" autofocus="autofocus" clearable>
-          <sl-icon slot="prefix" name="search"></sl-icon>
-        </sl-input>
-        <sl-button title="Search previous" id="groupsearchprevious">
-          <sl-icon slot="suffix" name="chevron-left"></sl-icon>
-        </sl-button>
-        <sl-button title="Search next" id="groupsearchnext">
-          <sl-icon slot="suffix" name="chevron-right"></sl-icon>
-        </sl-button>
+        <wa-input id="groupsearch" type="text" placeholder="Search group" autofocus="autofocus" clearable>
+          <wa-icon slot="prefix" name="search"></wa-icon>
+        </wa-input>
+        <wa-button title="Search previous" id="groupsearchprevious">
+          <wa-icon slot="suffix" name="chevron-left"></wa-icon>
+        </wa-button>
+        <wa-button title="Search next" id="groupsearchnext">
+          <wa-icon slot="suffix" name="chevron-right"></wa-icon>
+        </wa-button>
       </div>
-      <sl-button-group>
-        <sl-button pill id="groupcreate" type="button" title="New group">
-          <sl-icon slot="prefix" name="plus-lg"></sl-icon>
-        </sl-button>
-        <sl-button pill id="groupedit" type="button" title="Edit group">
-          <sl-icon slot="prefix" name="pencil"></sl-icon>
-        </sl-button>
-        <sl-button pill id="groupremove" type="button" variant="danger" title="Remove group">
-          <sl-icon slot="prefix" name="trash3"></sl-icon>
-        </sl-button>
-        <sl-button pill id="groupfolders" type="button" title="Show folders">
-          <sl-icon slot="prefix" name="folder2-open"></sl-icon>
-        </sl-button>
-      </sl-button-group>
+      <wa-button-group>
+        <wa-button pill id="groupcreate" type="button" title="New group">
+          <wa-icon slot="prefix" name="plus-lg"></wa-icon>
+        </wa-button>
+        <wa-button pill id="groupedit" type="button" title="Edit group">
+          <wa-icon slot="prefix" name="pencil"></wa-icon>
+        </wa-button>
+        <wa-button pill id="groupremove" type="button" variant="danger" title="Remove group">
+          <wa-icon slot="prefix" name="trash3"></wa-icon>
+        </wa-button>
+        <wa-button pill id="groupfolders" type="button" title="Show folders">
+          <wa-icon slot="prefix" name="folder2-open"></wa-icon>
+        </wa-button>
+      </wa-button-group>
     </div>
     <%- include('partials/groupstree.ejs') %>
   </div>
@@ -41,16 +41,16 @@
   <div class="main2">
     <h2><span id="sectiontitle">Members</span></h2>
     <div style="display:flex;">
-      <sl-button-group>
-        <sl-button id="newmember">
-          <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+      <wa-button-group>
+        <wa-button id="newmember">
+          <wa-icon slot="prefix" name="plus-lg"></wa-icon>
           Add member
-        </sl-button>
-        <sl-button id="removeallmembers">
-          <sl-icon slot="prefix" name="trash2" variant="danger"></sl-icon>
+        </wa-button>
+        <wa-button id="removeallmembers">
+          <wa-icon slot="prefix" name="trash2" variant="danger"></wa-icon>
           Remove all members
-        </sl-button>
-      </sl-button-group>
+        </wa-button>
+      </wa-button-group>
     </div>
     <table id="userstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;" class="bordered">
       <thead>

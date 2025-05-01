@@ -37,8 +37,8 @@ async function fillGroups () {
         row += '<td colspan="2">Inherited</td>'
       } else {
         if (itm.canmodify) {
-          row += `<td><sl-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' title='Remove' style='color:red;'></sl-icon-button></td>`
-          row += `<td><sl-icon-button id='togglegroup-${itm.id}' data-id='${itm.id}' name='shield-lock' title='Toggle permissions'></sl-icon-button></td>`
+          row += `<td><wa-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' title='Remove' style='color:red;'></wa-icon-button></td>`
+          row += `<td><wa-icon-button id='togglegroup-${itm.id}' data-id='${itm.id}' name='shield-lock' title='Toggle permissions'></wa-icon-button></td>`
         } else {
           row += '<td></td><td></td>'
         }
@@ -148,8 +148,8 @@ await fillFolders()
 
 // Drag'n'drop
 async function dndSetup () {
-  JH.draggable('sl-tree-item')
-  JH.dropTarget('sl-tree-item', async (ev, data) => {
+  JH.draggable('wa-tree-item')
+  JH.dropTarget('wa-tree-item', async (ev, data) => {
     const folder = data.data
     const newparent = ev.target.getAttribute('data-id')
 

@@ -10,28 +10,28 @@
     <h2>Folders</h2>
     <div style="display:flex;">
       <div style="display:flex;margin-right:1em;">
-        <sl-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" clearable>
-          <sl-icon slot="prefix" name="search"></sl-icon>
-        </sl-input>
-        <sl-button title="Search previous" id="foldersearchprevious">
-          <sl-icon slot="suffix" name="chevron-left"></sl-icon>
-        </sl-button>
-        <sl-button title="Search next" id="foldersearchnext">
-          <sl-icon slot="suffix" name="chevron-right"></sl-icon>
-        </sl-button>
+        <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" clearable>
+          <wa-icon slot="prefix" name="search"></wa-icon>
+        </wa-input>
+        <wa-button title="Search previous" id="foldersearchprevious">
+          <wa-icon slot="suffix" name="chevron-left"></wa-icon>
+        </wa-button>
+        <wa-button title="Search next" id="foldersearchnext">
+          <wa-icon slot="suffix" name="chevron-right"></wa-icon>
+        </wa-button>
       </div>
       <% if ( manage_folders ) { %>
-        <sl-button-group>
-          <sl-button pill id="foldercreate" type="button" title="New subfolder">
-            <sl-icon slot="prefix" name="plus-lg"></sl-icon>
-          </sl-button>
-          <sl-button pill id="folderedit" type="button" title="Edit folder">
-            <sl-icon slot="prefix" name="pencil"></sl-icon>
-          </sl-button>
-          <sl-button pill id="folderremove" type="button" variant="danger" title="Delete folder">
-            <sl-icon slot="prefix" name="trash3"></sl-icon>
-          </sl-button>
-        </sl-button-group>
+        <wa-button-group>
+          <wa-button pill id="foldercreate" type="button" title="New subfolder">
+            <wa-icon slot="prefix" name="plus-lg"></wa-icon>
+          </wa-button>
+          <wa-button pill id="folderedit" type="button" title="Edit folder">
+            <wa-icon slot="prefix" name="pencil"></wa-icon>
+          </wa-button>
+          <wa-button pill id="folderremove" type="button" variant="danger" title="Delete folder">
+            <wa-icon slot="prefix" name="trash3"></wa-icon>
+          </wa-button>
+        </wa-button-group>
       <% } %>
     </div>
     <%- include('partials/folderstree.ejs') %>
@@ -40,10 +40,10 @@
   <div class="main2">
     <h2><span id="sectiontitle">Groups</span></h2>
     <div style="display:flex;">
-      <sl-button id="addgroup" title="Add a group to a folder">
-        <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+      <wa-button id="addgroup" title="Add a group to a folder">
+        <wa-icon slot="prefix" name="plus-lg"></wa-icon>
         Add group
-      </sl-button>
+      </wa-button>
     </div>
     <table id="groupstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;" class="bordered">
       <thead>

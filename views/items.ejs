@@ -10,43 +10,46 @@
     <h2>Folders</h2>
     <div style="display:flex;">
       <div style="display:flex;margin-right:1em;">
-        <sl-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" clearable>
-          <sl-icon slot="prefix" name="search"></sl-icon>
-        </sl-input>
-        <sl-button title="Search previous" id="foldersearchprevious">
-          <sl-icon slot="suffix" name="chevron-left"></sl-icon>
-        </sl-button>
-        <sl-button title="Search next" id="foldersearchnext">
-          <sl-icon slot="suffix" name="chevron-right"></sl-icon>
-        </sl-button>
+        <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" clearable>
+          <wa-icon slot="prefix" name="search"></wa-icon>
+        </wa-input>
+        <wa-button-group>
+          <wa-button title="Search previous" appearance="outlined" id="foldersearchprevious">
+            <wa-icon slot="prefix" name="chevron-left"></wa-icon>
+          </wa-button>
+          <wa-button title="Search next" appearance="outlined" id="foldersearchnext">
+            <wa-icon slot="prefix" name="chevron-right"></wa-icon>
+          </wa-button>
+        </wa-button-group>
       </div>
       <% if ( manage_folders ) { %>
-        <sl-button-group>
-          <sl-button pill id="foldercreate" type="button" title="New folder">
-            <sl-icon slot="prefix" name="plus-lg"></sl-icon>
-          </sl-button>
-          <sl-button pill id="folderedit" type="button" title="Edit folder">
-            <sl-icon slot="prefix" name="pencil"></sl-icon>
-          </sl-button>
-          <sl-button pill id="folderremove" type="button" variant="danger" title="Remove folder">
-            <sl-icon slot="prefix" name="trash3"></sl-icon>
-          </sl-button>
-        </sl-button-group>
+        <wa-button-group>
+          <wa-button pill id="foldercreate" type="button" variant="brand" appearance="outlined" title="New folder">
+            <wa-icon slot="prefix" name="plus"></wa-icon>
+          </wa-button>
+          <wa-button pill id="folderedit" type="button" appearance="outlined" title="Edit folder">
+            <wa-icon slot="prefix" name="pencil"></wa-icon>
+          </wa-button>
+          <wa-button pill id="folderremove" type="button" variant="danger" appearance="outlined" title="Remove folder">
+            <wa-icon slot="prefix" name="trash-can"></wa-icon>
+          </wa-button>
+        </wa-button-group>
       <% } %>
     </div>
+    <br/>
     <%- include('partials/folderstree.ejs') %>
   </div>
 
   <div class="main2">
-    <h2><sl-badge id="currentpermissions" pill style="vertical-align: middle; padding-right: 0.5em;"></sl-badge><span id="sectiontitle">Items</span></h2>
+    <h2><wa-badge id="currentpermissions" pill style="vertical-align: middle; padding-right: 0.5em;"></wa-badge><span id="sectiontitle">Items</span></h2>
     <div style="display:flex;">
-      <sl-button id="newitem" title="New item" variant="primary" pill disabled="disabled">
-        <sl-icon slot="prefix" name="plus-lg"></sl-icon>
-      </sl-button>
-      <sl-input id="itemsearch" style="margin-left:1em;" placeholder="Filter items" clearable>
-        <sl-icon slot="prefix" name="search"></sl-icon>
-      </sl-input>
-      <sl-select id="typesearch" style="margin-left:1em;" name="typesearch" placeholder="Filter type" clearable></sl-select>
+      <wa-button id="newitem" title="New item" variant="primary" pill disabled="disabled">
+        <wa-icon slot="prefix" name="plus-lg"></wa-icon>
+      </wa-button>
+      <wa-input id="itemsearch" style="margin-left:1em;" placeholder="Filter items" clearable>
+        <wa-icon slot="prefix" name="search"></wa-icon>
+      </wa-input>
+      <wa-select id="typesearch" style="margin-left:1em;" name="typesearch" placeholder="Filter type" clearable></wa-select>
     </div>
     <table id="itemstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;" class="bordered">
       <thead>

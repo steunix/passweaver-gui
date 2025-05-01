@@ -1,16 +1,16 @@
-<sl-dialog id="edituserdialog" label="Edit user" class="dialog-deny-close">
-  <sl-input label="Login" id="editlogin" name="editlogin" required="required" autofocus maxlength="50"></sl-input>
-  <sl-input type="email" label="Email" id="editemail" required="required" name="editemail" maxlength="50"></sl-input>
-  <sl-input label="Last name" id="editlastname" name="editlastname" required="required" maxlength="100"></sl-input>
-  <sl-input label="First name" id="editfirstname" name="editfirstname" maxlength="100"></sl-input>
-  <sl-select label="Locale" id="editlocale" name="editlocale">
-    <sl-option value="en_US">en_US</sl-option>
-  </sl-select>
-  <sl-select label="Authentication method" id="editauthmethod" name="editauthmethod">
-    <sl-option value="local">local</sl-option>
-    <sl-option value="ldap">ldap</sl-option>
-  </sl-select>
-  <sl-checkbox id="editactive" name="editactive">Active</sl-checkbox>
-  <sl-button id="useredit" slot="footer" variant="primary">Save</button>
-  <sl-button id="cancel" slot="footer">Cancel</button>
-</sl-dialog>
+<wa-dialog id="edituserdialog" label="Edit user" class="dialog-deny-close">
+  <wa-input label="Login" id="editlogin" name="editlogin" required="required" autofocus maxlength="50"></wa-input>
+  <wa-input type="email" label="Email" id="editemail" required="required" name="editemail" maxlength="50"></wa-input>
+  <wa-input label="Last name" id="editlastname" name="editlastname" required="required" maxlength="100"></wa-input>
+  <wa-input label="First name" id="editfirstname" name="editfirstname" maxlength="100"></wa-input>
+  <wa-select label="Locale" id="editlocale" name="editlocale">
+    <wa-option value="en_US">en_US</wa-option>
+  </wa-select>
+  <wa-select label="Authentication method" id="editauthmethod" name="editauthmethod">
+    <wa-option value="local">local</wa-option>
+    <wa-option value="ldap">ldap</wa-option>
+  </wa-select>
+  <wa-checkbox id="editactive" name="editactive">Active</wa-checkbox>
+  <wa-button id="useredit" slot="footer" variant="primary">Save</button>
+  <wa-button id="cancel" slot="footer">Cancel</button>
+</wa-dialog>

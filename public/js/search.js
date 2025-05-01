@@ -25,11 +25,11 @@ async function fillItemTypes () {
   itemTypesOptions = ''
   const body = await resp.json()
   for (const itm of body.data) {
-    itemTypesOptions += `<sl-option id='itemtype-${itm.id}' value='${itm.id}'>${itm.description}`
+    itemTypesOptions += `<wa-option id='itemtype-${itm.id}' value='${itm.id}'>${itm.description}`
     if (itm.icon) {
-      itemTypesOptions += `<sl-icon name='${itm.icon}' slot='prefix'>${itm.description}</sl-icon>`
+      itemTypesOptions += `<wa-icon name='${itm.icon}' slot='prefix'>${itm.description}</wa-icon>`
     }
-    itemTypesOptions += '</sl-option>'
+    itemTypesOptions += '</wa-option>'
   }
 
   domCache.itemViewType.innerHTML = itemTypesOptions
@@ -56,14 +56,14 @@ async function fillItems () {
       row +=
         `<tr id='row-${itm.id}' data-id='${itm.id}'>` +
         '<td>' +
-        `<sl-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></sl-icon-button>` +
-        `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>` +
-        `<sl-icon-button id='folder-${itm.id}' title='Open folder' name='folder2-open' data-id='${itm.id}'></sl-icon-button>` +
+        `<wa-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon-button id='folder-${itm.id}' title='Open folder' name='folder2-open' data-id='${itm.id}'></wa-icon-button>` +
         '</td>' +
         `<td class='border-start border-end'>${JH.sanitize(itm.folder.description)}</td>` +
         '<td class="border-end">'
       if (itm.type) {
-        row += `<sl-icon name='${itm.itemtype.icon}' title='${JH.sanitize(itm.itemtype.description)}'></sl-icon>`
+        row += `<wa-icon name='${itm.itemtype.icon}' title='${JH.sanitize(itm.itemtype.description)}'></wa-icon>`
       }
       row += '</td>'
       row += `<td class='itemtitle'>${JH.sanitize(itm.title)}</td></tr>`
@@ -141,16 +141,16 @@ async function passwordCopied (item) {
 
 await fillItemTypes()
 
-JH.event(domCache.search, 'sl-input', async (ev) => {
+JH.event(domCache.search, 'wa-input', async (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }
   itemSearchTimeout = setTimeout(async () => { await fillItems() }, 250)
 })
 
-JH.event(domCache.typeSelect, 'sl-change', fillItems)
+JH.event(domCache.typeSelect, 'wa-change', fillItems)
 
-JH.event(domCache.passwordCopy, 'sl-copy', (ev) => {
+JH.event(domCache.passwordCopy, 'wa-copy', (ev) => {
   passwordCopied(JH.value(domCache.itemViewId))
 })
 

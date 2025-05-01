@@ -7,28 +7,28 @@
   <%- include('partials/csrf.ejs') %>
 
   <div class="main1">
-    <sl-tab-group>
-      <sl-tab slot="nav" panel="preferences">Preferences</sl-tab>
-      <sl-tab slot="nav" panel="password">Password</sl-tab>
-      <sl-tab slot="nav" panel="ppassword">Personal folder password</sl-tab>
+    <wa-tab-group>
+      <wa-tab slot="nav" panel="preferences">Preferences</wa-tab>
+      <wa-tab slot="nav" panel="password">Password</wa-tab>
+      <wa-tab slot="nav" panel="ppassword">Personal folder password</wa-tab>
 
-      <sl-tab-panel name="preferences">
+      <wa-tab-panel name="preferences">
         <table>
           <tr>
             <th>Theme</th>
             <td>
-              <sl-select id='theme'>
-                <sl-option value="light">Light</sl-option>
-                <sl-option value="dark">Dark</sl-option>
-              </sl-select>
+              <wa-select id='theme'>
+                <wa-option value="light">Light</wa-option>
+                <wa-option value="dark">Dark</wa-option>
+              </wa-select>
             </td>
           </tr>
         </table>
-        <sl-divider></sl-divider>
-        <sl-button id='save' variant="primary">Save</sl-button>
-      </sl-tab-panel>
+        <wa-divider></wa-divider>
+        <wa-button id='save' variant="primary">Save</wa-button>
+      </wa-tab-panel>
 
-      <sl-tab-panel name="password">
+      <wa-tab-panel name="password">
         <% if ( authmethod=="local" ) { %>
         <h2>Change password</h2>
         <h5>At least 8 characters</h5>
@@ -36,24 +36,24 @@
           <tr>
             <th>New password</th>
             <td>
-              <sl-input id="newpassword1" type="password" password-toggle></sl-input>
+              <wa-input id="newpassword1" type="password" password-toggle></wa-input>
             </td>
           </tr>
           <tr>
             <th>Confirm new password</th>
             <td>
-              <sl-input id="newpassword2" type="password" password-toggle></sl-input>
+              <wa-input id="newpassword2" type="password" password-toggle></wa-input>
             </td>
           </tr>
         </table>
-        <sl-divider></sl-divider>
-        <sl-button id='passwordchange' variant="primary" disabled>Change password</sl-button>
+        <wa-divider></wa-divider>
+        <wa-button id='passwordchange' variant="primary" disabled>Change password</wa-button>
         <% } else { %>
           <p>Password cannot be changed from here, ask your administrator</p>
         <% } %>
-      </sl-tab-panel>
+      </wa-tab-panel>
 
-      <sl-tab-panel name="ppassword">
+      <wa-tab-panel name="ppassword">
         <% if ( !admin ) { %>
           <% if ( unlocked ) { %>
             <h2>Change personal folder password</h2>
@@ -62,42 +62,42 @@
               <tr>
                 <th>New password</th>
                 <td>
-                  <sl-input id="pnewpassword1" type="password" password-toggle></sl-input>
+                  <wa-input id="pnewpassword1" type="password" password-toggle></wa-input>
                 </td>
               </tr>
               <tr>
                 <th>Confirm new password</th>
                 <td>
-                  <sl-input id="pnewpassword2" type="password" password-toggle></sl-input>
+                  <wa-input id="pnewpassword2" type="password" password-toggle></wa-input>
                 </td>
               </tr>
             </table>
-            <sl-divider></sl-divider>
-            <sl-button id='ppasswordchange' variant="primary" disabled>Change password</sl-button>
+            <wa-divider></wa-divider>
+            <wa-button id='ppasswordchange' variant="primary" disabled>Change password</wa-button>
           <% } else { %>
             <p>In order to change your personal password, you have to unlock your personal folder first</p>
             <hr>
-            <sl-card>
+            <wa-card>
               <div slot="header">
                 <span><strong>Have you lost your personal password?</strong></span>
               </div>
               <p>You can reset your personal password, but...</p>
-              <sl-alert open variant="danger">
+              <wa-alert open variant="danger">
                 <strong>WARNING!!!</strong><br/>Resetting your personal password will make all your personal items IRREMEDIABLY inaccessible and you will have to delete them.
-              </sl-alert>
+              </wa-alert>
               <br/>
-              <sl-switch id="presetswitch">I'm sure, enable the button below</sl-switch>
+              <wa-switch id="presetswitch">I'm sure, enable the button below</wa-switch>
               <br/>
               <br/>
-              <sl-button id="preset" variant="danger" disabled>Reset personal password</sl-button>
-            </sl-card>
+              <wa-button id="preset" variant="danger" disabled>Reset personal password</wa-button>
+            </wa-card>
           <% } %>
         <% } else { %>
           <p>Admins don't have personal folders </p>
         <% } %>
-      </sl-tab-panel>
+      </wa-tab-panel>
 
-    </sl-tab-group>
+    </wa-tab-group>
   </div>
 </div>
 

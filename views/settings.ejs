@@ -7,18 +7,18 @@
   <%- include('partials/csrf.ejs') %>
 
   <div class="main1" >
-    <sl-tab-group>
-      <sl-tab slot="nav" panel="itemtypes">Item types</sl-tab>
-      <sl-tab slot="nav" panel="cache">Cache</sl-tab>
-      <sl-tab slot="nav" panel="readonly">Readonly</sl-tab>
-      <sl-tab slot="nav" panel="systemlock">Lock system</sl-tab>
+    <wa-tab-group>
+      <wa-tab slot="nav" panel="itemtypes">Item types</wa-tab>
+      <wa-tab slot="nav" panel="cache">Cache</wa-tab>
+      <wa-tab slot="nav" panel="readonly">Readonly</wa-tab>
+      <wa-tab slot="nav" panel="systemlock">Lock system</wa-tab>
 
-      <sl-tab-panel name="itemtypes">
+      <wa-tab-panel name="itemtypes">
         <div style="display: flex;">
-          <sl-button id="additemtype" type="button" title="Add type">
-            <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+          <wa-button id="additemtype" type="button" title="Add type">
+            <wa-icon slot="prefix" name="plus-lg"></wa-icon>
             New item type
-          </sl-button>
+          </wa-button>
         </div>
         <table id="itemtypestable" class="bordered" style="display:block; max-height: calc(100vh - var(--bottom-margin)); overflow-y: auto;">
           <thead>
@@ -32,27 +32,27 @@
           <tbody>
           </tbody>
         </table>
-      </sl-tab-panel>
+      </wa-tab-panel>
 
-      <sl-tab-panel name="cache">
-        <sl-button id="clearcache" type="button" variant="danger" title="Clear cache">Clear cache</sl-button>
-      </sl-tab-panel>
+      <wa-tab-panel name="cache">
+        <wa-button id="clearcache" type="button" variant="danger" title="Clear cache">Clear cache</wa-button>
+      </wa-tab-panel>
 
-      <sl-tab-panel name="readonly">
-        <sl-alert open variant="neutral" id="readonlystatus">Readonly is in unknown state</sl-alert>
+      <wa-tab-panel name="readonly">
+        <wa-alert open variant="neutral" id="readonlystatus">Readonly is in unknown state</wa-alert>
         <br/>
-        <sl-button id="readonlymode" type="button" variant="danger" title="Set readonly mode">Set readonly mode</sl-button>
-        <sl-button id="readwritemode" type="button" variant="primary" title="Set readwrite mode">Set readwrite mode</sl-button>
-      </sl-tab-panel>
+        <wa-button id="readonlymode" type="button" variant="danger" title="Set readonly mode">Set readonly mode</wa-button>
+        <wa-button id="readwritemode" type="button" variant="primary" title="Set readwrite mode">Set readwrite mode</wa-button>
+      </wa-tab-panel>
 
-      <sl-tab-panel name="systemlock">
-        <sl-alert open variant="neutral" id="systemlockstatus">System lock is in unknown state</sl-alert>
+      <wa-tab-panel name="systemlock">
+        <wa-alert open variant="neutral" id="systemlockstatus">System lock is in unknown state</wa-alert>
         <br/>
-        <sl-button id="systemlock" type="button" variant="danger" title="Lock system">Lock system</sl-button>
-        <sl-button id="systemunlock" type="button" variant="primary" title="Unlock system">Unlock system</sl-button>
-      </sl-tab-panel>
+        <wa-button id="systemlock" type="button" variant="danger" title="Lock system">Lock system</wa-button>
+        <wa-button id="systemunlock" type="button" variant="primary" title="Unlock system">Unlock system</wa-button>
+      </wa-tab-panel>
 
-    </sl-tab-group>
+    </wa-tab-group>
   </div>
 
 </div>

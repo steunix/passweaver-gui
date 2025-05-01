@@ -71,11 +71,11 @@ async function fillItemTypes () {
   itemTypesOptions = ''
   const body = await resp.json()
   for (const itm of body.data) {
-    itemTypesOptions += `<sl-option id='itemtype-${itm.id}' value='${itm.id}'>${itm.description}`
+    itemTypesOptions += `<wa-option id='itemtype-${itm.id}' value='${itm.id}'>${itm.description}`
     if (itm.icon) {
-      itemTypesOptions += `<sl-icon name='${itm.icon}' slot='prefix'>${itm.description}</sl-icon>`
+      itemTypesOptions += `<wa-icon name='${itm.icon}' slot='prefix'>${itm.description}</wa-icon>`
     }
-    itemTypesOptions += '</sl-option>'
+    itemTypesOptions += '</wa-option>'
   }
 
   domCache.itemDialogType.innerHTML = itemTypesOptions
@@ -119,26 +119,26 @@ async function fillItems () {
     for (const itm of body.data) {
       row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
       row += '<td class="border-end">'
-      row += `<sl-icon-button id='view-${itm.id}' name='file-earmark' title='View item' data-id='${itm.id}'></sl-icon-button>`
+      row += `<wa-icon-button id='view-${itm.id}' name='file-earmark' title='View item' data-id='${itm.id}'></wa-icon-button>`
       if (Folders.currentPermissions.write) {
-        row += `<sl-icon-button id='edit-${itm.id}' title='Edit item' name='pencil' data-id='${itm.id}'></sl-icon-button>`
-        row += `<sl-icon-button id='remove-${itm.id}' title='Remove item' name='trash3' style="color:red;" data-id='${itm.id}'></sl-icon-button>`
-        row += `<sl-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></sl-icon-button>`
+        row += `<wa-icon-button id='edit-${itm.id}' title='Edit item' name='pencil' data-id='${itm.id}'></wa-icon-button>`
+        row += `<wa-icon-button id='remove-${itm.id}' title='Remove item' name='trash3' style="color:red;" data-id='${itm.id}'></wa-icon-button>`
+        row += `<wa-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></wa-icon-button>`
       }
-      row += `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`
-      row += `<sl-icon-button id='onetime-${itm.id}' title='One time share' name='1-circle' data-id='${itm.id}'></sl-icon-button>`
-      row += `<sl-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></sl-icon-button>`
+      row += `<wa-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></wa-icon-button>`
+      row += `<wa-icon-button id='onetime-${itm.id}' title='One time share' name='1-circle' data-id='${itm.id}'></wa-icon-button>`
+      row += `<wa-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></wa-icon-button>`
       row += '</td>'
       row += '<td class="border-end">'
       if (itm.type) {
-        row += `<sl-icon name='${itm.itemtype.icon}' title='${JH.sanitize(itm.itemtype.description)}'></sl-icon>`
+        row += `<wa-icon name='${itm.itemtype.icon}' title='${JH.sanitize(itm.itemtype.description)}'></wa-icon>`
       }
       row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end itemtitle'>${JH.sanitize(itm.title)}</td>`
       row += `<td id='user-${itm.id}'>${JH.sanitize(itm.metadata)}</td>`
-      row += `<td class='border-end'><sl-copy-button title='Copy user to clipboard' from='user-${itm.id}'></sl-copy-button></td>`
+      row += `<td class='border-end'><wa-copy-button title='Copy user to clipboard' from='user-${itm.id}'></wa-copy-button></td>`
       row += `<td id='password-${itm.id}'>****</td>`
-      row += `<td><sl-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></sl-copy-button></td>`
-      row += `<td><sl-icon-button id='passwordshow-${itm.id}' title='Show/hide password' data-id='${itm.id}' name='eye'></sl-icon-button></td>`
+      row += `<td><wa-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></wa-copy-button></td>`
+      row += `<td><wa-icon-button id='passwordshow-${itm.id}' title='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon-button></td>`
       row += '</tr>'
     }
     domCache.itemsTableBody.innerHTML = row
@@ -280,11 +280,11 @@ async function folderClicked () {
 
 function itemDialogEnable (enable) {
   if (enable) {
-    JH.removeAttribute('#itemdialog sl-input,sl-textarea', 'readonly')
+    JH.removeAttribute('#itemdialog wa-input,wa-textarea', 'readonly')
     JH.removeAttribute(domCache.itemDialogType, 'disabled')
     JH.show([domCache.itemDialogSave, domCache.itemDialogGenerate])
   } else {
-    JH.attribute('#itemdialog sl-input,sl-textarea,sl-select', 'readonly', 'readonly')
+    JH.attribute('#itemdialog wa-input,wa-textarea,wa-select', 'readonly', 'readonly')
     JH.attribute(domCache.itemDialogType, 'disabled', 'disabled')
     JH.hide([domCache.itemDialogSave, domCache.itemDialogGenerate])
   }
@@ -311,7 +311,7 @@ function itemDialogHide () {
 }
 
 function itemDialogReset () {
-  JH.value('#itemdialog sl-input,sl-textarea,sl-select', '')
+  JH.value('#itemdialog wa-input,wa-textarea,wa-select', '')
 }
 
 function itemSaveEnable () {
@@ -626,8 +626,8 @@ async function itemActivity (itm) {
 
 // Drag'n'drop
 async function dndSetup () {
-  JH.draggable('sl-tree-item', 'folder')
-  JH.dropTarget('sl-tree-item', async (ev, data) => {
+  JH.draggable('wa-tree-item', 'folder')
+  JH.dropTarget('wa-tree-item', async (ev, data) => {
     const newparent = ev.target.getAttribute('data-id')
 
     if (data.type === 'folder') {
@@ -642,7 +642,7 @@ async function dndSetup () {
 }
 
 // Search
-JH.event(domCache.searchTypeSelect, 'sl-change', fillItems)
+JH.event(domCache.searchTypeSelect, 'wa-change', fillItems)
 
 // Create
 JH.event(domCache.newItemButton, 'click', (ev) => {
@@ -669,14 +669,14 @@ JH.event([domCache.personalPasswordNew, domCache.personalPasswordNewConfirm], 'k
 
 JH.event(domCache.personalPasswordSetButton, 'click', personalPasswordSet)
 
-JH.event(domCache.itemSearchText, 'sl-input', (ev) => {
+JH.event(domCache.itemSearchText, 'wa-input', (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }
   itemSearchTimeout = setTimeout(async () => { fillItems() }, 250)
 })
 
-JH.event(domCache.itemDialogCopyPassword, 'sl-copy', (ev) => {
+JH.event(domCache.itemDialogCopyPassword, 'wa-copy', (ev) => {
   passwordCopied(JH.value(domCache.itemDialogId))
 })
 
@@ -728,7 +728,7 @@ function showScopeUser () {
   }
 }
 
-JH.event(domCache.scope, 'sl-change', (ev) => {
+JH.event(domCache.scope, 'wa-change', (ev) => {
   showScopeUser()
   enableShareSave()
 })

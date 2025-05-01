@@ -67,10 +67,10 @@ async function fillUsers () {
       row +=
         `<tr data-id='${itm.id}' style='cursor:pointer'>` +
         '<td>' +
-        `<sl-icon-button id='edituser-${itm.id}' title='Edit user' name='pencil' data-id='${itm.id}'></sl-icon-button>` +
-        `<sl-icon-button id='removeuser-${itm.id}' title='Delete user' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button>` +
-        `<sl-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></sl-icon-button>` +
-        `<sl-icon-button id='folders-${itm.id}' title='Visible folders' name='folder2-open' data-id='${itm.id}'></sl-icon-button>` +
+        `<wa-icon-button id='edituser-${itm.id}' title='Edit user' name='pencil' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon-button id='removeuser-${itm.id}' title='Delete user' name='trash3' style='color:red;' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon-button id='folders-${itm.id}' title='Visible folders' name='folder2-open' data-id='${itm.id}'></wa-icon-button>` +
         '</td>' +
         `<td class='border-start'>${JH.sanitize(itm.login)}</td>` +
         `<td>${JH.sanitize(itm.lastname)}</td>` +
@@ -78,7 +78,7 @@ async function fillUsers () {
         `<td>${JH.sanitize(itm.email)}</td>` +
         `<td>${JH.sanitize(itm.locale)}</td>` +
         `<td>${JH.sanitize(itm.authmethod)}</td>` +
-        `<td class='text-center'><sl-icon name='${itm.active ? 'check-lg' : 'x-lg'}' style='color:${itm.active ? 'green' : 'red'}'/></td>` +
+        `<td class='text-center'><wa-icon name='${itm.active ? 'check-lg' : 'x-lg'}' style='color:${itm.active ? 'green' : 'red'}'/></td>` +
         '</tr>'
     }
     domCache.usersTableBody.innerHTML = row
@@ -161,7 +161,7 @@ async function fillGroups () {
     for (const itm of body.data) {
       row += `<tr data-id='${itm.id}'>`
       if (itm.id !== 'E') {
-        row += `<td><sl-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' style='color:red;' title='Remove'></sl-icon-button></td>`
+        row += `<td><wa-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' style='color:red;' title='Remove'></wa-icon-button></td>`
       } else {
         row += '<td></td>'
       }
@@ -178,7 +178,7 @@ async function fillGroups () {
 
 function userCreateDialog () {
   domCache.newUserDialog.show()
-  JH.value('#newuserdialog sl-input,sl-textarea,sl-select', '')
+  JH.value('#newuserdialog wa-input,wa-textarea,wa-select', '')
   userCreateEnable()
 }
 
@@ -405,7 +405,7 @@ await fillUsers()
 
 // Event handlers
 JH.event([domCache.newLogin, domCache.newEmail, domCache.newLastName, domCache.newPassword, domCache.newPasswordConfirm], 'keyup', userCreateEnable)
-JH.event([domCache.newLocale, domCache.newAuthMethod], 'sl-change', userCreateEnable)
+JH.event([domCache.newLocale, domCache.newAuthMethod], 'wa-change', userCreateEnable)
 JH.event(domCache.userCreateButton, 'click', userCreate)
 JH.event([domCache.editLogin, domCache.editEmail, domCache.editLastName], 'keyup', userEditEnable)
 JH.event(domCache.userEditButton, 'click', userEdit)
@@ -414,7 +414,7 @@ JH.event(domCache.newUserButton, 'click', userCreateDialog)
 JH.event(domCache.newUserCancelButton, 'click', (ev) => {
   domCache.newUserDialog.hide()
 })
-JH.event(domCache.usersSearch, 'sl-input', (ev) => {
+JH.event(domCache.usersSearch, 'wa-input', (ev) => {
   if (userSearchTimeout) {
     clearTimeout(userSearchTimeout)
   }

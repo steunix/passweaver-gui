@@ -56,7 +56,7 @@ export class Picker {
           desc = itm.lastname + ' ' + itm.firstname
         }
         row += `<tr id='row-${itm.id}' data-id='${itm.id}' data-desc='${itm.lastname} ${itm.firstname}' style='cursor:pointer;'>`
-        row += `<td><sl-icon-button id='itm-${itm.id}' data-id='${itm.id}' data-desc='${itm.lastname} ${itm.firstname}' name='arrow-right-circle'></sl-icon-button></td>`
+        row += `<td><wa-icon-button id='itm-${itm.id}' data-id='${itm.id}' data-desc='${itm.lastname} ${itm.firstname}' name='arrow-right-circle'></wa-icon-button></td>`
         row += `<td>${JH.sanitize(itm.login)}</td>`
         row += `<td>${JH.sanitize(desc)}</td>`
         row += '</tr>'
@@ -68,13 +68,13 @@ export class Picker {
     JH.event('#pickertable tbody tr[id^=row]', 'dblclick', (ev) => {
       this.clientCallback(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-desc'))
     })
-    JH.event('#pickertable tbody sl-icon-button[id^=itm]', 'click', (ev) => {
+    JH.event('#pickertable tbody wa-icon-button[id^=itm]', 'click', (ev) => {
       this.clientCallback(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-desc'))
     })
   }
 
   installEvents () {
-    JH.event(this.domCache.search, 'sl-input', (ev) => {
+    JH.event(this.domCache.search, 'wa-input', (ev) => {
       if (this.pickerTimeout) {
         clearTimeout(this.pickerTimeout)
       }

@@ -10,57 +10,57 @@
   <div class="username">
     <%= userdescription %>
   </div>
-  <sl-divider></sl-divider>
+  <wa-divider></wa-divider>
   <% if ( !admin ) { %>
     <a href="/pages/items" title="Items" class="link" pageid="items">
-      <sl-icon name="folder2-open"></sl-icon>
+      <wa-icon name="folder2-open"></wa-icon>
       Items
     </a>
     <a href="/pages/search" title="Search" class="link" pageid="search">
-      <sl-icon name="search"></sl-icon>
+      <wa-icon name="search"></wa-icon>
       Search</a>
     </a>
   <% } %>
   <% if ( admin ) { %>
     <a href="/pages/folders" title="Folders" class="link" pageid="folders">
-      <sl-icon name="folder2-open"></sl-icon>
+      <wa-icon name="folder2-open"></wa-icon>
       Folders
     </a>
     <a href="/pages/users" title="Users" class="link" pageid="users">
-      <sl-icon name="person"></sl-icon>
+      <wa-icon name="person"></wa-icon>
       Users
     </a>
     <a href="/pages/groups" title="Groups" class="link" pageid="groups">
-      <sl-icon name="people"></sl-icon>
+      <wa-icon name="people"></wa-icon>
       Groups
     </a>
   <% } %>
   <a href="/pages/generate" title="Generator" class="link" pageid="generate">
-    <sl-icon name="magic"></sl-icon>
+    <wa-icon name="magic"></wa-icon>
     Generator
   </a>
   <a href="/pages/onetimesecret" title="1time secret" class="link" pageid="onetimesecret">
-    <sl-icon name="1-circle"></sl-icon>
+    <wa-icon name="1-circle"></wa-icon>
     1time secret
   </a>
   <% if ( admin ) { %>
-    <sl-divider></sl-divider>
+    <wa-divider></wa-divider>
     <a href="/pages/info" title="Info" class="link" pageid="info">
-      <sl-icon name="info-circle"></sl-icon>
+      <wa-icon name="info-circle"></wa-icon>
       Info
     </a>
     <a href="/pages/settings" title="Settings" class="link" pageid="settings">
-      <sl-icon name="gear"></sl-icon>
+      <wa-icon name="gear"></wa-icon>
       Settings
     </a>
   <% } %>
-  <sl-divider></sl-divider>
+  <wa-divider></wa-divider>
   <a href="/pages/preferences" title="preferences" class="link" pageid="preferences">
-    <sl-icon name="sliders" page="Logout"></sl-icon>
+    <wa-icon name="sliders" page="Logout"></wa-icon>
     Preferences
   </a>
   <a href="/logout" title="Logout" class="link" pageid="logout">
-    <sl-icon name="box-arrow-right" page="Logout"></sl-icon>
+    <wa-icon name="box-arrow-right" page="Logout"></wa-icon>
     Logout
   </a>
   <div class="version">PassWeaver GUI v<%= version %><br><a href='https://steunix.github.io/passweaver-gui/' target="_blank">Documentation</a></div>

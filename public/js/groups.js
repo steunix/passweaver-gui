@@ -31,7 +31,7 @@ const domCache = {
 
 function currentGroup () {
   try {
-    return JH.query('sl-tree-item[selected]').getAttribute('data-id')
+    return JH.query('wa-tree-item[selected]').getAttribute('data-id')
   } catch (err) {
     return ''
   }
@@ -52,7 +52,7 @@ async function fillUsers () {
     for (const usr of body.data) {
       row += `<tr data-id='${usr.id}'>`
       if (currentGroup() !== 'E') {
-        row += `<td><sl-icon-button id='remove-${usr.id}' title='Remove from group' data-id='${usr.id}' name='trash3' style='color:red;'></sl-icon-button></td>`
+        row += `<td><wa-icon-button id='remove-${usr.id}' title='Remove from group' data-id='${usr.id}' name='trash3' style='color:red;'></wa-icon-button></td>`
       } else {
         row += '<td></td>'
       }
@@ -79,7 +79,7 @@ async function fillUsers () {
 }
 
 function groupDialogShow (id) {
-  JH.value(JH.query(domCache.groupDialog).querySelectorAll('sl-input'), '')
+  JH.value(JH.query(domCache.groupDialog).querySelectorAll('wa-input'), '')
 
   if (id?.length) {
     groupEditFill(id)
@@ -215,7 +215,7 @@ async function groupMove (id, newparent) {
 
   const resp = await JH.http(`/api/groupupdate/${id}`, data)
   if (!await PW.checkResponse(resp)) {
-    const items = JH.queryAll('sl-tree-item')
+    const items = JH.queryAll('wa-tree-item')
     for (const item of items) {
       item.classList.remove('dragover')
     }
@@ -257,8 +257,8 @@ await fillGroups()
 
 // Drag'n'drop
 async function dndSetup () {
-  JH.draggable('sl-tree-item')
-  JH.dropTarget('sl-tree-item', async (ev, data) => {
+  JH.draggable('wa-tree-item')
+  JH.dropTarget('wa-tree-item', async (ev, data) => {
     const group = data.data
     const newparent = ev.target.getAttribute('data-id')
 
@@ -285,7 +285,7 @@ JH.event(domCache.newMemberButton, 'click', (ev) => {
 
 JH.event(domCache.removeAllMembersButton, 'click', groupRemoveAllMembers)
 
-JH.event(domCache.groupSearch, 'sl-input', (ev) => {
+JH.event(domCache.groupSearch, 'wa-input', (ev) => {
   if (groupSearchTimeout) {
     clearTimeout(groupSearchTimeout)
   }

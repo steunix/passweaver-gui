@@ -1,20 +1,20 @@
-<sl-dialog id="itemviewdialog" label="Item details">
-  <sl-icon-button slot="header-actions" title="Copy item link" name="link-45deg" id="itemviewcopylink"></sl-icon-button>
-  <sl-icon-button slot="header-actions" title="Item activity" name="clock-history" id="itemviewactivity"></sl-icon-button>
-  <sl-visually-hidden id="itemviewid"></sl-visually-hidden>
-  <sl-input label="Title" id="viewtitle" name="viewtitle" readonly></sl-input>
-  <sl-select label="Type" id="viewtype" name="viewtype" disabled></sl-select>
-  <sl-textarea label="Description" id="viewdescription" name="viewdescription" readonly></sl-textarea>
-  <sl-input label="Email" id="viewemail" name="viewemail" readonly>
-    <sl-copy-button slot="suffix" title='Copy to clipboard' from="viewemail.value"></sl-copy-button>
-  </sl-input>
-  <sl-input label="URL / Host" id="viewurl" name="viewurl" readonly>
-    <sl-copy-button slot="suffix" title='Copy to clipboard' from="viewurl.value"></sl-copy-button>
-  </sl-input>
-  <sl-input label="User" id="viewuser" name="viewuser" readonly>
-    <sl-copy-button slot="suffix" title='Copy to clipboard' from="viewuser.value"></sl-copy-button>
-  </sl-input>
-  <sl-input label="Password" id="viewpassword" name="viewpassword" type="password" password-toggle readonly>
-    <sl-copy-button slot="suffix" title='Copy to clipboard' id="itemviewcopypassword" from="viewpassword.value"></sl-copy-button>
-  </sl-input>
-</sl-dialog>
+<wa-dialog id="itemviewdialog" label="Item details">
+  <wa-icon-button slot="header-actions" title="Copy item link" name="link-45deg" id="itemviewcopylink"></wa-icon-button>
+  <wa-icon-button slot="header-actions" title="Item activity" name="clock-history" id="itemviewactivity"></wa-icon-button>
+  <wa-visually-hidden id="itemviewid"></wa-visually-hidden>
+  <wa-input label="Title" id="viewtitle" name="viewtitle" readonly></wa-input>
+  <wa-select label="Type" id="viewtype" name="viewtype" disabled></wa-select>
+  <wa-textarea label="Description" id="viewdescription" name="viewdescription" readonly></wa-textarea>
+  <wa-input label="Email" id="viewemail" name="viewemail" readonly>
+    <wa-copy-button slot="suffix" title='Copy to clipboard' from="viewemail.value"></wa-copy-button>
+  </wa-input>
+  <wa-input label="URL / Host" id="viewurl" name="viewurl" readonly>
+    <wa-copy-button slot="suffix" title='Copy to clipboard' from="viewurl.value"></wa-copy-button>
+  </wa-input>
+  <wa-input label="User" id="viewuser" name="viewuser" readonly>
+    <wa-copy-button slot="suffix" title='Copy to clipboard' from="viewuser.value"></wa-copy-button>
+  </wa-input>
+  <wa-input label="Password" id="viewpassword" name="viewpassword" type="password" password-toggle readonly>
+    <wa-copy-button slot="suffix" title='Copy to clipboard' id="itemviewcopypassword" from="viewpassword.value"></wa-copy-button>
+  </wa-input>
+</wa-dialog>

@@ -2,29 +2,29 @@
 
 <div class="login-container" id="page_login">
   <div class="login-content">
-    <div class="pill bordered" style="padding:2rem;">
+    <wa-card style="padding:2rem;">
       <center>
         <img src="/public/v<%= version %>/images/passweaver-icon-dark.png" width="60"></img>
         <p style="font-size:200%;">PassWeaver - <%- company_name %></p>
       </center>
       <form id="loginForm" action="access" method="post">
         <%- include('partials/csrf.ejs') %>
-        <sl-input type="text" autofocus id="username" name="username" label="User" required></sl-input>
-        <sl-input type="password" id="password" name="password" label="Password" required></sl-input>
+        <wa-input type="text" autofocus id="username" name="username" label="User" required></wa-input>
+        <wa-input type="password" id="password" name="password" label="Password" required></wa-input>
         <% if ( viewitem ) { %>
           <input id="viewitem" name="viewitem" type="hidden" value="<%= viewitem %>"></input>
         <% } %>
         <center>
-          <sl-button id="login" type="submit" variant="primary" style="padding-top:1rem;">Login</sl-button>
+          <wa-button id="login" type="submit" variant="neutral" style="margin-top:1rem;">Login</wa-button>
           <% if ( error ) { %>
-            <sl-alert variant="danger" open>
-              <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+            <wa-alert variant="danger" open>
+              <wa-icon slot="icon" name="exclamation-octagon"></wa-icon>
               <%= error %>
-            </sl-alert>
+            </wa-alert>
           <% } %>
         </center>
       </form>
-    </div>
+    </wa-card>
   </div>
 </div>
 

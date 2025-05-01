@@ -20,12 +20,12 @@ const domCache = {
 
 export function setTableLoading (selector) {
   JH.query(selector).querySelector('tbody').innerHTML =
-    "<tr><td colspan='99'><sl-skeleton effect='pulse'></sl-skeleton></td></tr>"
+    "<tr><td colspan='99'><wa-skeleton effect='pulse'></wa-skeleton></td></tr>"
 }
 
 export function setTreeviewLoading (selector) {
   JH.query(selector).innerHTML =
-    '<sl-tree-item>Loading...</sl-tree-item>'
+    '<wa-tree-item>Loading...</wa-tree-item>'
 }
 
 export function confirmDialog (title, text, callback, savetext, savevariant) {
@@ -63,7 +63,7 @@ export function confirmDialog (title, text, callback, savetext, savevariant) {
   JH.event(domCache.confirmCancelButton, 'click', event => {
     dialog.hide()
   })
-  dialog.addEventListener('sl-request-close', event => {
+  dialog.addEventListener('wa-request-close', event => {
     if (event.detail.source === 'overlay') {
       event.preventDefault()
     }
@@ -121,9 +121,9 @@ export async function treeFill (id, data, callback, uselocalstorage) {
   JH.query(`#${id}`).innerHTML = ''
   treeFillItems(id, data, null)
 
-  if (!JH.attribute(`#${id}`, 'evt-sl-selection-change')) {
-    JH.event(`#${id}`, 'sl-selection-change', (ev) => {
-      const sel = JH.query('sl-tree-item[selected]')
+  if (!JH.attribute(`#${id}`, 'evt-wa-selection-change')) {
+    JH.event(`#${id}`, 'wa-selection-change', (ev) => {
+      const sel = JH.query('wa-tree-item[selected]')
       const id = sel.getAttribute('data-id')
       callback(id)
 
@@ -132,7 +132,7 @@ export async function treeFill (id, data, callback, uselocalstorage) {
       const lskey = `${user}_${ev.target.id}_selected`
       localStorage.setItem(lskey, sel.id)
     })
-    JH.attribute(`#${id}`, 'evt-sl-selection-change', '1')
+    JH.attribute(`#${id}`, 'evt-wa-selection-change', '1')
   }
 
   const user = getUser()
@@ -165,16 +165,16 @@ export function treeFillItems (id, data, mainid) {
       props += ' expanded'
     }
 
-    const html = `<sl-tree-item id='${newid}' data-id='${item.id}' ${props} data-description='${JH.sanitize(item.description)}'>${JH.sanitize(item.description)}</sl-tree-item>`
+    const html = `<wa-tree-item id='${newid}' data-id='${item.id}' ${props} data-description='${JH.sanitize(item.description)}'>${JH.sanitize(item.description)}</wa-tree-item>`
     const cont = new DOMParser().parseFromString(html, 'text/html')
     const newitem = cont.querySelector('body').firstChild
 
     parent.append(newitem)
-    JH.event(`#${newid}`, 'sl-collapse', (ev) => {
+    JH.event(`#${newid}`, 'wa-collapse', (ev) => {
       const lskey = `${user}_${root}_expanded_${ev.target.id}`
       localStorage.removeItem(lskey)
     })
-    JH.event(`#${newid}`, 'sl-expand', (ev) => {
+    JH.event(`#${newid}`, 'wa-expand', (ev) => {
       const lskey = `${user}_${root}_expanded_${ev.target.id}`
       localStorage.setItem(lskey, '1')
     })
@@ -190,12 +190,12 @@ export function treeItemSelect (elemid) {
   const treeitem = JH.query(`#${elemid}`)
 
   // Expand parents
-  const parents = JH.parents(treeitem, 'sl-tree-item')
+  const parents = JH.parents(treeitem, 'wa-tree-item')
   for (const parent of parents) {
     parent.setAttribute('expanded', 'expanded')
   }
 
-  const selected = JH.queryAll('sl-tree-item[selected]')
+  const selected = JH.queryAll('wa-tree-item[selected]')
   for (const s of selected) {
     s.removeAttribute('selected')
   }
@@ -211,7 +211,7 @@ export function treeSearch (elemid, searchstring, start) {
     searchTreeIndex = 0
   }
 
-  const treeitems = JH.queryAll(`#${elemid} sl-tree-item`)
+  const treeitems = JH.queryAll(`#${elemid} wa-tree-item`)
   const searchtoken = searchstring.toLowerCase()
 
   let index = 0
@@ -261,11 +261,11 @@ export function showToast (variant, text) {
     warning: 'exclamation-triangle'
   }
 
-  const alert = Object.assign(document.createElement('sl-alert'), {
+  const alert = Object.assign(document.createElement('wa-alert'), {
     variant,
     closable: true,
     duration: 3000,
-    innerHTML: `<sl-icon name="${icon[variant]}" slot="icon"></sl-icon>${text}`
+    innerHTML: `<wa-icon name="${icon[variant]}" slot="icon"></wa-icon>${text}`
   })
 
   document.body.append(alert)
@@ -292,7 +292,7 @@ export function simpleTreeFill (id, data) {
   JH.query(`#${id}`).innerHTML = ''
   simpleTreeFillItems(id, data)
   if (data.length === 0) {
-    JH.query(`#${id}`).innerHTML = '<sl-tree-item>No data found</sl-tree-item>'
+    JH.query(`#${id}`).innerHTML = '<wa-tree-item>No data found</wa-tree-item>'
   }
 }
 
@@ -302,15 +302,15 @@ export function simpleTreeFillItems (id, data) {
   for (const item of data) {
     const newid = `item-${id}-${item.id}`
 
-    let badge = '<sl-badge style="margin-left:0.5em;" pill variant="danger">No access</sl-badge>'
+    let badge = '<wa-badge style="margin-left:0.5em;" pill variant="danger">No access</wa-badge>'
     if (item?.permissions?.read) {
-      badge = '<sl-badge style="margin-left:0.5em;" pill variant="warning">R</sl-badge>'
+      badge = '<wa-badge style="margin-left:0.5em;" pill variant="warning">R</wa-badge>'
     }
     if (item?.permissions?.write) {
-      badge = '<sl-badge style="margin-left:0.5em;" pill variant="success">RW</sl-badge>'
+      badge = '<wa-badge style="margin-left:0.5em;" pill variant="success">RW</wa-badge>'
     }
 
-    const html = `<sl-tree-item id='${newid}' data-id='${item.id}' expanded data-description='${JH.sanitize(item.description)}'>${JH.sanitize(item.description)}${badge}</sl-tree-item>`
+    const html = `<wa-tree-item id='${newid}' data-id='${item.id}' expanded data-description='${JH.sanitize(item.description)}'>${JH.sanitize(item.description)}${badge}</wa-tree-item>`
     const cont = new DOMParser().parseFromString(html, 'text/html')
     const newitem = cont.querySelector('body').firstChild
 
