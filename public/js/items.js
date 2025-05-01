@@ -128,7 +128,7 @@ async function fillItems () {
       row += '</td>'
       row += '<td class="border-end">'
       if (itm.type) {
-        row += `<wa-badge appearance='outlined'><wa-icon name='${itm.itemtype.icon}' title='${JH.sanitize(itm.itemtype.description)}'></wa-icon>${JH.sanitize(itm.itemtype.description)}</wa-badge>`
+        row += `<wa-badge appearance='outlined'><wa-icon name='${itm.itemtype.icon}'></wa-icon>${JH.sanitize(itm.itemtype.description)}</wa-badge>`
       }
       row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end itemtitle'>${JH.sanitize(itm.title)}</td>`
       row += `<td id='user-${itm.id}'>${JH.sanitize(itm.metadata)}</td>`
