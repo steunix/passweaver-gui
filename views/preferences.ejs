@@ -13,19 +13,12 @@
       <wa-tab slot="nav" panel="ppassword">Personal folder password</wa-tab>
 
       <wa-tab-panel name="preferences">
-        <table>
-          <tr>
-            <th>Theme</th>
-            <td>
-              <wa-select id='theme'>
-                <wa-option value="light">Light</wa-option>
-                <wa-option value="dark">Dark</wa-option>
-              </wa-select>
-            </td>
-          </tr>
-        </table>
-        <wa-divider></wa-divider>
-        <wa-button id='save' variant="primary">Save</wa-button>
+        <wa-select id='theme' label="Choose a theme">
+          <wa-option value="light">Light</wa-option>
+          <wa-option value="dark">Dark</wa-option>
+        </wa-select>
+        <br/>
+        <wa-button id='save' variant="brand">Save</wa-button>
       </wa-tab-panel>
 
       <wa-tab-panel name="password">
