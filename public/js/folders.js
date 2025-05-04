@@ -43,7 +43,8 @@ async function fillGroups () {
           row += '<td></td><td></td>'
         }
       }
-      row += '<td class="border-start border-end">' + (itm.write ? 'Read + write' : 'Read only') + '</td>'
+      row += '<td class="border-start border-end">'
+      row += `<wa-badge variant="${itm.write ? 'success' : 'warning'}">${(itm.write ? 'Read + write' : 'Read only')}</wa-badge></td>`
       row += `<td>${itm.description}</td></tr>`
 
       // Check if groups can be added
