@@ -70,7 +70,7 @@ async function fillItemTypes () {
   for (const itm of body.data) {
     itemTypesOptions += `<wa-option id='itemtype-${itm.id}' value='${itm.id}'>${itm.description}`
     if (itm.icon) {
-      itemTypesOptions += `<wa-icon name='${itm.icon}' slot='prefix'>${itm.description}</wa-icon>`
+      itemTypesOptions += `<wa-icon name='${itm.icon}' slot='prefix'></wa-icon>`
     }
     itemTypesOptions += '</wa-option>'
   }
