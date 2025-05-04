@@ -23,14 +23,13 @@
   --wa-input-font-family: var(--theme-font);
   --wa-form-control-required-content-color: red;
   --wa-space-xs: 0.3rem;
-  --xwa-space-xl: 0.5rem;
+  --wa-space-s: 0.6rem;
 }
 
 body {
   margin: 0;
   padding: 0;
   font-size: var(--theme-font-size) !important;
-  --color: var(--wa-color-neutral-700);
 }
 
 /** CSS Grid */
@@ -207,10 +206,6 @@ table {
 th {
   text-align: start;
   background-color: var(--wa-color-neutral-95);
-}
-
-th,td {
-  padding: var(--cell-padding);
 }
 
 tr {
