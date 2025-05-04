@@ -142,7 +142,7 @@ export function disable (query) {
   }
 
   for (const e of el) {
-    e.setAttribute('disabled', 'disabled')
+    e.setAttribute('disabled', true)
   }
 }
 

@@ -282,7 +282,7 @@ function itemDialogEnable (enable) {
     JH.show([domCache.itemDialogSave, domCache.itemDialogGenerate])
   } else {
     JH.attribute('#itemdialog wa-input,wa-textarea,wa-select', 'readonly', 'readonly')
-    JH.attribute(domCache.itemDialogType, 'disabled', 'disabled')
+    JH.attribute(domCache.itemDialogType, 'disabled', true)
     JH.hide([domCache.itemDialogSave, domCache.itemDialogGenerate])
   }
 }
