@@ -10,7 +10,7 @@
   --theme-font: "Roboto Condensed";
   --theme-font-size: 14px;
   --theme-color: #ea9e34;
-  --theme-sidebar-bgcolor: #202020;
+  --theme-sidebar-bgcolor: #1a1c20;
   --theme-sidebar-color: rgb(255, 255, 255);
   --theme-sidebar-current-bgcolor: var(--theme-color);
   --theme-sidebar-current-color: rgb(255, 255, 255);
@@ -132,11 +132,7 @@ body {
   min-width: 0;
   border-width: 0 0 0 2px;
   border-style: solid;
-  border-color: var(--wa-color-neutral-90);
-}
-
-h2 {
-  color: var(--wa-color-brand-40);
+  border-color: var(--wa-color-border-quiet);
 }
 
 .companyname {
@@ -195,17 +191,12 @@ h2 {
   border-radius: 8px;
 }
 
-xwa-dialog::part(header) {
-  border-bottom: 1px solid var(--wa-color-neutral-200);
-}
-
 table {
   border-collapse: collapse;
 }
 
 th {
   text-align: start;
-  background-color: var(--wa-color-neutral-95);
 }
 
 tr {
@@ -215,23 +206,16 @@ tr {
   border-inline-style: solid;
 }
 
-tr:hover {
-  background-color: var(--wa-color-neutral-100);
-}
-tr:hover td {
-  background-color: var(--wa-color-neutral-100);
-}
-
 .bold {
   font-weight: bold;
 }
 
 .border-start {
-  border-left: 1px solid var(--wa-color-neutral-90);
+  border-left: 1px solid var(--wa-color-border-quiet);
 }
 
 .border-end {
-  border-right: 1px solid var(--wa-color-neutral-90);
+  border-right: 1px solid var(--wa-color-border-quiet);
 }
 
 .sticky {
@@ -243,12 +227,11 @@ tr:hover td {
   border-inline-start-color: var(--wa-color-brand-50);
   border-inline-width: 3px;
   border-inline-style: solid;
-  background-color: var(--wa-color-neutral-90);
   font-weight: bold;
 }
 
 .itemtitle {
-  background-color: var(--wa-color-neutral-95);
+  background-color: var(--wa-color-surface-90);
   font-weight: bold;
   cursor: pointer;
 }
@@ -284,15 +267,6 @@ wa-tree-item::part(label) {
 
 wa-tree-item::part(item) {
   cursor: pointer;
-}
-
-wa-tree-item::part(item):hover {
-  background-color: var(--wa-color-neutral-90);
-}
-
-wa-tree-item::part(item--selected) {
-  background-color: var(--wa-color-neutral-90);
-  font-weight: bold !important;
 }
 
 wa-tree-item[selected]::part(label) {
