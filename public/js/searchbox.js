@@ -81,7 +81,7 @@ async function fillItems () {
     for (const itm of body.data) {
       row +=
         `<tr id='sbrow-${itm.id}' data-id='${itm.id}'>` +
-        `<td class='itemtitle'>${itm.title}</td>` +
+        `<td class='itemtitle'><a>${itm.title}</a></td>` +
         '<td style="width:1px;" class="border-end">'
       if (itm.type) {
         row += `<wa-badge appearance="outlined" variant='neutral'><wa-icon name='${itm.itemtype.icon}'></wa-icon>${itm.itemtype.description}</wa-badge>`

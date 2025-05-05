@@ -116,7 +116,6 @@ async function fillItems () {
     for (const itm of body.data) {
       row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
       row += '<td class="border-end">'
-      row += `<wa-icon-button id='view-${itm.id}' name='rectangle-list' title='View item' data-id='${itm.id}'></wa-icon-button>`
       if (Folders.currentPermissions.write) {
         row += `<wa-icon-button id='edit-${itm.id}' title='Edit item' name='edit' data-id='${itm.id}'></wa-icon-button>`
         row += `<wa-icon-button id='remove-${itm.id}' title='Remove item' name='trash' style="color:red;" data-id='${itm.id}'></wa-icon-button>`
@@ -130,7 +129,7 @@ async function fillItems () {
       if (itm.type) {
         row += `<wa-badge appearance='outlined' variant='neutral'><wa-icon name='${itm.itemtype.icon}'></wa-icon>${JH.sanitize(itm.itemtype.description)}</wa-badge>`
       }
-      row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end itemtitle'>${JH.sanitize(itm.title)}</td>`
+      row += `<td class='border-start border-end itemtitle'><a id='title-${itm.id}' data-id='${itm.id}' >${JH.sanitize(itm.title)}</a></td>`
       row += `<td id='user-${itm.id}'>${JH.sanitize(itm.metadata)}</td>`
       row += `<td class='border-end'><wa-copy-button title='Copy user to clipboard' from='user-${itm.id}'></wa-copy-button></td>`
       row += `<td id='password-${itm.id}'>****</td>`
@@ -144,13 +143,10 @@ async function fillItems () {
   }
 
   // Install event handlers
-  JH.event('#itemstable tbody [id^=view]', 'click', (ev) => {
-    itemShow(ev.currentTarget.getAttribute('data-id'), true)
-  })
   JH.event('#itemstable tbody [id^=edit]', 'click', (ev) => {
     itemShow(ev.currentTarget.getAttribute('data-id'), false)
   })
-  JH.event('#itemstable tbody [id^=title]', 'dblclick', (ev) => {
+  JH.event('#itemstable tbody [id^=title]', 'click', (ev) => {
     itemShow(ev.currentTarget.getAttribute('data-id'), true)
   })
   JH.event('#itemstable tbody [id^=remove]', 'click', (ev) => {

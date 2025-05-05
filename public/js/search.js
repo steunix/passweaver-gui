@@ -56,7 +56,6 @@ async function fillItems () {
       row +=
         `<tr id='row-${itm.id}' data-id='${itm.id}'>` +
         '<td>' +
-        `<wa-icon-button id='view-${itm.id}' title='View item' name='rectangle-list' data-id='${itm.id}'></wa-icon-button>` +
         `<wa-icon-button id='link-${itm.id}' title='Copy item link' name='link' data-id='${itm.id}'></wa-icon-button>` +
         `<wa-icon-button id='folder-${itm.id}' title='Open folder' name='folder-open' data-id='${itm.id}'></wa-icon-button>` +
         '</td>' +
@@ -66,7 +65,7 @@ async function fillItems () {
         row += `<wa-badge appearance='outlined' variant='neutral'><wa-icon name='${itm.itemtype.icon}'></wa-icon>${JH.sanitize(itm.itemtype.description)}</wa-badge>`
       }
       row += '</td>'
-      row += `<td class='itemtitle'>${JH.sanitize(itm.title)}</td></tr>`
+      row += `<td class='itemtitle'><a id='view-${itm.id}' data-id='${itm.id}'>${JH.sanitize(itm.title)}</a></td></tr>`
     }
     domCache.itemsTableBody.innerHTML = row
   } else {
@@ -74,9 +73,6 @@ async function fillItems () {
   }
 
   // Install event handlers
-  JH.event('#itemstable tbody tr[id^=row]', 'dblclick', async (ev) => {
-    await itemShow(ev.currentTarget.getAttribute('data-id'))
-  })
   JH.event('#itemstable tbody [id^=view]', 'click', async (ev) => {
     await itemShow(ev.currentTarget.getAttribute('data-id'))
   })
