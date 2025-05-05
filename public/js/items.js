@@ -3,6 +3,7 @@
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 import * as Folders from './folders_shared.js'
+import * as Items from './items_shared.js'
 import * as CPicker from './picker.js'
 
 let itemSearchTimeout
@@ -15,12 +16,6 @@ const domCache = {
   searchTypeSelect: JH.query('#typesearch'),
   itemsTable: JH.query('#itemstable'),
   itemsTableBody: JH.query('#itemstable tbody'),
-  itemActivityDialog: JH.query('#itemactivitydialog'),
-  itemActivityTable: JH.query('#itemactivitytable'),
-  itemActivityTableBody: JH.query('#itemactivitytable tbody'),
-  itemActivityLoadButton: JH.query('#itemactivityload'),
-  itemActivityId: JH.query('#itemactivityid'),
-  itemActivityButton: JH.query('#itemviewactivity'),
   newItemButton: JH.query('#newitem'),
   folderCreateButton: JH.query('#foldercreate'),
   folderEditButton: JH.query('#folderedit'),
@@ -159,7 +154,7 @@ async function fillItems () {
     itemCopyLink(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=activity]', 'click', (ev) => {
-    itemActivity(ev.currentTarget.getAttribute('data-id'))
+    Items.itemActivityShow(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=onetime]', 'click', (ev) => {
     itemOneTimeShareDialog(ev.currentTarget.getAttribute('data-id'))
@@ -173,42 +168,6 @@ async function fillItems () {
 
   // Setup drag'n'drop
   JH.draggable("#itemstable [id^='row-']", 'item')
-}
-
-async function fillActivity (itm) {
-  // If a table is already populated, get last id and get next page
-  let lastid = ''
-  const lastrow = JH.query('#itemactivitytable tbody tr:last-child td[id^=event]')
-  if (lastrow) {
-    lastid = lastrow.getAttribute('data-id')
-  }
-
-  const resp = await JH.http(`/api/items/${itm}/activity?lastid=${lastid}`)
-
-  // Check response
-  if (!await PW.checkResponse(resp)) {
-    return
-  }
-
-  const body = await resp.json()
-
-  // Manual check response, because body has already been read
-  if (body.data.length) {
-    let row = ''
-    for (const evt of body.data) {
-      row += '<tr>'
-      row += `<td id='event-${evt.id}' data-id='${evt.id}'>${evt.timestamp}</td>`
-      row += `<td>${JH.sanitize(evt.user_description || '')}</td>`
-      row += `<td>${JH.sanitize(evt.action_description || '')}</td>`
-      row += `<td>${JH.sanitize(evt.note || '')}</td>`
-    }
-    domCache.itemActivityTableBody.innerHTML += row
-  }
-
-  if (!body.data.length || body.data.length < 50) {
-    domCache.itemActivityTableBody.innerHTML += '<tr><td colspan="99">No other activity found</td></tr>'
-    JH.disable(domCache.itemActivityLoadButton)
-  }
 }
 
 async function folderClicked () {
@@ -608,14 +567,9 @@ async function itemDialogGeneratePassword () {
   }
 }
 
-async function itemActivity (itm) {
-  domCache.itemActivityTableBody.innerHTML = ''
-  domCache.itemActivityDialog.show()
-  JH.enable(domCache.itemActivityLoadButton)
-
-  JH.value(domCache.itemActivityId, itm)
-  fillActivity(itm)
-}
+JH.event(domCache.itemDialogActivity, 'click', (ev) => {
+  Items.itemActivityShow(JH.value(domCache.itemDialogId))
+})
 
 // Drag'n'drop
 async function dndSetup () {
@@ -682,14 +636,6 @@ addEventListener('folders-refresh', async (ev) => {
 
 addEventListener('pw-item-found', async (ev) => {
   await folderClicked()
-})
-
-JH.event(domCache.itemDialogActivity, 'click', (ev) => {
-  itemActivity(JH.value(domCache.itemDialogId))
-})
-
-JH.event(domCache.itemActivityLoadButton, 'click', (ev) => {
-  fillActivity(JH.value(domCache.itemActivityId))
 })
 
 await fillFolders()
