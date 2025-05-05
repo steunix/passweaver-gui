@@ -184,18 +184,6 @@ body {
   border-radius: 4px;
 }
 
-#xerrordialog::part(header) {
-  --header-spacing: var(--wa-spacing-small);
-}
-
-#xerrordialog::part(title) {
-  font-size: 120%;
-}
-
-#xerrordialog::part(panel) {
-  border-radius: 8px;
-}
-
 table {
   border-collapse: collapse;
 }
