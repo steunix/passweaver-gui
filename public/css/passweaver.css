@@ -24,8 +24,8 @@
   --wa-form-control-required-content-color: red;
   --wa-space-xs: 0.3rem;
   --wa-space-s: 0.4rem;
-  --wa-space-m: 0.6rem;
-  --wa-space-l: 0.8rem;
+  --wa-space-m: 0.8rem;
+  --wa-space-l: 0.9rem;
   --wa-space-xl: 1rem;
 }
 
@@ -199,6 +199,7 @@ table {
 }
 
 th {
+  background-color: var(--wa-color-surface-lowered);
   text-align: start;
 }
 
