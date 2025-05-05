@@ -23,6 +23,7 @@ export class Picker {
   show () {
     this.domCache.search.value = ''
     this.domCache.tableBody.innerHTML = ''
+    this.domCache.dialog.label = this.mode === 'groups' ? 'Select group' : 'Select user'
     this.domCache.dialog.show()
     this.search()
   }
