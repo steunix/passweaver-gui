@@ -283,7 +283,7 @@ JH.event(domCache.newMemberButton, 'click', (ev) => {
 
 JH.event(domCache.removeAllMembersButton, 'click', groupRemoveAllMembers)
 
-JH.event(domCache.groupSearch, 'wa-input', (ev) => {
+JH.event(domCache.groupSearch, 'input', (ev) => {
   if (groupSearchTimeout) {
     clearTimeout(groupSearchTimeout)
   }

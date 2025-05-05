@@ -139,7 +139,7 @@ JH.event(domCache.folderDialogDescription, 'keyup', folderSaveEnable)
 
 JH.event(domCache.folderDialogSave, 'click', folderSave)
 
-JH.event(domCache.folderSearch, 'wa-input', (ev) => {
+JH.event(domCache.folderSearch, 'input', (ev) => {
   if (folderSearchTimeout) {
     clearTimeout(folderSearchTimeout)
   }

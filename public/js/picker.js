@@ -76,7 +76,7 @@ export class Picker {
   }
 
   installEvents () {
-    JH.event(this.domCache.search, 'wa-input', (ev) => {
+    JH.event(this.domCache.search, 'input', (ev) => {
       if (this.pickerTimeout) {
         clearTimeout(this.pickerTimeout)
       }

@@ -657,7 +657,7 @@ JH.event([domCache.personalPasswordNew, domCache.personalPasswordNewConfirm], 'k
 
 JH.event(domCache.personalPasswordSetButton, 'click', personalPasswordSet)
 
-JH.event(domCache.itemSearchText, 'wa-input', (ev) => {
+JH.event(domCache.itemSearchText, 'input', (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }

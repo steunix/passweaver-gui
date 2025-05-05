@@ -407,7 +407,7 @@ JH.event([domCache.editLogin, domCache.editEmail, domCache.editLastName], 'keyup
 JH.event(domCache.userEditButton, 'click', userEdit)
 JH.event(domCache.newUserButton, 'click', userCreateDialog)
 
-JH.event(domCache.usersSearch, 'wa-input', (ev) => {
+JH.event(domCache.usersSearch, 'input', (ev) => {
   if (userSearchTimeout) {
     clearTimeout(userSearchTimeout)
   }
