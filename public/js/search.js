@@ -1,5 +1,6 @@
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
+import * as Items from './items_shared.js'
 
 let itemSearchTimeout
 let itemTypesOptions
@@ -13,7 +14,9 @@ const domCache = {
   itemViewType: JH.query('#viewtype'),
   itemViewId: JH.query('#itemviewid'),
   passwordCopy: JH.query('#itemviewcopypassword'),
-  passwordView: JH.query('#viewpassword')
+  passwordView: JH.query('#viewpassword'),
+  itemViewActivity: JH.query('#itemviewactivity'),
+  itemViewCopyLink: JH.query('#itemviewcopylink')
 }
 
 async function fillItemTypes () {
@@ -81,7 +84,7 @@ async function fillItems () {
     await itemShow(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=link]', 'click', (ev) => {
-    itemCopyLink(ev.currentTarget.getAttribute('data-id'))
+    Items.itemCopyLink(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=folder]', 'click', (ev) => {
     window.location = `/pages/items?viewitem=${ev.currentTarget.getAttribute('data-id')}`
@@ -116,11 +119,6 @@ async function itemShow (item) {
   await itemViewFill(item)
 }
 
-function itemCopyLink (itm) {
-  navigator.clipboard.writeText(`${window.location.origin}/pages/items?viewitem=${itm}`)
-  PW.showToast('primary', 'Item link copied to clipboard')
-}
-
 async function passwordAccessed (item) {
   await JH.http('/api/events', {
     _csrf: PW.getCSRFToken(),
@@ -140,6 +138,14 @@ async function passwordCopied (item) {
 }
 
 await fillItemTypes()
+
+JH.event(domCache.itemViewActivity, 'click', (ev) => {
+  Items.itemActivityShow(JH.value(domCache.itemViewId))
+})
+
+JH.event(domCache.itemViewCopyLink, 'click', (ev) => {
+  Items.itemCopyLink(JH.value(domCache.itemViewId))
+})
 
 JH.event(domCache.search, 'sl-input', async (ev) => {
   if (itemSearchTimeout) {
