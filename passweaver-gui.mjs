@@ -421,7 +421,7 @@ app.get('/api/itemslist/:folder', async (req, res) => {
 
 // Items search
 app.get('/api/itemssearch/', async (req, res) => {
-  const list = await PassWeaver.itemsSearch(req.session, req.query?.search, req.query?.type, req.query?.limit)
+  const list = await PassWeaver.itemsSearch(req.session, req.query?.search, req.query?.type, req.query?.limit, req.query?.favorite)
   res.json(list)
 })
 
@@ -452,6 +452,12 @@ app.post('/api/itemremove/:item', async (req, res) => {
 // Update item
 app.post('/api/itemupdate/:item', async (req, res) => {
   const resp = await PassWeaver.itemUpdate(req.session, req.params.item, req.body)
+  res.json(resp)
+})
+
+// Set favorite flag
+app.post('/api/itemfavorite/:item', async (req, res) => {
+  const resp = await PassWeaver.itemSetFavorite(req.session, req.params.item, req.body)
   res.json(resp)
 })
 

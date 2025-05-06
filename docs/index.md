@@ -7,6 +7,7 @@ PassWeaver-GUI is an opensource project, released under MIT license. See [Techni
 # Features
 
 - Personal folders for each user
+- Favorite items
 - Share one-time secrets with anyone, even if they have not an account
 - One-time share items
 - Share items through permalinks
@@ -57,11 +58,12 @@ In the top bar you can fast search items: the top 10 results will be shown:
 
 This is what the items page looks like:
 
-![Items page](assets/passweavergui-items-002.jpeg)
+![Items page](assets/passweavergui-items-003.jpeg)
 
 In "Folders" left pane you can create a subfolder, modify or delete a folder, if you have write permissions. You can also search for a folder and use the previous/next buttons to navigate the tree.
 
 In "Items" right pane you have a list of folder items with the following actions:
+- Toggle favorite
 - View item
 - Edit item
 - Delete item
@@ -110,11 +112,11 @@ Once unlocked, the personal folder will work as any other folder.
 
 You can search items by using the left pane menu or by clicking `Ctrl+\` as a shortcut (start typing something and press `Enter`).
 
-You can search items with a matching title, username or folder name (parents included) within all the folders you have access to. Items can be filtered by type too.
+You can search items with a matching title, username or folder name (parents included) within all the folders you have access to. Items can be filtered by type and favorite flag.
 
-![Search page](assets/passweavergui-search-000.jpeg)
+![Search page](assets/passweavergui-search-001.jpeg)
 
-In the actions column, you have buttons to view the item, copy the permalink or access the folder.
+In the actions column, you have buttons to toggle favorite, view the item, copy the permalink or access the folder.
 
 ## Generator
 

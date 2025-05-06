@@ -67,3 +67,20 @@ export async function itemActivityShow (itm) {
 JH.event(domCache.itemActivityLoadButton, 'click', (ev) => {
   fillItemActivity(JH.value(domCache.itemActivityId))
 })
+
+/**
+ * Set favorite flag for item
+ * @param {string} itm Item id
+ */
+export async function setFavorite (itm, favorite) {
+  const resp = await JH.http(`/api/itemfavorite/${itm}`, {
+    _csrf: PW.getCSRFToken(),
+    favorite
+  })
+
+  // Check response
+  if (!await PW.checkResponse(resp)) {
+    return false
+  }
+  return true
+}
