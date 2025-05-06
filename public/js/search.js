@@ -61,7 +61,7 @@ async function fillItems () {
       row +=
         `<tr id='row-${itm.id}' data-id='${itm.id}'>` +
         '<td>' +
-        `<wa-icon-button id='fav-${itm.id}' name='${itm.favorite ? 'star-fill' : 'star'}' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon-button id='fav-${itm.id}' name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></wa-icon-button>` +
         `<wa-icon-button id='link-${itm.id}' title='Copy item link' name='link' data-id='${itm.id}'></wa-icon-button>` +
         `<wa-icon-button id='folder-${itm.id}' title='Open folder' name='folder-open' data-id='${itm.id}'></wa-icon-button>` +
         '</td>' +

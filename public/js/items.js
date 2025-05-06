@@ -111,7 +111,7 @@ async function fillItems () {
     for (const itm of body.data) {
       row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
       row += '<td class="border-end">'
-      row += `<wa-icon-button id='fav-${itm.id}' name='${itm.favorite ? 'star-fill' : 'star'}' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></wa-icon-button>`
+      row += `<wa-icon-button id='fav-${itm.id}' name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></wa-icon-button>`
       if (Folders.currentPermissions.write) {
         row += `<wa-icon-button id='edit-${itm.id}' title='Edit item' name='edit' data-id='${itm.id}'></wa-icon-button>`
         row += `<wa-icon-button id='remove-${itm.id}' title='Remove item' name='trash' style="color:red;" data-id='${itm.id}'></wa-icon-button>`
