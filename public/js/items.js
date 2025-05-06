@@ -114,6 +114,7 @@ async function fillItems () {
     for (const itm of body.data) {
       row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
       row += '<td class="border-end">'
+      row += `<sl-icon-button id='fav-${itm.id}' name='${itm.favorite ? 'star-fill' : 'star'}' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></sl-icon-button>`
       row += `<sl-icon-button id='view-${itm.id}' name='file-earmark' title='View item' data-id='${itm.id}'></sl-icon-button>`
       if (Folders.currentPermissions.write) {
         row += `<sl-icon-button id='edit-${itm.id}' title='Edit item' name='pencil' data-id='${itm.id}'></sl-icon-button>`
@@ -142,6 +143,10 @@ async function fillItems () {
   }
 
   // Install event handlers
+  JH.event('#itemstable tbody [id^=fav]', 'click', async (ev) => {
+    await Items.setFavorite(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-fav') === 'false')
+    await fillItems()
+  })
   JH.event('#itemstable tbody [id^=view]', 'click', (ev) => {
     itemShow(ev.currentTarget.getAttribute('data-id'), true)
   })

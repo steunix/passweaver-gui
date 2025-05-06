@@ -8,13 +8,14 @@
 
   <div class="main1">
     <h2>Search items</h2>
-    <div style="display:flex;">
+    <div style="display:flex; align-items: center;">
       <sl-input id="itemsearch" type="text" placeholder="Search items" autofocus="autofocus" clearable style="width:20rem;" value="<%= search %>">
         <sl-icon slot="prefix" name="search"></sl-icon>
       </sl-input>
       <sl-select id="typesearch" style="margin-left:1em;" name="typesearch" placeholder="Filter type" clearable></sl-select>
+      <sl-switch id="favorite" style="margin-left:1em;" label="Favorites only">Favorites only</sl-switch>
     </div>
-    <table id="itemstable" class="bordered" style="display:block; max-height: calc(100vh - var(--bottom-margin)); overflow-y: auto;">
+    <table id="itemstable" class="bordered" style="width: auto; display:block; max-height: calc(100vh - var(--bottom-margin)); overflow-y: auto;">
       <thead>
         <tr class="sticky">
           <th style="white-space:no-wrap;">Actions</th>
