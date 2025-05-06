@@ -663,7 +663,7 @@ function showScopeUser () {
   }
 }
 
-JH.event(domCache.scope, 'wa-change', (ev) => {
+JH.event(domCache.scope, 'change', (ev) => {
   showScopeUser()
   enableShareSave()
 })
