@@ -169,9 +169,10 @@ export async function itemsList (session, folder, search, type) {
  * @param {string} search Item title search
  * @param {string} type Type to search
  * @param {integer} limit Results limit
+ * @param {boolean} favorite If true, only favorite items
  * @returns
  */
-export async function itemsSearch (session, search, type, limit) {
+export async function itemsSearch (session, search, type, limit, favorite) {
   let endpoint = '/items?'
   if (search) {
     endpoint += '&search=' + encodeURIComponent(search)
@@ -181,6 +182,9 @@ export async function itemsSearch (session, search, type, limit) {
   }
   if (limit) {
     endpoint += '&limit=' + encodeURIComponent(limit)
+  }
+  if (favorite === 'true') {
+    endpoint += '&favorite=true'
   }
   const resp = await passWeaverAPI(session, METHOD.get, endpoint)
   return resp
@@ -283,6 +287,17 @@ export async function itemUpdate (session, itemid, body) {
   }
 
   const resp = await passWeaverAPI(session, METHOD.patch, `/items/${itemid}`, item)
+  return resp
+}
+
+/**
+ * Set item favorite flag
+ * @param {Object} session
+ * @param {string} itemid
+ * @param {boolean} favorite
+ */
+export async function itemSetFavorite (session, itemid, body) {
+  const resp = await passWeaverAPI(session, METHOD.patch, `/items/${itemid}`, { favorite: body.favorite })
   return resp
 }
 

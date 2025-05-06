@@ -10,6 +10,7 @@ const domCache = {
   itemsTable: JH.query('#itemstable'),
   itemsTableBody: JH.query('#itemstable tbody'),
   search: JH.query('#itemsearch'),
+  searchFavorite: JH.query('#favorite'),
   itemViewDialog: JH.query('#itemviewdialog'),
   itemViewType: JH.query('#viewtype'),
   itemViewId: JH.query('#itemviewid'),
@@ -43,9 +44,10 @@ async function fillItems () {
   PW.setTableLoading(domCache.itemsTable)
 
   const type = JH.value(domCache.typeSelect)
+  const fav = JH.query(domCache.searchFavorite).checked ? 'true' : ''
 
   const search = JH.value(domCache.search)
-  const resp = await JH.http(`/api/itemssearch?search=${search}&type=${type}`)
+  const resp = await JH.http(`/api/itemssearch?search=${search}&type=${type}&favorite=${fav}`)
 
   // Folder may not be accessible
   if (!await PW.checkResponse(resp, 403)) {
@@ -59,6 +61,7 @@ async function fillItems () {
       row +=
         `<tr id='row-${itm.id}' data-id='${itm.id}'>` +
         '<td>' +
+        `<wa-icon-button id='fav-${itm.id}' name='${itm.favorite ? 'star-fill' : 'star'}' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></wa-icon-button>` +
         `<wa-icon-button id='link-${itm.id}' title='Copy item link' name='link' data-id='${itm.id}'></wa-icon-button>` +
         `<wa-icon-button id='folder-${itm.id}' title='Open folder' name='folder-open' data-id='${itm.id}'></wa-icon-button>` +
         '</td>' +
@@ -76,6 +79,10 @@ async function fillItems () {
   }
 
   // Install event handlers
+  JH.event('#itemstable tbody [id^=fav]', 'click', async (ev) => {
+    await Items.setFavorite(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-fav') === 'false')
+    await fillItems()
+  })
   JH.event('#itemstable tbody [id^=view]', 'click', async (ev) => {
     await itemShow(ev.currentTarget.getAttribute('data-id'))
   })
@@ -151,6 +158,7 @@ JH.event(domCache.search, 'input', async (ev) => {
 })
 
 JH.event(domCache.typeSelect, 'change', fillItems)
+JH.event(domCache.searchFavorite, 'change', fillItems)
 
 JH.event(domCache.passwordCopy, 'wa-copy', (ev) => {
   passwordCopied(JH.value(domCache.itemViewId))
