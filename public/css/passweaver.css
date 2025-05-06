@@ -5,10 +5,10 @@
 }
 
 :root {
-  --wa-font-family-body: "Roboto Condensed";
-  --wa-size: 14px;
-  --theme-font: "Roboto Condensed";
   --theme-font-size: 14px;
+  font-size: var(--theme-font-size);
+  --wa-font-family-body: "Roboto Condensed";
+  --theme-font: "Roboto Condensed";
   --theme-color: #ea9e34;
   --theme-sidebar-bgcolor: #1a1c20;
   --theme-sidebar-color: rgb(255, 255, 255);
@@ -20,7 +20,6 @@
   --bottom-margin: 11rem;
   --cell-padding: 0.4em;
   --indent-guide-width: 1px;
-  --wa-input-font-family: var(--theme-font);
   --wa-space-xs: 0.3rem;
   --wa-space-s: 0.4rem;
   --wa-space-m: 0.8rem;
