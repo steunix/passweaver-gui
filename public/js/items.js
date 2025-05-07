@@ -122,7 +122,9 @@ async function fillItems () {
         row += `<sl-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></sl-icon-button>`
       }
       row += `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`
-      row += `<sl-icon-button id='onetime-${itm.id}' title='One time share' name='1-circle' data-id='${itm.id}'></sl-icon-button>`
+      if (!itm.personal) {
+        row += `<sl-icon-button id='onetime-${itm.id}' title='One time share' name='1-circle' data-id='${itm.id}'></sl-icon-button>`
+      }
       row += `<sl-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></sl-icon-button>`
       row += '</td>'
       row += '<td class="border-end">'
