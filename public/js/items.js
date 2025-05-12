@@ -10,6 +10,7 @@ let itemSearchTimeout
 let itemTypesOptions
 
 const domCache = {
+  searchFavorite: JH.query('#favorite'),
   sectionTitle: JH.query('#sectiontitle'),
   currentPermissions: JH.query('#currentpermissions'),
   itemSearchText: JH.query('#itemsearch'),
@@ -81,10 +82,11 @@ async function fillItemTypes () {
 async function fillItems () {
   const search = JH.value(domCache.itemSearchText)
   const type = JH.value(domCache.searchTypeSelect)
+  const fav = JH.query(domCache.searchFavorite).checked ? 'true' : ''
 
   PW.setTableLoading(domCache.itemsTable)
 
-  const resp = await JH.http(`/api/itemslist/${Folders.currentFolder()}?search=${search}&type=${type}`)
+  const resp = await JH.http(`/api/itemslist/${Folders.currentFolder()}?search=${search}&type=${type}&favorite=${fav}`)
 
   // Folder may not be accessible
   if (!await PW.checkResponse(resp, [403, 412, 417])) {
@@ -655,6 +657,8 @@ JH.event(domCache.itemDialogCopyLink, 'click', (ev) => {
 })
 
 JH.event(domCache.itemDialogGenerate, 'click', itemDialogGeneratePassword)
+
+JH.event(domCache.searchFavorite, 'sl-change', fillItems)
 
 if (domCache.viewItem) {
   setTimeout(() => {

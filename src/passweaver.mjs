@@ -149,15 +149,19 @@ export async function userFoldersTree (session, user, permissions) {
  * @param {string} folder Folder id
  * @param {string} search Item title search
  * @param {string} type Type to search
+ * @param {boolean} favorite If true, only favorite items
  * @returns
  */
-export async function itemsList (session, folder, search, type) {
+export async function itemsList (session, folder, search, type, favorite) {
   let endpoint = `/folders/${folder}/items?`
   if (search) {
     endpoint += '&search=' + encodeURIComponent(search)
   }
   if (type) {
     endpoint += '&type=' + encodeURIComponent(type)
+  }
+  if (favorite) {
+    endpoint += '&favorite=' + encodeURIComponent(favorite)
   }
   const resp = await passWeaverAPI(session, METHOD.get, endpoint)
   return resp
