@@ -492,7 +492,7 @@ async function personalPasswordSet () {
   }
 
   PW.showToast('success', 'Personal folder unlocked')
-  domCache.personalPasswordSetDialog.hide()
+  domCache.personalPasswordSetDialog.open = false
   await fillFolders()
   await folderClicked()
 }
