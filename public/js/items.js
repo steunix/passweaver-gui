@@ -35,6 +35,7 @@ const domCache = {
   personalPasswordSetDialog: JH.query('#personalpasswordset'),
   personalPasswordSetButton: JH.query('#personalpasswordsetbutton'),
   personalPasswordSetCancel: JH.query('#personalpasswordsetcancel'),
+  personalPasswordSetAlert: JH.query('#personalpasswordsetalert'),
   personalPasswordAsk: JH.query('#personalpasswordask'),
   foldersTree: JH.query('#folderstree'),
   viewItem: JH.query('#viewitem'),
@@ -450,6 +451,8 @@ function personalPasswordCreateDialog () {
 }
 
 function personalPasswordAskDialog () {
+  domCache.personalPasswordSetAlert.open = false
+  domCache.personalPasswordAsk.value = ''
   domCache.personalPasswordSetDialog.show()
 }
 
@@ -486,14 +489,15 @@ async function personalPasswordSet () {
     password: JH.value(domCache.personalPasswordAsk)
   }
 
-  domCache.personalPasswordSetDialog.hide()
   const resp = await JH.http('/api/personalunlock', data)
-  if (!await PW.checkResponse(resp)) {
-    PW.errorDialog('Wrong password, please retry')
+  if (!await PW.checkResponse(resp, null, false)) {
+    domCache.personalPasswordSetAlert.open = true
+    domCache.personalPasswordAsk.focus()
     return
   }
 
   PW.showToast('success', 'Personal folder unlocked')
+  domCache.personalPasswordSetDialog.hide()
   await fillFolders()
   await folderClicked()
 }
