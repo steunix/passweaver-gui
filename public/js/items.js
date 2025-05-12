@@ -10,6 +10,7 @@ let itemSearchTimeout
 let itemTypesOptions
 
 const domCache = {
+  searchFavorite: JH.query('#favorite'),
   sectionTitle: JH.query('#sectiontitle'),
   currentPermissions: JH.query('#currentpermissions'),
   itemSearchText: JH.query('#itemsearch'),
@@ -33,6 +34,7 @@ const domCache = {
   personalPasswordNewConfirm: JH.query('#newpersonalpasswordconfirm'),
   personalPasswordSetDialog: JH.query('#personalpasswordset'),
   personalPasswordSetButton: JH.query('#personalpasswordsetbutton'),
+  personalPasswordSetAlert: JH.query('#personalpasswordsetalert'),
   personalPasswordAsk: JH.query('#personalpasswordask'),
   foldersTree: JH.query('#folderstree'),
   viewItem: JH.query('#viewitem'),
@@ -77,10 +79,11 @@ async function fillItemTypes () {
 async function fillItems () {
   const search = JH.value(domCache.itemSearchText)
   const type = JH.value(domCache.searchTypeSelect)
+  const fav = JH.query(domCache.searchFavorite).checked ? 'true' : ''
 
   PW.setTableLoading(domCache.itemsTable)
 
-  const resp = await JH.http(`/api/itemslist/${Folders.currentFolder()}?search=${search}&type=${type}`)
+  const resp = await JH.http(`/api/itemslist/${Folders.currentFolder()}?search=${search}&type=${type}&favorite=${fav}`)
 
   // Folder may not be accessible
   if (!await PW.checkResponse(resp, [403, 412, 417])) {
@@ -118,7 +121,9 @@ async function fillItems () {
         row += `<wa-icon-button id='clone-${itm.id}' title='Clone item' name='clone' data-id='${itm.id}'></wa-icon-button>`
       }
       row += `<wa-icon-button id='link-${itm.id}' title='Copy item link' name='link' data-id='${itm.id}'></wa-icon-button>`
-      row += `<wa-icon-button id='onetime-${itm.id}' title='One time share' name='1' data-id='${itm.id}'></wa-icon-button>`
+      if (!itm.personal) {
+        row += `<wa-icon-button id='onetime-${itm.id}' title='One time share' name='1' data-id='${itm.id}'></wa-icon-button>`
+      }
       row += `<wa-icon-button id='activity-${itm.id}' title='Activity' name='clock' data-id='${itm.id}'></wa-icon-button>`
       row += '</td>'
       row += '<td class="border-end">'
@@ -441,6 +446,8 @@ function personalPasswordCreateDialog () {
 }
 
 function personalPasswordAskDialog () {
+  JH.hide(domCache.personalPasswordSetAlert)
+  domCache.personalPasswordAsk.value = ''
   domCache.personalPasswordSetDialog.show()
 }
 
@@ -477,14 +484,15 @@ async function personalPasswordSet () {
     password: JH.value(domCache.personalPasswordAsk)
   }
 
-  domCache.personalPasswordSetDialog.open = false
   const resp = await JH.http('/api/personalunlock', data)
-  if (!await PW.checkResponse(resp)) {
-    PW.errorDialog('Wrong password, please retry')
+  if (!await PW.checkResponse(resp, null, false)) {
+    JH.show(domCache.personalPasswordSetAlert)
+    domCache.personalPasswordAsk.focus()
     return
   }
 
   PW.showToast('success', 'Personal folder unlocked')
+  domCache.personalPasswordSetDialog.hide()
   await fillFolders()
   await folderClicked()
 }
@@ -611,6 +619,11 @@ JH.event(domCache.personalPasswordNewButton, 'click', personalPasswordCreate)
 JH.event([domCache.personalPasswordNew, domCache.personalPasswordNewConfirm], 'keyup', personalPasswordCreateEnable)
 
 JH.event(domCache.personalPasswordSetButton, 'click', personalPasswordSet)
+JH.event(domCache.personalPasswordAsk, 'keydown', (ev) => {
+  if (ev.key === 'Enter') {
+    personalPasswordSet()
+  }
+})
 
 JH.event(domCache.itemSearchText, 'input', (ev) => {
   if (itemSearchTimeout) {
@@ -628,6 +641,8 @@ JH.event(domCache.itemDialogCopyLink, 'click', (ev) => {
 })
 
 JH.event(domCache.itemDialogGenerate, 'click', itemDialogGeneratePassword)
+
+JH.event(domCache.searchFavorite, 'change', fillItems)
 
 if (domCache.viewItem) {
   setTimeout(() => {

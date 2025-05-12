@@ -82,7 +82,7 @@ export function errorDialog (text, subject) {
   dialog.show()
 }
 
-export async function checkResponse (resp, ignoreStatus) {
+export async function checkResponse (resp, ignoreStatus, showDialog) {
   const respClone = resp.clone()
   let body
   try {
@@ -108,7 +108,9 @@ export async function checkResponse (resp, ignoreStatus) {
     return
   }
 
-  errorDialog(body.message)
+  if (showDialog !== false) {
+    errorDialog(body.message)
+  }
 }
 
 export async function treeFill (id, data, callback, uselocalstorage) {
