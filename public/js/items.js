@@ -629,6 +629,11 @@ JH.event(domCache.personalPasswordNewButton, 'click', personalPasswordCreate)
 JH.event([domCache.personalPasswordNew, domCache.personalPasswordNewConfirm], 'keyup', personalPasswordCreateEnable)
 
 JH.event(domCache.personalPasswordSetButton, 'click', personalPasswordSet)
+JH.event(domCache.personalPasswordAsk, 'keydown', (ev) => {
+  if (ev.key === 'Enter') {
+    personalPasswordSet()
+  }
+})
 
 JH.event(domCache.itemSearchText, 'sl-input', (ev) => {
   if (itemSearchTimeout) {
