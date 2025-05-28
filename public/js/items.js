@@ -267,6 +267,11 @@ async function itemDialogShow (id, readonly, gotofolder) {
   if (id?.length) {
     JH.value(domCache.itemDialogId, id)
     itemDialogFill(id, gotofolder)
+    JH.show(domCache.itemDialogCopyLink)
+    JH.show(domCache.itemDialogActivity)
+  } else {
+    JH.hide(domCache.itemDialogCopyLink)
+    JH.hide(domCache.itemDialogActivity)
   }
 
   itemDialogEnable(!readonly)
