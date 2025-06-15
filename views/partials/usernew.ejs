@@ -1,5 +1,10 @@
 <sl-dialog id="newuserdialog" label="New user" class="dialog-deny-close">
   <sl-input label="Login" id="newlogin" name="newlogin" required="required" autofocus maxlength="50"></sl-input>
+  <sl-alert variant="danger" id="newloginerror">
+    <sl-icon slot="icon" name="exclamation-triangle"></sl-icon>
+    User login already exists
+    <span id="newloginerrortext"></span>
+  </sl-alert>
   <sl-input type="email" label="Email" id="newemail" required="required" name="newemail" maxlength="50"></sl-input>
   <sl-input label="Last name" id="newlastname" name="newlastname" required="required" maxlength="100"></sl-input>
   <sl-input label="First name" id="newfirstname" name="newfirstname" maxlength="100"></sl-input>
