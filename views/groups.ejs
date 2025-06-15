@@ -50,6 +50,18 @@
           <sl-icon slot="prefix" name="trash2" variant="danger"></sl-icon>
           Remove all members
         </sl-button>
+        <sl-button id="copyusers" type="button" title="Copy users">
+          <sl-icon slot="prefix" name="copy"></sl-icon>
+          Copy users
+        </sl-button>
+        <sl-button id="pasteusers" type="button" title="Paste users" style="display: none;">
+          <sl-icon slot="prefix" name="clipboard-plus"></sl-icon>
+          Paste users
+        </sl-button>
+        <sl-button id="replaceusers" type="button" title="Replace users" style="display: none;">
+          <sl-icon slot="prefix" name="clipboard-check"></sl-icon>
+          Replace users
+        </sl-button>
       </sl-button-group>
     </div>
     <table id="userstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;" class="bordered">

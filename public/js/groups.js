@@ -1,4 +1,4 @@
-/* global location, addEventListener */
+/* global location, addEventListener, localStorage */
 
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
@@ -26,7 +26,10 @@ const domCache = {
   usersTable: JH.query('#userstable'),
   usersTableBody: JH.query('#userstable tbody'),
   genericTree: JH.query('#generictree'),
-  foldersTreeDialog: JH.query('#folderstreedialog')
+  foldersTreeDialog: JH.query('#folderstreedialog'),
+  usersCopyButton: JH.query('#copyusers'),
+  usersPasteButton: JH.query('#pasteusers'),
+  usersReplaceButton: JH.query('#replaceusers')
 }
 
 function currentGroup () {
@@ -253,6 +256,63 @@ async function showGroupFolders () {
   PW.simpleTreeFill('generictree', body.data)
 }
 
+function usersCopy () {
+  const users = []
+  const list = JH.queryAll('#userstable tbody tr')
+
+  if (!list.length) {
+    localStorage.setItem(`${PW.getUser()}_copiedusers`, '')
+    domCache.usersPasteButton.style.display = 'none'
+    domCache.usersReplaceButton.style.display = 'none'
+    return
+  }
+
+  for (const el of list) {
+    users.push(el.getAttribute('data-id'))
+  }
+
+  if (users.length) {
+    localStorage.setItem(`${PW.getUser()}_copiedusers`, users)
+    PW.showToast('success', 'Users copied')
+    domCache.usersPasteButton.style.display = ''
+    domCache.usersReplaceButton.style.display = ''
+  }
+}
+
+async function groupsReplace () {
+  PW.confirmDialog('Replace groups', 'Are you sure you want to replace this group users with the copied ones?', async () => {
+    const list = JH.queryAll('#userstable tbody tr')
+
+    if (!list.length) {
+      domCache.usersPasteButton.style.display = 'none'
+      domCache.usersReplaceButton.style.display = 'none'
+      return
+    }
+
+    for (const el of list) {
+      await JH.http(`/api/groupremoveuser/${currentGroup()}/${el.getAttribute('data-id')}`, { _csrf: PW.getCSRFToken() })
+    }
+
+    for (const el of localStorage.getItem(`${PW.getUser()}_copiedusers`).split(',')) {
+      await JH.http(`/api/groupadduser/${currentGroup()}/${el}`, { _csrf: PW.getCSRFToken() })
+    }
+
+    fillGroups()
+    PW.showToast('success', 'Users replaced')
+  })
+}
+
+async function usersPaste () {
+  PW.confirmDialog('Paste users', 'Are you sure you want to add the copied users to this group?', async () => {
+    for (const el of localStorage.getItem(`${PW.getUser()}_copiedusers`).split(',')) {
+      await JH.http(`/api/groupadduser/${currentGroup()}/${el}`, { _csrf: PW.getCSRFToken() })
+    }
+
+    fillGroups()
+    PW.showToast('success', 'Users pasted')
+  })
+}
+
 await fillGroups()
 
 // Drag'n'drop
@@ -311,6 +371,10 @@ JH.event(domCache.groupFolders, 'click', showGroupFolders)
 addEventListener('pw-item-found', async (ev) => {
   await fillUsers()
 })
+
+JH.event(domCache.usersCopyButton, 'click', usersCopy)
+JH.event(domCache.usersPasteButton, 'click', usersPaste)
+JH.event(domCache.usersReplaceButton, 'click', groupsReplace)
 
 // Picker
 const UPicker = new CPicker.Picker('users', userPickerChoosen)
