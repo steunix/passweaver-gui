@@ -20,6 +20,7 @@ const domCache = {
   newUserButton: JH.query('#newuser'),
   newUserDialog: JH.query('#newuserdialog'),
   newLogin: JH.query('#newlogin'),
+  newLoginError: JH.query('#newloginerror'),
   newEmail: JH.query('#newemail'),
   newLastName: JH.query('#newlastname'),
   newFirstName: JH.query('#newfirstname'),
@@ -205,7 +206,7 @@ async function userCreate () {
   PW.showToast('success', 'User created')
 }
 
-function userCreateEnable () {
+async function userCreateEnable () {
   if (JH.value(domCache.newLogin) === '' ||
       JH.value(domCache.newEmail) === '' ||
       JH.value(domCache.newLastName) === '' ||
@@ -216,6 +217,21 @@ function userCreateEnable () {
     JH.disable(domCache.userCreateButton)
   } else {
     JH.enable(domCache.userCreateButton)
+  }
+
+  // Check if login already exists
+  if (JH.value(domCache.newLogin) !== '') {
+    const resp = await JH.http(`/api/users/${JH.value(domCache.newLogin)}`)
+    if (!await PW.checkResponse(resp)) {
+      return
+    }
+    const body = await resp.json()
+    if (body?.data?.login) {
+      domCache.newLoginError.open = true
+      JH.disable(domCache.userCreateButton)
+    } else {
+      domCache.newLoginError.open = false
+    }
   }
 }
 
