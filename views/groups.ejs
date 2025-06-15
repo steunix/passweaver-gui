@@ -46,6 +46,18 @@
           <wa-icon slot="prefix" name="trash"></wa-icon>
           Remove all members
         </wa-button>
+        <wa-button id="copyusers" type="button" appearance="outlined" title="Copy users">
+          <wa-icon waot="prefix" name="copy"></wa-icon>
+          Copy users
+        </wa-button>
+        <wa-button id="pasteusers" type="button" appearance="outlined" title="Paste users" style="display: none;">
+          <wa-icon waot="prefix" name="paste"></wa-icon>
+          Paste users
+        </wa-button>
+        <wa-button id="replaceusers" type="button" appearance="outlined" title="Replace users" style="display: none;">
+          <wa-icon waot="prefix" name="clipboard-check"></wa-icon>
+          Replace users
+        </wa-button>
       </wa-button-group>
     </div>
     <table id="userstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;">

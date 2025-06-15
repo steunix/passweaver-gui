@@ -1,5 +1,10 @@
 <wa-dialog id="newuserdialog" with-header with-footer label="New user" class="dialog-deny-close">
   <wa-input label="Login" id="newlogin" name="newlogin" required="required" autofocus maxlength="50"></wa-input>
+  <wa-callout variant="danger" id="newloginerror" display="none">
+    <wa-icon slot="icon" name="exclamation-triangle"></wa-icon>
+    User login already exists
+    <span id="newloginerrortext"></span>
+  </wa-callout>
   <wa-input type="email" label="Email" id="newemail" required="required" name="newemail" maxlength="50"></wa-input>
   <wa-input label="Last name" id="newlastname" name="newlastname" required="required" maxlength="100"></wa-input>
   <wa-input label="First name" id="newfirstname" name="newfirstname" maxlength="100"></wa-input>

@@ -115,9 +115,14 @@ export function toggleEnabled (query, enabled) {
 /**
  * Enable elements
  * @param {any} query Query
+ * @param {boolean} enabled Enable if true, disable if false
  * @returns
  */
-export function enable (query) {
+export function enable (query, enabled) {
+  if (enabled === false) {
+    return disable(query)
+  }
+
   const el = resolveQuery(query)
 
   if (el === null) {

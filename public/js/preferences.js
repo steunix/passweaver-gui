@@ -81,19 +81,21 @@ JH.event(domCache.persPasswordResetButton, 'click', async (ev) => {
 })
 
 JH.event(domCache.persPasswordResetSwitch, 'change', async (ev) => {
-  JH.toggleEnabled(domCache.persPasswordResetButton, ev.target.checked)
+  JH.enable(domCache.persPasswordResetButton, domCache.persPasswordResetSwitch.checked)
 })
 
-JH.event(domCache.persPasswordChangeButton, 'click', async (ev) => {
-  const data = {
-    _csrf: PW.getCSRFToken(),
-    password: JH.value(domCache.persNewPassword1)
-  }
-  const resp = await JH.http('/api/personalpasswordchange', data)
-  if (!await PW.checkResponse(resp)) {
-    return
-  }
+if (domCache.persPasswordChangeButton) {
+  JH.event(domCache.persPasswordChangeButton, 'click', async (ev) => {
+    const data = {
+      _csrf: PW.getCSRFToken(),
+      password: JH.value(domCache.persNewPassword1)
+    }
+    const resp = await JH.http('/api/personalpasswordchange', data)
+    if (!await PW.checkResponse(resp)) {
+      return
+    }
 
-  PW.showToast('success', 'Password successfully changed')
-  location.reload()
-})
+    PW.showToast('success', 'Password successfully changed')
+    location.reload()
+  })
+}
