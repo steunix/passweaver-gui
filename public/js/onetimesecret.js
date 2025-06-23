@@ -66,7 +66,7 @@ JH.event(domCache.saveButton, 'click', async (ev) => {
   }
 
   const body = await resp.json()
-  JH.value(domCache.link, `${window.location.origin}/onetimesecret/${body.data.token}`)
+  JH.value(domCache.link, body.data.link)
 
   domCache.resultDiv.style.visibility = 'visible'
   PW.showToast('success', 'Link created')

@@ -878,7 +878,7 @@ export async function preferencesSet (req, session) {
  * @param {string} userid User ID if scope is 2
  * @returns
  */
-export async function oneTimeSecretCreate (session, data, scope, userid) {
+export async function oneTimeSecretCreate (req, session, data, scope, userid) {
   const payload = {
     type: 0,
     scope: parseInt(scope),
@@ -890,6 +890,14 @@ export async function oneTimeSecretCreate (session, data, scope, userid) {
   }
 
   const resp = await passWeaverAPI(session, METHOD.post, '/onetimetokens', payload)
+  if (resp.status === 'success') {
+    resp.data.link = `${req.protocol + '://' + req.host}/onetimesecret/${resp.data.token}`
+
+    // If no public URL is set, use the local one
+    if (scope === '0' && Config.get().server.onetimesecret_public_server) {
+      resp.data.link = `${Config.get().server.onetimesecret_public_server}/onetimesecret/${resp.data.token}`
+    }
+  }
   return resp
 }
 
@@ -903,7 +911,7 @@ export async function oneTimeSecretCreate (session, data, scope, userid) {
  * @param {integer} hours Expires after these hours
  * @returns
  */
-export async function oneTimeShareCreate (session, itemid, scope, userid) {
+export async function oneTimeShareCreate (req, session, itemid, scope, userid) {
   const payload = {
     type: 1,
     scope: parseInt(scope),
@@ -914,6 +922,14 @@ export async function oneTimeShareCreate (session, itemid, scope, userid) {
     payload.userid = userid
   }
   const resp = await passWeaverAPI(session, METHOD.post, '/onetimetokens', payload)
+  if (resp.status === 'success') {
+    resp.data.link = `${req.protocol + '://' + req.host}/onetimesecret/${resp.data.token}`
+
+    // If no public URL is set, use the local one
+    if (scope === '0' && Config.get().server.onetimesecret_public_server) {
+      resp.data.link = `${Config.get().server.onetimesecret_public_server}/onetimesecret/${resp.data.token}`
+    }
+  }
   return resp
 }
 
