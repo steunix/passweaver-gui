@@ -168,7 +168,7 @@ async function fillItems () {
     itemClone(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=link]', 'click', (ev) => {
-    itemCopyLink(ev.currentTarget.getAttribute('data-id'))
+    Items.itemCopyLink(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=activity]', 'click', (ev) => {
     Items.itemActivityShow(ev.currentTarget.getAttribute('data-id'))
@@ -392,11 +392,6 @@ async function itemClone (itm) {
     await fillItems()
     itemDialogShow(body.data.id, false)
   })
-}
-
-function itemCopyLink (itm) {
-  navigator.clipboard.writeText(`${window.location.origin}/pages/items?viewitem=${itm}`)
-  PW.showToast('primary', 'Item link copied to clipboard')
 }
 
 async function itemMove (id, folder) {
@@ -658,7 +653,7 @@ JH.event(domCache.itemDialogCopyPassword, 'sl-copy', (ev) => {
 })
 
 JH.event(domCache.itemDialogCopyLink, 'click', (ev) => {
-  itemCopyLink(JH.value(domCache.itemDialogId))
+  Items.itemCopyLink(JH.value(domCache.itemDialogId))
 })
 
 JH.event(domCache.itemDialogGenerate, 'click', itemDialogGeneratePassword)

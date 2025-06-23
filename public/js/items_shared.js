@@ -10,9 +10,19 @@ const domCache = {
   itemActivityTableBody: JH.query('#itemactivitytable tbody')
 }
 
-export function itemCopyLink (itm) {
-  navigator.clipboard.writeText(`${window.location.origin}/pages/items?viewitem=${itm}`)
-  PW.showToast('primary', 'Item link copied to clipboard')
+export async function itemCopyLink (itm) {
+  const resp = await JH.http(`/api/items/${itm}/link`)
+
+  // Check response
+  if (!await PW.checkResponse(resp)) {
+    return
+  }
+
+  const body = await resp.json()
+  if (body?.data?.link) {
+    navigator.clipboard.writeText(body.data.link)
+    PW.showToast('primary', 'Item link copied to clipboard')
+  }
 }
 
 async function fillItemActivity (itm) {

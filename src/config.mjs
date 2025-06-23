@@ -24,9 +24,10 @@ const configSchema = {
     server: {
       type: 'object',
       properties: {
+        item_link_server: { type: 'string' },
         onetimesecret_public_server: { type: 'string' }
       },
-      required: ['onetimesecret_public_server']
+      required: ['item_link_server', 'onetimesecret_public_server']
     },
     passweaverapi_url: { type: 'string' },
     company_name: { type: 'string' },
