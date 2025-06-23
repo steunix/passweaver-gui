@@ -21,6 +21,13 @@ const configSchema = {
         host: { type: 'string' }
       }
     },
+    server: {
+      type: 'object',
+      properties: {
+        onetimesecret_public_server: { type: 'string' }
+      },
+      required: ['onetimesecret_public_server']
+    },
     passweaverapi_url: { type: 'string' },
     company_name: { type: 'string' },
     log: {

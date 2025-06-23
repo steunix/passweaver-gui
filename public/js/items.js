@@ -443,7 +443,7 @@ async function itemOneTimeShare () {
   }
 
   const body = await resp.json()
-  navigator.clipboard.writeText(`${window.location.origin}/onetimesecret/${body.data.token}`)
+  navigator.clipboard.writeText(body.data.link)
 
   PW.showToast('primary', 'One time share link copied to clipboard')
   domCache.scopeSelect.hide()
