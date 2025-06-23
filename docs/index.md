@@ -8,8 +8,8 @@ PassWeaver-GUI is an opensource project, released under MIT license. See [Techni
 
 - Personal folders for each user
 - Favorite items
-- Share one-time secrets with anyone, even if they have not an account
-- One-time share items
+- Share one-time secrets with anyone, even if they have not an account; an alternative server name can be specified in case of public shares
+- One-time share items (also with optional server name)
 - Share items through permalinks
 - Read only mode
 - Folder level permissions
@@ -94,6 +94,8 @@ By clicking the "One time share" icon (the circled 1) in item list, you can shar
 
 By clicking "Share" button, a link will be copied in your clipboard: share this link with your peer and he will be able to show this item, only once.
 
+For public links (items shared with anyone) you can also specify an alternative server name, see [below]( #Alternative%20server%20name%20for%20public%20links)
+
 ### Personal folders
 
 Each user has a personal folder named after its login. Only the user can unlock this folder because it's protected with an additional password that is set the first time the user clicks on the folder:
@@ -134,7 +136,7 @@ Type the secret and then press the "Create link" button:
 ![One time secret 1](assets/passweavergui-onetimesecret-1-001.jpeg)
 
 You can decide who is authorized to read this secret:
-- Anyone: anyone who has the link, logged in or not in PassWeaver
+- Anyone: anyone who has the link, logged in or not in PassWeaver (public links)
 - Anyone logged in PassWeaver
 - A specific logged in user
 
@@ -146,17 +148,27 @@ By clicking the "Show secret" button, the secret will be displayed, and the link
 
 ![One time secret 3](assets/passweavergui-onetimesecret-3-000.jpeg)
 
+## Alternative server name for public links
+
+You can configure (see `onetimesecret_public_server` in [Configure](#configure) below) a different server name for public links: this is convenient in case you
+want to publish on the Internet only the page that allows to see public shared secrets but not the entire site: you can then configure a reverse proxy to accept requests for your
+"alternative" domain name only if they begin with `/noauth/onetimesecret` or `/public`.
+
 # Preferences
 
 In the "Preferences" page, you can:
 
 - Choose your theme (light or dark)
 - Change your login password (if Authentication is `local`, see [Users](#Users) )
-- Change your personal folder password
+- Change your personal folder password (if you have unlocked the personal folder)
+- Reset your personal folder (if you have not unlocked the personal folder)
 
 ![Preferences](assets/passweavergui-preferences-1-001.jpeg)
 ![Password](assets/passweavergui-preferences-2-001.jpeg)
-![Personal password folder](assets/passweavergui-preferences-3-001.jpeg)
+![Personal folder password change](assets/passweavergui-preferences-3-001.jpeg)
+![Personal folder password reset](assets/passweavergui-preferences-4-001.jpeg)
+
+Note that resetting the personal folder password will require you a couple of confirmation steps, because doing so will cause ALL YOUR PERSONAL ITEMS WILL BECOME UNREADABLE, being encrypted with the old password.
 
 # Admin pages
 
@@ -218,7 +230,9 @@ When creating a new user you're prompted with this dialog:
 
 From this page you can create or delete groups, and add/remove members. You can nest groups, but membership is NOT inherited: the user is only member of explicitly assigned groups.
 
-![Groups page](assets/passweavergui-groups-001.jpeg)
+![Groups page](assets/passweavergui-groups-002.jpeg)
+
+You can also copy all users of a group and paste/replace into another, as already explained for users.
 
 ## Info
 
@@ -282,6 +296,8 @@ Copy `config-skel.json` to `config.json` and adjust the options:
 - `listen`:
   - `port`: port to bind the HTTP server
   - `host`: IP address to bind the HTTP server (or blank for any address)
+- `server`:
+  - `onetimesecret_public_server`: If not blank, this URL will be used for public one time secrets; it must be in the form protocol://server (e.g. https://my.server.com)
 - `passweaverapi_url`: URL for PassWeaver-API (/api/v1 included)
 - `company_name`: Company name
 - `log`:
@@ -299,7 +315,7 @@ Copy `config-skel.json` to `config.json` and adjust the options:
   - `enabled`: true or false; if false, internal cache is used (not good for production)
   - `url`: Redis url
 - `folders`:
-  - `user_managed`: if yes, non-admin can create and delete folders
+  - `user_managed`: if true, non-admin can create and delete folders
 
 ## Environment
 

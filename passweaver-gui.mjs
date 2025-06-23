@@ -728,13 +728,13 @@ app.patch('/api/itemtypes/:id', async (req, res) => {
 
 // Create one time secret
 app.post('/api/onetimesecret', async (req, res) => {
-  const resp = await PassWeaver.oneTimeSecretCreate(req.session, req.body.data, req.body.scope, req.body.userid)
+  const resp = await PassWeaver.oneTimeSecretCreate(req, req.session, req.body.data, req.body.scope, req.body.userid)
   res.json(resp)
 })
 
 // Create one time item share
 app.post('/api/onetimeshare', async (req, res) => {
-  const resp = await PassWeaver.oneTimeShareCreate(req.session, req.body.itemid, req.body.scope, req.body.userid)
+  const resp = await PassWeaver.oneTimeShareCreate(req, req.session, req.body.itemid, req.body.scope, req.body.userid)
   res.json(resp)
 })
 

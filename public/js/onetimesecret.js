@@ -55,7 +55,7 @@ async function createLink () {
   }
 
   const body = await resp.json()
-  JH.value(domCache.link, `${window.location.origin}/onetimesecret/${body.data.token}`)
+  JH.value(domCache.link, body.data.link)
   linkShow()
 
   PW.showToast('success', 'Link created')
@@ -84,7 +84,8 @@ JH.event(domCache.scopeInput, 'change', (ev) => {
 JH.event(domCache.createLinkButton, 'click', createLink)
 
 linkHide()
-enableSave()
+
+setTimeout(enableSave, 100)
 
 // Picker
 const UPicker = new CPicker.Picker('users', userChoosen)

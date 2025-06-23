@@ -3,6 +3,9 @@
     "host": "",
     "port": 15000
   },
+  "server": {
+    "onetimesecret_public_server": ""
+  },
   "passweaverapi_url": "http://localhost:3000/api/v1",
   "company_name": "MyCompany",
   "log": {
