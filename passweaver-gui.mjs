@@ -425,6 +425,12 @@ app.get('/api/itemssearch/', async (req, res) => {
   res.json(list)
 })
 
+// Item link
+app.get('/api/items/:item/link', async (req, res) => {
+  const data = await PassWeaver.itemLink(req, req.session, req.params.item)
+  res.json(data)
+})
+
 // Folder details
 app.get('/api/folders/:folder', async (req, res) => {
   const info = await PassWeaver.getFolder(req.session, req.params.folder)
