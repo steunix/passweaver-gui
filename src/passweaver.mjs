@@ -335,6 +335,32 @@ export async function itemActivity (session, item, lastid) {
 }
 
 /**
+ * Get item link
+ * @param {Object} req Request
+ * @param {Object} session Session
+ * @param {string} item Item ID
+ * @returns
+ */
+export async function itemLink (req, session, item, lastid) {
+  const resp = {
+    httpStatusCode: '200',
+    fatal: false,
+    status: 'success',
+    message: '',
+    data: {}
+  }
+
+  resp.data.link = `${req.protocol + '://' + req.host}/pages/items?viewitem=${item}`
+
+  // If no public URL is set, use the local one
+  if (Config.get().server.item_link_server) {
+    resp.data.link = `${Config.get().server.item_link_server}/pages/items?viewitem=${item}`
+  }
+
+  return resp
+}
+
+/**
  * Create a new folder
  * @param {Object} session
  * @param {string} folder

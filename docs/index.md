@@ -10,7 +10,7 @@ PassWeaver-GUI is an opensource project, released under MIT license. See [Techni
 - Favorite items
 - Share one-time secrets with anyone, even if they have not an account; an alternative server name can be specified in case of public shares
 - One-time share items (also with optional server name)
-- Share items through permalinks
+- Share items through permalinks; an alternative server name can be specified for these links
 - Read only mode
 - Folder level permissions
 - User groups
@@ -297,7 +297,8 @@ Copy `config-skel.json` to `config.json` and adjust the options:
   - `port`: port to bind the HTTP server
   - `host`: IP address to bind the HTTP server (or blank for any address)
 - `server`:
-  - `onetimesecret_public_server`: If not blank, this URL will be used for public one time secrets; it must be in the form protocol://server (e.g. https://my.server.com)
+  - `item_link_server`: If not blank, this URL will be used for items links, instead of the current one it must be in the form protocol://server<:port> (e.g. https://my.server.com)
+  - `onetimesecret_public_server`: If not blank, this URL will be used for public one time secrets, instead of the current one; it must be in the form protocol://server<:port> (e.g. https://my.server.com)
 - `passweaverapi_url`: URL for PassWeaver-API (/api/v1 included)
 - `company_name`: Company name
 - `log`:
