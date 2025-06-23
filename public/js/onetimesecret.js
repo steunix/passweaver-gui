@@ -72,7 +72,7 @@ JH.event(domCache.saveButton, 'click', async (ev) => {
   PW.showToast('success', 'Link created')
 })
 
-enableSave()
+setTimeout(enableSave, 100)
 
 // Picker
 const UPicker = new CPicker.Picker('users', userChoosen)
