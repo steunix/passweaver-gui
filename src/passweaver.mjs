@@ -921,7 +921,7 @@ export async function oneTimeSecretCreate (req, session, data, scope, userid) {
 
     // If no public URL is set, use the local one
     if (scope === '0' && Config.get().server.onetimesecret_public_server) {
-      resp.data.link = `${Config.get().server.onetimesecret_public_server}/onetimesecret/${resp.data.token}`
+      resp.data.link = `${Config.get().server.onetimesecret_public_server}/noauth/onetimesecret/${resp.data.token}`
     }
   }
   return resp
@@ -953,7 +953,7 @@ export async function oneTimeShareCreate (req, session, itemid, scope, userid) {
 
     // If no public URL is set, use the local one
     if (scope === '0' && Config.get().server.onetimesecret_public_server) {
-      resp.data.link = `${Config.get().server.onetimesecret_public_server}/onetimesecret/${resp.data.token}`
+      resp.data.link = `${Config.get().server.onetimesecret_public_server}/noauth/onetimesecret/${resp.data.token}`
     }
   }
   return resp

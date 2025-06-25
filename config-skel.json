@@ -4,7 +4,8 @@
     "port": 15000
   },
   "server": {
-    "onetimesecret_public_server": ""
+    "onetimesecret_public_server": "",
+    "item_link_server": ""
   },
   "passweaverapi_url": "http://localhost:3000/api/v1",
   "company_name": "MyCompany",
