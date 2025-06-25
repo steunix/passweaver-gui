@@ -6,11 +6,12 @@
  */
 
 import { rateLimit } from 'express-rate-limit'
+import * as Config from './config.mjs'
 
 // Rate limit middleware
 const rateLimitMiddleware = rateLimit({
   windowMs: 60 * 1000, // 1 minute
-  max: 100,
+  max: Config.get().server.rate_limit_max_requests,
   message: 'Rate limit exceeded',
   headers: true
 })

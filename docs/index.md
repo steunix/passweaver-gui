@@ -291,7 +291,7 @@ A running Redis instance is warmly advised for a production environment.
 
 ## Configure
 
-Copy `config-skel.json` to `config.json` and adjust the options:
+Copy `config-skel.json` to `config.json` and adjust the options; note that ALL configuration entries are mandatory, leave blank if not used.
 
 - `listen`:
   - `port`: port to bind the HTTP server
@@ -299,6 +299,9 @@ Copy `config-skel.json` to `config.json` and adjust the options:
 - `server`:
   - `item_link_server`: If not blank, this URL will be used for items links, instead of the current one it must be in the form protocol://server<:port> (e.g. https://my.server.com)
   - `onetimesecret_public_server`: If not blank, this URL will be used for public one time secrets, instead of the current one; it must be in the form protocol://server<:port> (e.g. https://my.server.com)
+  - `rate_limit_max_requests`: Max number of request PER MINUTE for these two pages:
+    - Authorization page (not the login page, but the one called after you insert the credentials)
+    - If `onetimesecret_public_server` is specified, the public link for onetimesecrets
 - `passweaverapi_url`: URL for PassWeaver-API (/api/v1 included)
 - `company_name`: Company name
 - `log`:
@@ -311,12 +314,12 @@ Copy `config-skel.json` to `config.json` and adjust the options:
   - `private_key`: certificate private key
   - `hsts`: enable HSTS (true/false)
 - `onetimetokens`:
-  - `default_hours`: Default one-time tokens duration in hours
+  - `default_hours`: Default one-time tokens expiration in hours
 - `redis`:
   - `enabled`: true or false; if false, internal cache is used (not good for production)
   - `url`: Redis url
 - `folders`:
-  - `user_managed`: if true, non-admin can create and delete folders
+  - `user_managed`: if true, non-admin can create and delete folders; false otherwise
 
 ## Environment
 
