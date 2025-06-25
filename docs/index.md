@@ -150,8 +150,8 @@ By clicking the "Show secret" button, the secret will be displayed, and the link
 
 ## Alternative server name for public links
 
-You can configure (see `onetimesecret_public_server` in [Configure](#configure) below) a different server name for public links: this is convenient in case you
-want to publish on the Internet only the page that allows to see public shared secrets but not the entire site: you can then configure a reverse proxy to accept requests for your
+You can configure (see `onetimesecret_public_server` in [Configure](#configure) below) a different server name for public links (onetime secrets shared with anyone): this is convenient in case you
+want to publish on the Internet only the page that allows anyone to see public shared secrets, but not the entire site (e.g. no login page): you can then configure a reverse proxy to accept requests for your
 "alternative" domain name only if they begin with `/noauth/onetimesecret` or `/public`.
 
 # Preferences

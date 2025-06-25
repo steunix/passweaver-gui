@@ -140,6 +140,8 @@ app.set('view engine', 'ejs')
 
 // Rate limiter
 app.use('/access', rateLimitMiddleware)
+app.use('/noauth/onetimesecretget', rateLimitMiddleware)
+app.use('/noauth/onetimesecret', rateLimitMiddleware)
 
 if (!FS.existsSync(cfg.log.dir)) {
   FS.mkdirSync(cfg.log.dir)
@@ -401,6 +403,16 @@ app.get('/pages/onetimesecret', async (req, res) => {
 
 // One time secret display
 app.get('/onetimesecret/:token', async (req, res) => {
+  req.locals = {
+    pagetitle: 'One time secret',
+    pageid: 'onetimesecretshow',
+    token: encodeURIComponent(req.params.token)
+  }
+  res.render('onetimesecretshow', { ...req.locals, ...commonParams(req) })
+})
+
+// One time secret display (no auth)
+app.get('/noauth/onetimesecret/:token', async (req, res) => {
   req.locals = {
     pagetitle: 'One time secret',
     pageid: 'onetimesecretshow',
