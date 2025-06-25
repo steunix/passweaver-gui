@@ -109,3 +109,5 @@ async function fillItems () {
     domCache.searchBoxMore.style.visibility = 'hidden'
   }
 }
+
+init()
