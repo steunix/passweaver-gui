@@ -1,7 +1,6 @@
 /* global dispatchEvent, DOMParser, localStorage */
 
 import * as JH from './jh.js'
-import * as SB from './searchbox.js'
 
 const itemFound = new Event('pw-item-found')
 
@@ -324,6 +323,3 @@ export function simpleTreeFillItems (id, data) {
     }
   }
 }
-
-// Init search box
-SB.init()
