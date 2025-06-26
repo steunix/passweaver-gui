@@ -465,7 +465,7 @@ app.get('/api/items/:item', async (req, res) => {
   }
   const resp = await PassWeaver.itemGet(req.session, req.params.item, req.body)
 
-  // Encrypt data using session id
+  // Encrypt data using given key
   resp.data.data = await Crypt.encryptData(resp.data.data, key)
 
   res.json(resp)
@@ -792,7 +792,25 @@ app.get('/api/systemlockstatus', async (req, res) => {
 
 // Get one time secret content
 app.get('/noauth/onetimesecretget/:token', async (req, res) => {
+  const key = req.query?.key
+  if (!key) {
+    res.json({
+      status: 'failed',
+      httpStatusCode: '400',
+      fatal: false,
+      message: 'key parameter is required',
+      data: {}
+    })
+    return
+  }
+
   const resp = await PassWeaver.oneTimeSecretGet(req.session, req.params.token)
+
+  // Encrypt data using given key
+  if (resp.data?.secret?.length > 0 || resp.data?.item?.id?.length > 0) {
+    resp.data = await Crypt.encryptData(JSON.stringify(resp.data), key)
+  }
+
   res.json(resp)
 })
 
