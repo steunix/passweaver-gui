@@ -544,7 +544,6 @@ async function passwordShow (ev) {
   }
 
   const body = await resp.json()
-  body.data.data = JSON.parse(body.data.data)
 
   // Decrypt data using token
   const decrypted = JSON.parse(await Crypt.decryptBlock(body.data.data, key))
