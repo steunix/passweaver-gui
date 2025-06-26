@@ -25,9 +25,10 @@ const configSchema = {
       type: 'object',
       properties: {
         item_link_server: { type: 'string' },
-        onetimesecret_public_server: { type: 'string' }
+        onetimesecret_public_server: { type: 'string' },
+        rate_limit_max_requests: { type: 'integer', minimum: 1 }
       },
-      required: ['item_link_server', 'onetimesecret_public_server']
+      required: ['item_link_server', 'onetimesecret_public_server', 'rate_limit_max_requests']
     },
     passweaverapi_url: { type: 'string' },
     company_name: { type: 'string' },
@@ -73,7 +74,7 @@ const configSchema = {
       required: ['user_managed']
     }
   },
-  required: ['listen', 'passweaverapi_url', 'company_name', 'https', 'log', 'onetimetokens', 'redis', 'folders']
+  required: ['listen', 'server', 'passweaverapi_url', 'company_name', 'https', 'log', 'onetimetokens', 'redis', 'folders']
 }
 
 // Reads package.json

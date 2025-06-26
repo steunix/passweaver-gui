@@ -5,6 +5,7 @@ import * as PW from './passweaver-gui.js'
 import * as Folders from './folders_shared.js'
 import * as Items from './items_shared.js'
 import * as CPicker from './picker.js'
+import * as Crypt from './crypt.js'
 
 let itemSearchTimeout
 let itemTypesOptions
@@ -342,7 +343,9 @@ async function itemRemove (itm) {
 }
 
 async function itemDialogFill (item, gotofolder) {
-  const resp = await JH.http(`/api/items/${item}`)
+  const key = Crypt.createKey()
+
+  const resp = await JH.http(`/api/items/${item}?key=${key}`)
   if (!await PW.checkResponse(resp)) {
     itemDialogHide()
     return
@@ -351,16 +354,19 @@ async function itemDialogFill (item, gotofolder) {
   domCache.itemDialogPassword.passwordVisible = false
 
   const body = await resp.json()
-  body.data.data = JSON.parse(body.data.data)
+
+  // Decrypt data using token
+  const decrypted = JSON.parse(await Crypt.decryptBlock(body.data.data, key))
+
   if (body.status === 'success') {
     JH.value(domCache.itemDialogId, item)
     JH.value(domCache.itemDialogType, body.data.type)
     JH.value(domCache.itemDialogTitle, body.data.title)
-    JH.value(domCache.itemDialogEmail, body.data.data.email)
-    JH.value(domCache.itemDialogDescription, body.data.data.description)
-    JH.value(domCache.itemDialogUrl, body.data.data.url)
-    JH.value(domCache.itemDialogUser, body.data.data.user)
-    JH.value(domCache.itemDialogPassword, body.data.data.password)
+    JH.value(domCache.itemDialogEmail, decrypted.email)
+    JH.value(domCache.itemDialogDescription, decrypted.description)
+    JH.value(domCache.itemDialogUrl, decrypted.url)
+    JH.value(domCache.itemDialogUser, decrypted.user)
+    JH.value(domCache.itemDialogPassword, decrypted.password)
   }
 
   if (gotofolder) {
@@ -505,21 +511,26 @@ async function personalPasswordSet () {
 }
 
 async function passwordCopy (ev) {
+  const key = Crypt.createKey()
   const item = ev.currentTarget.getAttribute('data-id')
 
-  const resp = await JH.http(`/api/items/${item}`)
+  const resp = await JH.http(`/api/items/${item}?key=${key}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
-  body.data.data = JSON.parse(body.data.data)
-  navigator.clipboard.writeText(body.data.data.password)
+
+  // Decrypt data using token
+  const decrypted = JSON.parse(await Crypt.decryptBlock(body.data.data, key))
+
+  navigator.clipboard.writeText(decrypted.password)
 
   passwordCopied(item)
 }
 
 async function passwordShow (ev) {
+  const key = Crypt.createKey()
   const item = ev.currentTarget.getAttribute('data-id')
 
   if (JH.query(`#password-${item}`).innerHTML !== '****') {
@@ -527,14 +538,18 @@ async function passwordShow (ev) {
     return
   }
 
-  const resp = await JH.http(`/api/items/${item}`)
+  const resp = await JH.http(`/api/items/${item}?key=${key}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
 
   const body = await resp.json()
   body.data.data = JSON.parse(body.data.data)
-  JH.query(`#password-${item}`).innerHTML = JH.sanitize(body.data.data.password)
+
+  // Decrypt data using token
+  const decrypted = JSON.parse(await Crypt.decryptBlock(body.data.data, key))
+
+  JH.query(`#password-${item}`).innerHTML = JH.sanitize(decrypted.password)
 
   passwordAccessed(item)
 }
