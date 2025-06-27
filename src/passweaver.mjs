@@ -979,7 +979,16 @@ export async function oneTimeShareCreate (req, session, itemid, scope, userid) {
  * @param {string} token Item type id
  */
 export async function oneTimeSecretGet (session, token) {
-  const resp = await passWeaverAPI(session, METHOD.get, `/onetimetokens/${token}`)
+  const key = Crypt.createKey()
+  const resp = await passWeaverAPI(session, METHOD.get, `/onetimetokens/${token}?key=${encodeURIComponent(key)}`)
+
+  if (resp?.data.secret) {
+    resp.data.secret = Crypt.decryptBlock(resp.data.secret, key)
+  }
+  if (resp?.data?.item) {
+    resp.data.item = JSON.parse(Crypt.decryptBlock(resp.data.item, key))
+  }
+
   return resp
 }
 
