@@ -6,6 +6,7 @@
  */
 
 import * as Config from './config.mjs'
+import * as Crypt from './crypt.mjs'
 
 const cfg = Config.get()
 
@@ -263,7 +264,20 @@ export async function itemRemove (session, item) {
  * @returns
  */
 export async function itemGet (session, item) {
-  const resp = await passWeaverAPI(session, METHOD.get, `/items/${item}`)
+  const key = Crypt.createKey()
+  const resp = await passWeaverAPI(session, METHOD.get, `/items/${item}?key=${encodeURIComponent(key)}`)
+
+  // Decrypt item data
+  if (resp.status === 'success' && resp.data?.data) {
+    try {
+      resp.data.data = Crypt.decryptBlock(resp.data.data, key)
+    } catch (err) {
+      resp.status = 'failed'
+      resp.message = 'Error decrypting item data'
+      resp.fatal = true
+      resp.data = {}
+    }
+  }
   return resp
 }
 
