@@ -1,6 +1,8 @@
 <wa-dialog id="itemtypeeditdialog"  class="dialog-footer" light-dismiss label="Edit item type" class="dialog-deny-close">
-  <wa-input id="itemtypeeditdescription" label="Description" required autofocus maxlength="20"></wa-input>
-  <wa-input id="itemtypeediticon" label="Icon" maxlength="50"></wa-input>
+  <div class="wa-stack">
+    <wa-input id="itemtypeeditdescription" label="Description" required autofocus maxlength="20"></wa-input>
+    <wa-input id="itemtypeediticon" label="Icon" maxlength="50"></wa-input>
+  </div>
   <wa-button id="itemtypeeditsave" slot="footer" variant="brand" disabled>Save</wa-button>
   <wa-button id="itemtypeeditcancel" data-dialog="close" slot="footer">Cancel</wa-button>
 </wa-dialog>
