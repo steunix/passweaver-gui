@@ -251,6 +251,17 @@ tr {
   visibility: hidden;
 }
 
+tr td wa-icon {
+  padding-right: 0.5rem;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+td {
+  padding: 0.4rem;
+  vertical-align: middle;
+}
+
 /* WebAwesome */
 wa-tree-item::part(label) {
   font-family: var(--theme-font);
