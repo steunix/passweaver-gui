@@ -1,6 +1,6 @@
-<wa-dialog id="itemdialog" with-header with-footer light-dismiss label="Item details">
-  <wa-icon slot="header-actions" title="Copy item link" name="link" id="idcopylink"></wa-icon>
-  <wa-icon slot="header-actions" title="Item activity" name="clock" id="idactivity"></wa-icon>
+<wa-dialog id="itemdialog" class="dialog-footer" light-dismiss label="Item details">
+  <wa-button slot="header-actions" appearance="plain" title="Copy item link" id="idcopylink"><wa-icon name="link"></wa-icon></wa-button>
+  <wa-button slot="header-actions" appearance="plain" title="Item activity" id="idactivity"><wa-icon name="clock"></wa-icon></wa-button>
   <wa-input id="idid" style="display:none;"></wa-input>
   <wa-input label="Title" id="idtitle" required autofocus></wa-input>
   <wa-select label="Type" id="idtype"></wa-select>
