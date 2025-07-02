@@ -7,7 +7,7 @@
         <img src="/public/v<%= version %>/images/passweaver-icon-dark.png" width="60"></img>
         <p style="font-size:200%;">PassWeaver - <%- company_name %></p>
       </center>
-      <form id="loginForm" action="access" method="post">
+      <form id="loginForm" action="access" method="post" class="wa-stack">
         <%- include('partials/csrf.ejs') %>
         <wa-input type="text" autofocus id="username" name="username" label="User" required></wa-input>
         <wa-input type="password" id="password" name="password" label="Password" required></wa-input>

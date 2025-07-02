@@ -227,10 +227,10 @@ async function userCreateEnable () {
     }
     const body = await resp.json()
     if (body?.data?.login) {
-      domCache.newLoginError.open = true
+      JH.show(domCache.newLoginError)
       JH.disable(domCache.userCreateButton)
     } else {
-      domCache.newLoginError.open = false
+      JH.hide(domCache.newLoginError)
     }
   }
 }

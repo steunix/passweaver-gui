@@ -1,19 +1,21 @@
 <wa-dialog id="edituserdialog"  class="dialog-footer" light-dismiss label="Edit user" class="dialog-deny-close">
-  <wa-input label="Login" id="editlogin" name="editlogin" required="required" autofocus maxlength="50"></wa-input>
-  <wa-input type="email" label="Email" id="editemail" required="required" name="editemail" maxlength="50"></wa-input>
-  <wa-input label="Last name" id="editlastname" name="editlastname" required="required" maxlength="100"></wa-input>
-  <wa-input label="First name" id="editfirstname" name="editfirstname" maxlength="100"></wa-input>
-  <wa-select label="Locale" id="editlocale" name="editlocale">
-    <wa-option value="en_US">en_US</wa-option>
-  </wa-select>
-  <wa-select label="Authentication method" id="editauthmethod" name="editauthmethod">
-    <wa-option value="local">local</wa-option>
-    <wa-option value="ldap">ldap</wa-option>
-  </wa-select>
-  <wa-select label="Status" id="editactive" name="editactive" required="required">
-    <wa-option value="A">Active</wa-option>
-    <wa-option value="N">Not active</wa-option>
-  </wa-select>
+  <div class="wa-stack">
+    <wa-input label="Login" id="editlogin" name="editlogin" required="required" autofocus maxlength="50"></wa-input>
+    <wa-input type="email" label="Email" id="editemail" required="required" name="editemail" maxlength="50"></wa-input>
+    <wa-input label="Last name" id="editlastname" name="editlastname" required="required" maxlength="100"></wa-input>
+    <wa-input label="First name" id="editfirstname" name="editfirstname" maxlength="100"></wa-input>
+    <wa-select label="Locale" id="editlocale" name="editlocale">
+      <wa-option value="en_US">en_US</wa-option>
+    </wa-select>
+    <wa-select label="Authentication method" id="editauthmethod" name="editauthmethod">
+      <wa-option value="local">local</wa-option>
+      <wa-option value="ldap">ldap</wa-option>
+    </wa-select>
+    <wa-select label="Status" id="editactive" name="editactive" required="required">
+      <wa-option value="A">Active</wa-option>
+      <wa-option value="N">Not active</wa-option>
+    </wa-select>
+  </div>
   <wa-button id="useredit" slot="footer" variant="brand">Save</wa-button>
   <wa-button id="cancel" data-dialog="close" slot="footer">Cancel</wa-button>
 </wa-dialog>
