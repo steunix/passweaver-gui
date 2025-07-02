@@ -1,6 +1,7 @@
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 import * as Items from './items_shared.js'
+import * as Crypt from './crypt.js'
 
 let itemSearchTimeout
 let itemTypesOptions
@@ -95,23 +96,26 @@ async function fillItems () {
 }
 
 async function itemViewFill (item) {
-  const resp = await JH.http(`/api/items/${item}`)
+  const key = Crypt.createKey()
+  const resp = await JH.http(`/api/items/${item}?key=${key}`)
   if (!await PW.checkResponse(resp)) {
     domCache.itemViewDialog.open = false
     return
   }
 
   const body = await resp.json()
-  body.data.data = JSON.parse(body.data.data)
+  // Decrypt data using token
+  const decrypted = JSON.parse(await Crypt.decryptBlock(body.data.data, key))
+
   JH.value('#itemviewid', item)
   JH.value('#viewtitle', body.data.title)
   JH.value('#viewtype', body.data.type)
-  JH.value('#viewemail', body.data.data.email)
-  JH.value('#viewdescription', body.data.data.description)
-  JH.value('#viewurl', body.data.data.url)
-  JH.value('#viewuser', body.data.data.user)
+  JH.value('#viewemail', decrypted.email)
+  JH.value('#viewdescription', decrypted.description)
+  JH.value('#viewurl', decrypted.url)
+  JH.value('#viewuser', decrypted.user)
   JH.query('#viewpassword').setAttribute('type', 'password')
-  JH.value('#viewpassword', body.data.data.password)
+  JH.value('#viewpassword', decrypted.password)
 }
 
 async function itemShow (item) {

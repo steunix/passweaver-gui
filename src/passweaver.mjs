@@ -6,6 +6,7 @@
  */
 
 import * as Config from './config.mjs'
+import * as Crypt from './crypt.mjs'
 
 const cfg = Config.get()
 
@@ -263,7 +264,20 @@ export async function itemRemove (session, item) {
  * @returns
  */
 export async function itemGet (session, item) {
-  const resp = await passWeaverAPI(session, METHOD.get, `/items/${item}`)
+  const key = Crypt.createKey()
+  const resp = await passWeaverAPI(session, METHOD.get, `/items/${item}?key=${encodeURIComponent(key)}`)
+
+  // Decrypt item data
+  if (resp.status === 'success' && resp.data?.data) {
+    try {
+      resp.data.data = Crypt.decryptBlock(resp.data.data, key)
+    } catch (err) {
+      resp.status = 'failed'
+      resp.message = 'Error decrypting item data'
+      resp.fatal = true
+      resp.data = {}
+    }
+  }
   return resp
 }
 
@@ -965,7 +979,16 @@ export async function oneTimeShareCreate (req, session, itemid, scope, userid) {
  * @param {string} token Item type id
  */
 export async function oneTimeSecretGet (session, token) {
-  const resp = await passWeaverAPI(session, METHOD.get, `/onetimetokens/${token}`)
+  const key = Crypt.createKey()
+  const resp = await passWeaverAPI(session, METHOD.get, `/onetimetokens/${token}?key=${encodeURIComponent(key)}`)
+
+  if (resp?.data.secret) {
+    resp.data.secret = Crypt.decryptBlock(resp.data.secret, key)
+  }
+  if (resp?.data?.item) {
+    resp.data.item = JSON.parse(Crypt.decryptBlock(resp.data.item, key))
+  }
+
   return resp
 }
 

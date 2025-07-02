@@ -1,5 +1,6 @@
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
+import * as Crypt from './crypt.js'
 
 const domCache = {
   token: JH.query('#token'),
@@ -19,26 +20,31 @@ const domCache = {
 JH.event('#show', 'click', async (ev) => {
   const token = domCache.token.getAttribute('data-token')
   try {
-    const resp = await JH.http(`/noauth/onetimesecretget/${token}`)
+    const key = Crypt.createKey()
+    const resp = await JH.http(`/noauth/onetimesecretget/${token}?key=${key}`)
     if (!await PW.checkResponse(resp)) {
       throw new Error()
     }
 
     const body = await resp.json()
-    if (body.data?.type === undefined) {
+    if (body.httpStatusCode === 404) {
       PW.errorDialog('This token does not exist, or it has been already read')
       throw new Error()
     }
+
+    // Decrypt data using token
+    const decrypted = JSON.parse(await Crypt.decryptBlock(body.data, key))
+
     // Secret
-    if (body.data.type === 0) {
-      JH.value(domCache.secret, body.data.secret)
+    if (decrypted.type === 0) {
+      JH.value(domCache.secret, decrypted.secret)
       domCache.result0.style.visibility = 'visible'
       domCache.result0.style.display = 'block'
     }
     // Item
-    if (body.data.type === 1) {
-      JH.value(domCache.itemTitle, body.data.item.title)
-      const data = JSON.parse(body.data.item.data)
+    if (decrypted.type === 1) {
+      JH.value(domCache.itemTitle, decrypted.item.title)
+      const data = JSON.parse(decrypted.item.data)
       JH.value(domCache.itemDescription, data.description)
       JH.value(domCache.itemEmail, data.email)
       JH.value(domCache.itemUrl, data.url)

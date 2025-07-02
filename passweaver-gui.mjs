@@ -20,6 +20,7 @@ import * as RedisClient from 'redis'
 
 import * as Config from './src/config.mjs'
 import * as PassWeaver from './src/passweaver.mjs'
+import * as Crypt from './src/crypt.mjs'
 import session from 'express-session'
 import jsonwebtoken from 'jsonwebtoken'
 import rateLimitMiddleware from './src/ratelimiter.mjs'
@@ -32,7 +33,7 @@ const cfg = Config.get()
 
 // Check for minimum PassWeaver API version
 try {
-  const minpwapiversion = '1.5.0'
+  const minpwapiversion = '1.6.0'
   const resp = await PassWeaver.version()
   const pwapiversion = resp.data.version
   if (!Semver.gte(pwapiversion, minpwapiversion)) {
@@ -451,7 +452,22 @@ app.get('/api/folders/:folder', async (req, res) => {
 
 // Get item
 app.get('/api/items/:item', async (req, res) => {
+  const key = req.query?.key
+  if (!key) {
+    res.json({
+      status: 'failed',
+      httpStatusCode: '400',
+      fatal: false,
+      message: 'key parameter is required',
+      data: {}
+    })
+    return
+  }
   const resp = await PassWeaver.itemGet(req.session, req.params.item, req.body)
+
+  // Encrypt data using given key
+  resp.data.data = Crypt.encryptData(resp.data.data, key)
+
   res.json(resp)
 })
 
@@ -776,7 +792,25 @@ app.get('/api/systemlockstatus', async (req, res) => {
 
 // Get one time secret content
 app.get('/noauth/onetimesecretget/:token', async (req, res) => {
+  const key = req.query?.key
+  if (!key) {
+    res.json({
+      status: 'failed',
+      httpStatusCode: '400',
+      fatal: false,
+      message: 'key parameter is required',
+      data: {}
+    })
+    return
+  }
+
   const resp = await PassWeaver.oneTimeSecretGet(req.session, req.params.token)
+
+  // Encrypt data using given key
+  if (resp.data?.secret?.length > 0 || resp.data?.item?.id?.length > 0) {
+    resp.data = await Crypt.encryptData(JSON.stringify(resp.data), key)
+  }
+
   res.json(resp)
 })
 
