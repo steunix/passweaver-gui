@@ -57,7 +57,7 @@ export class Picker {
           desc = itm.lastname + ' ' + itm.firstname
         }
         row += `<tr id='row-${itm.id}' data-id='${itm.id}' data-desc='${itm.lastname} ${itm.firstname}' style='cursor:pointer;'>`
-        row += `<td style="width:1px;"><wa-icon-button id='itm-${itm.id}' data-id='${itm.id}' data-desc='${itm.lastname} ${itm.firstname}' name='check'></wa-icon-button></td>`
+        row += `<td style="width:1px;"><wa-icon id='itm-${itm.id}' data-id='${itm.id}' data-desc='${itm.lastname} ${itm.firstname}' name='check'></wa-icon></td>`
         if (this.mode === 'users') {
           row += `<td style="width:1px;">${JH.sanitize(itm.login)}</td>`
         }
@@ -71,7 +71,7 @@ export class Picker {
     JH.event('#pickertable tbody tr[id^=row]', 'dblclick', (ev) => {
       this.clientCallback(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-desc'))
     })
-    JH.event('#pickertable tbody wa-icon-button[id^=itm]', 'click', (ev) => {
+    JH.event('#pickertable tbody wa-icon[id^=itm]', 'click', (ev) => {
       this.clientCallback(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-desc'))
     })
   }

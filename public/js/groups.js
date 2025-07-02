@@ -54,7 +54,7 @@ async function fillUsers () {
     for (const usr of body.data) {
       row += `<tr data-id='${usr.id}'>`
       if (currentGroup() !== 'E') {
-        row += `<td><wa-icon-button id='remove-${usr.id}' title='Remove from group' data-id='${usr.id}' name='trash' style='color:red;'></wa-icon-button></td>`
+        row += `<td><wa-icon id='remove-${usr.id}' title='Remove from group' data-id='${usr.id}' name='trash' style='color:red;'></wa-icon></td>`
       } else {
         row += '<td></td>'
       }

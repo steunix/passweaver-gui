@@ -11,9 +11,9 @@
     <div style="display:flex;">
       <div style="display:flex;margin-right:1em;">
         <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" clearable>
-          <wa-icon slot="prefix" name="search"></wa-icon>
-          <wa-icon-button slot="suffix" title="Search previous" id="foldersearchprevious" name="angle-left"></wa-icon-button>
-          <wa-icon-button slot="suffix" title="Search next" id="foldersearchnext" name="angle-right"></wa-icon-button>
+          <wa-icon slot="start" name="search"></wa-icon>
+          <wa-icon slot="end" title="Search previous" id="foldersearchprevious" name="angle-left"></wa-icon>
+          <wa-icon slot="end" title="Search next" id="foldersearchnext" name="angle-right"></wa-icon>
         </wa-input>
       </div>
       <% if ( manage_folders ) { %>
@@ -37,7 +37,7 @@
     <h2><span id="sectiontitle">Groups</span></h2>
     <div style="display:flex;">
       <wa-button id="addgroup" title="Add a group to a folder" variant="brand">
-        <wa-icon slot="prefix" name="plus"></wa-icon>
+        <wa-icon slot="start" name="plus"></wa-icon>
         Add group
       </wa-button>
     </div>

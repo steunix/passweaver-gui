@@ -68,7 +68,7 @@ async function fillItemTypes () {
   for (const itm of body.data) {
     itemTypesOptions += `<wa-option id='itemtype-${itm.id}' value='${itm.id}'>${itm.description}`
     if (itm.icon) {
-      itemTypesOptions += `<wa-icon name='${itm.icon}' slot='prefix'></wa-icon>`
+      itemTypesOptions += `<wa-icon name='${itm.icon}' slot='start'></wa-icon>`
     }
     itemTypesOptions += '</wa-option>'
   }
@@ -115,17 +115,17 @@ async function fillItems () {
     for (const itm of body.data) {
       row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
       row += '<td class="border-end">'
-      row += `<wa-icon-button id='fav-${itm.id}' name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></wa-icon-button>`
+      row += `<wa-icon id='fav-${itm.id}' name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></wa-icon>`
       if (Folders.currentPermissions.write) {
-        row += `<wa-icon-button id='edit-${itm.id}' title='Edit item' name='edit' data-id='${itm.id}'></wa-icon-button>`
-        row += `<wa-icon-button id='remove-${itm.id}' title='Remove item' name='trash' style="color:red;" data-id='${itm.id}'></wa-icon-button>`
-        row += `<wa-icon-button id='clone-${itm.id}' title='Clone item' name='clone' data-id='${itm.id}'></wa-icon-button>`
+        row += `<wa-icon id='edit-${itm.id}' title='Edit item' name='edit' data-id='${itm.id}'></wa-icon>`
+        row += `<wa-icon id='remove-${itm.id}' title='Remove item' name='trash' style="color:red;" data-id='${itm.id}'></wa-icon>`
+        row += `<wa-icon id='clone-${itm.id}' title='Clone item' name='clone' data-id='${itm.id}'></wa-icon>`
       }
-      row += `<wa-icon-button id='link-${itm.id}' title='Copy item link' name='link' data-id='${itm.id}'></wa-icon-button>`
+      row += `<wa-icon id='link-${itm.id}' title='Copy item link' name='link' data-id='${itm.id}'></wa-icon>`
       if (!itm.personal) {
-        row += `<wa-icon-button id='onetime-${itm.id}' title='One time share' name='1' data-id='${itm.id}'></wa-icon-button>`
+        row += `<wa-icon id='onetime-${itm.id}' title='One time share' name='1' data-id='${itm.id}'></wa-icon>`
       }
-      row += `<wa-icon-button id='activity-${itm.id}' title='Activity' name='clock' data-id='${itm.id}'></wa-icon-button>`
+      row += `<wa-icon id='activity-${itm.id}' title='Activity' name='clock' data-id='${itm.id}'></wa-icon>`
       row += '</td>'
       row += '<td class="border-end">'
       if (itm.type) {
@@ -136,7 +136,7 @@ async function fillItems () {
       row += `<td class='border-end'><wa-copy-button title='Copy user to clipboard' from='user-${itm.id}'></wa-copy-button></td>`
       row += `<td id='password-${itm.id}'>****</td>`
       row += `<td><wa-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></wa-copy-button></td>`
-      row += `<td><wa-icon-button id='passwordshow-${itm.id}' title='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon-button></td>`
+      row += `<td><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></td>`
       row += '</tr>'
     }
     domCache.itemsTableBody.innerHTML = row

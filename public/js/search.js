@@ -32,7 +32,7 @@ async function fillItemTypes () {
   for (const itm of body.data) {
     itemTypesOptions += `<wa-option id='itemtype-${itm.id}' value='${itm.id}'>${itm.description}`
     if (itm.icon) {
-      itemTypesOptions += `<wa-icon name='${itm.icon}' slot='prefix'></wa-icon>`
+      itemTypesOptions += `<wa-icon name='${itm.icon}' slot='start'></wa-icon>`
     }
     itemTypesOptions += '</wa-option>'
   }
@@ -62,9 +62,9 @@ async function fillItems () {
       row +=
         `<tr id='row-${itm.id}' data-id='${itm.id}'>` +
         '<td>' +
-        `<wa-icon-button id='fav-${itm.id}' name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></wa-icon-button>` +
-        `<wa-icon-button id='link-${itm.id}' title='Copy item link' name='link' data-id='${itm.id}'></wa-icon-button>` +
-        `<wa-icon-button id='folder-${itm.id}' title='Open folder' name='folder-open' data-id='${itm.id}'></wa-icon-button>` +
+        `<wa-icon id='fav-${itm.id}' name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></wa-icon>` +
+        `<wa-icon id='link-${itm.id}' title='Copy item link' name='link' data-id='${itm.id}'></wa-icon>` +
+        `<wa-icon id='folder-${itm.id}' title='Open folder' name='folder-open' data-id='${itm.id}'></wa-icon>` +
         '</td>' +
         `<td class='border-start border-end'>${JH.sanitize(itm.folder.description)}</td>` +
         '<td class="border-end">'

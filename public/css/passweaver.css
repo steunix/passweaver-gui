@@ -269,10 +269,6 @@ wa-tree {
   --indent-guide-width: 1px;
 }
 
-wa-input,wa-button,wa-select,wa-textarea {
-  margin-bottom: 0.5em;
-}
-
 *::part(form-control-label) {
   font-size: 95%;
 }
