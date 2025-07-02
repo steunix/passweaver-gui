@@ -165,8 +165,8 @@ app.use(`/public/v${Config.packageJson().version}`, Express.static('./public', {
   immutable: true
 }))
 
-// Shoelace has its own version
-app.use(`/public/shoelace/v${Config.shoelacePackageJson().version}/`, Express.static('./node_modules/@shoelace-style/shoelace', { maxAge: '1y', immutable: true }))
+// WebAwesome has its own version
+app.use(`/public/webawesome/v${Config.webawesomePackageJson().version}/`, Express.static('./node_modules/@awesome.me/webawesome', { maxAge: '1y', immutable: true }))
 
 // Log errors
 const logErrors = RFS.createStream(`${cfg.log.dir}/passweaver-gui-errors.log`, {
@@ -185,8 +185,8 @@ function commonParams (req) {
     viewitem: req.query?.viewitem ?? '',
     theme: req?.session?.theme ?? 'light',
     version: Config.packageJson().version,
-    slversion: Config.shoelacePackageJson().version,
-    manage_folders: req.session.admin || Config.get().folders.user_managed
+    manage_folders: req.session.admin || Config.get().folders.user_managed,
+    waversion: Config.webawesomePackageJson().version
   }
 }
 

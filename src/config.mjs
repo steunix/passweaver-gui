@@ -84,10 +84,10 @@ const packagejson = JSON.parse(
   )
 )
 
-// Read Shoelace package.json
-const slpackagejson = JSON.parse(
+// Read WebAwesome package.json
+const waPackageJson = JSON.parse(
   await readFile(
-    new URL('../node_modules/@shoelace-style/shoelace/package.json', import.meta.url)
+    new URL('../node_modules/@awesome.me/webawesome/package.json', import.meta.url)
   )
 )
 
@@ -136,9 +136,9 @@ export function packageJson () {
 }
 
 /**
- * Get the package.json of Shoelace
+ * Get the package.json of WebAwesome
  * @returns {Object} Returns package.json content
  */
-export function shoelacePackageJson () {
-  return slpackagejson
+export function webawesomePackageJson () {
+  return waPackageJson
 }

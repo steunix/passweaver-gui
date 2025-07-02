@@ -3,12 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/public/webawesome/v<%= waversion %>/dist-cdn/styles/themes/default.css" />
+  <link rel="stylesheet" href="/public/webawesome/v<%= waversion %>/dist-cdn/styles/webawesome.css" />
   <link href="/public/v<%= version%>/css/passweaver.css" rel="stylesheet">
-
-  <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-alpha.13/dist/styles/themes/default.css" />
-  <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-alpha.13/dist/styles/webawesome.css" />
-  <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-alpha.13/dist/webawesome.loader.js"></script>
   <title>PassWeaver</title>
 </head>
 <body>
+  <script type="module" src="/public/webawesome/v<%= waversion %>/dist-cdn/webawesome.loader.js"></script>
   <input type="hidden" id="v-user" value="<%= user %>" />
