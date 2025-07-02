@@ -30,6 +30,7 @@
         </wa-button-group>
       <% } %>
     </div>
+    <br/>
     <%- include('partials/folderstree.ejs') %>
   </div>
 
@@ -46,6 +47,7 @@
       <wa-select id="typesearch" style="margin-left:1em;" name="typesearch" placeholder="Filter type" clearable></wa-select>
       <wa-switch id="favorite" style="margin-left:1em;" label="Favorites only">Favorites only</wa-switch>
     </div>
+    <br/>
     <table id="itemstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;">
       <thead>
         <tr class="sticky">
