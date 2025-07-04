@@ -868,6 +868,83 @@ export async function itemTypeEdit (session, id, description, icon) {
 }
 
 /**
+ * KMS list
+ * @param {Object} session Session
+ * @param {Object} search Search string
+ * @returns
+ */
+export async function kmsList (session, search) {
+  const resp = await passWeaverAPI(session, METHOD.get, '/kms?search=' + encodeURIComponent(search))
+  return resp
+}
+
+/**
+ * New KMS
+ * @param {Object} session Session
+ * @param {string} description Description
+ * @param {string} type Type
+ * @param {string} active Active
+ * @param {string} config Config
+ * @returns
+ */
+export async function kmsCreate (session, description, type, active, config) {
+  const data = {
+    description,
+    type: parseInt(type),
+    active,
+    config
+  }
+
+  const resp = await passWeaverAPI(session, METHOD.post, '/kms', data)
+  return resp
+}
+
+/**
+ * Delete KMS
+ * @param {Object} session Session
+ * @param {string} id Item type id
+ * @returns
+ */
+export async function kmsRemove (session, id) {
+  const resp = await passWeaverAPI(session, METHOD.delete, `/kms/${id}`)
+  return resp
+}
+
+/**
+ * Get KMS
+ * @param {Object} req Request
+ * @param {Object} session Session
+ * @param {string} id Item type id
+ * @returns
+ */
+export async function kmsGet (session, id) {
+  const resp = await passWeaverAPI(session, METHOD.get, `/kms/${id}`)
+  return resp
+}
+
+/**
+ * Edit KMS
+ * @param {Object} session Session
+ * @param {string} id KMS id
+ * @param {string} description Description
+ * @param {string} type Type
+ * @param {string} active Active
+ * @param {string} config Config
+ * @returns
+ */
+export async function kmsEdit (session, id, description, type, active, config) {
+  const data = {
+    description,
+    type: parseInt(type),
+    active,
+    config
+  }
+
+  const resp = await passWeaverAPI(session, METHOD.patch, `/kms/${id}`, data)
+  return resp
+}
+
+/**
  * Info
  * @param {Object} session Session
  * @returns
