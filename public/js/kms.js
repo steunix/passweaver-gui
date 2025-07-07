@@ -42,12 +42,12 @@ async function fillItems () {
       row +=
         `<tr data-id='${itm.id}' style='cursor:pointer'>` +
         '<td>' +
-        `<sl-icon-button id='edititem-${itm.id}' title='Edit KMS' name='pencil' data-id='${itm.id}'></sl-icon-button>` +
-        `<sl-icon-button id='removeitem-${itm.id}' title='Delete KMS' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button>` +
+        `<wa-icon id='edititem-${itm.id}' title='Edit KMS' name='edit' data-id='${itm.id}'></wa-icon>` +
+        `<wa-icon id='removeitem-${itm.id}' title='Delete KMS' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon>` +
         '</td>' +
         `<td>${JH.sanitize(itm.description)}</td>` +
         `<td>${kmsTypes[itm.type]}</td>` +
-        `<td class='text-center'><sl-icon name='${itm.active ? 'check-lg' : 'x-lg'}' style='color:${itm.active ? 'green' : 'red'}'/></td>` +
+        (itm.active ? "<td><wa-badge variant='success'>Active</wa-badge></td>" : '<td></td>') +
         '</tr>'
     }
     domCache.itemsTableBody.innerHTML = row
@@ -71,7 +71,8 @@ async function kmsSave () {
     active: domCache.kmsActive.hasAttribute('checked')
   }
 
-  domCache.kmsDialog.hide()
+  domCache.kmsDialog.open = false
+
   let resp
   const kmsid = JH.value(domCache.kmsDialogId)
   if (kmsid) {
@@ -89,7 +90,7 @@ async function kmsSave () {
 }
 
 async function kmsDialogShow (kmsid) {
-  JH.value('#kmsdialog sl-input,sl-textarea,sl-select', '')
+  JH.value('#kmsdialog wa-input,wa-textarea,wa-select', '')
   JH.value(domCache.kmsDialogId, kmsid || '')
 
   if (kmsid) {
@@ -158,14 +159,14 @@ JH.event(domCache.itemNew, 'click', (ev) => {
 })
 
 JH.event(domCache.kmsCancel, 'click', (ev) => {
-  domCache.kmsDialog.hide()
+  domCache.kmsDialog.open = false
 })
 
 JH.event(domCache.kmsSave, 'click', (ev) => {
   kmsSave()
 })
 
-JH.event(domCache.itemsSearch, 'sl-input', (ev) => {
+JH.event(domCache.itemsSearch, 'input', (ev) => {
   if (kmsSearchTimeout) {
     clearTimeout(kmsSearchTimeout)
   }

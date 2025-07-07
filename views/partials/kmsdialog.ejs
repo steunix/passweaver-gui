@@ -1,12 +1,12 @@
-<sl-dialog id="kmsdialog" label="KMS" class="dialog-deny-close">
-  <sl-input id="kmsdialogid" style="display: none;"></sl-input>
-  <sl-input id="kmsdescription" label="Description" required autofocus maxlength="50"></sl-input>
-  <sl-select id="kmstype" label="Type" required>
-    <sl-option value="1">Local key</sl-option>
-    <sl-option value="2">Google Cloud KMS</sl-option>
-  </sl-select>
-  <sl-textarea rows="10" id="kmsconfig" label="Config JSON" required></sl-textarea>
-  <sl-checkbox id="kmsactive" label="Active">Active</sl-checkbox>
-  <sl-button id="kmssave" slot="footer" variant="primary" disabled="disabled">Save</sl-button>
-  <sl-button id="kmscancel" slot="footer">Cancel</sl-button>
-</sl-dialog>
+<wa-dialog id="kmsdialog" label="KMS" class="dialog-footer">
+  <wa-input id="kmsdialogid" style="display: none;"></wa-input>
+  <wa-input id="kmsdescription" label="Description" required autofocus maxlength="50"></wa-input>
+  <wa-select id="kmstype" label="Type" required>
+    <wa-option value="1">Local key</wa-option>
+    <wa-option value="2">Google Cloud KMS</wa-option>
+  </wa-select>
+  <wa-textarea rows="10" id="kmsconfig" label="Config JSON" required></wa-textarea>
+  <wa-checkbox id="kmsactive" label="Active">Active</wa-checkbox>
+  <wa-button id="kmssave" slot="footer" variant="brand" disabled="disabled">Save</wa-button>
+  <wa-button id="kmscancel" slot="footer">Cancel</wa-button>
+</wa-dialog>
