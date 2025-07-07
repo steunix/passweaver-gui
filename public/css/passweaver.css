@@ -5,8 +5,7 @@
 }
 
 :root {
-  --theme-font-size: 14px;
-  font-size: var(--theme-font-size);
+  font-size: 14px;
   --wa-font-family-body: "Roboto Condensed";
   --theme-font: "Roboto Condensed";
   --theme-color: #ea9e34;
@@ -25,7 +24,6 @@ body {
   --wa-form-control-required-content-color: red;
   margin: 0;
   padding: 0;
-  font-size: var(--theme-font-size) !important;
   overflow-y: hidden;
 }
 
@@ -101,10 +99,9 @@ body {
 }
 
 .header {
-  display: grid;
+  grid-area: header;
   padding: 0;
   margin: 0;
-  grid-area: header;
   align-items: center;
   text-align: center;
   background-color: var(--theme-header-bgcolor);
@@ -251,6 +248,10 @@ tr td wa-icon {
   opacity: 0.7;
 }
 
+tr td wa-icon:hover {
+  opacity: 1;
+}
+
 td {
   padding: 0.4rem;
   vertical-align: middle;
@@ -259,7 +260,6 @@ td {
 /* WebAwesome */
 wa-tree-item::part(label) {
   font-family: var(--theme-font);
-  font-size: var(--theme-font-size);
 }
 
 wa-tree-item::part(item) {

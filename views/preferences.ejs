@@ -23,7 +23,7 @@
 
       <wa-tab-panel name="password">
         <% if ( authmethod=="local" ) { %>
-        <h2>Change password</h2>
+        <h4>Change password</h4>
         <h5>At least 8 characters</h5>
         <div class="wa-stack">
           <wa-input id="newpassword1" type="password" password-toggle label="New password"></wa-input>
@@ -39,7 +39,7 @@
       <wa-tab-panel name="ppassword">
         <% if ( !admin ) { %>
           <% if ( unlocked ) { %>
-            <h2>Change personal folder password</h2>
+            <h4>Change personal folder password</h4>
             <h5>At least 8 characters</h5>
             <table>
               <tr>
