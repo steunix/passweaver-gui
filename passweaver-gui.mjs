@@ -422,6 +422,19 @@ app.get('/noauth/onetimesecret/:token', async (req, res) => {
   res.render('onetimesecretshow', { ...req.locals, ...commonParams(req) })
 })
 
+app.get('/pages/kms', async (req, res) => {
+  if (!req.session.admin) {
+    res.status(403).send()
+    return
+  }
+
+  const page = {
+    pagetitle: 'KMS',
+    pageid: 'kms'
+  }
+  res.render('kms', { ...page, ...commonParams(req) })
+})
+
 /**
  * API
  */
@@ -757,6 +770,36 @@ app.get('/api/itemtypes/:id', async (req, res) => {
 // Update item type
 app.patch('/api/itemtypes/:id', async (req, res) => {
   const resp = await PassWeaver.itemTypeEdit(req.session, req.params.id, req.body.description, req.body.icon)
+  res.json(resp)
+})
+
+// KMS list
+app.get('/api/kms', async (req, res) => {
+  const resp = await PassWeaver.kmsList(req.session, req.query?.search || '')
+  res.json(resp)
+})
+
+// New KMS
+app.post('/api/kms', async (req, res) => {
+  const resp = await PassWeaver.kmsCreate(req.session, req.body.description, req.body.type, req.body.active, req.body.config)
+  res.json(resp)
+})
+
+// Delete KMS
+app.delete('/api/kms/:id', async (req, res) => {
+  const resp = await PassWeaver.kmsRemove(req.session, req.params.id)
+  res.json(resp)
+})
+
+// Get KMS
+app.get('/api/kms/:id', async (req, res) => {
+  const resp = await PassWeaver.kmsGet(req.session, req.params.id)
+  res.json(resp)
+})
+
+// Update KMS
+app.patch('/api/kms/:id', async (req, res) => {
+  const resp = await PassWeaver.kmsEdit(req.session, req.params.id, req.body.description, req.body.type, req.body.active, req.body.config)
   res.json(resp)
 })
 
