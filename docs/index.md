@@ -11,6 +11,7 @@ PassWeaver-GUI is an opensource project, released under MIT license. See [Techni
 - Share one-time secrets with anyone, even if they have not an account; an alternative server name can be specified in case of public shares
 - One-time share items (also with optional server name)
 - Share items through permalinks; an alternative server name can be specified for these links
+- External KMS integration (Google Cloud Key Management Service, at the moment)
 - Read only mode
 - Folder level permissions
 - User groups
@@ -233,6 +234,23 @@ From this page you can create or delete groups, and add/remove members. You can 
 ![Groups page](assets/passweavergui-groups-002.jpeg)
 
 You can also copy all users of a group and paste/replace into another, as already explained for users.
+
+## KMS
+
+From this page you can create, delete and activate or disactivate KMS (Key management service)
+
+![KMS page](assets/passweavergui-kms-1-001.jpeg)
+
+When creating a KMS you need to input:
+- a description
+- a configuration, in JSON format
+- the "active" flag.
+
+![KMS page](assets/passweavergui-kms-2-001.jpeg)
+
+The 'Active' flag means that - starting from that precise moment - every new and updated item will use this KMS for encryption.
+
+More details about how KMS work and their configuration can be found at [Passweaver-API page](https://steunix.github.io/passweaver-api/)
 
 ## Info
 
