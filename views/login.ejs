@@ -18,6 +18,7 @@
         <center>
           <wa-button id="login" type="submit" variant="brand" style="margin-top:1rem;">Login</wa-button>
           <% if ( error ) { %>
+            <br/><br/>
             <wa-callout variant="danger" open>
               <wa-icon slot="icon" name="circle-exclamation"></wa-icon>
               <%= error %>

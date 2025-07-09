@@ -10,7 +10,7 @@
     <h4>Folders</h4>
     <div style="display:flex; margin-bottom: 10px;">
       <div style="display:flex;margin-right:1em;">
-        <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" clearable>
+        <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" with-clear>
           <wa-icon slot="start" name="search"></wa-icon>
           <wa-icon slot="end" title="Search previous" id="foldersearchprevious" name="angle-left"></wa-icon>
           <wa-icon slot="end" title="Search next" id="foldersearchnext" name="angle-right"></wa-icon>
@@ -40,10 +40,10 @@
         <wa-icon slot="start" name="plus"></wa-icon>
         New item
       </wa-button>
-      <wa-input id="itemsearch" style="margin-left:1em;width:20rem;" placeholder="Filter items" clearable>
+      <wa-input id="itemsearch" style="margin-left:1em;width:20rem;" placeholder="Filter items" with-clear>
         <wa-icon slot="start" name="search"></wa-icon>
       </wa-input>
-      <wa-select id="typesearch" style="margin-left:1em;" name="typesearch" placeholder="Filter type" clearable></wa-select>
+      <wa-select id="typesearch" style="margin-left:1em;" name="typesearch" placeholder="Filter type" with-clear></wa-select>
       <wa-switch id="favorite" style="margin-left:1em;" label="Favorites only">Favorites only</wa-switch>
     </div>
     <table id="itemstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;">
