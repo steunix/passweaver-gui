@@ -16,7 +16,7 @@
   --theme-header-bgcolor: var(--theme-sidebar-bgcolor);
   --theme-header-color: rgb(255, 255, 255);
   --theme-page-border-color: rgb(173, 173, 173);
-  --bottom-margin: 11rem;
+  --bottom-margin: 13rem;
   --indent-guide-width: 1px;
 }
 
@@ -48,7 +48,7 @@ body {
   grid-template-areas:
     "sidebar header header"
     "sidebar main1 main2";
-  grid-template-rows: 3em 100vh;
+  grid-template-rows: 3em calc(100vh - 3em);
   grid-template-columns: 10em auto 1fr;
   height: 100vh;
   max-height: 100vh;
