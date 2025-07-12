@@ -1,0 +1,44 @@
+<%- include('partials/header.ejs') %>
+
+<div class="page-container" id="page_apikeys">
+
+  <%- include('partials/topbar.ejs') %>
+  <%- include('partials/sidebar.ejs') %>
+  <%- include('partials/csrf.ejs') %>
+
+  <div class="main1">
+    <h2>API keys</h2>
+    <div style="display:flex; align-items: center;">
+      <sl-input id="itemsearch" type="text" placeholder="Search" autofocus="autofocus" clearable style="width:20rem;">
+        <sl-icon slot="prefix" name="search"></sl-icon>
+      </sl-input>
+      <sl-button id="itemnew" type="button" title="Create a new API key" style="margin-left:1em">
+        <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+        New API key
+      </sl-button>
+    </div>
+    <table id="itemstable" class="bordered" style="width: auto; display:block; max-height: calc(100vh - var(--bottom-margin)); overflow-y: auto;">
+      <thead>
+        <tr class="sticky">
+          <th style="white-space:no-wrap;">Actions</th>
+          <th>API key id</th>
+          <th>Description</th>
+          <th>Expires</th>
+          <th>Last used</th>
+          <th>Active</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('partials/commondialogs.ejs') %>
+<%- include('partials/apikeydialog.ejs') %>
+<%- include('partials/apikeysecretdialog.ejs') %>
+
+<script defer type="module" src="/public/v<%= version %>/js/apikeys.js"></script>
+<script defer type="module" src="/public/v<%= version %>/js/searchbox.js"></script>
+
+<%- include('partials/footer.ejs') %>
