@@ -1,0 +1,9 @@
+<sl-dialog id="apikeydialog" label="API Key" class="dialog-deny-close">
+  <sl-input id="apikeyid" style="display: none;"></sl-input>
+  <sl-input id="apikeydescription" label="Description" required autofocus maxlength="50"></sl-input>
+  <sl-select id="apikeyuserid" label="User" required></sl-select>
+  <sl-input id="apikeyexpiresat" label="Expire date" required placeholder="YYYY-MM-DD"></sl-input>
+  <sl-checkbox id="apikeyactive" label="Active">Active</sl-checkbox>
+  <sl-button id="apikeysave" slot="footer" variant="primary" disabled="disabled">Save</sl-button>
+  <sl-button id="apikeycancel" slot="footer">Cancel</sl-button>
+</sl-dialog>
