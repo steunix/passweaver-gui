@@ -17,6 +17,7 @@ PassWeaver-GUI is an opensource project, released under MIT license. See [Techni
 - User groups
 - Extensive log actions on items
 - Both LDAP and local authentication
+- API keys
 - CSP compliant pages
 - Quick and clean user interface
 - Light and dark theme setting for each user
@@ -234,6 +235,32 @@ From this page you can create or delete groups, and add/remove members. You can 
 ![Groups page](assets/passweavergui-groups-002.jpeg)
 
 You can also copy all users of a group and paste/replace into another, as already explained for users.
+
+## API keys
+
+In this page you can manage API keys access. API keys are bound to a user and inherit their permissions.
+
+![API keys page](assets/passweavergui-apikeys-1-001.jpeg)
+
+To create a new API key, click on "New API key" button and fill in the form:
+
+![New API key](assets/passweavergui-apikeys-2-001.jpeg)
+
+The required fields are:
+
+- API key description
+- User to bound the API key to
+- Expire date, in YYYY-MM-DD form
+- Active status of the key
+
+Once the key is created, you are given the API key data:
+
+![New API key data](assets/passweavergui-apikeys-3-001.jpeg)
+
+- The API key ID
+- The API key secret: note that this secret **won't be show again**, so copy it before closing the dialog
+
+You can edit the description, the expiring date and active status of any existing API key, as well as completely delete them.
 
 ## KMS
 
