@@ -274,6 +274,10 @@ wa-tree {
   --indent-guide-width: 1px;
 }
 
+wa-copy-button {
+  position: relative;
+}
+
 *::part(form-control-label) {
   font-size: 95%;
 }
