@@ -58,11 +58,14 @@ async function fillItems () {
         `<wa-icon id='edititem-${itm.id}' title='Edit API key' name='edit' data-id='${itm.id}'></wa-icon>` +
         `<wa-icon id='removeitem-${itm.id}' title='Delete API key' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon>` +
         '</td>' +
-        `<td>${itm.id}</td>` +
+        `<td id='id-${itm.id}'>${itm.id}</td>` +
+        `<td><wa-copy-button from='id-${itm.id}'></wa-copy-button></td>` +
         `<td>${JH.sanitize(itm.description)}</td>` +
         `<td>${itm.expiresat}</td>` +
         `<td>${itm.lastusedat || 'Never'}</td>` +
-        (itm.active ? "<td><wa-badge variant='success'>Active</wa-badge></td>" : '<td></td>') +
+        (itm.active
+          ? "<td><wa-badge variant='success'>Active</wa-badge></td>"
+          : "<td><wa-badge variant='primary'>Inactive</wa-badge></td>") +
         '</tr>'
     }
     domCache.itemsTableBody.innerHTML = row
