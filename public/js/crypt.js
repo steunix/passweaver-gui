@@ -17,7 +17,7 @@ export async function decryptBlock (data, key) {
   const iv = Uint8Array.from(atob(parts[0]), c => c.charCodeAt(0))
   const encryptedData = Uint8Array.from(atob(parts[1]), c => c.charCodeAt(0))
 
-  const algorithm = { name: 'AES-CBC', iv: iv }
+  const algorithm = { name: 'AES-CBC', iv }
   const cryptoKey = await window.crypto.subtle.importKey(
     'raw', new TextEncoder().encode(key), algorithm, false, ['decrypt']
   )

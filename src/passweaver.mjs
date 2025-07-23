@@ -944,6 +944,84 @@ export async function kmsEdit (session, id, description, type, active, config) {
   return resp
 }
 
+//
+/**
+ * API keys list
+ * @param {Object} session Session
+ * @param {Object} search Search string
+ * @returns
+ */
+export async function apikeysList (session, search) {
+  const resp = await passWeaverAPI(session, METHOD.get, '/apikeys?search=' + encodeURIComponent(search))
+  return resp
+}
+
+/**
+ * New API key
+ * @param {Object} session Session
+ * @param {string} description Description
+ * @param {string} userid User id
+ * @param {string} expiresat Expiration date
+ * @param {string} active Active
+ * @returns
+ */
+export async function apikeysCreate (session, description, userid, expiresat, active) {
+  const data = {
+    description,
+    userid,
+    expiresat,
+    active
+  }
+
+  const resp = await passWeaverAPI(session, METHOD.post, '/apikeys', data)
+  return resp
+}
+
+/**
+ * Delete API key
+ * @param {Object} session Session
+ * @param {string} id Item type id
+ * @returns
+ */
+export async function apikeysRemove (session, id) {
+  const resp = await passWeaverAPI(session, METHOD.delete, `/apikeys/${id}`)
+  return resp
+}
+
+/**
+ * Get API key
+ * @param {Object} req Request
+ * @param {Object} session Session
+ * @param {string} id Item type id
+ * @returns
+ */
+export async function apikeysGet (session, id) {
+  const resp = await passWeaverAPI(session, METHOD.get, `/apikeys/${id}`)
+  return resp
+}
+
+/**
+ * Edit API key
+ * @param {Object} session Session
+ * @param {string} id API key id
+ * @param {string} description Description
+ * @param {string} userid User id
+ * @param {string} expiresat Expiration date
+ * @param {string} active Active
+ * @returns
+ */
+export async function apikeysEdit (session, id, description, userid, expiresat, active) {
+  const data = {
+    description,
+    userid,
+    expiresat,
+    active
+  }
+
+  const resp = await passWeaverAPI(session, METHOD.patch, `/apikeys/${id}`, data)
+  return resp
+}
+
 /**
  * Info
  * @param {Object} session Session

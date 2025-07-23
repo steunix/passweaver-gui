@@ -33,7 +33,7 @@ const cfg = Config.get()
 
 // Check for minimum PassWeaver API version
 try {
-  const minpwapiversion = '2.0.0'
+  const minpwapiversion = '2.1.0'
   const resp = await PassWeaver.version()
   const pwapiversion = resp.data.version
   if (!Semver.gte(pwapiversion, minpwapiversion)) {
@@ -435,6 +435,19 @@ app.get('/pages/kms', async (req, res) => {
   res.render('kms', { ...page, ...commonParams(req) })
 })
 
+app.get('/pages/apikeys', async (req, res) => {
+  if (!req.session.admin) {
+    res.status(403).send()
+    return
+  }
+
+  const page = {
+    pagetitle: 'API keys',
+    pageid: 'apikeys'
+  }
+  res.render('apikeys', { ...page, ...commonParams(req) })
+})
+
 /**
  * API
  */
@@ -800,6 +813,36 @@ app.get('/api/kms/:id', async (req, res) => {
 // Update KMS
 app.patch('/api/kms/:id', async (req, res) => {
   const resp = await PassWeaver.kmsEdit(req.session, req.params.id, req.body.description, req.body.type, req.body.active, req.body.config)
+  res.json(resp)
+})
+
+// API keys list
+app.get('/api/apikeys', async (req, res) => {
+  const resp = await PassWeaver.apikeysList(req.session, req.query?.search || '')
+  res.json(resp)
+})
+
+// New API key
+app.post('/api/apikeys', async (req, res) => {
+  const resp = await PassWeaver.apikeysCreate(req.session, req.body.description, req.body.userid, req.body.expiresat, req.body.active)
+  res.json(resp)
+})
+
+// Delete API key
+app.delete('/api/apikeys/:id', async (req, res) => {
+  const resp = await PassWeaver.apikeysRemove(req.session, req.params.id)
+  res.json(resp)
+})
+
+// Get API key
+app.get('/api/apikeys/:id', async (req, res) => {
+  const resp = await PassWeaver.apikeysGet(req.session, req.params.id)
+  res.json(resp)
+})
+
+// Update API key
+app.patch('/api/apikeys/:id', async (req, res) => {
+  const resp = await PassWeaver.apikeysEdit(req.session, req.params.id, req.body.description, req.body.userid, req.body.expiresat, req.body.active)
   res.json(resp)
 })
 
