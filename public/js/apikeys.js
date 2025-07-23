@@ -177,7 +177,7 @@ JH.event(domCache.dialogSave, 'click', (ev) => {
   itemSave()
 })
 
-JH.event(domCache.itemsSearch, 'change', (ev) => {
+JH.event(domCache.itemsSearch, 'input', (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }
