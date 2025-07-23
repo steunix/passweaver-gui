@@ -68,9 +68,9 @@ async function fillUsers () {
         `<tr data-id='${itm.id}' style='cursor:pointer'>` +
         '<td>' +
         `<wa-icon id='edituser-${itm.id}' title='Edit user' name='edit' data-id='${itm.id}'></wa-icon>` +
-        `<wa-icon id='removeuser-${itm.id}' title='Delete user' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon>` +
         `<wa-icon id='activity-${itm.id}' title='Activity' name='clock' data-id='${itm.id}'></wa-icon>` +
         `<wa-icon id='folders-${itm.id}' title='Visible folders' name='folder-tree' data-id='${itm.id}'></wa-icon>` +
+        `<wa-icon id='removeuser-${itm.id}' title='Delete user' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon>` +
         '</td>' +
         `<td class='border-start'>${JH.sanitize(itm.login)}</td>` +
         `<td>${JH.sanitize(itm.lastname)}</td>` +

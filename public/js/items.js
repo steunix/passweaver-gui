@@ -118,7 +118,6 @@ async function fillItems () {
       row += `<wa-icon id='fav-${itm.id}' name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></wa-icon>`
       if (Folders.currentPermissions.write) {
         row += `<wa-icon id='edit-${itm.id}' title='Edit item' name='edit' data-id='${itm.id}'></wa-icon>`
-        row += `<wa-icon id='remove-${itm.id}' title='Remove item' name='trash' style="color:red;" data-id='${itm.id}'></wa-icon>`
         row += `<wa-icon id='clone-${itm.id}' title='Clone item' name='clone' data-id='${itm.id}'></wa-icon>`
       }
       row += `<wa-icon id='link-${itm.id}' title='Copy item link' name='link' data-id='${itm.id}'></wa-icon>`
@@ -126,6 +125,9 @@ async function fillItems () {
         row += `<wa-icon id='onetime-${itm.id}' title='One time share' name='1' data-id='${itm.id}'></wa-icon>`
       }
       row += `<wa-icon id='activity-${itm.id}' title='Activity' name='clock' data-id='${itm.id}'></wa-icon>`
+      if (Folders.currentPermissions.write) {
+        row += `<wa-icon id='remove-${itm.id}' title='Remove item' name='trash' style="color:red;" data-id='${itm.id}'></wa-icon>`
+      }
       row += '</td>'
       row += '<td class="border-end">'
       if (itm.type) {
