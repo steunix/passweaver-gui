@@ -33,7 +33,7 @@ async function usersSelectOptions () {
   const body = await resp.json()
   let options = ''
   for (const usr of body.data) {
-    options += `<sl-option value="${usr.id}">${JH.sanitize(usr.lastname + ' ' + usr.firstname)}</sl-option>`
+    options += `<wa-option value="${usr.id}">${JH.sanitize(usr.lastname + ' ' + usr.firstname)}</wa-option>`
   }
   domCache.dialogUserId.innerHTML = options
 }
@@ -55,14 +55,14 @@ async function fillItems () {
       row +=
         `<tr data-id='${itm.id}' style='cursor:pointer'>` +
         '<td>' +
-        `<sl-icon-button id='edititem-${itm.id}' title='Edit API key' name='pencil' data-id='${itm.id}'></sl-icon-button>` +
-        `<sl-icon-button id='removeitem-${itm.id}' title='Delete API key' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button>` +
+        `<wa-icon id='edititem-${itm.id}' title='Edit API key' name='edit' data-id='${itm.id}'></wa-icon>` +
+        `<wa-icon id='removeitem-${itm.id}' title='Delete API key' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon>` +
         '</td>' +
         `<td>${itm.id}</td>` +
         `<td>${JH.sanitize(itm.description)}</td>` +
         `<td>${itm.expiresat}</td>` +
         `<td>${itm.lastusedat || 'Never'}</td>` +
-        `<td class='text-center'><sl-icon name='${itm.active ? 'check-lg' : 'x-lg'}' style='color:${itm.active ? 'green' : 'red'}'/></td>` +
+        (itm.active ? "<td><wa-badge variant='success'>Active</wa-badge></td>" : '<td></td>') +
         '</tr>'
     }
     domCache.itemsTableBody.innerHTML = row
@@ -85,10 +85,10 @@ async function itemSave () {
     description: JH.value(domCache.dialogDescription),
     userid: JH.value(domCache.dialogUserId),
     expiresat: JH.value(domCache.dialogExpiresAt),
-    active: domCache.dialogActive.hasAttribute('checked')
+    active: JH.value(domCache.dialogActive) === 'A'
   }
 
-  domCache.itemDialog.hide()
+  domCache.itemDialog.open = false
   let resp
   const itemid = JH.value(domCache.dialogItemId)
   if (itemid) {
@@ -105,7 +105,7 @@ async function itemSave () {
 
   if (!itemid) {
     const body = await resp.json()
-    domCache.itemSecretDialog.show()
+    domCache.itemSecretDialog.open = true
     JH.value(domCache.dialogNewApiKeyId, body.data.id)
     JH.value(domCache.dialogSecret, body.data.secret)
   }
@@ -114,20 +114,22 @@ async function itemSave () {
 }
 
 async function itemDialogShow (id) {
-  JH.value('#apikeydialog sl-input,sl-textarea,sl-select', '')
+  JH.value('#apikeydialog wa-input,wa-textarea,wa-select', '')
   JH.value(domCache.dialogItemId, id || '')
 
   if (id) {
     itemEditFill(id)
   }
 
-  domCache.itemDialog.show()
+  domCache.itemDialog.open = true
   dialogSaveEnable()
 }
 
 async function dialogSaveEnable () {
   if (JH.value(domCache.dialogDescription) === '' ||
-      JH.value(domCache.dialogUserId) === ''
+      JH.value(domCache.dialogUserId) === '' ||
+      JH.value(domCache.dialogExpiresAt) === '' ||
+      JH.value(domCache.dialogActive) === ''
   ) {
     JH.disable(domCache.dialogSave)
   } else {
@@ -158,11 +160,7 @@ async function itemEditFill (id) {
   JH.value(domCache.dialogDescription, body.data.description)
   JH.value(domCache.dialogUserId, body.data.userid)
   JH.value(domCache.dialogExpiresAt, body.data.expiresat)
-  if (!body.data.active) {
-    domCache.dialogActive.removeAttribute('checked')
-  } else {
-    domCache.dialogActive.setAttribute('checked', 'checked')
-  }
+  JH.value(domCache.dialogActive, body.data.active ? 'A' : 'I')
 
   dialogSaveEnable()
 }
@@ -172,14 +170,14 @@ await usersSelectOptions()
 
 // Event handlers
 JH.event(domCache.dialogCancel, 'click', (ev) => {
-  domCache.itemDialog.hide()
+  domCache.itemDialog.open = false
 })
 
 JH.event(domCache.dialogSave, 'click', (ev) => {
   itemSave()
 })
 
-JH.event(domCache.itemsSearch, 'sl-input', (ev) => {
+JH.event(domCache.itemsSearch, 'change', (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }
@@ -198,5 +196,5 @@ JH.event([
 ], 'keyup', dialogSaveEnable)
 
 JH.event(domCache.dialogSecretClose, 'click', (ev) => {
-  domCache.itemSecretDialog.hide()
+  domCache.itemSecretDialog.open = false
 })
