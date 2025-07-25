@@ -204,6 +204,8 @@ tr {
 .sticky {
   position: sticky;
   top: 0;
+  z-index: 1;
+  background-color: var(--wa-color-surface-lowered);
 }
 
 .rowselected {
