@@ -86,12 +86,10 @@ export function queryAll (query) {
 export function event (query, event, callback) {
   const el = resolveQuery(query)
 
-  if (el === null) {
-    return
-  }
-
   for (const e of el) {
-    e.addEventListener(event, callback)
+    if (e) {
+      e.addEventListener(event, callback)
+    }
   }
 }
 
@@ -108,12 +106,10 @@ export function enable (query, enabled) {
 
   const el = resolveQuery(query)
 
-  if (el === null) {
-    return
-  }
-
   for (const e of el) {
-    e.removeAttribute('disabled')
+    if (e) {
+      e.removeAttribute('disabled')
+    }
   }
 }
 
@@ -125,12 +121,10 @@ export function enable (query, enabled) {
 export function disable (query) {
   const el = resolveQuery(query)
 
-  if (el === null) {
-    return
-  }
-
   for (const e of el) {
-    e.setAttribute('disabled', 'disabled')
+    if (e) {
+      e.setAttribute('disabled', 'disabled')
+    }
   }
 }
 
@@ -142,18 +136,15 @@ export function disable (query) {
 export function value (query, value) {
   const elements = resolveQuery(query)
 
-  if (!elements) {
-    return undefined
-  }
-
-  if (value === undefined) {
-    // Getter, on the first element
-    return elements[0]?.value ?? ''
-  }
-
   // Setter, on all elements
   for (const element of elements) {
-    element.value = value
+    // Getter, return value of the first element
+    if (value === undefined) {
+      return element?.value ?? ''
+    }
+    if (element) {
+      element.value = value
+    }
   }
 }
 
@@ -167,16 +158,13 @@ export function value (query, value) {
 export function attribute (query, attr, value) {
   const el = resolveQuery(query)
 
-  if (el === null) {
-    return
-  }
-
-  if (value === undefined) {
-    // Getter, on the first element
-    return el[0].getAttribute(attr)
-  } else {
-    // Setter, on all elements
-    for (const e of el) {
+  // Setter, on all elements
+  for (const e of el) {
+    // Getter, return attribute of the first element
+    if (value === undefined) {
+      return e.getAttribute(attr)
+    }
+    if (e) {
       e.setAttribute(attr, value)
     }
   }
@@ -191,12 +179,10 @@ export function attribute (query, attr, value) {
 export function removeAttribute (query, attr) {
   const el = resolveQuery(query)
 
-  if (el === null) {
-    return
-  }
-
   for (const e of el) {
-    e.removeAttribute(attr)
+    if (e) {
+      e.removeAttribute(attr)
+    }
   }
 }
 
@@ -208,19 +194,17 @@ export function removeAttribute (query, attr) {
 export function draggable (query, type) {
   const el = resolveQuery(query)
 
-  if (el === null) {
-    return
-  }
-
   if (type === undefined) {
     type = 'default'
   }
 
   for (const e of el) {
-    attribute(e, 'draggable', true)
-    event(e, 'dragstart', (ev) => {
-      ev.dataTransfer.setData('text/plain', type + ':' + ev.target.getAttribute('data-id'))
-    })
+    if (e) {
+      attribute(e, 'draggable', true)
+      event(e, 'dragstart', (ev) => {
+        ev.dataTransfer.setData('text/plain', type + ':' + ev.target.getAttribute('data-id'))
+      })
+    }
   }
 }
 
@@ -232,30 +216,28 @@ export function draggable (query, type) {
 export function dropTarget (query, dropCallback) {
   const el = resolveQuery(query)
 
-  if (el === null) {
-    return
-  }
-
   for (const e of el) {
-    event(e, 'dragover', (ev) => {
-      ev.preventDefault()
-    })
-    event(e, 'dragenter', (ev) => {
-      ev.target.classList.add('dragover')
-      ev.stopPropagation()
-    })
-    event(e, 'dragleave', (ev) => {
-      ev.target.classList.remove('dragover')
-    })
-    event(e, 'drop', (ev) => {
-      ev.stopPropagation()
-      ev.target.classList.remove('dragover')
-      const data = ev.dataTransfer.getData('text/plain')
-      dropCallback(ev, {
-        type: data.split(':')[0],
-        data: data.split(':')[1]
+    if (e) {
+      event(e, 'dragover', (ev) => {
+        ev.preventDefault()
       })
-    })
+      event(e, 'dragenter', (ev) => {
+        ev.target.classList.add('dragover')
+        ev.stopPropagation()
+      })
+      event(e, 'dragleave', (ev) => {
+        ev.target.classList.remove('dragover')
+      })
+      event(e, 'drop', (ev) => {
+        ev.stopPropagation()
+        ev.target.classList.remove('dragover')
+        const data = ev.dataTransfer.getData('text/plain')
+        dropCallback(ev, {
+          type: data.split(':')[0],
+          data: data.split(':')[1]
+        })
+      })
+    }
   }
 }
 
@@ -284,14 +266,12 @@ export async function http (url, payload, method) {
 export function parents (query, selector) {
   const elems = resolveQuery(query)
 
-  if (elems === null) {
-    return
-  }
-
   const parents = []
   for (let el of elems) {
-    while ((el = el.parentNode) && el !== document) {
-      if (!selector || el.matches(selector)) parents.push(el)
+    if (el) {
+      while ((el = el.parentNode) && el !== document) {
+        if (!selector || el.matches(selector)) parents.push(el)
+      }
     }
   }
   return parents
@@ -310,12 +290,10 @@ export function show (query, fshow) {
 
   const el = resolveQuery(query)
 
-  if (el === null) {
-    return
-  }
-
   for (const e of el) {
-    e.style.display = ''
+    if (e) {
+      e.style.display = ''
+    }
   }
 }
 
@@ -327,11 +305,9 @@ export function show (query, fshow) {
 export function hide (query) {
   const el = resolveQuery(query)
 
-  if (el === null) {
-    return
-  }
-
   for (const e of el) {
-    e.style.display = 'none'
+    if (e) {
+      e.style.display = 'none'
+    }
   }
 }
