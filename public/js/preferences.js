@@ -49,6 +49,14 @@ JH.event([domCache.newPassword1, domCache.newPassword2], 'keyup', async (ev) => 
   }
 })
 
+JH.event([domCache.persNewPassword1, domCache.persNewPassword2], 'keyup', async (ev) => {
+  if (JH.value(domCache.persNewPassword1) !== JH.value(domCache.persNewPassword2) || JH.value(domCache.persNewPassword1).length < 8) {
+    JH.disable(domCache.persPasswordChangeButton)
+  } else {
+    JH.enable(domCache.persPasswordChangeButton)
+  }
+})
+
 JH.event(domCache.passwordChangeButton, 'click', async (ev) => {
   const data = {
     _csrf: PW.getCSRFToken(),
