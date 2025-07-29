@@ -491,8 +491,10 @@ app.get('/api/items/:item', async (req, res) => {
   }
   const resp = await PassWeaver.itemGet(req.session, req.params.item, req.body)
 
-  // Encrypt data using given key
-  resp.data.data = Crypt.encryptData(resp.data.data, key)
+  if (resp.status === 'success') {
+    // Encrypt data using given key
+    resp.data.data = Crypt.encryptData(resp.data.data, key)
+  }
 
   res.json(resp)
 })
