@@ -76,7 +76,7 @@ body {
 }
 
 .dragover {
-  background-color: var(--wa-color-primary-100);
+  background-color: var(--wa-color-brand-fill-normal);
 }
 
 .page-sidebar wa-icon {
