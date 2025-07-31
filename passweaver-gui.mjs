@@ -492,8 +492,8 @@ app.get('/api/items/:item', async (req, res) => {
   const resp = await PassWeaver.itemGet(req.session, req.params.item, req.body)
 
   if (resp.status === 'success') {
-    // Encrypt data using given key
-    resp.data.data = Crypt.encryptData(resp.data.data, key)
+    // Encrypt data using given key (decode base64 key to bytes)
+    resp.data.data = Crypt.encryptData(resp.data.data, Buffer.from(key, 'base64'))
   }
 
   res.json(resp)
@@ -894,9 +894,9 @@ app.get('/noauth/onetimesecretget/:token', async (req, res) => {
 
   const resp = await PassWeaver.oneTimeSecretGet(req.session, req.params.token)
 
-  // Encrypt data using given key
+  // Encrypt data using given key (decode base64 key to bytes)
   if (resp.data?.secret?.length > 0 || resp.data?.item?.id?.length > 0) {
-    resp.data = await Crypt.encryptData(JSON.stringify(resp.data), key)
+    resp.data = await Crypt.encryptData(JSON.stringify(resp.data), Buffer.from(key, 'base64'))
   }
 
   res.json(resp)
