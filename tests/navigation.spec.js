@@ -122,6 +122,18 @@ test('Navigate admin menu', async ({ page }) => {
   pagetitle = await page.locator('.page-container').getAttribute('id')
   await expect(pagetitle).toBe('page_info')
 
+  // KMS
+  menu = await page.locator('[pageid=kms]')
+  await menu.click()
+  pagetitle = await page.locator('.page-container').getAttribute('id')
+  await expect(pagetitle).toBe('page_kms')
+
+  // API Keys
+  menu = await page.locator('[pageid=apikeys]')
+  await menu.click()
+  pagetitle = await page.locator('.page-container').getAttribute('id')
+  await expect(pagetitle).toBe('page_apikeys')
+
   // Settings
   menu = await page.locator('[pageid=settings]')
   await menu.click()
