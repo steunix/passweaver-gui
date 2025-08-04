@@ -18,6 +18,8 @@ const domCache = {
   dialogItemId: JH.query('#apikeyid'),
   dialogDescription: JH.query('#apikeydescription'),
   dialogUserId: JH.query('#apikeyuserid'),
+  dialogIpWhitelist: JH.query('#apikeyipwhitelist'),
+  dialogTimeWhitelist: JH.query('#apikeytimewhitelist'),
   dialogExpiresAt: JH.query('#apikeyexpiresat'),
   dialogActive: JH.query('#apikeyactive'),
   dialogSave: JH.query('#apikeysave'),
@@ -84,6 +86,8 @@ async function itemSave () {
     _csrf: PW.getCSRFToken(),
     description: JH.value(domCache.dialogDescription),
     userid: JH.value(domCache.dialogUserId),
+    ipwhitelist: JH.value(domCache.dialogIpWhitelist),
+    timewhitelist: JH.value(domCache.dialogTimeWhitelist),
     expiresat: JH.value(domCache.dialogExpiresAt),
     active: domCache.dialogActive.hasAttribute('checked')
   }
@@ -158,6 +162,8 @@ async function itemEditFill (id) {
   JH.value(domCache.dialogDescription, body.data.description)
   JH.value(domCache.dialogUserId, body.data.userid)
   JH.value(domCache.dialogExpiresAt, body.data.expiresat)
+  JH.value(domCache.dialogIpWhitelist, body.data.ipwhitelist)
+  JH.value(domCache.dialogTimeWhitelist, body.data.timewhitelist)
   if (!body.data.active) {
     domCache.dialogActive.removeAttribute('checked')
   } else {

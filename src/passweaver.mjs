@@ -963,14 +963,18 @@ export async function apikeysList (session, search) {
  * @param {string} userid User id
  * @param {string} expiresat Expiration date
  * @param {string} active Active
+ * @param {string} ipwhitelist IP whitelist
+ * @param {string} timewhitelist Time whitelist
  * @returns
  */
-export async function apikeysCreate (session, description, userid, expiresat, active) {
+export async function apikeysCreate (session, description, userid, expiresat, active, ipwhitelist, timewhitelist) {
   const data = {
     description,
     userid,
     expiresat,
-    active
+    active,
+    ipwhitelist,
+    timewhitelist
   }
 
   const resp = await passWeaverAPI(session, METHOD.post, '/apikeys', data)
@@ -1008,14 +1012,18 @@ export async function apikeysGet (session, id) {
  * @param {string} userid User id
  * @param {string} expiresat Expiration date
  * @param {string} active Active
+ * @param {string} ipwhitelist IP whitelist
+ * @param {string} timewhitelist Time whitelist
  * @returns
  */
-export async function apikeysEdit (session, id, description, userid, expiresat, active) {
+export async function apikeysEdit (session, id, description, userid, expiresat, active, ipwhitelist, timewhitelist) {
   const data = {
     description,
     userid,
     expiresat,
-    active
+    active,
+    ipwhitelist,
+    timewhitelist
   }
 
   const resp = await passWeaverAPI(session, METHOD.patch, `/apikeys/${id}`, data)
