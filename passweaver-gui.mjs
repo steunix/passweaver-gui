@@ -826,7 +826,7 @@ app.get('/api/apikeys', async (req, res) => {
 
 // New API key
 app.post('/api/apikeys', async (req, res) => {
-  const resp = await PassWeaver.apikeysCreate(req.session, req.body.description, req.body.userid, req.body.expiresat, req.body.active)
+  const resp = await PassWeaver.apikeysCreate(req.session, req.body.description, req.body.userid, req.body.expiresat, req.body.active, req.body.ipwhitelist, req.body.timewhitelist)
   res.json(resp)
 })
 
@@ -844,7 +844,7 @@ app.get('/api/apikeys/:id', async (req, res) => {
 
 // Update API key
 app.patch('/api/apikeys/:id', async (req, res) => {
-  const resp = await PassWeaver.apikeysEdit(req.session, req.params.id, req.body.description, req.body.userid, req.body.expiresat, req.body.active)
+  const resp = await PassWeaver.apikeysEdit(req.session, req.params.id, req.body.description, req.body.userid, req.body.expiresat, req.body.active, req.body.ipwhitelist, req.body.timewhitelist)
   res.json(resp)
 })
 
