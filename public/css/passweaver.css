@@ -208,6 +208,10 @@ tr {
   background-color: var(--wa-color-surface-lowered);
 }
 
+.monospace {
+  font-family: monospace !important;
+}
+
 .rowselected {
   border-inline-start-color: var(--wa-color-brand-50);
   border-inline-end-color: var(--wa-color-brand-50);
