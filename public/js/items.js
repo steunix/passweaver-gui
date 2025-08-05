@@ -340,7 +340,7 @@ async function itemRemove (itm) {
 async function itemDialogFill (item, gotofolder) {
   const key = Crypt.createKey()
 
-  const resp = await JH.http(`/api/items/${item}?key=${key}`)
+  const resp = await JH.http(`/api/items/${item}?key=${encodeURIComponent(key)}`)
   if (!await PW.checkResponse(resp)) {
     itemDialogHide()
     return
@@ -509,7 +509,7 @@ async function passwordCopy (ev) {
   const key = Crypt.createKey()
   const item = ev.currentTarget.getAttribute('data-id')
 
-  const resp = await JH.http(`/api/items/${item}?key=${key}`)
+  const resp = await JH.http(`/api/items/${item}?key=${encodeURIComponent(key)}`)
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -533,7 +533,7 @@ async function passwordShow (ev) {
     return
   }
 
-  const resp = await JH.http(`/api/items/${item}?key=${key}`)
+  const resp = await JH.http(`/api/items/${item}?key=${encodeURIComponent(key)}`)
   if (!await PW.checkResponse(resp)) {
     return
   }

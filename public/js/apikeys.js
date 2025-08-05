@@ -18,6 +18,8 @@ const domCache = {
   dialogItemId: JH.query('#apikeyid'),
   dialogDescription: JH.query('#apikeydescription'),
   dialogUserId: JH.query('#apikeyuserid'),
+  dialogIpWhitelist: JH.query('#apikeyipwhitelist'),
+  dialogTimeWhitelist: JH.query('#apikeytimewhitelist'),
   dialogExpiresAt: JH.query('#apikeyexpiresat'),
   dialogActive: JH.query('#apikeyactive'),
   dialogSave: JH.query('#apikeysave'),
@@ -65,7 +67,7 @@ async function fillItems () {
         `<td>${itm.lastusedat || 'Never'}</td>` +
         (itm.active
           ? "<td><wa-badge variant='success'>Active</wa-badge></td>"
-          : "<td><wa-badge variant='primary'>Inactive</wa-badge></td>") +
+          : "<td><wa-badge variant='danger'>Inactive</wa-badge></td>") +
         '</tr>'
     }
     domCache.itemsTableBody.innerHTML = row
@@ -87,6 +89,8 @@ async function itemSave () {
     _csrf: PW.getCSRFToken(),
     description: JH.value(domCache.dialogDescription),
     userid: JH.value(domCache.dialogUserId),
+    ipwhitelist: JH.value(domCache.dialogIpWhitelist),
+    timewhitelist: JH.value(domCache.dialogTimeWhitelist),
     expiresat: JH.value(domCache.dialogExpiresAt),
     active: JH.value(domCache.dialogActive) === 'A'
   }
@@ -164,6 +168,8 @@ async function itemEditFill (id) {
   JH.value(domCache.dialogUserId, body.data.userid)
   JH.value(domCache.dialogExpiresAt, body.data.expiresat)
   JH.value(domCache.dialogActive, body.data.active ? 'A' : 'I')
+  JH.value(domCache.dialogIpWhitelist, body.data.ipwhitelist)
+  JH.value(domCache.dialogTimeWhitelist, body.data.timewhitelist)
 
   dialogSaveEnable()
 }

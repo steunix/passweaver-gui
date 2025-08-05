@@ -6,6 +6,8 @@ PassWeaver-GUI is an opensource project, released under MIT license. See [Techni
 
 # Features
 
+These are PassWeaver GUI feature, in random order:
+
 - Personal folders for each user
 - Favorite items
 - Share one-time secrets with anyone, even if they have not an account; an alternative server name can be specified in case of public shares
@@ -15,9 +17,9 @@ PassWeaver-GUI is an opensource project, released under MIT license. See [Techni
 - Read only mode
 - Folder level permissions
 - User groups
-- Extensive log actions on items
+- Extensive log on items and logins
 - Both LDAP and local authentication
-- API keys
+- API keys with IP and day-of-week/time whitelists
 - CSP compliant pages
 - Quick and clean user interface
 - Light and dark theme setting for each user
@@ -38,6 +40,8 @@ With PassWeaver-GUI you will manage these entities:
 - Groups
 - Folders
 - One time secrets
+- API keys
+- KMS
 
 In a few words:
 - items are stored in folders, and folders can contain both items and other folders.
@@ -244,13 +248,19 @@ In this page you can manage API keys access. API keys are bound to a user and in
 
 To create a new API key, click on "New API key" button and fill in the form:
 
-![New API key](assets/passweavergui-apikeys-2-001.jpeg)
+![New API key](assets/passweavergui-apikeys-2-002.jpeg)
 
 The required fields are:
 
 - API key description
 - User to bound the API key to
 - Expire date, in YYYY-MM-DD form
+- IP whitelist: you can specify a comma-separated list of CIDR subnets allowed to access the API Key
+- Time whitelist: you can specify a comma-separated list of times when an API key is allowed. The time string is formatted as DDD:HHMM-HHMM where:
+  - DDD is the day of week: MON, TUE, WED, THU, FRI, SAT, SUN, or ANY for any day of week
+  - HHMM is an hour express in 24h (e.g. 1400): the first is the starting time, the second is the ending time
+  - For example, ANY:2200-2359 means any day of week, from 22:00 to 23:59
+  - The timezone is the one where PassWeaver API is running
 - Active status of the key
 
 Once the key is created, you are given the API key data:
@@ -341,13 +351,13 @@ Copy `config-skel.json` to `config.json` and adjust the options; note that ALL c
 - `listen`:
   - `port`: port to bind the HTTP server
   - `host`: IP address to bind the HTTP server (or blank for any address)
+- `passweaverapi_url`: URL for PassWeaver-API (including /api/v1)
 - `server`:
   - `item_link_server`: If not blank, this URL will be used for items links, instead of the current one it must be in the form protocol://server<:port> (e.g. https://my.server.com)
   - `onetimesecret_public_server`: If not blank, this URL will be used for public one time secrets, instead of the current one; it must be in the form protocol://server<:port> (e.g. https://my.server.com)
   - `rate_limit_max_requests`: Max number of request PER MINUTE for these two pages:
     - Authorization page (not the login page, but the one called after you insert the credentials)
     - If `onetimesecret_public_server` is specified, the public link for onetimesecrets
-- `passweaverapi_url`: URL for PassWeaver-API (/api/v1 included)
 - `company_name`: Company name
 - `log`:
   - `dir`: Logs directory. It will be created if necessary.

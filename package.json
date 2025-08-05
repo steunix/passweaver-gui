@@ -1,6 +1,6 @@
 {
   "name": "passweaver-gui",
-  "version": "1.10.1",
+  "version": "1.11.0",
   "type": "module",
   "description": "Collaborative password manager GUI",
   "main": "passweaver-gui.mjs",
@@ -8,13 +8,14 @@
     "node": ">=21.0.0"
   },
   "scripts": {
-    "start": "node passweaver-gui.mjs"
+    "start": "node passweaver-gui.mjs",
+    "test": "standard && playwright test --config=playwright.config.js"
   },
   "author": "Stefano Rivoir",
   "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "1.54.1",
-    "@types/node": "24.1.0",
+    "@playwright/test": "1.54.2",
+    "@types/node": "24.2.0",
     "standard": "17.1.2"
   },
   "dependencies": {
@@ -30,7 +31,7 @@
     "jsonwebtoken": "9.0.2",
     "lusca": "1.7.0",
     "morgan": "1.10.1",
-    "redis": "5.6.1",
+    "redis": "5.7.0",
     "rotating-file-stream": "3.2.6",
     "semver": "7.7.2",
     "serve-favicon": "2.5.1"

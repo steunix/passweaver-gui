@@ -78,7 +78,9 @@ async function fillUsers () {
         `<td>${JH.sanitize(itm.email)}</td>` +
         `<td>${JH.sanitize(itm.locale)}</td>` +
         `<td>${JH.sanitize(itm.authmethod)}</td>` +
-        `<td class='text-center'><wa-icon name='${itm.active ? 'check' : 'xmark'}' style='color:${itm.active ? 'green' : 'red'}'/></td>` +
+        (itm.active
+          ? "<td><wa-badge variant='success'>Active</wa-badge></td>"
+          : "<td><wa-badge variant='danger'>Inactive</wa-badge></td>") +
         '</tr>'
     }
     domCache.usersTableBody.innerHTML = row

@@ -33,7 +33,7 @@ const cfg = Config.get()
 
 // Check for minimum PassWeaver API version
 try {
-  const minpwapiversion = '2.1.0'
+  const minpwapiversion = '2.2.0'
   const resp = await PassWeaver.version()
   const pwapiversion = resp.data.version
   if (!Semver.gte(pwapiversion, minpwapiversion)) {
@@ -491,8 +491,10 @@ app.get('/api/items/:item', async (req, res) => {
   }
   const resp = await PassWeaver.itemGet(req.session, req.params.item, req.body)
 
-  // Encrypt data using given key
-  resp.data.data = Crypt.encryptData(resp.data.data, key)
+  if (resp.status === 'success') {
+    // Encrypt data using given key (decode base64 key to bytes)
+    resp.data.data = Crypt.encryptData(resp.data.data, Buffer.from(key, 'base64'))
+  }
 
   res.json(resp)
 })
@@ -824,7 +826,7 @@ app.get('/api/apikeys', async (req, res) => {
 
 // New API key
 app.post('/api/apikeys', async (req, res) => {
-  const resp = await PassWeaver.apikeysCreate(req.session, req.body.description, req.body.userid, req.body.expiresat, req.body.active)
+  const resp = await PassWeaver.apikeysCreate(req.session, req.body.description, req.body.userid, req.body.expiresat, req.body.active, req.body.ipwhitelist, req.body.timewhitelist)
   res.json(resp)
 })
 
@@ -842,7 +844,7 @@ app.get('/api/apikeys/:id', async (req, res) => {
 
 // Update API key
 app.patch('/api/apikeys/:id', async (req, res) => {
-  const resp = await PassWeaver.apikeysEdit(req.session, req.params.id, req.body.description, req.body.userid, req.body.expiresat, req.body.active)
+  const resp = await PassWeaver.apikeysEdit(req.session, req.params.id, req.body.description, req.body.userid, req.body.expiresat, req.body.active, req.body.ipwhitelist, req.body.timewhitelist)
   res.json(resp)
 })
 
@@ -892,9 +894,9 @@ app.get('/noauth/onetimesecretget/:token', async (req, res) => {
 
   const resp = await PassWeaver.oneTimeSecretGet(req.session, req.params.token)
 
-  // Encrypt data using given key
+  // Encrypt data using given key (decode base64 key to bytes)
   if (resp.data?.secret?.length > 0 || resp.data?.item?.id?.length > 0) {
-    resp.data = await Crypt.encryptData(JSON.stringify(resp.data), key)
+    resp.data = await Crypt.encryptData(JSON.stringify(resp.data), Buffer.from(key, 'base64'))
   }
 
   res.json(resp)

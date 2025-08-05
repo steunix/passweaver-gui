@@ -97,7 +97,7 @@ async function fillItems () {
 
 async function itemViewFill (item) {
   const key = Crypt.createKey()
-  const resp = await JH.http(`/api/items/${item}?key=${key}`)
+  const resp = await JH.http(`/api/items/${item}?key=${encodeURIComponent(key)}`)
   if (!await PW.checkResponse(resp)) {
     domCache.itemViewDialog.open = false
     return
