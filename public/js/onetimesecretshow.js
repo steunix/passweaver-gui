@@ -21,7 +21,7 @@ JH.event('#show', 'click', async (ev) => {
   const token = domCache.token.getAttribute('data-token')
   try {
     const key = Crypt.createKey()
-    const resp = await JH.http(`/noauth/onetimesecretget/${token}?key=${key}`)
+    const resp = await JH.http(`/noauth/onetimesecretget/${token}?key=${encodeURIComponent(key)}`)
     if (!await PW.checkResponse(resp)) {
       throw new Error()
     }
