@@ -15,7 +15,7 @@
   "license": "MIT",
   "devDependencies": {
     "@playwright/test": "1.54.2",
-    "@types/node": "24.2.0",
+    "@types/node": "24.2.1",
     "standard": "17.1.2"
   },
   "dependencies": {
