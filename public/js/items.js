@@ -115,7 +115,7 @@ async function fillItems () {
     for (const itm of body.data) {
       row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
       row += '<td class="border-end">'
-      row += '<wa-dropdown><wa-button label="Menu" size="small" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical"></wa-icon></wa-button>'
+      row += '<wa-dropdown><wa-button label="Menu" size="small" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical" label="Menu"></wa-icon></wa-button>'
       if (Folders.currentPermissions.write) {
         row += `<wa-dropdown-item id='clone-${itm.id}' title='Clone item' data-id='${itm.id}'><wa-icon label="Clone" name='clone' slot='icon'></wa-icon>Clone</wa-dropdown-item>`
       }
@@ -128,11 +128,11 @@ async function fillItems () {
         row += `<wa-dropdown-item id='remove-${itm.id}' title='Remove item' data-id='${itm.id}'><wa-icon label="Remove" name='trash' slot='icon' style="color:red;"></wa-icon>Remove</wa-dropdown-item>`
       }
       row += '</wa-dropdown>'
-      row += `<wa-button size="small" id='fav-${itm.id}' data-id='${itm.id}' data-fav='${itm.favorite}' appearance="plain"><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" title='Favorite'></wa-icon></wa-button>`
+      row += `<wa-button size="small" id='fav-${itm.id}' data-id='${itm.id}' data-fav='${itm.favorite}' appearance="plain"><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" title='Favorite' label='Favorite'></wa-icon></wa-button>`
       if (Folders.currentPermissions.write) {
-        row += `<wa-button size="small" id='edit-${itm.id}' appearance="plain" data-id='${itm.id}'><wa-icon title='Edit item' name='edit'></wa-icon></wa-button>`
+        row += `<wa-button size="small" id='edit-${itm.id}' appearance="plain" data-id='${itm.id}'><wa-icon title='Edit item' label="Edit item" name='edit'></wa-icon></wa-button>`
       }
-      row += `<wa-button size="small" id='link-${itm.id}' appearance="plain" data-id='${itm.id}'><wa-icon title='Copy item link' name='link'></wa-icon></wa-button>`
+      row += `<wa-button size="small" id='link-${itm.id}' appearance="plain" data-id='${itm.id}'><wa-icon title='Copy item link' label="Copy item link" name='link'></wa-icon></wa-button>`
       row += '</td>'
       row += '<td class="border-end">'
       if (itm.type) {
@@ -143,7 +143,7 @@ async function fillItems () {
       row += `<td class='border-end'><wa-copy-button title='Copy user to clipboard' from='user-${itm.id}'></wa-copy-button></td>`
       row += `<td id='password-${itm.id}'>****</td>`
       row += `<td><wa-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></wa-copy-button></td>`
-      row += `<td><wa-button size="small" appearance="plain"><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></wa-button></td>`
+      row += `<td><wa-button size="small" appearance="plain"><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' label='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></wa-button></td>`
       row += '</tr>'
     }
     domCache.itemsTableBody.innerHTML = row
