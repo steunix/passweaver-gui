@@ -115,19 +115,24 @@ async function fillItems () {
     for (const itm of body.data) {
       row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
       row += '<td class="border-end">'
-      row += `<wa-icon id='fav-${itm.id}' name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></wa-icon>`
+      row += '<wa-dropdown><wa-button label="Menu" size="small" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical"></wa-icon></wa-button>'
       if (Folders.currentPermissions.write) {
-        row += `<wa-icon id='edit-${itm.id}' title='Edit item' name='edit' data-id='${itm.id}'></wa-icon>`
-        row += `<wa-icon id='clone-${itm.id}' title='Clone item' name='clone' data-id='${itm.id}'></wa-icon>`
+        row += `<wa-dropdown-item id='clone-${itm.id}' title='Clone item' data-id='${itm.id}'><wa-icon label="Clone" name='clone' slot='icon'></wa-icon>Clone</wa-dropdown-item>`
       }
-      row += `<wa-icon id='link-${itm.id}' title='Copy item link' name='link' data-id='${itm.id}'></wa-icon>`
       if (!itm.personal) {
-        row += `<wa-icon id='onetime-${itm.id}' title='One time share' name='1' data-id='${itm.id}'></wa-icon>`
+        row += `<wa-dropdown-item id='onetime-${itm.id}' title='One time share' data-id='${itm.id}'><wa-icon label="One time share" name='1' slot='icon'></wa-icon>One time share</wa-dropdown-item>`
       }
-      row += `<wa-icon id='activity-${itm.id}' title='Activity' name='clock' data-id='${itm.id}'></wa-icon>`
+      row += `<wa-dropdown-item id='activity-${itm.id}' title='Activity' data-id='${itm.id}'><wa-icon label="Activity" name='clock' slot='icon'></wa-icon>Activity</wa-dropdown-item>`
+
       if (Folders.currentPermissions.write) {
-        row += `<wa-icon id='remove-${itm.id}' title='Remove item' name='trash' style="color:red;" data-id='${itm.id}'></wa-icon>`
+        row += `<wa-dropdown-item id='remove-${itm.id}' title='Remove item' data-id='${itm.id}'><wa-icon label="Remove" name='trash' slot='icon' style="color:red;"></wa-icon>Remove</wa-dropdown-item>`
       }
+      row += '</wa-dropdown>'
+      row += `<wa-button size="small" id='fav-${itm.id}' data-id='${itm.id}' data-fav='${itm.favorite}' appearance="plain"><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" title='Favorite'></wa-icon></wa-button>`
+      if (Folders.currentPermissions.write) {
+        row += `<wa-button size="small" id='edit-${itm.id}' appearance="plain" data-id='${itm.id}'><wa-icon title='Edit item' name='edit'></wa-icon></wa-button>`
+      }
+      row += `<wa-button size="small" id='link-${itm.id}' appearance="plain" data-id='${itm.id}'><wa-icon title='Copy item link' name='link'></wa-icon></wa-button>`
       row += '</td>'
       row += '<td class="border-end">'
       if (itm.type) {
@@ -138,7 +143,7 @@ async function fillItems () {
       row += `<td class='border-end'><wa-copy-button title='Copy user to clipboard' from='user-${itm.id}'></wa-copy-button></td>`
       row += `<td id='password-${itm.id}'>****</td>`
       row += `<td><wa-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></wa-copy-button></td>`
-      row += `<td><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></td>`
+      row += `<td><wa-button size="small" appearance="plain"><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></wa-button></td>`
       row += '</tr>'
     }
     domCache.itemsTableBody.innerHTML = row
