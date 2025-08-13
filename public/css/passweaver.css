@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Condensed&display=swap');
 
 :not(:defined) {
   visibility: hidden;
@@ -6,8 +6,8 @@
 
 :root {
   font-size: 14px;
-  --wa-font-family-body: "Fira Sans";
-  --theme-font: "Fira Sans";
+  --wa-font-family-body: "Encode Sans Condensed";
+  --theme-font: "Encode Sans Condensed";
   --theme-color: #ea9e34;
   --theme-sidebar-bgcolor: #1a1c20;
   --theme-sidebar-color: rgb(255, 255, 255);
