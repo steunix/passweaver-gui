@@ -248,16 +248,6 @@ tr {
   visibility: hidden;
 }
 
-tr > td > wa-icon {
-  margin-right: 0.5rem;
-  cursor: pointer;
-  opacity: 0.7;
-}
-
-tr > td > wa-icon:hover {
-  opacity: 1;
-}
-
 td {
   padding: 0.4rem;
   vertical-align: middle;

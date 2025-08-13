@@ -65,8 +65,8 @@ async function fillItemTypes () {
   for (const itm of body.data) {
     row +=
       `<tr data-id='${itm.id}' style='cursor:pointer'>` +
-      `<td><wa-icon id='edititemtype-${itm.id}' title='Edit item type' name='edit' data-id='${itm.id}'></wa-icon></td>` +
-      `<td class='border-end'><wa-icon id='removeitemtype-${itm.id}' title='Delete item type' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon></td>` +
+      `<td><wa-button appearance='plain' size='small'><wa-icon id='edititemtype-${itm.id}' label='Edit item type' name='edit' data-id='${itm.id}'></wa-icon></wa-button></td>` +
+      `<td class='border-end'><wa-button appearance='plain' size='small'><wa-icon id='removeitemtype-${itm.id}' label='Delete item type' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon></wa-button></td>` +
       `<td>${itm.description}</td>` +
       `<td>${itm.icon}</td>` +
       `<td><wa-icon name='${itm.icon}'></wa-icon></td>` +

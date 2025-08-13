@@ -62,9 +62,9 @@ async function fillItems () {
       row +=
         `<tr id='row-${itm.id}' data-id='${itm.id}'>` +
         '<td>' +
-        `<wa-icon id='fav-${itm.id}' name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></wa-icon>` +
-        `<wa-icon id='link-${itm.id}' title='Copy item link' name='link' data-id='${itm.id}'></wa-icon>` +
-        `<wa-icon id='folder-${itm.id}' title='Open folder' name='folder-open' data-id='${itm.id}'></wa-icon>` +
+        `<wa-button appearance='plain' size='small'><wa-icon id='fav-${itm.id}' name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' label='Favorite' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button appearance='plain' size='small'><wa-icon id='link-${itm.id}' label='Copy item link' name='link' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button appearance='plain' size='small'><wa-icon id='folder-${itm.id}' label='Open folder' name='folder-open' data-id='${itm.id}'></wa-icon></wa-button>` +
         '</td>' +
         `<td class='border-start border-end'>${JH.sanitize(itm.folder.description)}</td>` +
         '<td class="border-end">'

@@ -67,10 +67,10 @@ async function fillUsers () {
       row +=
         `<tr data-id='${itm.id}' style='cursor:pointer'>` +
         '<td>' +
-        `<wa-icon id='edituser-${itm.id}' title='Edit user' name='edit' data-id='${itm.id}'></wa-icon>` +
-        `<wa-icon id='activity-${itm.id}' title='Activity' name='clock' data-id='${itm.id}'></wa-icon>` +
-        `<wa-icon id='folders-${itm.id}' title='Visible folders' name='folder-tree' data-id='${itm.id}'></wa-icon>` +
-        `<wa-icon id='removeuser-${itm.id}' title='Delete user' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon>` +
+        `<wa-button appearance='plain' size='small'><wa-icon id='edituser-${itm.id}' label='Edit user' name='edit' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button appearance='plain' size='small'><wa-icon id='activity-${itm.id}' label='Activity' name='clock' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button appearance='plain' size='small'><wa-icon id='folders-${itm.id}' label='Visible folders' name='folder-tree' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button appearance='plain' size='small'><wa-icon id='removeuser-${itm.id}' label='Delete user' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon></wa-button>` +
         '</td>' +
         `<td class='border-start'>${JH.sanitize(itm.login)}</td>` +
         `<td>${JH.sanitize(itm.lastname)}</td>` +
@@ -163,7 +163,7 @@ async function fillGroups () {
     for (const itm of body.data) {
       row += `<tr data-id='${itm.id}'>`
       if (itm.id !== 'E') {
-        row += `<td><wa-icon id='removegroup-${itm.id}' data-id='${itm.id}' name='trash' style='color:red;' title='Remove'></wa-icon></td>`
+        row += `<td><wa-button appearance='plain' size='small'><wa-icon id='removegroup-${itm.id}' data-id='${itm.id}' name='trash' style='color:red;' label='Remove group'></wa-icon></wa-button></td>`
       } else {
         row += '<td></td>'
       }
