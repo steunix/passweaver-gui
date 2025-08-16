@@ -72,9 +72,13 @@ const configSchema = {
         user_managed: { type: 'boolean' }
       },
       required: ['user_managed']
+    },
+    generate_password_length: {
+      type: 'integer',
+      minimum: 8
     }
   },
-  required: ['listen', 'server', 'passweaverapi_url', 'company_name', 'https', 'log', 'onetimetokens', 'redis', 'folders']
+  required: ['listen', 'server', 'passweaverapi_url', 'company_name', 'https', 'log', 'onetimetokens', 'redis', 'folders', 'generate_password_length']
 }
 
 // Reads package.json

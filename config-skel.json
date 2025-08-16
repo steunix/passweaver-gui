@@ -30,5 +30,6 @@
   },
   "folders": {
     "user_managed": true
-  }
+  },
+  "generate_password_length": 15
 }

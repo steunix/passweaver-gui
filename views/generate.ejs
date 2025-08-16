@@ -7,9 +7,10 @@
 
   <div class="main1">
     <h2>Generate secure password</h2>
+    <sl-range id="passwordlength" label="Password length" min="8" max="30" value="<%= passwordlength %>"></sl-range>
     <h3>With symbols</h3>
     <sl-button-group>
-      <sl-input type="text" style="width:15rem;" readonly="readonly" id="generatedpassword">
+      <sl-input type="text" style="width:<%= passwordlength %>rem;" readonly="readonly" id="generatedpassword">
         <sl-copy-button slot="suffix" title='Copy to clipboard' id="copypassword" from="generatedpassword.value"></sl-copy-button>
       </sl-input>
       <sl-button title='Generate a new password' id="generate">
@@ -21,7 +22,7 @@
     </sl-button-group>
     <h3>Without symbols</h3>
     <sl-button-group>
-      <sl-input type="text" style="width:15rem;" readonly="readonly" id="generatedpasswordns">
+      <sl-input type="text" style="width:<%= passwordlength %>rem;" readonly="readonly" id="generatedpasswordns">
         <sl-copy-button slot="suffix" title='Copy to clipboard' id="copypasswordns" from="generatedpasswordns.value"></sl-copy-button>
       </sl-input>
       <sl-button title='Generate a new password' id="generatens">
