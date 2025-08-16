@@ -2,6 +2,7 @@ import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 
 const domCache = {
+  passwordLength: JH.query('#passwordlength'),
   passwordInput: JH.query('#generatedpassword'),
   noSymPasswordInput: JH.query('#generatedpasswordns'),
   generateButton: JH.query('#generate'),
@@ -15,7 +16,8 @@ const domCache = {
 async function generatePassword (symbols = true) {
   const passwordInput = symbols ? domCache.passwordInput : domCache.noSymPasswordInput
   JH.value(passwordInput, 'Generating...')
-  const url = symbols ? '/api/generatepassword' : '/api/generatepassword?symbols=false'
+  let url = symbols ? '/api/generatepassword?' : '/api/generatepassword?symbols=false'
+  url += `&length=${JH.value(domCache.passwordLength)}`
 
   const resp = await JH.http(url)
   if (!await PW.checkResponse(resp)) {
@@ -51,4 +53,11 @@ JH.event(domCache.onetimeCreate, 'click', () => {
 
 JH.event(domCache.noSymOnetimeCreate, 'click', () => {
   tokenGenerate(JH.value(domCache.noSymGeneratedPasswordInput))
+})
+
+JH.event(domCache.passwordLength, 'sl-change', async () => {
+  domCache.passwordInput.style.width = `${JH.value(domCache.passwordLength)}rem`
+  domCache.noSymPasswordInput.style.width = `${JH.value(domCache.passwordLength)}rem`
+  await generatePassword()
+  await generatePassword(false)
 })
