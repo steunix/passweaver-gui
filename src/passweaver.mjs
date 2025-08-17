@@ -950,10 +950,11 @@ export async function kmsEdit (session, id, description, type, active, config) {
  * API keys list
  * @param {Object} session Session
  * @param {Object} search Search string
+ * @param {string} userid User id
  * @returns
  */
-export async function apikeysList (session, search) {
-  const resp = await passWeaverAPI(session, METHOD.get, '/apikeys?search=' + encodeURIComponent(search))
+export async function apikeysList (session, search, userid) {
+  const resp = await passWeaverAPI(session, METHOD.get, '/apikeys?search=' + encodeURIComponent(search) + '&userid=' + encodeURIComponent(userid))
   return resp
 }
 

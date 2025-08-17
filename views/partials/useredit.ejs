@@ -12,6 +12,13 @@
     <sl-option value="apikey">API key</sl-option>
   </sl-select>
   <sl-checkbox id="editactive" name="editactive">Active</sl-checkbox>
+  <br/>
+  <br/>
+  <sl-alert id="editapikeywarning" variant="warning">
+    <sl-icon slot="icon" name="exclamation-triangle"></sl-icon>
+    <strong>User has connected API keys</strong><br />
+    If you disable this user, all API keys will be disabled too.
+  </sl-alert>
   <sl-button id="useredit" slot="footer" variant="primary">Save</button>
   <sl-button id="cancel" slot="footer">Cancel</button>
 </sl-dialog>
