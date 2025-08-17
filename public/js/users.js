@@ -38,6 +38,7 @@ const domCache = {
   editLocale: JH.query('#editlocale'),
   editAuthMethod: JH.query('#editauthmethod'),
   editActive: JH.query('#editactive'),
+  editAPIKeyWarning: JH.query('#editapikeywarning'),
   userEditButton: JH.query('#useredit'),
   userEditDialog: JH.query('#edituserdialog'),
   genericTree: JH.query('#generictree'),
@@ -449,6 +450,23 @@ JH.event(domCache.groupsAddButton, 'click', (ev) => {
 
 JH.event(domCache.userActivityLoadMore, 'click', (ev) => {
   fillActivity(currentUser)
+})
+
+JH.event(domCache.editActive, 'sl-change', async () => {
+  if (JH.value(domCache.editActive) === 'false') {
+    domCache.editAPIKeyWarning.open = false
+    return
+  }
+
+  const resp = await JH.http(`/api/apikeys?userid=${currentUser}`)
+  if (!await PW.checkResponse(resp)) {
+    return
+  }
+
+  const body = await resp.json()
+  if (body.data.length) {
+    domCache.editAPIKeyWarning.open = true
+  }
 })
 
 JH.event(domCache.groupsCopyButton, 'click', groupsCopy)
