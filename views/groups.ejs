@@ -8,25 +8,23 @@
 
   <div class="main1">
     <h4>Groups</h4>
-    <div style="display:flex;">
-      <div style="display:flex;margin-right:1em;">
-        <wa-input id="groupsearch" type="text" placeholder="Search group" autofocus="autofocus" with-clear>
-          <wa-icon slot="start" name="search"></wa-icon>
-          <wa-icon slot="end" title="Search previous" id="groupsearchprevious" name="angle-left"></wa-icon>
-          <wa-icon slot="end" title="Search next" id="groupsearchnext" name="angle-right"></wa-icon>
-        </wa-input>
-      </div>
+    <div class="wa-flank:end">
+      <wa-input id="groupsearch" type="text" placeholder="Search group" autofocus="autofocus" with-clear>
+        <wa-icon slot="start" name="search"></wa-icon>
+        <wa-icon slot="end" title="Search previous" id="groupsearchprevious" name="angle-left"></wa-icon>
+        <wa-icon slot="end" title="Search next" id="groupsearchnext" name="angle-right"></wa-icon>
+      </wa-input>
       <wa-button-group>
-        <wa-button pill id="groupcreate" appearance="outlined" title="New group" variant="brand">
+        <wa-button id="groupcreate" appearance="filled" title="New group" variant="brand">
           <wa-icon name="plus" label="Create group"></wa-icon>
         </wa-button>
-        <wa-button pill id="groupedit" appearance="outlined" title="Edit group">
+        <wa-button id="groupedit" appearance="filled" title="Edit group">
           <wa-icon name="edit" label="Edit group"></wa-icon>
         </wa-button>
-        <wa-button pill id="groupfolders" appearance="outlined" title="Show folders" variant="success">
+        <wa-button id="groupfolders" appearance="filled" title="Show folders" variant="success">
           <wa-icon name="folder-tree" label="Show folders"></wa-icon>
         </wa-button>
-        <wa-button pill id="groupremove" appearance="outlined" variant="danger" title="Remove group">
+        <wa-button id="groupremove" appearance="filled" variant="danger" title="Remove group">
           <wa-icon name="trash" label="Remove group"></wa-icon>
         </wa-button>
       </wa-button-group>
@@ -37,7 +35,7 @@
 
   <div class="main2">
     <h4><span id="sectiontitle">Members</span></h4>
-    <div style="display:flex;">
+    <div class="wa-flank:end">
       <wa-button-group>
         <wa-button id="newmember" appearance="outlined">
           <wa-icon slot="start" name="plus" label="Add member"></wa-icon>

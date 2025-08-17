@@ -68,10 +68,10 @@ async function fillUsers () {
       row +=
         `<tr data-id='${itm.id}' style='cursor:pointer'>` +
         '<td>' +
-        `<wa-button appearance='plain' size='small'><wa-icon id='edituser-${itm.id}' label='Edit user' name='edit' data-id='${itm.id}'></wa-icon></wa-button>` +
-        `<wa-button appearance='plain' size='small'><wa-icon id='activity-${itm.id}' label='Activity' name='clock' data-id='${itm.id}'></wa-icon></wa-button>` +
-        `<wa-button appearance='plain' size='small'><wa-icon id='folders-${itm.id}' label='Visible folders' name='folder-tree' data-id='${itm.id}'></wa-icon></wa-button>` +
-        `<wa-button appearance='plain' size='small'><wa-icon id='removeuser-${itm.id}' label='Delete user' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button title='Edit user' appearance='plain' size='small'><wa-icon id='edituser-${itm.id}' label='Edit user' name='edit' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button title='User activity' appearance='plain' size='small'><wa-icon id='activity-${itm.id}' label='User activity' name='clock' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button title='Visible folders' appearance='plain' size='small'><wa-icon id='folders-${itm.id}' label='Visible folders' name='folder-tree' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button title='Delete user' appearance='plain' size='small'><wa-icon id='removeuser-${itm.id}' label='Delete user' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon></wa-button>` +
         '</td>' +
         `<td class='border-start'>${JH.sanitize(itm.login)}</td>` +
         `<td>${JH.sanitize(itm.lastname)}</td>` +

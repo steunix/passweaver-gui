@@ -8,23 +8,21 @@
 
   <div class="main1">
     <h4>Folders</h4>
-    <div style="display:flex;">
-      <div style="display:flex;margin-right:1em;">
-        <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" with-clear>
-          <wa-icon slot="start" name="search"></wa-icon>
-          <wa-icon slot="end" title="Search previous" id="foldersearchprevious" name="angle-left"></wa-icon>
-          <wa-icon slot="end" title="Search next" id="foldersearchnext" name="angle-right"></wa-icon>
-        </wa-input>
-      </div>
+    <div class="wa-flank:end">
+      <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" with-clear>
+        <wa-icon slot="start" name="search"></wa-icon>
+        <wa-icon slot="end" title="Search previous" id="foldersearchprevious" name="angle-left"></wa-icon>
+        <wa-icon slot="end" title="Search next" id="foldersearchnext" name="angle-right"></wa-icon>
+      </wa-input>
       <% if ( manage_folders ) { %>
         <wa-button-group>
-          <wa-button pill id="foldercreate" appearance="outlined" variant="brand" title="New subfolder" label="New subfolder">
+          <wa-button id="foldercreate" appearance="filled" variant="brand" title="New subfolder">
             <wa-icon name="plus" label="New subfolder"></wa-icon>
           </wa-button>
-          <wa-button pill id="folderedit" appearance="outlined" title="Edit folder" label="Edit folder">
+          <wa-button id="folderedit" appearance="filled" title="Edit folder">
             <wa-icon name="edit" label="Edit folder"></wa-icon>
           </wa-button>
-          <wa-button pill id="folderremove" appearance="outlined" variant="danger" title="Delete folder" label="Delete folder">
+          <wa-button id="folderremove" appearance="filled" variant="danger" title="Delete folder">
             <wa-icon name="trash" label="Delete folder"></wa-icon>
           </wa-button>
         </wa-button-group>

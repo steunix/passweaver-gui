@@ -8,23 +8,21 @@
 
   <div class="main1">
     <h4>Folders</h4>
-    <div style="display:flex; margin-bottom: 10px;">
-      <div style="display:flex;margin-right:1em;">
-        <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" with-clear>
-          <wa-icon slot="start" name="search"></wa-icon>
-          <wa-icon slot="end" title="Search previous" id="foldersearchprevious" name="angle-left"></wa-icon>
-          <wa-icon slot="end" title="Search next" id="foldersearchnext" name="angle-right"></wa-icon>
-        </wa-input>
-      </div>
+    <div class="wa-flank:end">
+      <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" with-clear>
+        <wa-icon slot="start" name="search"></wa-icon>
+        <wa-icon slot="end" title="Search previous" id="foldersearchprevious" name="angle-left"></wa-icon>
+        <wa-icon slot="end" title="Search next" id="foldersearchnext" name="angle-right"></wa-icon>
+      </wa-input>
       <% if ( manage_folders ) { %>
         <wa-button-group>
-          <wa-button pill id="foldercreate" type="button" variant="brand" appearance="outlined" title="New folder">
+          <wa-button id="foldercreate" type="button" variant="brand" appearance="filled" title="New folder">
             <wa-icon name="plus" label="Create folder"></wa-icon>
           </wa-button>
-          <wa-button pill id="folderedit" type="button" appearance="outlined" title="Edit folder">
+          <wa-button id="folderedit" type="button" appearance="filled" title="Edit folder">
             <wa-icon name="edit" label="Edit folder"></wa-icon>
           </wa-button>
-          <wa-button pill id="folderremove" type="button" variant="danger" appearance="outlined" title="Remove folder">
+          <wa-button id="folderremove" type="button" variant="danger" appearance="filled" title="Remove folder">
             <wa-icon name="trash" label="Remove folder"></wa-icon>
           </wa-button>
         </wa-button-group>
@@ -53,10 +51,7 @@
           <th>Type</th>
           <th>Title</th>
           <th>User</th>
-          <th>Copy user</th>
           <th>Password</th>
-          <th>Copy pwd</th>
-          <th>Show</th>
         </tr>
       </thead>
       <tbody>

@@ -5,9 +5,7 @@
 }
 
 :root {
-  font-size: 14px;
   --wa-font-family-body: "Encode Sans Condensed";
-  --theme-font: "Encode Sans Condensed";
   --theme-color: #ea9e34;
   --theme-sidebar-bgcolor: #1a1c20;
   --theme-sidebar-color: rgb(255, 255, 255);
@@ -18,10 +16,10 @@
   --theme-page-border-color: rgb(173, 173, 173);
   --bottom-margin: 13rem;
   --indent-guide-width: 1px;
+  --wa-form-control-required-content-color: red;
 }
 
 body {
-  --wa-form-control-required-content-color: red;
   margin: 0;
   padding: 0;
   overflow-y: hidden;
@@ -249,15 +247,12 @@ tr {
 }
 
 td {
-  padding: 0.4rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
   vertical-align: middle;
 }
 
 /* WebAwesome */
-wa-tree-item::part(label) {
-  font-family: var(--theme-font);
-}
-
 wa-tree-item::part(item) {
   cursor: pointer;
 }
@@ -268,12 +263,9 @@ wa-tree-item[selected]::part(label) {
 
 wa-tree {
   --indent-guide-width: 1px;
+  --indent-size: var(--wa-spacing-s);
 }
 
 wa-copy-button {
   position: relative;
-}
-
-*::part(form-control-label) {
-  font-size: 95%;
 }

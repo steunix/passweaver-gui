@@ -139,11 +139,12 @@ async function fillItems () {
         row += `<wa-badge appearance='outlined' variant='neutral'><wa-icon name='${itm.itemtype.icon}'></wa-icon>${JH.sanitize(itm.itemtype.description)}</wa-badge>`
       }
       row += `<td class='border-start border-end itemtitle'><a id='title-${itm.id}' data-id='${itm.id}' >${JH.sanitize(itm.title)}</a></td>`
-      row += `<td id='user-${itm.id}'>${JH.sanitize(itm.metadata)}</td>`
-      row += `<td class='border-end'><wa-copy-button title='Copy user to clipboard' from='user-${itm.id}'></wa-copy-button></td>`
-      row += `<td id='password-${itm.id}'>****</td>`
-      row += `<td><wa-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></wa-copy-button></td>`
-      row += `<td><wa-button size="small" appearance="plain"><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' label='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></wa-button></td>`
+      row += `<td class='border-end'id='user-${itm.id}'><wa-copy-button title='Copy user to clipboard' from='user-${itm.id}'></wa-copy-button>${JH.sanitize(itm.metadata)}</td>`
+      row += '<td>'
+      row += `<wa-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></wa-copy-button>`
+      row += `<wa-button size="small" appearance="plain"><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' label='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></wa-button>`
+      row += `<span style='margin-left:5px; margin-right:5px;' id='password-${itm.id}'>****</span>`
+      row += '</td>'
       row += '</tr>'
     }
     domCache.itemsTableBody.innerHTML = row
