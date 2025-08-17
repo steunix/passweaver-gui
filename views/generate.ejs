@@ -7,6 +7,7 @@
 
   <div class="main1">
     <h4>Generate secure password</h4>
+    <wa-range id="passwordlength" label="Password length" min="8" max="30" value="<%= passwordlength %>"></aw-range>
     <div class="wa-stack">
     <wa-input style="width:25em;" class="monospace" type="text" readonly="readonly" id="generatedpassword" label="With symbols">
       <wa-copy-button slot="end" title='Copy to clipboard' id="copypassword" from="generatedpassword.value"></wa-copy-button>

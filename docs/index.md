@@ -131,7 +131,7 @@ In the actions column, you have buttons to toggle favorite, view the item, copy 
 This page lets you generate a random secure password both with symbols or without. You can copy it or generate another one by clicking on the wand button.
 By clicking the circled "1" icon, you can rapidly create a one time token (see below).
 
-![Generator page](assets/passweavergui-generator-003.jpeg)
+![Generator page](assets/passweavergui-generator-004.jpeg)
 
 ## One time secret
 
@@ -375,6 +375,7 @@ Copy `config-skel.json` to `config.json` and adjust the options; note that ALL c
   - `url`: Redis url
 - `folders`:
   - `user_managed`: if true, non-admin can create and delete folders; false otherwise
+- `generate_password_length`: Generator password length (minimum is 8)
 
 ## Environment
 

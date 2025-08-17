@@ -324,7 +324,8 @@ app.get('/pages/search', async (req, res) => {
 app.get('/pages/generate', async (req, res) => {
   req.locals = {
     pagetitle: 'Password generator',
-    pageid: 'generate'
+    pageid: 'generate',
+    passwordlength: Config.get().generate_password_length || 15
   }
   res.render('generate', { ...req.locals, ...commonParams(req) })
 })
@@ -663,7 +664,7 @@ app.get('/api/users/:user/activity', async (req, res) => {
 
 // Generate random password
 app.get('/api/generatepassword', async (req, res) => {
-  const resp = await PassWeaver.generatePassword(req.session, req.query?.symbols)
+  const resp = await PassWeaver.generatePassword(req.session, req.query?.symbols, req.query?.length)
   res.json(resp)
 })
 
@@ -694,12 +695,6 @@ app.delete('/api/folders/:folder/groups/:group', async (req, res) => {
 // Toggle group permissions on folder
 app.post('/api/folders/:folder/groups/:group/toggle', async (req, res) => {
   const resp = await PassWeaver.folderToggleGroup(req.session, req.params.folder, req.params.group)
-  res.json(resp)
-})
-
-// Generate password
-app.get('/api/generate', async (req, res) => {
-  const resp = await PassWeaver.generatePassword()
   res.json(resp)
 })
 
