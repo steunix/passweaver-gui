@@ -57,13 +57,12 @@ async function fillItems () {
       row +=
         `<tr data-id='${itm.id}' style='cursor:pointer'>` +
         '<td>' +
-        `<wa-button appearance='plain' size='small'><wa-icon id='edititem-${itm.id}' label='Edit API key' name='edit' data-id='${itm.id}'></wa-icon></wa-button>` +
-        `<wa-button appearance='plain' size='small'><wa-icon id='removeitem-${itm.id}' label='Delete API key' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button appearance='plain' size='small' title='Edit'><wa-icon id='edititem-${itm.id}' label='Edit API key' name='edit' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button appearance='plain' size='small' title='Delete'><wa-icon id='removeitem-${itm.id}' label='Delete API key' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon></wa-button>` +
         '</td>' +
-        `<td id='id-${itm.id}'>${itm.id}</td>` +
-        `<td><wa-copy-button from='id-${itm.id}'></wa-copy-button></td>` +
+        `<td id='id-${itm.id}'><wa-copy-button from='id-${itm.id}'></wa-copy-button>${itm.id}</td>` +
         `<td>${JH.sanitize(itm.description)}</td>` +
-        `<td>${itm.expiresat}&nbsp;-&nbsp;<wa-relative-time date='${itm.expiresat}'></wa-relative-time></td>` +
+        `<td>${itm.expiresat}&nbsp;(<wa-relative-time date='${itm.expiresat}'></wa-relative-time>)</td>` +
         `<td>${itm.lastusedat || 'Never'}</td>` +
         (itm.active
           ? "<td><wa-badge variant='success'>Active</wa-badge></td>"
