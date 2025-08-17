@@ -815,7 +815,7 @@ app.patch('/api/kms/:id', async (req, res) => {
 
 // API keys list
 app.get('/api/apikeys', async (req, res) => {
-  const resp = await PassWeaver.apikeysList(req.session, req.query?.search || '', req.query?.userid)
+  const resp = await PassWeaver.apikeysList(req.session, req.query?.search || '', req.query?.userid || '')
   res.json(resp)
 })
 
