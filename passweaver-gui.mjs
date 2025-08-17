@@ -33,7 +33,7 @@ const cfg = Config.get()
 
 // Check for minimum PassWeaver API version
 try {
-  const minpwapiversion = '2.2.0'
+  const minpwapiversion = '2.3.0'
   const resp = await PassWeaver.version()
   const pwapiversion = resp.data.version
   if (!Semver.gte(pwapiversion, minpwapiversion)) {
@@ -815,7 +815,7 @@ app.patch('/api/kms/:id', async (req, res) => {
 
 // API keys list
 app.get('/api/apikeys', async (req, res) => {
-  const resp = await PassWeaver.apikeysList(req.session, req.query?.search || '')
+  const resp = await PassWeaver.apikeysList(req.session, req.query?.search || '', req.query?.userid)
   res.json(resp)
 })
 

@@ -1,6 +1,6 @@
 {
   "name": "passweaver-gui",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "type": "module",
   "description": "Collaborative password manager GUI",
   "main": "passweaver-gui.mjs",
@@ -15,7 +15,7 @@
   "license": "MIT",
   "devDependencies": {
     "@playwright/test": "1.54.2",
-    "@types/node": "24.2.1",
+    "@types/node": "24.3.0",
     "standard": "17.1.2"
   },
   "dependencies": {
@@ -31,7 +31,7 @@
     "jsonwebtoken": "9.0.2",
     "lusca": "1.7.0",
     "morgan": "1.10.1",
-    "redis": "5.8.0",
+    "redis": "5.8.1",
     "rotating-file-stream": "3.2.6",
     "semver": "7.7.2",
     "serve-favicon": "2.5.1"

@@ -16,6 +16,11 @@
       <wa-option value="A">Active</wa-option>
       <wa-option value="N">Inactive</wa-option>
     </wa-select>
+    <wa-callout id="editapikeywarning" variant="warning" style="display: none;">
+      <wa-icon slot="icon" name="exclamation-triangle"></wa-icon>
+      <strong>User has connected API keys</strong><br />
+      If you disable this user, all API keys will be disabled too.
+    </wa-callout>
   </div>
   <wa-button id="useredit" slot="footer" variant="brand">Save</wa-button>
   <wa-button id="cancel" data-dialog="close" slot="footer">Cancel</wa-button>
