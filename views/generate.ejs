@@ -7,9 +7,12 @@
 
   <div class="main1">
     <h4>Generate secure password</h4>
-    <wa-range id="passwordlength" label="Password length" min="8" max="30" value="<%= passwordlength %>"></aw-range>
     <div class="wa-stack">
-    <wa-input style="width:25em;" class="monospace" type="text" readonly="readonly" id="generatedpassword" label="With symbols">
+    <wa-slider id="passwordlength" label="Password length" min="8" max="30" value="<%= passwordlength %>" with-markers with-tooltip>
+      <span slot="reference">8</span>
+      <span slot="reference">30</span>
+    </wa-slider>
+    <wa-input style="width:20rem;" class="monospace" type="text" readonly="readonly" id="generatedpassword" label="With symbols">
       <wa-copy-button slot="end" title='Copy to clipboard' id="copypassword" from="generatedpassword.value"></wa-copy-button>
       <wa-button slot="end" size="small" appearance="plain" title='Generate a new password' id="generate">
         <wa-icon name="wand-sparkles" label="Generate a new password"></wa-icon>
@@ -18,7 +21,7 @@
         <wa-icon name="1" label="Generate a one time secret"></wa-icon>
       </wa-button>
     </wa-input>
-    <wa-input style="width:25em;" class="monospace" type="text" readonly="readonly" id="generatedpasswordns" label="Without symbols">
+    <wa-input style="width:20rem;" class="monospace" type="text" readonly="readonly" id="generatedpasswordns" label="Without symbols">
       <wa-copy-button slot="end" title='Copy to clipboard' id="copypasswordns" from="generatedpasswordns.value"></wa-copy-button>
       <wa-button slot="end" size="small" appearance="plain" title='Generate a new password' id="generatens">
         <wa-icon name="wand-sparkles" label="Generate a new password"></wa-icon>
