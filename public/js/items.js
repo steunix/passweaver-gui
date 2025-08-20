@@ -115,29 +115,17 @@ async function fillItems () {
     for (const itm of body.data) {
       row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
       row += '<td class="border-end">'
-      row += '<wa-dropdown><wa-button label="Menu" size="small" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical" label="Menu"></wa-icon></wa-button>'
-      if (Folders.currentPermissions.write) {
-        row += `<wa-dropdown-item id='edit-${itm.id}' title='Edit item' data-id='${itm.id}'><wa-icon label="Edit item" name='edit' slot='icon'></wa-icon>Edit</wa-dropdown-item>`
-        row += `<wa-dropdown-item id='clone-${itm.id}' title='Clone item' data-id='${itm.id}'><wa-icon label="Clone" name='clone' slot='icon'></wa-icon>Clone</wa-dropdown-item>`
-      }
-      if (!itm.personal) {
-        row += `<wa-dropdown-item id='onetime-${itm.id}' title='One time share' data-id='${itm.id}'><wa-icon label="One time share" name='1' slot='icon'></wa-icon>One time share</wa-dropdown-item>`
-      }
-      row += `<wa-dropdown-item id='activity-${itm.id}' title='Activity' data-id='${itm.id}'><wa-icon label="Activity" name='clock' slot='icon'></wa-icon>Activity</wa-dropdown-item>`
-
-      if (Folders.currentPermissions.write) {
-        row += `<wa-dropdown-item id='remove-${itm.id}' title='Remove item' data-id='${itm.id}'><wa-icon label="Remove" name='trash' slot='icon' style="color:red;"></wa-icon>Remove</wa-dropdown-item>`
-      }
+      row += `<wa-dropdown id="menu-${itm.id}" data-id='${itm.id}'><wa-button label="Menu" size="small" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical" label="Menu"></wa-icon></wa-button>`
       row += '</wa-dropdown>'
-      row += `<wa-button size="small" id='fav-${itm.id}' data-id='${itm.id}' data-fav='${itm.favorite}' appearance="plain"><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" title='Favorite' label='Favorite'></wa-icon></wa-button>`
-      row += `<wa-button size="small" id='link-${itm.id}' appearance="plain" data-id='${itm.id}'><wa-icon title='Copy item link' label="Copy item link" name='link'></wa-icon></wa-button>`
+      row += `<wa-button size="small" id='fav-${itm.id}' data-id='${itm.id}' data-fav='${itm.favorite}' title="Favorite" appearance="plain"><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" label='Favorite'></wa-icon></wa-button>`
+      row += `<wa-button size="small" id='link-${itm.id}' title='Copy item link' appearance="plain" data-id='${itm.id}'><wa-icon label="Copy item link" name='link'></wa-icon></wa-button>`
       row += '</td>'
       row += '<td class="border-end">'
       if (itm.type) {
         row += `<wa-badge appearance='outlined' variant='neutral'><wa-icon name='${itm.itemtype.icon}'></wa-icon>${JH.sanitize(itm.itemtype.description)}</wa-badge>`
       }
       row += `<td class='border-start border-end itemtitle'><a id='title-${itm.id}' data-id='${itm.id}' >${JH.sanitize(itm.title)}</a></td>`
-      row += `<td class='border-end'id='user-${itm.id}'><wa-copy-button title='Copy user to clipboard' from='user-${itm.id}'></wa-copy-button>${JH.sanitize(itm.metadata)}</td>`
+      row += `<td class='border-end' id='user-${itm.id}'><wa-copy-button title='Copy user to clipboard' from='user-${itm.id}'></wa-copy-button>${JH.sanitize(itm.metadata)}</td>`
       row += '<td>'
       row += `<wa-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></wa-copy-button>`
       row += `<wa-button size="small" appearance="plain"><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' label='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></wa-button>`
@@ -151,30 +139,14 @@ async function fillItems () {
   }
 
   // Install event handlers
-  JH.event('#itemstable tbody [id^=fav]', 'click', async (ev) => {
-    await Items.setFavorite(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-fav') === 'false')
-    await fillItems()
-  })
-  JH.event('#itemstable tbody [id^=edit]', 'click', (ev) => {
-    itemShow(ev.currentTarget.getAttribute('data-id'), false)
+  JH.event('#itemstable tbody [id^=menu]', 'click', (ev) => {
+    itemDropDown(ev.currentTarget.getAttribute('data-id'), false)
   })
   JH.event('#itemstable tbody [id^=title]', 'click', (ev) => {
     itemShow(ev.currentTarget.getAttribute('data-id'), true)
   })
-  JH.event('#itemstable tbody [id^=remove]', 'click', (ev) => {
-    itemRemove(ev.currentTarget.getAttribute('data-id'))
-  })
-  JH.event('#itemstable tbody [id^=clone]', 'click', (ev) => {
-    itemClone(ev.currentTarget.getAttribute('data-id'))
-  })
   JH.event('#itemstable tbody [id^=link]', 'click', (ev) => {
     Items.itemCopyLink(ev.currentTarget.getAttribute('data-id'))
-  })
-  JH.event('#itemstable tbody [id^=activity]', 'click', (ev) => {
-    Items.itemActivityShow(ev.currentTarget.getAttribute('data-id'))
-  })
-  JH.event('#itemstable tbody [id^=onetime]', 'click', (ev) => {
-    itemOneTimeShareDialog(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=passwordcopy]', 'click', (ev) => {
     passwordCopy(ev)
@@ -185,6 +157,47 @@ async function fillItems () {
 
   // Setup drag'n'drop
   JH.draggable("#itemstable [id^='row-']", 'item')
+}
+
+function itemDropDown (id) {
+  if (!JH.query(`#menu-${id}`).open) {
+    return
+  }
+  if (JH.query(`#menu-${id} wa-dropdown-item`) !== null) {
+    return
+  }
+
+  let row = ''
+  if (Folders.currentPermissions.write) {
+    row += `<wa-dropdown-item id='edit-${id}' title='Edit item' data-id='${id}'><wa-icon label="Edit item" name='edit' slot='icon'></wa-icon>Edit</wa-dropdown-item>`
+    row += `<wa-dropdown-item id='clone-${id}' title='Clone item' data-id='${id}'><wa-icon label="Clone" name='clone' slot='icon'></wa-icon>Clone</wa-dropdown-item>`
+  }
+  if (!Folders.currentPermissions.personal) {
+    row += `<wa-dropdown-item id='onetime-${id}' title='One time share' data-id='${id}'><wa-icon label="One time share" name='1' slot='icon'></wa-icon>One time share</wa-dropdown-item>`
+  }
+  row += `<wa-dropdown-item id='activity-${id}' title='Activity' data-id='${id}'><wa-icon label="Activity" name='clock' slot='icon'></wa-icon>Activity</wa-dropdown-item>`
+
+  if (Folders.currentPermissions.write) {
+    row += `<wa-dropdown-item id='remove-${id}' title='Delete item' data-id='${id}'><wa-icon label="Delete" name='trash' slot='icon' style="color:red;"></wa-icon>Delete</wa-dropdown-item>`
+  }
+
+  JH.query(`#menu-${id}`).insertAdjacentHTML('beforeend', row)
+
+  JH.event(`#edit-${id}`, 'click', (ev) => {
+    itemShow(id, false)
+  })
+  JH.event(`#clone-${id}`, 'click', (ev) => {
+    itemClone(id)
+  })
+  JH.event(`#activity-${id}`, 'click', (ev) => {
+    Items.itemActivityShow(id)
+  })
+  JH.event(`#onetime-${id}`, 'click', (ev) => {
+    itemOneTimeShareDialog(id)
+  })
+  JH.event(`#remove-${id}`, 'click', (ev) => {
+    itemRemove(id)
+  })
 }
 
 async function folderClicked () {
@@ -209,6 +222,7 @@ async function folderClicked () {
     Folders.currentPermissions.write = false
     domCache.sectionTitle.innerHTML = 'Items'
   }
+  Folders.currentPermissions.personal = body.data.personal
 
   let cp = ['danger', 'No access', 'No access']
   if (Folders.currentPermissions.read) {

@@ -80,6 +80,7 @@ async function folderClicked () {
     Folders.currentPermissions.write = true
     Folders.currentPermissions.read = true
   }
+  Folders.currentPermissions.personal = body.data.personal
 
   if (Folders.currentPermissions.write) {
     JH.enable(domCache.folderCreateButton)

@@ -9,7 +9,8 @@ const refresh = new Event('folders-refresh')
 
 export const currentPermissions = {
   read: false,
-  write: false
+  write: false,
+  personal: false
 }
 
 const domCache = {
