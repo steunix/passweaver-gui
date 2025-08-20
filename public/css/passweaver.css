@@ -148,14 +148,13 @@ body {
 .version {
   text-align: center;
   font-size: 80%;
-  font-style: italic;
   opacity: 50%;
   position: absolute;
   bottom: 0.5rem;
   left: 1rem;
 }
 
-.version a:visited {
+.version a {
   color: inherit;
 }
 
