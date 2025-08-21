@@ -139,6 +139,10 @@ async function fillItems () {
   }
 
   // Install event handlers
+  JH.event('#itemstable tbody [id^=fav]', 'click', async (ev) => {
+    await Items.setFavorite(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-fav') === 'false')
+    await fillItems()
+  })
   JH.event('#itemstable tbody [id^=menu]', 'click', (ev) => {
     itemDropDown(ev.currentTarget.getAttribute('data-id'), false)
   })
