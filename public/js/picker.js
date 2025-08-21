@@ -57,7 +57,7 @@ export class Picker {
           desc = itm.lastname + ' ' + itm.firstname
         }
         row += `<tr id='row-${itm.id}' data-id='${itm.id}' data-desc='${itm.lastname} ${itm.firstname}' style='cursor:pointer;'>`
-        row += `<td style="width:1px;"><wa-icon id='itm-${itm.id}' data-id='${itm.id}' data-desc='${itm.lastname} ${itm.firstname}' name='check'></wa-icon></td>`
+        row += `<td style="width:1px;"><wa-button title="Choose" appearance="plain" size="small"><wa-icon id='itm-${itm.id}' data-id='${itm.id}' data-desc='${itm.lastname} ${itm.firstname}' name='check' label="Choose"></wa-icon></wa-button></td>`
         if (this.mode === 'users') {
           row += `<td style="width:1px;">${JH.sanitize(itm.login)}</td>`
         }

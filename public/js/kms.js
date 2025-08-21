@@ -40,7 +40,7 @@ async function fillItems () {
     let row = ''
     for (const itm of body.data) {
       row +=
-        `<tr data-id='${itm.id}' style='cursor:pointer'>` +
+        `<tr data-id='${itm.id}'>` +
         '<td>' +
         `<wa-button appearance='plain' size='small' title='Edit'><wa-icon id='edititem-${itm.id}' label='Edit KMS' name='edit' data-id='${itm.id}'></wa-icon></wa-button>` +
         `<wa-button appearance='plain' size='small' title='Delete'><wa-icon id='removeitem-${itm.id}' label='Delete KMS' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon></wa-button>` +
