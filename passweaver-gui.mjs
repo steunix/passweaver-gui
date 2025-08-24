@@ -196,10 +196,14 @@ function commonParams (req) {
 
 // Login page
 app.get(['/login', '/'], (req, res) => {
-  req.locals = {
-    error: req.query.error
+  if (req?.session?.user === undefined) {
+    req.locals = {
+      error: req.query.error
+    }
+    res.render('login', { ...req.locals, ...commonParams(req) })
+  } else {
+    res.redirect('/pages/items')
   }
-  res.render('login', { ...req.locals, ...commonParams(req) })
 })
 
 // Logout page
