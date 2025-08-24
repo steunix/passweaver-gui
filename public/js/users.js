@@ -143,6 +143,7 @@ async function fillActivity (usr) {
       row += `<td>${JH.sanitize(evt.note || '')}</td>`
     }
     domCache.userActivityTableBody.innerHTML += row
+    JH.enable(domCache.userActivityLoadMore)
   } else {
     domCache.userActivityTableBody.innerHTML += '<tr><td colspan="99">No other activity found</td></tr>'
     JH.disable(domCache.userActivityLoadMore)
