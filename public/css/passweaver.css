@@ -18,6 +18,8 @@
   --bottom-margin: 11rem;
   --indent-guide-width: 1px;
   --wa-form-control-required-content-color: red;
+  --wa-focus-ring-width: 1px;
+  --wa-form-control-border-color: var(--wa-color-border-normal);
 }
 
 body {
