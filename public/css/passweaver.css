@@ -206,7 +206,7 @@ tr {
   background-color: var(--wa-color-surface-lowered);
 }
 
-.monospace:part(input) {
+.monospace::part(input) {
   font-family: monospace;
 }
 
