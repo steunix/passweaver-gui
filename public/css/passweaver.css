@@ -206,8 +206,8 @@ tr {
   background-color: var(--wa-color-surface-lowered);
 }
 
-.monospace {
-  font-family: monospace !important;
+.monospace:part(input) {
+  font-family: monospace;
 }
 
 .rowselected {
