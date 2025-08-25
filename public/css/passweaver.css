@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 
 :not(:defined) {
   visibility: hidden;
@@ -6,7 +6,7 @@
 
 :root {
   font-size: 14px;
-  --wa-font-family-body: "Ubuntu Condensed";
+  --wa-font-family-body: "Ubuntu";
   --theme-color: #ea9e34;
   --theme-sidebar-bgcolor: #1a1c20;
   --theme-sidebar-color: rgb(255, 255, 255);
