@@ -8,7 +8,7 @@
 
   <div class="main1">
     <h4>Folders</h4>
-    <div class="wa-flank:end">
+    <div class="wa-flank:end" style="margin-bottom:1rem;">
       <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" with-clear>
         <wa-icon slot="start" name="search"></wa-icon>
         <wa-icon slot="end" title="Search previous" id="foldersearchprevious" name="angle-left"></wa-icon>
@@ -28,19 +28,17 @@
         </wa-button-group>
       <% } %>
     </div>
-    <br/>
     <%- include('partials/folderstree.ejs') %>
   </div>
 
   <div class="main2">
     <h4><span id="sectiontitle">Groups</span></h4>
-    <div style="display:flex;">
+    <div style="display:flex; margin-bottom: 1rem;">
       <wa-button id="addgroup" title="Add a group to a folder" variant="brand">
         <wa-icon slot="start" name="plus"></wa-icon>
         Add group
       </wa-button>
     </div>
-    <br/>
     <table id="groupstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;">
       <thead>
         <tr class="sticky">

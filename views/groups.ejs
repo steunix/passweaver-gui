@@ -8,7 +8,7 @@
 
   <div class="main1">
     <h4>Groups</h4>
-    <div class="wa-flank:end">
+    <div class="wa-flank:end" style="margin-bottom:1rem;">
       <wa-input id="groupsearch" type="text" placeholder="Search group" autofocus="autofocus" with-clear>
         <wa-icon slot="start" name="search"></wa-icon>
         <wa-icon slot="end" title="Search previous" id="groupsearchprevious" name="angle-left"></wa-icon>
@@ -29,13 +29,12 @@
         </wa-button>
       </wa-button-group>
     </div>
-    <br/>
     <%- include('partials/groupstree.ejs') %>
   </div>
 
   <div class="main2">
     <h4><span id="sectiontitle">Members</span></h4>
-    <div class="wa-flank:end">
+    <div class="wa-flank:end" style="margin-bottom:1rem;">
       <wa-button-group>
         <wa-button id="newmember" appearance="outlined">
           <wa-icon slot="start" name="plus" label="Add member"></wa-icon>
@@ -59,7 +58,6 @@
         </wa-button>
       </wa-button-group>
     </div>
-    <br/>
     <table id="userstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;">
       <thead>
         <tr class="sticky">

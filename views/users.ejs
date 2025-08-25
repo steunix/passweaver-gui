@@ -8,7 +8,7 @@
 
   <div class="main1" >
     <h4>Users</h4>
-    <div style="display:flex;">
+    <div style="display:flex; margin-bottom: 1rem;">
       <wa-input id="usersearch" type="text" placeholder="Search users" autofocus="autofocus" with-clear>
         <wa-icon slot="start" name="search"></wa-icon>
       </wa-input>
@@ -17,7 +17,6 @@
         New user
       </wa-button>
     </div>
-    <br/>
     <table id="userstable" style="display:block; max-height: calc(100vh - var(--bottom-margin)); overflow-y: auto;">
       <thead>
         <tr class="sticky">
@@ -38,7 +37,7 @@
 
   <div class="main2">
     <h4>Groups</h4>
-    <div style="display: flex;">
+    <div style="display: flex; margin-bottom: 1rem;">
       <wa-button-group>
         <wa-button id="addgroup" appearance="outlined" title="Add group membership">
           <wa-icon slot="start" name="plus"></wa-icon>
@@ -58,7 +57,6 @@
         </wa-button>
       </wa-button-group>
     </div>
-    <br/>
     <table id="groupstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;">
       <thead>
         <tr class="sticky">
