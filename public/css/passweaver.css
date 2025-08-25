@@ -264,7 +264,7 @@ wa-tree-item[selected]::part(label) {
 
 wa-tree {
   --indent-guide-width: 1px;
-  --indent-size: var(--wa-spacing-xs);
+  --indent-size: var(--wa-space-s);
 }
 
 wa-copy-button {
