@@ -16,7 +16,6 @@
   --theme-header-color: rgb(255, 255, 255);
   --theme-page-border-color: rgb(173, 173, 173);
   --bottom-margin: 11rem;
-  --indent-guide-width: 1px;
   --wa-form-control-required-content-color: red;
   --wa-focus-ring-width: 1px;
   --wa-form-control-border-color: var(--wa-color-border-normal);
@@ -265,7 +264,7 @@ wa-tree-item[selected]::part(label) {
 
 wa-tree {
   --indent-guide-width: 1px;
-  --indent-size: var(--wa-spacing-s);
+  --indent-size: var(--wa-spacing-xs);
 }
 
 wa-copy-button {
