@@ -5,6 +5,7 @@
 }
 
 :root {
+  font-size: 14px;
   --wa-font-family-body: "Ubuntu Condensed";
   --theme-color: #ea9e34;
   --theme-sidebar-bgcolor: #1a1c20;
@@ -14,7 +15,7 @@
   --theme-header-bgcolor: var(--theme-sidebar-bgcolor);
   --theme-header-color: rgb(255, 255, 255);
   --theme-page-border-color: rgb(173, 173, 173);
-  --bottom-margin: 13rem;
+  --bottom-margin: 11rem;
   --indent-guide-width: 1px;
   --wa-form-control-required-content-color: red;
 }
