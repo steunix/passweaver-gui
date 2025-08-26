@@ -56,8 +56,8 @@ JH.event(domCache.noSymOnetimeCreate, 'click', () => {
 })
 
 JH.event(domCache.passwordLength, 'change', async () => {
-  domCache.passwordInput.style.width = `${JH.value(domCache.passwordLength) + 5}rem`
-  domCache.noSymPasswordInput.style.width = `${JH.value(domCache.passwordLength) + 5}rem`
+  domCache.passwordInput.style.width = `${JH.value(domCache.passwordLength) + 5}em`
+  domCache.noSymPasswordInput.style.width = `${JH.value(domCache.passwordLength) + 5}em`
   await generatePassword()
   await generatePassword(false)
 })
