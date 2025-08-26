@@ -8,8 +8,9 @@
   <div class="main1">
     <h4>Generate secure password</h4>
     <div class="wa-stack">
-    <wa-slider id="passwordlength" label="Password length" min="8" max="30" value="<%= passwordlength %>" with-markers with-tooltip>
-      <span slot="reference">8</span>
+    <wa-slider id="passwordlength" label="Password length" min="10" max="30" value="<%= passwordlength %>" with-markers with-tooltip>
+      <span slot="reference">10</span>
+      <span slot="reference">20</span>
       <span slot="reference">30</span>
     </wa-slider>
     <wa-input style="width:25em;" class="monospace" type="text" readonly="readonly" id="generatedpassword" label="With symbols">
