@@ -50,7 +50,7 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       'script-src': ["'self'"],
-      'style-src': ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
+      'style-src': ["'self'", "'unsafe-inline'", 'fonts.bunny.net'],
       'connect-src': ["'self'", 'data: blob:'],
       'img-src': ["'self'", 'https: data: blob:']
     }
