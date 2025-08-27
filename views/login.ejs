@@ -10,7 +10,7 @@
       <br/>
       <form id="loginForm" action="access" method="post" class="wa-stack">
         <%- include('partials/csrf.ejs') %>
-        <wa-input type="text" autofocus id="username" name="username" label="User" required autocomplete></wa-input>
+        <wa-input type="text" autofocus id="username" name="username" label="User" required autocomplete="username"></wa-input>
         <wa-input type="password" id="password" name="password" label="Password" required></wa-input>
         <% if ( viewitem ) { %>
           <input id="viewitem" name="viewitem" type="hidden" value="<%= viewitem %>"></input>
