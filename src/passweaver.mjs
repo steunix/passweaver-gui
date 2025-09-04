@@ -1217,3 +1217,11 @@ export async function systemLock (session, lock) {
   const resp = await passWeaverAPI(session, METHOD.post, `/util/${lock ? 'systemlock' : 'systemunlock'}`)
   return resp
 }
+
+/** Create item link */
+export async function linkCreate (req, session, folderid, itemid) {
+  const resp = await passWeaverAPI(session, METHOD.post, `/folders/${folderid}/linkeditems`, {
+    linkeditemid: itemid
+  })
+  return resp
+}

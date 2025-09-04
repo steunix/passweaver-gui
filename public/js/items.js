@@ -57,7 +57,13 @@ const domCache = {
   itemDialogGenerate: JH.query('#idgenerate'),
   itemDialogCopyPassword: JH.query('#idcopypassword'),
   itemDialogSave: JH.query('#idsave'),
-  itemDialogCancel: JH.query('#idcancel')
+  itemDialogCancel: JH.query('#idcancel'),
+  itemDropDialog: JH.query('#itemdropdialog'),
+  itemDropFolderId: JH.query('#iddfolderid'),
+  itemDropItemId: JH.query('#idditemid'),
+  itemDropAction: JH.query('#iddaction'),
+  itemDropCancel: JH.query('#iddcancel'),
+  itemDropSave: JH.query('#iddconfirm')
 }
 
 async function fillItemTypes () {
@@ -119,9 +125,14 @@ async function fillItems () {
       row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
       row += '<td class="border-end">'
       row += `<sl-icon-button id='fav-${itm.id}' name='${itm.favorite ? 'star-fill' : 'star'}' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></sl-icon-button>`
+      if (itm.linkeditemid) {
+        row += '<sl-icon name="arrow-90deg-right" style="color: green;" title="Linked item"></sl-icon>'
+      }
       row += `<sl-icon-button id='view-${itm.id}' name='file-earmark' title='View item' data-id='${itm.id}'></sl-icon-button>`
       if (Folders.currentPermissions.write) {
-        row += `<sl-icon-button id='edit-${itm.id}' title='Edit item' name='pencil' data-id='${itm.id}'></sl-icon-button>`
+        if (!itm.linkeditemid) {
+          row += `<sl-icon-button id='edit-${itm.id}' title='Edit item' name='pencil' data-id='${itm.id}'></sl-icon-button>`
+        }
         row += `<sl-icon-button id='remove-${itm.id}' title='Remove item' name='trash3' style="color:red;" data-id='${itm.id}'></sl-icon-button>`
         row += `<sl-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></sl-icon-button>`
       }
@@ -331,7 +342,7 @@ async function itemSave () {
 }
 
 async function itemRemove (itm) {
-  PW.confirmDialog('Delete item', 'Are you sure you want to delete this item?', async () => {
+  PW.confirmDialog('Delete item', 'Are you sure you want to delete this item? If linked items exist, they will also be deleted.', async () => {
     const resp = await JH.http(`/api/itemremove/${itm}`, { _csrf: PW.getCSRFToken() })
     if (!await PW.checkResponse(resp)) {
       return
@@ -412,6 +423,22 @@ async function itemMove (id, folder) {
   }
 
   PW.showToast('success', 'Item moved')
+  await fillItems()
+}
+
+async function itemLink (itemid, folderid) {
+  const itemdata = {
+    _csrf: PW.getCSRFToken(),
+    folderid,
+    itemid
+  }
+
+  const resp = await JH.http('/api/linkeditems', itemdata)
+  if (!await PW.checkResponse(resp)) {
+    return
+  }
+
+  PW.showToast('success', 'Item linked')
   await fillItems()
 }
 
@@ -601,6 +628,27 @@ async function itemDialogGeneratePassword () {
   }
 }
 
+async function itemDropped (itemid, folderid) {
+  domCache.itemDropFolderId.value = folderid
+  domCache.itemDropItemId.value = itemid
+  domCache.itemDropAction.value = 'move'
+  domCache.itemDropDialog.show()
+}
+
+async function itemDroppedDo () {
+  const action = domCache.itemDropAction.value
+  const itemid = domCache.itemDropItemId.value
+  const folderid = domCache.itemDropFolderId.value
+
+  if (action === 'move') {
+    await itemMove(itemid, folderid)
+  } else if (action === 'link') {
+    await itemLink(itemid, folderid)
+  }
+
+  domCache.itemDropDialog.hide()
+}
+
 JH.event(domCache.itemDialogActivity, 'click', (ev) => {
   Items.itemActivityShow(JH.value(domCache.itemDialogId))
 })
@@ -617,7 +665,7 @@ async function dndSetup () {
     }
     if (data.type === 'item') {
       const item = data.data
-      await itemMove(item, newparent)
+      itemDropped(item, newparent)
     }
   })
 }
@@ -687,6 +735,12 @@ addEventListener('folders-refresh', async (ev) => {
 addEventListener('pw-item-found', async (ev) => {
   await folderClicked()
 })
+
+JH.event(domCache.itemDropCancel, 'click', (ev) => {
+  domCache.itemDropDialog.hide()
+})
+
+JH.event(domCache.itemDropSave, 'click', itemDroppedDo)
 
 await fillFolders()
 await fillItemTypes()

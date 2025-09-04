@@ -913,6 +913,12 @@ app.post('/api/systemlock', async (req, res) => {
   res.json(resp)
 })
 
+// Create item link
+app.post('/api/linkeditems', async (req, res) => {
+  const resp = await PassWeaver.linkCreate(req, req.session, req.body.folderid, req.body.itemid)
+  res.json(resp)
+})
+
 // Error handler
 app.use((err, req, res, next) => {
   logErrors.write(`[${(new Date()).toString()}]\n`)

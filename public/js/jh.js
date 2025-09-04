@@ -1,4 +1,4 @@
-/* global NodeList */
+/* global NodeList, Image */
 
 /**
  * Sanitize HTML tags in string
@@ -198,10 +198,19 @@ export function draggable (query, type) {
     type = 'default'
   }
 
+  const img = new Image()
+  if (type === 'item') {
+    img.src = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBMaWNlbnNlOiBNSVQuIE1hZGUgYnkgSWNvbnNheDogaHR0cHM6Ly9naXRodWIuY29tL2x1c2F4d2ViL2ljb25zYXggLS0+Cjxzdmcgd2lkdGg9IjUwcHgiIGhlaWdodD0iNTBweCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBvcGFjaXR5PSIwLjQiPgo8cGF0aCBkPSJNMiA4LjUwNDg4SDIyIiBzdHJva2U9IiMyOTJEMzIiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNNiAxNi41MDQ5SDgiIHN0cm9rZT0iIzI5MkQzMiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xMC41IDE2LjUwNDlIMTQuNSIgc3Ryb2tlPSIjMjkyRDMyIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9nPgo8cGF0aCBkPSJNNi40NCAzLjUwNDg4SDE3LjU1QzIxLjExIDMuNTA0ODggMjIgNC4zODQ4OCAyMiA3Ljg5NDg4VjE2LjEwNDlDMjIgMTkuNjE0OSAyMS4xMSAyMC40OTQ5IDE3LjU2IDIwLjQ5NDlINi40NEMyLjg5IDIwLjUwNDkgMiAxOS42MjQ5IDIgMTYuMTE0OVY3Ljg5NDg4QzIgNC4zODQ4OCAyLjg5IDMuNTA0ODggNi40NCAzLjUwNDg4WiIgc3Ryb2tlPSIjMjkyRDMyIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPg=='
+  }
+  if (type === 'folder') {
+    img.src = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBMaWNlbnNlOiBNSVQuIE1hZGUgYnkgdGVlbnlpY29uczogaHR0cHM6Ly9naXRodWIuY29tL3RlZW55aWNvbnMvdGVlbnlpY29ucyAtLT4KPHN2ZyB3aWR0aD0iNTBweCIgaGVpZ2h0PSI1MHB4IiB2aWV3Qm94PSIwIDAgMTUgMTUiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0wLjUgMTIuNVYyLjVDMC41IDEuOTQ3NzIgMC45NDc3MTUgMS41IDEuNSAxLjVINS41TDcuNSAzLjVIMTMuNUMxNC4wNTIzIDMuNSAxNC41IDMuOTQ3NzIgMTQuNSA0LjVWMTIuNUMxNC41IDEzLjA1MjMgMTQuMDUyMyAxMy41IDEzLjUgMTMuNUgxLjVDMC45NDc3MTUgMTMuNSAwLjUgMTMuMDUyMyAwLjUgMTIuNVoiIHN0cm9rZT0iIzAwMDAwMCIvPgo8L3N2Zz4='
+  }
+
   for (const e of el) {
     if (e) {
       attribute(e, 'draggable', true)
       event(e, 'dragstart', (ev) => {
+        ev.dataTransfer.setDragImage(img, 0, 0)
         ev.dataTransfer.setData('text/plain', type + ':' + ev.target.getAttribute('data-id'))
       })
     }
