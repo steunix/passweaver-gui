@@ -1,0 +1,11 @@
+<sl-dialog id="itemdropdialog" label="Dialog" class="dialog-deny-close">
+  <sl-input id="iddfolderid" type="hidden" style="display:none;"></sl-input>
+  <sl-input id="idditemid" type="hidden" style="display:none;"></sl-input>
+  Would you like to move the item to the selected folder or create a link?
+  <sl-radio-group id="iddaction" style="margin-top:10px;">
+    <sl-radio-button value="move" checked>Move Item</sl-radio-button>
+    <sl-radio-button value="link">Create link</sl-radio-button>
+  </sl-radio-group>
+  <sl-button slot="footer" id="iddconfirm" variant="primary">OK</sl-button>
+  <sl-button slot="footer" id="iddcancel">Cancel</sl-button>
+</sl-dialog>
