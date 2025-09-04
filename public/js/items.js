@@ -54,7 +54,14 @@ const domCache = {
   itemDialogPassword: JH.query('#idpassword'),
   itemDialogGenerate: JH.query('#idgenerate'),
   itemDialogCopyPassword: JH.query('#idcopypassword'),
-  itemDialogSave: JH.query('#idsave')
+  itemDialogSave: JH.query('#idsave'),
+  itemDialogCancel: JH.query('#idcancel'),
+  itemDropDialog: JH.query('#itemdropdialog'),
+  itemDropFolderId: JH.query('#iddfolderid'),
+  itemDropItemId: JH.query('#idditemid'),
+  itemDropAction: JH.query('#iddaction'),
+  itemDropCancel: JH.query('#iddcancel'),
+  itemDropSave: JH.query('#iddconfirm')
 }
 
 async function fillItemTypes () {
@@ -113,11 +120,14 @@ async function fillItems () {
   if (body.data.length) {
     let row = ''
     for (const itm of body.data) {
-      row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
+      row += `<tr id='row-${itm.id}' data-id='${itm.id}' draggable='true'>`
       row += '<td class="border-end">'
-      row += `<wa-dropdown id="menu-${itm.id}" data-id='${itm.id}'><wa-button label="Menu" size="small" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical" label="Menu"></wa-icon></wa-button>`
+      row += `<wa-dropdown id="menu-${itm.id}" data-id='${itm.id}' data-linkeditemid='${itm.linkeditemid || ''}'><wa-button label="Menu" size="small" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical" label="Menu"></wa-icon></wa-button>`
       row += '</wa-dropdown>'
       row += `<wa-button size="small" id='fav-${itm.id}' data-id='${itm.id}' data-fav='${itm.favorite}' title="Favorite" appearance="plain"><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" label='Favorite'></wa-icon></wa-button>`
+      if (itm.linkeditemid) {
+        row += `<wa-button size="small" title='Linked item' appearance="plain" data-id='${itm.id}'><wa-icon label="Linked item" style="color: green;" name='arrow-right-arrow-left'></wa-icon></wa-button>`
+      }
       row += `<wa-button size="small" id='link-${itm.id}' title='Copy item link' appearance="plain" data-id='${itm.id}'><wa-icon label="Copy item link" name='link'></wa-icon></wa-button>`
       row += '</td>'
       row += '<td class="border-end">'
@@ -144,7 +154,7 @@ async function fillItems () {
     await fillItems()
   })
   JH.event('#itemstable tbody [id^=menu]', 'click', (ev) => {
-    itemDropDown(ev.currentTarget.getAttribute('data-id'), false)
+    itemDropDown(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-linkeditemid'))
   })
   JH.event('#itemstable tbody [id^=title]', 'click', (ev) => {
     itemShow(ev.currentTarget.getAttribute('data-id'), true)
@@ -163,7 +173,7 @@ async function fillItems () {
   JH.draggable("#itemstable [id^='row-']", 'item')
 }
 
-function itemDropDown (id) {
+function itemDropDown (id, linkeditemid) {
   if (!JH.query(`#menu-${id}`).open) {
     return
   }
@@ -173,7 +183,11 @@ function itemDropDown (id) {
 
   let row = ''
   if (Folders.currentPermissions.write) {
-    row += `<wa-dropdown-item id='edit-${id}' title='Edit item' data-id='${id}'><wa-icon label="Edit item" name='edit' slot='icon'></wa-icon>Edit</wa-dropdown-item>`
+    if (!linkeditemid) {
+      row += `<wa-dropdown-item id='edit-${id}' title='Edit item' data-id='${id}'><wa-icon label="Edit item" name='edit' slot='icon'></wa-icon>Edit</wa-dropdown-item>`
+    } else {
+      row += `<wa-dropdown-item disabled="disabled"title='Edit item' data-id='${id}'><wa-icon label="Edit item" name='edit' slot='icon'></wa-icon>Edit</wa-dropdown-item>`
+    }
     row += `<wa-dropdown-item id='clone-${id}' title='Clone item' data-id='${id}'><wa-icon label="Clone" name='clone' slot='icon'></wa-icon>Clone</wa-dropdown-item>`
   }
   if (!Folders.currentPermissions.personal) {
@@ -348,7 +362,7 @@ async function itemSave () {
 }
 
 async function itemRemove (itm) {
-  PW.confirmDialog('Delete item', 'Are you sure you want to delete this item?', async () => {
+  PW.confirmDialog('Delete item', 'Are you sure you want to delete this item? If linked items exist, they will also be deleted.', async () => {
     const resp = await JH.http(`/api/itemremove/${itm}`, { _csrf: PW.getCSRFToken() })
     if (!await PW.checkResponse(resp)) {
       return
@@ -429,6 +443,22 @@ async function itemMove (id, folder) {
   }
 
   PW.showToast('success', 'Item moved')
+  await fillItems()
+}
+
+async function itemLink (itemid, folderid) {
+  const itemdata = {
+    _csrf: PW.getCSRFToken(),
+    folderid,
+    itemid
+  }
+
+  const resp = await JH.http('/api/linkeditems', itemdata)
+  if (!await PW.checkResponse(resp)) {
+    return
+  }
+
+  PW.showToast('success', 'Item linked')
   await fillItems()
 }
 
@@ -618,6 +648,27 @@ async function itemDialogGeneratePassword () {
   }
 }
 
+async function itemDropped (itemid, folderid) {
+  domCache.itemDropFolderId.value = folderid
+  domCache.itemDropItemId.value = itemid
+  domCache.itemDropAction.value = 'move'
+  domCache.itemDropDialog.open = true
+}
+
+async function itemDroppedDo () {
+  const action = domCache.itemDropAction.value
+  const itemid = domCache.itemDropItemId.value
+  const folderid = domCache.itemDropFolderId.value
+
+  if (action === 'move') {
+    await itemMove(itemid, folderid)
+  } else if (action === 'link') {
+    await itemLink(itemid, folderid)
+  }
+
+  domCache.itemDropDialog.open = false
+}
+
 JH.event(domCache.itemDialogActivity, 'click', (ev) => {
   Items.itemActivityShow(JH.value(domCache.itemDialogId))
 })
@@ -634,7 +685,7 @@ async function dndSetup () {
     }
     if (data.type === 'item') {
       const item = data.data
-      await itemMove(item, newparent)
+      itemDropped(item, newparent)
     }
   })
 }
@@ -695,6 +746,12 @@ addEventListener('folders-refresh', async (ev) => {
 addEventListener('pw-item-found', async (ev) => {
   await folderClicked()
 })
+
+JH.event(domCache.itemDropCancel, 'click', (ev) => {
+  domCache.itemDropDialog.hide()
+})
+
+JH.event(domCache.itemDropSave, 'click', itemDroppedDo)
 
 await fillFolders()
 await fillItemTypes()

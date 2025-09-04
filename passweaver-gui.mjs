@@ -33,7 +33,7 @@ const cfg = Config.get()
 
 // Check for minimum PassWeaver API version
 try {
-  const minpwapiversion = '2.3.0'
+  const minpwapiversion = '2.4.0'
   const resp = await PassWeaver.version()
   const pwapiversion = resp.data.version
   if (!Semver.gte(pwapiversion, minpwapiversion)) {
@@ -910,6 +910,12 @@ app.post('/api/systemreadonly', async (req, res) => {
 // System set lock
 app.post('/api/systemlock', async (req, res) => {
   const resp = await PassWeaver.systemLock(req.session, req.body.lock)
+  res.json(resp)
+})
+
+// Create item link
+app.post('/api/linkeditems', async (req, res) => {
+  const resp = await PassWeaver.linkCreate(req, req.session, req.body.folderid, req.body.itemid)
   res.json(resp)
 })
 

@@ -1,0 +1,11 @@
+<wa-dialog id="itemdropdialog" label="Dialog" class="dialog-footer" light-dismiss>
+  <wa-input id="iddfolderid" type="hidden" style="display:none;"></wa-input>
+  <wa-input id="idditemid" type="hidden" style="display:none;"></wa-input>
+  Would you like to move the item to the selected folder or create a link?
+  <wa-radio-group id="iddaction" style="margin-top:10px;" orientation="horizontal" name="iddaction">
+    <wa-radio value="move" checked appearance="button">Move Item</wa-radio>
+    <wa-radio value="link" appearance="button">Create link</wa-radio>
+  </wa-radio-group>
+  <wa-button slot="footer" id="iddconfirm" variant="brand">OK</wa-button>
+  <wa-button slot="footer" id="iddcancel" data-dialog="close">Cancel</wa-button>
+</wa-dialog>
