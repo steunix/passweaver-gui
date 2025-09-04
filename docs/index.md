@@ -10,6 +10,7 @@ These are PassWeaver GUI feature, in random order:
 
 - Personal folders for each user
 - Favorite items
+- Link items in other folders
 - Share one-time secrets with anyone, even if they have not an account; an alternative server name can be specified in case of public shares
 - One-time share items (also with optional server name)
 - Share items through permalinks; an alternative server name can be specified for these links
@@ -92,7 +93,22 @@ In the header, you have a button to copy the item permalink and to show the item
 
 When creating a new item, only the "Title" field is mandatory, all the remaining fields are optional.
 
-### One time item share
+### Move or link items with drag 'n' drop
+
+Items can be dragged and dropped to another folder you have write access to, and then you can choose:
+ - to move it
+ - to link it. See below
+
+### Linked items
+
+When dragging an item to another folder, you can choose to create a link: this will create indeed a "linked item" in the destination folder.
+
+Linked items are useful in case you want to share somewhere else a single item contained in a folder other users cannot see (no premission to read). Linked items cannot be modified, but changes to original items
+will reflect on any link.
+
+You can link an item many times, but when you delete the original item, *all linked items will be deleted too*.
+
+## One time item share
 
 By clicking the "One time share" icon (the circled 1) in item list, you can share this item with someone who normally does not have access to the folder (or even to the application itself): you'll be prompted with a dialog to choose the type of "peer" you are willing to share with:
 
@@ -102,7 +118,7 @@ By clicking "Share" button, a link will be copied in your clipboard: share this 
 
 For public links (items shared with anyone) you can also specify an alternative server name, see [below]( #Alternative%20server%20name%20for%20public%20links)
 
-### Personal folders
+## Personal folders
 
 Each user has a personal folder named after its login. Only the user can unlock this folder because it's protected with an additional password that is set the first time the user clicks on the folder:
 
