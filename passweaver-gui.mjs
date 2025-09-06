@@ -272,6 +272,15 @@ app.get('/pages/items', async (req, res) => {
   res.render('items', { ...req.locals, ...commonParams(req) })
 })
 
+// Item types
+app.get('/pages/itemtypes', async (req, res) => {
+  req.locals = {
+    pagetitle: 'Item types',
+    pageid: 'itemtypes'
+  }
+  res.render('itemtypes', { ...req.locals, ...commonParams(req) })
+})
+
 // Groups
 app.get('/pages/groups', async (req, res) => {
   if (!req.session.admin) {

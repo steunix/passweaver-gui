@@ -8,31 +8,9 @@
 
   <div class="main1" >
     <wa-tab-group>
-      <wa-tab slot="nav" panel="itemtypes">Item types</wa-tab>
       <wa-tab slot="nav" panel="cache">Cache</wa-tab>
       <wa-tab slot="nav" panel="readonly">Readonly</wa-tab>
       <wa-tab slot="nav" panel="systemlock">Lock system</wa-tab>
-
-      <wa-tab-panel name="itemtypes">
-        <div style="display: flex;">
-          <wa-button id="additemtype" variant="brand" title="Add type">
-            <wa-icon slot="start" name="plus"></wa-icon>
-            Add item type
-          </wa-button>
-        </div>
-        <table id="itemtypestable" style="display:block; max-height: calc(100vh - var(--bottom-margin)); overflow-y: auto;">
-          <thead>
-            <tr class="sticky">
-              <th>Actions</th>
-              <th>Description</th>
-              <th>Icon name</th>
-              <th>Icon</th>
-            </tr>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-      </wa-tab-panel>
 
       <wa-tab-panel name="cache">
         <wa-button id="clearcache" type="button" variant="danger" title="Clear cache">Clear cache</wa-button>
@@ -58,8 +36,6 @@
 </div>
 
 <%- include('partials/commondialogs.ejs') %>
-<%- include('partials/itemtypenew.ejs') %>
-<%- include('partials/itemtypeedit.ejs') %>
 
 </div>
 
