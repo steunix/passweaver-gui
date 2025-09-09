@@ -74,7 +74,7 @@ async function folderSave () {
     return
   }
 
-  PW.showToast('success', 'Folder created')
+  PW.showToast('success', folderid ? 'Folder updated' : 'Folder created')
   dispatchEvent(refresh)
 }
 

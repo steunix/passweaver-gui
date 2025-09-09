@@ -1,4 +1,4 @@
-/* global dispatchEvent, DOMParser, localStorage */
+/* global dispatchEvent, DOMParser, localStorage, Toastify */
 
 import * as JH from './jh.js'
 

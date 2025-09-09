@@ -130,6 +130,7 @@ async function groupSave () {
     return
   }
 
+  PW.showToast('success', groupid ? 'Group updated' : 'Group created')
   fillGroups()
 }
 
