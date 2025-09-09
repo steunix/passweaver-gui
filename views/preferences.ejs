@@ -25,9 +25,10 @@
       <wa-tab-panel name="password">
         <% if ( authmethod=="local" ) { %>
         <h4>Change password</h4>
-        <h5>At least 8 characters</h5>
         <div class="wa-stack">
-          <wa-input id="newpassword1" type="password" password-toggle label="New password"></wa-input>
+          <wa-input id="newpassword1" type="password" password-toggle label="New password">
+            <span slot="hint">Your new password must be at least 8 characters long</span>
+          </wa-input>
           <wa-input id="newpassword2" type="password" password-toggle label="Confirm new password"></wa-input>
         </div>
         <br/>
