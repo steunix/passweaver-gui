@@ -804,10 +804,11 @@ export async function addEvent (session, event, entity, entityid) {
 /**
  * Item types list
  * @param {Object} session Session
+ * @param {Object} search Search string
  * @returns
  */
-export async function itemTypesList (session) {
-  const resp = await passWeaverAPI(session, METHOD.get, '/itemtypes')
+export async function itemTypesList (session, search) {
+  const resp = await passWeaverAPI(session, METHOD.get, `/itemtypes?search=${search}`)
   return resp
 }
 
