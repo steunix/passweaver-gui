@@ -83,7 +83,7 @@ async function itemSave () {
 }
 
 async function itemDialogShow (id) {
-  JH.value('#itemtypedialog sl-input,sl-textarea,sl-select', '')
+  JH.value('#itemtypedialog aw-input,aw-textarea,aw-select', '')
   JH.value(domCache.dialogItemId, id || '')
 
   if (id) {
@@ -139,7 +139,7 @@ JH.event(domCache.dialogSave, 'click', (ev) => {
   itemSave()
 })
 
-JH.event(domCache.itemsSearch, 'sl-input', (ev) => {
+JH.event(domCache.itemsSearch, 'input', (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }
