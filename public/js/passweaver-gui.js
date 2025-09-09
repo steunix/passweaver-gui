@@ -249,6 +249,16 @@ export function treeSearchPrevious (elemid, searchstring) {
 }
 
 export function showToast (variant, text) {
+  Toastify({
+    text,
+    duration: 3000,
+    close: true,
+    gravity: 'top', // `top` or `bottom`
+    position: 'right', // `left`, `center` or `right`
+    backgroundColor: variant === 'success' ? 'green' : variant === 'danger' ? 'red' : variant === 'warning' ? 'orange' : 'blue',
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    oldestFirst: false
+  }).showToast()
   // TODO: Toast is not yet implemented in WebAwesome
   /*
   const icon = {

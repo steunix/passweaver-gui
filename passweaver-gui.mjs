@@ -49,8 +49,8 @@ try {
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      'script-src': ["'self'", 'early.webawesome.com', 'ka-f.fontawesome.com'],
-      'style-src': ["'self'", "'unsafe-inline'", 'fonts.bunny.net', 'early.webawesome.com', 'ka-f.fontawesome.com'],
+      'script-src': ["'self'", 'early.webawesome.com', 'ka-f.fontawesome.com', 'cdn.jsdelivr.net'],
+      'style-src': ["'self'", "'unsafe-inline'", 'fonts.bunny.net', 'early.webawesome.com', 'ka-f.fontawesome.com', 'cdn.jsdelivr.net'],
       'connect-src': ["'self'", 'data: blob:', 'ka-f.fontawesome.com'],
       'img-src': ["'self'", 'https: data: blob:', 'ka-f.fontawesome.com']
     }
