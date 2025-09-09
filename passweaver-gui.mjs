@@ -768,7 +768,7 @@ app.post('/api/changepassword', async (req, res) => {
 
 // Item types list
 app.get('/api/itemtypes', async (req, res) => {
-  const resp = await PassWeaver.itemTypesList(req.session)
+  const resp = await PassWeaver.itemTypesList(req.session, req.query?.search || '')
   res.json(resp)
 })
 
