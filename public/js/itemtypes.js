@@ -83,7 +83,7 @@ async function itemSave () {
 }
 
 async function itemDialogShow (id) {
-  JH.value('#itemtypedialog aw-input,aw-textarea,aw-select', '')
+  JH.value('#itemtypedialog wa-input,wa-textarea,wa-select', '')
   JH.value(domCache.dialogItemId, id || '')
 
   if (id) {
