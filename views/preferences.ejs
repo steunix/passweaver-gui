@@ -42,21 +42,12 @@
         <% if ( !admin ) { %>
           <% if ( unlocked ) { %>
             <h4>Change personal folder password</h4>
-            <h5>At least 8 characters</h5>
-            <table>
-              <tr>
-                <th>New password</th>
-                <td>
-                  <wa-input id="pnewpassword1" type="password" password-toggle></wa-input>
-                </td>
-              </tr>
-              <tr>
-                <th>Confirm new password</th>
-                <td>
-                  <wa-input id="pnewpassword2" type="password" password-toggle></wa-input>
-                </td>
-              </tr>
-            </table>
+            <div class="wa-stack">
+              <wa-input id="pnewpassword1" type="password" password-toggle label="New password">
+                <span slot="hint">Your new personal password must be at least 8 characters long</span>
+              </wa-input>
+              <wa-input id="pnewpassword2" type="password" password-toggle label="Confirm new password"></wa-input>
+            </div>
             <wa-divider></wa-divider>
             <wa-button id='ppasswordchange' variant="brand" disabled>Change password</wa-button>
           <% } else { %>
