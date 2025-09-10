@@ -54,6 +54,7 @@ const domCache = {
   itemDialogPassword: JH.query('#idpassword'),
   itemDialogGenerate: JH.query('#idgenerate'),
   itemDialogCopyPassword: JH.query('#idcopypassword'),
+  itemDialogOpenUrl: JH.query('#idopenurl'),
   itemDialogSave: JH.query('#idsave'),
   itemDialogCancel: JH.query('#idcancel'),
   itemDropDialog: JH.query('#itemdropdialog'),
@@ -793,5 +794,13 @@ JH.event(domCache.userSearch, 'click', (ev) => {
   UPicker.show()
 })
 
+JH.event(domCache.itemDialogOpenUrl, 'click', (ev) => {
+  const url = JH.value(domCache.itemDialogUrl).trim()
+  if (url.length && (url.startsWith('http://') || url.startsWith('https://'))) {
+    window.open(url, '_blank', 'noopener')
+  } else {
+    PW.showToast('danger', 'Invalid URL')
+  }
+})
 // Picker
 const UPicker = new CPicker.Picker('users', userChoosen)
