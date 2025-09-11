@@ -496,7 +496,7 @@ async function itemOneTimeShare () {
   const body = await resp.json()
   navigator.clipboard.writeText(body.data.link)
 
-  PW.showToast('primary', 'One time share link copied to clipboard')
+  PW.showToast('success', 'One time share link copied to clipboard')
   domCache.scopeSelect.open = false
 }
 
