@@ -79,11 +79,6 @@ body {
   background-color: var(--wa-color-brand-fill-normal);
 }
 
-.page-sidebar wa-icon {
-  font-size: 0.8rem;
-  width: 1rem;
-}
-
 .page-sidebar .link wa-icon {
   padding-right: 0.5em;
 }
