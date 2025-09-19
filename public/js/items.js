@@ -760,7 +760,7 @@ await fillFolders()
 await fillItemTypes()
 
 domCache.itemDialogPassword.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-  const el = domCache.itemDialogPassword.shadowRoot.querySelector('[part=input]')
+  const el = domCache.itemDialogPassword.shadowRoot.querySelector('[part=input] input')
   if (el.getAttribute('type') === 'text') {
     passwordAccessed(JH.value(domCache.itemDialogId))
   }

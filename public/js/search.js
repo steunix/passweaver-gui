@@ -170,7 +170,7 @@ JH.event(domCache.passwordCopy, 'wa-copy', (ev) => {
 
 setTimeout(() => {
   domCache.passwordView.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-    const el = domCache.passwordView.shadowRoot.querySelector('[part=input]')
+    const el = domCache.passwordView.shadowRoot.querySelector('[part=input] input')
     if (el.getAttribute('type') === 'text') {
       passwordAccessed(JH.value(domCache.itemViewId))
     }
