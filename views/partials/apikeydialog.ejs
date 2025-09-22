@@ -1,11 +1,16 @@
-<sl-dialog id="apikeydialog" label="API Key" class="dialog-deny-close">
-  <sl-input id="apikeyid" style="display: none;"></sl-input>
-  <sl-input id="apikeydescription" label="Description" required autofocus maxlength="50"></sl-input>
-  <sl-select id="apikeyuserid" label="User" required></sl-select>
-  <sl-input id="apikeyipwhitelist" label="IP whitelist"></sl-input>
-  <sl-input id="apikeytimewhitelist" label="Time whitelist" placeholder="DDD:HHMM-HHMM"></sl-input>
-  <sl-input id="apikeyexpiresat" label="Expire date" required placeholder="YYYY-MM-DD"></sl-input>
-  <sl-checkbox id="apikeyactive" label="Active">Active</sl-checkbox>
-  <sl-button id="apikeysave" slot="footer" variant="primary" disabled="disabled">Save</sl-button>
-  <sl-button id="apikeycancel" slot="footer">Cancel</sl-button>
-</sl-dialog>
+<wa-dialog id="apikeydialog" label="API Key" light-dismiss>
+  <div class="wa-stack">
+    <wa-input id="apikeyid" style="display: none;"></wa-input>
+    <wa-input id="apikeydescription" label="Description" required autofocus maxlength="50"></wa-input>
+    <wa-select id="apikeyuserid" label="User" required></wa-select>
+    <wa-input id="apikeytimewhitelist" label="Time whitelist" placeholder="DDD:HHMM-HHMM"></wa-input>
+    <wa-input id="apikeyipwhitelist" label="IP whitelist" placeholder="192.168.1.1/32,10.0.0.0/24"></wa-input>
+    <wa-input id="apikeyexpiresat" label="Expire date" required placeholder="YYYY-MM-DD"></wa-input>
+    <wa-select id="apikeyactive" label="Status" required>
+      <wa-option value="A">Active</wa-option>
+      <wa-option value="I">Inactive</wa-option>
+    </wa-select>
+  </div>
+  <wa-button id="apikeysave" slot="footer" variant="brand" disabled="disabled">Save</wa-button>
+  <wa-button id="apikeycancel" slot="footer" appearance="outlined">Cancel</wa-button>
+</wa-dialog>

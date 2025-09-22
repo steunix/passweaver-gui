@@ -7,17 +7,17 @@
   <%- include('partials/csrf.ejs') %>
 
   <div class="main1" >
-    <h2>Users</h2>
-    <div style="display:flex;">
-      <sl-input id="usersearch" type="text" placeholder="Search users" autofocus="autofocus" clearable>
-        <sl-icon slot="prefix" name="search"></sl-icon>
-      </sl-input>
-      <sl-button id="newuser" type="button" title="Create a new user" style="margin-left:1em">
-        <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+    <h4>Users</h4>
+    <div style="display:flex; margin-bottom: 1rem;">
+      <wa-input id="usersearch" type="text" placeholder="Search users" autofocus="autofocus" with-clear>
+        <wa-icon slot="start" name="search"></wa-icon>
+      </wa-input>
+      <wa-button id="newuser" variant="brand" title="Create a new user" style="margin-left:1em">
+        <wa-icon slot="start" name="plus"></wa-icon>
         New user
-      </sl-button>
+      </wa-button>
     </div>
-    <table id="userstable" class="bordered" style="display:block; max-height: calc(100vh - var(--bottom-margin)); overflow-y: auto;">
+    <table id="userstable" style="display:block; max-height: calc(100vh - var(--bottom-margin)); overflow-y: auto;">
       <thead>
         <tr class="sticky">
           <th>Actions</th>
@@ -36,28 +36,28 @@
   </div>
 
   <div class="main2">
-    <h2>Groups</h2>
-    <div style="display: flex;">
-      <sl-button-group>
-        <sl-button id="addgroup" type="button" title="Add group membership">
-          <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+    <h4>Groups</h4>
+    <div style="display: flex; margin-bottom: 1rem;">
+      <wa-button-group>
+        <wa-button id="addgroup" appearance="outlined" title="Add group membership">
+          <wa-icon slot="start" name="plus"></wa-icon>
           Add group
-        </sl-button>
-        <sl-button id="copygroups" type="button" title="Copy groups">
-          <sl-icon slot="prefix" name="copy"></sl-icon>
+        </wa-button>
+        <wa-button id="copygroups" appearance="outlined" title="Copy groups">
+          <wa-icon slot="start" name="copy"></wa-icon>
           Copy groups
-        </sl-button>
-        <sl-button id="pastegroups" type="button" title="Paste groups" style="display: none;">
-          <sl-icon slot="prefix" name="clipboard-plus"></sl-icon>
+        </wa-button>
+        <wa-button id="pastegroups" appearance="outlined" title="Paste groups" style="display: none;">
+          <wa-icon slot="start" name="paste"></wa-icon>
           Paste groups
-        </sl-button>
-        <sl-button id="replacegroups" type="button" title="Replace groups" style="display: none;">
-          <sl-icon slot="prefix" name="clipboard-check"></sl-icon>
+        </wa-button>
+        <wa-button id="replacegroups" appearance="outlined" title="Replace groups" style="display: none;">
+          <wa-icon slot="start" name="file-import"></wa-icon>
           Replace groups
-        </sl-button>
-      </sl-button-group>
+        </wa-button>
+      </wa-button-group>
     </div>
-    <table id="groupstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;" class="bordered">
+    <table id="groupstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;">
       <thead>
         <tr class="sticky">
           <th>Actions</th>

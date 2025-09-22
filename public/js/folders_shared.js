@@ -9,7 +9,8 @@ const refresh = new Event('folders-refresh')
 
 export const currentPermissions = {
   read: false,
-  write: false
+  write: false,
+  personal: false
 }
 
 const domCache = {
@@ -18,7 +19,6 @@ const domCache = {
   folderDialogId: JH.query('#folderdialogid'),
   folderDialogDescription: JH.query('#folderdescription'),
   folderDialogSave: JH.query('#foldersave'),
-  folderDialogCancel: JH.query('#foldercancel'),
   folderRemoveButton: JH.query('#folderremove'),
   folderCreateButton: JH.query('#foldercreate'),
   folderEditButton: JH.query('#folderedit'),
@@ -29,14 +29,14 @@ const domCache = {
 
 export function currentFolder () {
   try {
-    return JH.query('sl-tree-item[selected]').getAttribute('data-id')
+    return JH.query('wa-tree-item[selected]').getAttribute('data-id')
   } catch (err) {
     return ''
   }
 }
 
 function folderDialogShow (id) {
-  JH.value(JH.query(domCache.folderDialog).querySelectorAll('sl-input'), '')
+  JH.value(JH.query(domCache.folderDialog).querySelectorAll('wa-input'), '')
 
   if (id?.length) {
     folderEditFill(id)
@@ -48,7 +48,7 @@ function folderDialogShow (id) {
 }
 
 function folderDialogHide () {
-  domCache.folderDialog.hide()
+  domCache.folderDialog.open = false
 }
 
 function folderSaveEnable () {
@@ -74,7 +74,7 @@ async function folderSave () {
     return
   }
 
-  PW.showToast('success', 'Folder created')
+  PW.showToast('success', folderid ? 'Folder updated' : 'Folder created')
   dispatchEvent(refresh)
 }
 
@@ -113,7 +113,7 @@ export async function folderMove (id, newparent) {
 
   const resp = await JH.http(`/api/folderupdate/${id}`, data)
   if (!await PW.checkResponse(resp)) {
-    const items = JH.queryAll('sl-tree-item')
+    const items = JH.queryAll('wa-tree-item')
     for (const item of items) {
       item.classList.remove('dragover')
     }
@@ -139,9 +139,8 @@ JH.event(domCache.folderCreateButton, 'click', (ev) => {
 JH.event(domCache.folderDialogDescription, 'keyup', folderSaveEnable)
 
 JH.event(domCache.folderDialogSave, 'click', folderSave)
-JH.event(domCache.folderDialogCancel, 'click', folderDialogHide)
 
-JH.event(domCache.folderSearch, 'sl-input', (ev) => {
+JH.event(domCache.folderSearch, 'input', (ev) => {
   if (folderSearchTimeout) {
     clearTimeout(folderSearchTimeout)
   }

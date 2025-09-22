@@ -7,64 +7,58 @@
   <%- include('partials/csrf.ejs') %>
 
   <div class="main1">
-    <h2>Groups</h2>
-    <div style="display:flex;">
-      <div style="display:flex;margin-right:1em;">
-        <sl-input id="groupsearch" type="text" placeholder="Search group" autofocus="autofocus" clearable>
-          <sl-icon slot="prefix" name="search"></sl-icon>
-        </sl-input>
-        <sl-button title="Search previous" id="groupsearchprevious">
-          <sl-icon slot="suffix" name="chevron-left"></sl-icon>
-        </sl-button>
-        <sl-button title="Search next" id="groupsearchnext">
-          <sl-icon slot="suffix" name="chevron-right"></sl-icon>
-        </sl-button>
-      </div>
-      <sl-button-group>
-        <sl-button pill id="groupcreate" type="button" title="New group">
-          <sl-icon slot="prefix" name="plus-lg"></sl-icon>
-        </sl-button>
-        <sl-button pill id="groupedit" type="button" title="Edit group">
-          <sl-icon slot="prefix" name="pencil"></sl-icon>
-        </sl-button>
-        <sl-button pill id="groupremove" type="button" variant="danger" title="Remove group">
-          <sl-icon slot="prefix" name="trash3"></sl-icon>
-        </sl-button>
-        <sl-button pill id="groupfolders" type="button" title="Show folders">
-          <sl-icon slot="prefix" name="folder2-open"></sl-icon>
-        </sl-button>
-      </sl-button-group>
+    <h4>Groups</h4>
+    <div class="wa-flank:end" style="margin-bottom:1rem;">
+      <wa-input id="groupsearch" type="text" placeholder="Search group" autofocus="autofocus" with-clear>
+        <wa-icon slot="start" name="search"></wa-icon>
+        <wa-icon slot="end" title="Search previous" id="groupsearchprevious" name="angle-left"></wa-icon>
+        <wa-icon slot="end" title="Search next" id="groupsearchnext" name="angle-right"></wa-icon>
+      </wa-input>
+      <wa-button-group>
+        <wa-button id="groupcreate" appearance="filled" title="New group" variant="brand">
+          <wa-icon name="plus" label="Create group"></wa-icon>
+        </wa-button>
+        <wa-button id="groupedit" appearance="filled" title="Edit group">
+          <wa-icon name="edit" label="Edit group"></wa-icon>
+        </wa-button>
+        <wa-button id="groupfolders" appearance="filled" title="Show folders" variant="success">
+          <wa-icon name="folder-tree" label="Show folders"></wa-icon>
+        </wa-button>
+        <wa-button id="groupremove" appearance="filled" variant="danger" title="Remove group">
+          <wa-icon name="trash" label="Remove group"></wa-icon>
+        </wa-button>
+      </wa-button-group>
     </div>
     <%- include('partials/groupstree.ejs') %>
   </div>
 
   <div class="main2">
-    <h2><span id="sectiontitle">Members</span></h2>
-    <div style="display:flex;">
-      <sl-button-group>
-        <sl-button id="newmember">
-          <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+    <h4><span id="sectiontitle">Members</span></h4>
+    <div class="wa-flank:end" style="margin-bottom:1rem;">
+      <wa-button-group>
+        <wa-button id="newmember" appearance="outlined">
+          <wa-icon slot="start" name="plus" label="Add member"></wa-icon>
           Add member
-        </sl-button>
-        <sl-button id="removeallmembers">
-          <sl-icon slot="prefix" name="trash2" variant="danger"></sl-icon>
-          Remove all members
-        </sl-button>
-        <sl-button id="copyusers" type="button" title="Copy users">
-          <sl-icon slot="prefix" name="copy"></sl-icon>
+        </wa-button>
+        <wa-button id="copyusers" type="button" appearance="outlined" title="Copy users">
+          <wa-icon slot="start" name="copy" label="Copy users"></wa-icon>
           Copy users
-        </sl-button>
-        <sl-button id="pasteusers" type="button" title="Paste users" style="display: none;">
-          <sl-icon slot="prefix" name="clipboard-plus"></sl-icon>
+        </wa-button>
+        <wa-button id="pasteusers" type="button" appearance="outlined" title="Paste users" style="display: none;">
+          <wa-icon slot="start" name="paste" label="Paste users"></wa-icon>
           Paste users
-        </sl-button>
-        <sl-button id="replaceusers" type="button" title="Replace users" style="display: none;">
-          <sl-icon slot="prefix" name="clipboard-check"></sl-icon>
+        </wa-button>
+        <wa-button id="replaceusers" type="button" appearance="outlined" title="Replace users" style="display: none;">
+          <wa-icon slot="start" name="clipboard-check" label="Replace users"></wa-icon>
           Replace users
-        </sl-button>
-      </sl-button-group>
+        </wa-button>
+        <wa-button id="removeallmembers" appearance="outlined" variant="danger">
+          <wa-icon slot="start" name="trash" label="Remove all members"></wa-icon>
+          Remove all members
+        </wa-button>
+      </wa-button-group>
     </div>
-    <table id="userstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;" class="bordered">
+    <table id="userstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;">
       <thead>
         <tr class="sticky">
           <th>Actions</th>

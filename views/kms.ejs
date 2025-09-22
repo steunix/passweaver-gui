@@ -7,15 +7,15 @@
   <%- include('partials/csrf.ejs') %>
 
   <div class="main1">
-    <h2>KMS</h2>
-    <div style="display:flex; align-items: center;">
-      <sl-input id="itemsearch" type="text" placeholder="Search" autofocus="autofocus" clearable style="width:20rem;">
-        <sl-icon slot="prefix" name="search"></sl-icon>
-      </sl-input>
-      <sl-button id="itemnew" type="button" title="Create a new KMS" style="margin-left:1em">
-        <sl-icon slot="prefix" name="plus-lg"></sl-icon>
+    <h4>Key Management Services</h4>
+    <div style="display:flex; align-items: center; margin-bottom: 1rem;">
+      <wa-input id="itemsearch" type="text" placeholder="Search" autofocus="autofocus" with-clear style="width:20rem;">
+        <wa-icon slot="start" name="search"></wa-icon>
+      </wa-input>
+      <wa-button id="itemnew" type="button" title="Create a new KMS" variant="brand" style="margin-left:1em">
+        <wa-icon slot="start" name="plus"></wa-icon>
         New KMS
-      </sl-button>
+      </wa-button>
     </div>
     <table id="itemstable" class="bordered" style="width: auto; display:block; max-height: calc(100vh - var(--bottom-margin)); overflow-y: auto;">
       <thead>

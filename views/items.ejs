@@ -6,60 +6,55 @@
   <%- include('partials/sidebar.ejs') %>
   <%- include('partials/csrf.ejs') %>
 
+  <!-- Preload dropdown scripts -->
+  <wa-dropdown style="visibility: hidden; display: none;"><wa-dropdown-item></wa-dropdown-item></wa-dropdown>
+
   <div class="main1">
-    <h2>Folders</h2>
-    <div style="display:flex;">
-      <div style="display:flex;margin-right:1em;">
-        <sl-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" clearable>
-          <sl-icon slot="prefix" name="search"></sl-icon>
-        </sl-input>
-        <sl-button title="Search previous" id="foldersearchprevious">
-          <sl-icon slot="suffix" name="chevron-left"></sl-icon>
-        </sl-button>
-        <sl-button title="Search next" id="foldersearchnext">
-          <sl-icon slot="suffix" name="chevron-right"></sl-icon>
-        </sl-button>
-      </div>
+    <h4>Folders</h4>
+    <div class="wa-flank:end" style="margin-bottom:1rem;">
+      <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" with-clear>
+        <wa-icon slot="start" name="search"></wa-icon>
+        <wa-icon slot="end" title="Search previous" id="foldersearchprevious" name="angle-left"></wa-icon>
+        <wa-icon slot="end" title="Search next" id="foldersearchnext" name="angle-right"></wa-icon>
+      </wa-input>
       <% if ( manage_folders ) { %>
-        <sl-button-group>
-          <sl-button pill id="foldercreate" type="button" title="New folder">
-            <sl-icon slot="prefix" name="plus-lg"></sl-icon>
-          </sl-button>
-          <sl-button pill id="folderedit" type="button" title="Edit folder">
-            <sl-icon slot="prefix" name="pencil"></sl-icon>
-          </sl-button>
-          <sl-button pill id="folderremove" type="button" variant="danger" title="Remove folder">
-            <sl-icon slot="prefix" name="trash3"></sl-icon>
-          </sl-button>
-        </sl-button-group>
+        <wa-button-group>
+          <wa-button id="foldercreate" type="button" variant="brand" appearance="filled" title="New folder">
+            <wa-icon name="plus" label="Create folder"></wa-icon>
+          </wa-button>
+          <wa-button id="folderedit" type="button" appearance="filled" title="Edit folder">
+            <wa-icon name="edit" label="Edit folder"></wa-icon>
+          </wa-button>
+          <wa-button id="folderremove" type="button" variant="danger" appearance="filled" title="Remove folder">
+            <wa-icon name="trash" label="Remove folder"></wa-icon>
+          </wa-button>
+        </wa-button-group>
       <% } %>
     </div>
     <%- include('partials/folderstree.ejs') %>
   </div>
 
   <div class="main2">
-    <h2><sl-badge id="currentpermissions" pill style="vertical-align: middle; padding-right: 0.5em;"></sl-badge><span id="sectiontitle">Items</span></h2>
-    <div style="display:flex;">
-      <sl-button id="newitem" title="New item" variant="primary" pill disabled="disabled">
-        <sl-icon slot="prefix" name="plus-lg"></sl-icon>
-      </sl-button>
-      <sl-input id="itemsearch" style="margin-left:1em;" placeholder="Filter items" clearable>
-        <sl-icon slot="prefix" name="search"></sl-icon>
-      </sl-input>
-      <sl-select id="typesearch" style="margin-left:1em;" name="typesearch" placeholder="Filter type" clearable></sl-select>
-      <sl-switch id="favorite" style="margin-left:1em;" label="Favorites only">Favorites only</sl-switch>
+    <h4><wa-badge id="currentpermissions" pill style="vertical-align: middle; margin-right: 0.5em; padding-bottom: 0.2rem; padding-top: 0.2rem;"></wa-badge><span id="sectiontitle">Items</span></h4>
+    <div style="display:flex; margin-bottom: 1rem; align-items:center;">
+      <wa-button id="newitem" title="New item" variant="brand" pill disabled>
+        <wa-icon slot="start" name="plus"></wa-icon>
+        New item
+      </wa-button>
+      <wa-input id="itemsearch" style="margin-left:1em;width:20rem;" placeholder="Filter items" with-clear>
+        <wa-icon slot="start" name="search"></wa-icon>
+      </wa-input>
+      <wa-select id="typesearch" style="margin-left:1em;" name="typesearch" placeholder="Filter type" with-clear></wa-select>
+      <wa-switch id="favorite" style="margin-left:1em;" label="Favorites only">Favorites only</wa-switch>
     </div>
-    <table id="itemstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;" class="bordered">
+    <table id="itemstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;">
       <thead>
         <tr class="sticky">
           <th>Actions</th>
           <th>Type</th>
           <th>Title</th>
           <th>User</th>
-          <th>Copy user</th>
           <th>Password</th>
-          <th>Copy pwd</th>
-          <th>Show</th>
         </tr>
       </thead>
       <tbody>

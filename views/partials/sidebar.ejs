@@ -10,69 +10,69 @@
   <div class="username">
     <%= userdescription %>
   </div>
-  <sl-divider></sl-divider>
+  <wa-divider></wa-divider>
   <% if ( !admin ) { %>
     <a href="/pages/items" title="Items" class="link" pageid="items">
-      <sl-icon name="folder2-open"></sl-icon>
+      <wa-icon name="list"></wa-icon>
       Items
     </a>
     <a href="/pages/search" title="Search" class="link" pageid="search">
-      <sl-icon name="search"></sl-icon>
+      <wa-icon name="search"></wa-icon>
       Search</a>
     </a>
   <% } %>
   <% if ( admin ) { %>
     <a href="/pages/folders" title="Folders" class="link" pageid="folders">
-      <sl-icon name="folder2-open"></sl-icon>
+      <wa-icon name="folder-tree"></wa-icon>
       Folders
     </a>
     <a href="/pages/users" title="Users" class="link" pageid="users">
-      <sl-icon name="person"></sl-icon>
+      <wa-icon name="user"></wa-icon>
       Users
     </a>
     <a href="/pages/groups" title="Groups" class="link" pageid="groups">
-      <sl-icon name="people"></sl-icon>
+      <wa-icon name="user-group"></wa-icon>
       Groups
     </a>
     <a href="/pages/itemtypes" title="Item types" class="link" pageid="itemtypes">
-      <sl-icon name="tags"></sl-icon>
+      <wa-icon name="tags"></wa-icon>
       Item types
     </a>
     <a href="/pages/apikeys" title="API keys" class="link" pageid="apikeys">
-      <sl-icon name="key"></sl-icon>
+      <wa-icon name="key"></wa-icon>
       API keys
     </a>
     <a href="/pages/kms" title="KMS" class="link" pageid="kms">
-      <sl-icon name="wallet2"></sl-icon>
+      <wa-icon name="wallet"></wa-icon>
       KMS
     </a>
   <% } %>
   <a href="/pages/generate" title="Generator" class="link" pageid="generate">
-    <sl-icon name="magic"></sl-icon>
+    <wa-icon name="wand-sparkles"></wa-icon>
     Generator
   </a>
-  <a href="/pages/onetimesecret" title="1time secret" class="link" pageid="onetimesecret">
-    <sl-icon name="1-circle"></sl-icon>
-    1time secret
+  <a href="/pages/onetimesecret" title="One-time secret" class="link" pageid="onetimesecret">
+    <wa-icon name="1"></wa-icon>
+    1 time secret
   </a>
   <% if ( admin ) { %>
-    <sl-divider></sl-divider>
+    <wa-divider></wa-divider>
     <a href="/pages/info" title="Info" class="link" pageid="info">
-      <sl-icon name="info-circle"></sl-icon>
+      <wa-icon name="info-circle"></wa-icon>
       Info
     </a>
     <a href="/pages/settings" title="Settings" class="link" pageid="settings">
-      <sl-icon name="gear"></sl-icon>
+      <wa-icon name="gear"></wa-icon>
       Settings
     </a>
   <% } %>
-  <sl-divider></sl-divider>
+  <wa-divider></wa-divider>
   <a href="/pages/preferences" title="preferences" class="link" pageid="preferences">
-    <sl-icon name="sliders" page="Logout"></sl-icon>
+    <wa-icon name="sliders" page="Logout"></wa-icon>
     Preferences
   </a>
   <a href="/logout" title="Logout" class="link" pageid="logout">
-    <sl-icon name="box-arrow-right" page="Logout"></sl-icon>
+    <wa-icon name="right-from-bracket" page="Logout"></wa-icon>
     Logout
   </a>
   <div class="version">PassWeaver GUI v<%= version %><br><a href='https://steunix.github.io/passweaver-gui/' target="_blank">Documentation</a></div>

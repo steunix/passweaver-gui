@@ -6,34 +6,34 @@
   <%- include('partials/sidebar.ejs') %>
 
   <div class="main1">
-    <h2>Info</h2>
+    <h4>Info</h4>
     <table>
       <tr>
-        <th>PassWeaver GUI version</th><td><%= guiVersion %></td>
+        <td class="bold">PassWeaver GUI version</td><td><%= guiVersion %></td>
       </tr>
       <tr>
-        <th>PassWeaver GUI started</th><td><%= guiStartup %> (UTC)</td>
+        <td class="bold">PassWeaver GUI started</td><td><%= guiStartup %> (UTC)</td>
       </tr>
       <tr>
-        <th>PassWeaver API version</th><td><%= apiVersion %></td>
+        <td class="bold">PassWeaver API version</td><td><%= apiVersion %></td>
       </tr>
       <tr>
-        <th>PassWeaver API started</th><td><%= apiStartup %> (UTC)</td>
+        <td class="bold">PassWeaver API started</td><td><%= apiStartup %> (UTC)</td>
       </tr>
       <tr>
-        <th>Users</th><td><%= users %></td>
+        <td class="bold">Users</td><td><%= users %></td>
       </tr>
       <tr>
-        <th>Folders</th><td><%= folders %></td>
+        <td class="bold">Folders</td><td><%= folders %></td>
       </tr>
       <tr>
-        <th>Items</th><td><%= items %></td>
+        <td class="bold">Items</td><td><%= items %></td>
       </tr>
       <tr>
-        <th>Cache provider</th><td><%= cacheProvider %></td>
+        <td class="bold">Cache provider</td><td><%= cacheProvider %></td>
       </tr>
       <tr>
-        <th>Cache size</th><td><sl-format-bytes value="<%= cacheSize %>"></sl-format-bytes></td>
+        <td class="bold">Cache size</td><td><wa-format-bytes value="<%= cacheSize %>"></wa-format-bytes></td>
       </tr>
     </table>
     </div>

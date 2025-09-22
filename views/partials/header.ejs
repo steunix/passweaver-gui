@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" class="sl-theme-<%- theme %>">
+<html lang="en" class="wa-<%- theme %>">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="/public/shoelace/v<%= slversion%>/cdn/themes/<%- theme %>.css"/>
-  <link href="/public/v<%= version%>/css/passweaver.css" rel="stylesheet">
+  <link rel="stylesheet" href="/public/webawesome/v<%= waversion %>/dist-cdn/styles/themes/default.css" />
+  <link rel="stylesheet" href="/public/webawesome/v<%= waversion %>/dist-cdn/styles/webawesome.css" />
+  <link rel="stylesheet" href="/public/v<%= version%>/css/passweaver.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <title>PassWeaver</title>
 </head>
 <body>
-  <script type="module" src="/public/shoelace/v<%= slversion%>/cdn/shoelace-autoloader.js"></script>
+  <script type="module" src="/public/webawesome/v<%= waversion %>/dist-cdn/webawesome.loader.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <input type="hidden" id="v-user" value="<%= user %>" />

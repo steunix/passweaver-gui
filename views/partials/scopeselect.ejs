@@ -1,16 +1,17 @@
-<sl-dialog id="scopeselect" label="Choose share target">
-  <sl-visually-hidden id="shareitemid"></sl-visually-hidden>
+<wa-dialog id="scopeselect"  class="dialog-footer" light-dismiss label="Choose share target">
+  <wa-input style="display:none;" id="shareitemid"></wa-input>
   <p>Select who you want to share this secret with:</p>
-  <sl-radio-group id="scope" name="scope" value="1">
-    <sl-radio-button value="0">Anyone</sl-radio-button>
-    <sl-radio-button value="1">Anyone logged in PassWeaver</sl-radio-button>
-    <sl-radio-button value="2">A single PassWeaver user</sl-radio-button>
-  </sl-radio-group>
+  <wa-radio-group id="scope" name="scope" value="1" orientation="vertical">
+    <wa-radio value="0">Anyone</wa-radio>
+    <wa-radio value="1">Anyone logged in PassWeaver</wa-radio>
+    <wa-radio value="2">A single PassWeaver user</wa-radio>
+  </wa-radio-group>
   <br />
   <div id="selectuser" style="visibility: hidden; display: flex;">
-    <sl-visually-hidden id="scopeuser"></sl-visually-hidden>
-    <sl-button id="searchuser" variant="warning">Select user</sl-button>
-    <sl-input id="scopeuserdesc" readonly></sl-input>
+    <wa-input style="display:none;" id="scopeuser"></wa-input>
+    <wa-button id="searchuser" variant="warning">Select user</wa-button>
+    <wa-input id="scopeuserdesc" readonly></wa-input>
   </div>
-  <sl-button id='sharesave' slot="footer" variant="primary" disabled>Share</sl-button>
-</sl-dialog>
+  <wa-button id='sharesave' slot="footer" variant="brand" disabled>Share</wa-button>
+  <wa-button id="sharecancel" data-dialog="close" slot="footer" appearance="outlined">Cancel</wa-button>
+</wa-dialog>

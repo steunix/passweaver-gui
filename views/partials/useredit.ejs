@@ -1,24 +1,27 @@
-<sl-dialog id="edituserdialog" label="Edit user" class="dialog-deny-close">
-  <sl-input label="Login" id="editlogin" name="editlogin" required="required" autofocus maxlength="50"></sl-input>
-  <sl-input type="email" label="Email" id="editemail" required="required" name="editemail" maxlength="50"></sl-input>
-  <sl-input label="Last name" id="editlastname" name="editlastname" required="required" maxlength="100"></sl-input>
-  <sl-input label="First name" id="editfirstname" name="editfirstname" maxlength="100"></sl-input>
-  <sl-select label="Locale" id="editlocale" name="editlocale">
-    <sl-option value="en_US">en_US</sl-option>
-  </sl-select>
-  <sl-select label="Authentication method" id="editauthmethod" name="editauthmethod">
-    <sl-option value="local">Local</sl-option>
-    <sl-option value="ldap">LDAP</sl-option>
-    <sl-option value="apikey">API key</sl-option>
-  </sl-select>
-  <sl-checkbox id="editactive" name="editactive">Active</sl-checkbox>
-  <br/>
-  <br/>
-  <sl-alert id="editapikeywarning" variant="warning">
-    <sl-icon slot="icon" name="exclamation-triangle"></sl-icon>
-    <strong>User has connected API keys</strong><br />
-    If you disable this user, all API keys will be disabled too.
-  </sl-alert>
-  <sl-button id="useredit" slot="footer" variant="primary">Save</button>
-  <sl-button id="cancel" slot="footer">Cancel</button>
-</sl-dialog>
+<wa-dialog id="edituserdialog"  class="dialog-footer" light-dismiss label="Edit user" class="dialog-deny-close">
+  <div class="wa-stack">
+    <wa-input label="Login" id="editlogin" name="editlogin" required="required" autofocus maxlength="50"></wa-input>
+    <wa-input type="email" label="Email" id="editemail" required="required" name="editemail" maxlength="50"></wa-input>
+    <wa-input label="Last name" id="editlastname" name="editlastname" required="required" maxlength="100"></wa-input>
+    <wa-input label="First name" id="editfirstname" name="editfirstname" maxlength="100"></wa-input>
+    <wa-select label="Locale" id="editlocale" name="editlocale">
+      <wa-option value="en_US">en_US</wa-option>
+    </wa-select>
+    <wa-select label="Authentication method" id="editauthmethod" name="editauthmethod">
+      <wa-option value="local">local</wa-option>
+      <wa-option value="ldap">ldap</wa-option>
+      <wa-option value="apikey">API key</wa-option>
+    </wa-select>
+    <wa-select label="Status" id="editactive" name="editactive" required="required">
+      <wa-option value="A">Active</wa-option>
+      <wa-option value="N">Inactive</wa-option>
+    </wa-select>
+    <wa-callout id="editapikeywarning" variant="warning" style="display: none;">
+      <wa-icon slot="icon" name="exclamation-triangle"></wa-icon>
+      <strong>User has connected API keys</strong><br />
+      If you disable this user, all API keys will be disabled too.
+    </wa-callout>
+  </div>
+  <wa-button id="useredit" slot="footer" variant="brand">Save</wa-button>
+  <wa-button id="cancel" data-dialog="close" slot="footer" appearance="outlined">Cancel</wa-button>
+</wa-dialog>

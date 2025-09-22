@@ -30,11 +30,11 @@ async function fillItemTypes () {
   itemTypesOptions = ''
   const body = await resp.json()
   for (const itm of body.data) {
-    itemTypesOptions += `<sl-option id='itemtype-${itm.id}' value='${itm.id}'>${itm.description}`
+    itemTypesOptions += `<wa-option id='itemtype-${itm.id}' value='${itm.id}'>${itm.description}`
     if (itm.icon) {
-      itemTypesOptions += `<sl-icon name='${itm.icon}' slot='prefix'>${itm.description}</sl-icon>`
+      itemTypesOptions += `<wa-icon name='${itm.icon}' slot='start'></wa-icon>`
     }
-    itemTypesOptions += '</sl-option>'
+    itemTypesOptions += '</wa-option>'
   }
 
   domCache.itemViewType.innerHTML = itemTypesOptions
@@ -62,18 +62,17 @@ async function fillItems () {
       row +=
         `<tr id='row-${itm.id}' data-id='${itm.id}'>` +
         '<td>' +
-        `<sl-icon-button id='fav-${itm.id}' name='${itm.favorite ? 'star-fill' : 'star'}' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></sl-icon-button>` +
-        `<sl-icon-button id='view-${itm.id}' title='View item' name='file-earmark' data-id='${itm.id}'></sl-icon-button>` +
-        `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>` +
-        `<sl-icon-button id='folder-${itm.id}' title='Open folder' name='folder2-open' data-id='${itm.id}'></sl-icon-button>` +
+        `<wa-button appearance='plain' size='small'><wa-icon id='fav-${itm.id}' name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' label='Favorite' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button appearance='plain' size='small'><wa-icon id='link-${itm.id}' label='Copy item link' name='link' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button appearance='plain' size='small'><wa-icon id='folder-${itm.id}' label='Open folder' name='folder-open' data-id='${itm.id}'></wa-icon></wa-button>` +
         '</td>' +
         `<td class='border-start border-end'>${JH.sanitize(itm.folder.description)}</td>` +
         '<td class="border-end">'
       if (itm.type) {
-        row += `<sl-icon name='${itm.itemtype.icon}' title='${JH.sanitize(itm.itemtype.description)}'></sl-icon>`
+        row += `<wa-badge appearance='outlined' variant='neutral'><wa-icon name='${itm.itemtype.icon}'></wa-icon>${JH.sanitize(itm.itemtype.description)}</wa-badge>`
       }
       row += '</td>'
-      row += `<td class='itemtitle'>${JH.sanitize(itm.title)}</td></tr>`
+      row += `<td class='itemtitle'><a id='view-${itm.id}' data-id='${itm.id}'>${JH.sanitize(itm.title)}</a></td></tr>`
     }
     domCache.itemsTableBody.innerHTML = row
   } else {
@@ -84,9 +83,6 @@ async function fillItems () {
   JH.event('#itemstable tbody [id^=fav]', 'click', async (ev) => {
     await Items.setFavorite(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-fav') === 'false')
     await fillItems()
-  })
-  JH.event('#itemstable tbody tr[id^=row]', 'dblclick', async (ev) => {
-    await itemShow(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=view]', 'click', async (ev) => {
     await itemShow(ev.currentTarget.getAttribute('data-id'))
@@ -103,7 +99,7 @@ async function itemViewFill (item) {
   const key = Crypt.createKey()
   const resp = await JH.http(`/api/items/${item}?key=${encodeURIComponent(key)}`)
   if (!await PW.checkResponse(resp)) {
-    domCache.itemViewDialog.hide()
+    domCache.itemViewDialog.open = false
     return
   }
 
@@ -158,23 +154,23 @@ JH.event(domCache.itemViewCopyLink, 'click', (ev) => {
   Items.itemCopyLink(JH.value(domCache.itemViewId))
 })
 
-JH.event(domCache.search, 'sl-input', async (ev) => {
+JH.event(domCache.search, 'input', async (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }
   itemSearchTimeout = setTimeout(async () => { await fillItems() }, 250)
 })
 
-JH.event(domCache.typeSelect, 'sl-change', fillItems)
-JH.event(domCache.searchFavorite, 'sl-change', fillItems)
+JH.event(domCache.typeSelect, 'change', fillItems)
+JH.event(domCache.searchFavorite, 'change', fillItems)
 
-JH.event(domCache.passwordCopy, 'sl-copy', (ev) => {
+JH.event(domCache.passwordCopy, 'wa-copy', (ev) => {
   passwordCopied(JH.value(domCache.itemViewId))
 })
 
 setTimeout(() => {
   domCache.passwordView.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-    const el = domCache.passwordView.shadowRoot.querySelector('[part=input]')
+    const el = domCache.passwordView.shadowRoot.querySelector('[part=input] input')
     if (el.getAttribute('type') === 'text') {
       passwordAccessed(JH.value(domCache.itemViewId))
     }

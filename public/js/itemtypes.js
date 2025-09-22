@@ -35,12 +35,12 @@ async function fillItems () {
       row +=
         `<tr data-id='${itm.id}' style='cursor:pointer'>` +
         '<td>' +
-        `<sl-icon-button id='edititem-${itm.id}' title='Edit item type' name='pencil' data-id='${itm.id}'></sl-icon-button>` +
-        `<sl-icon-button id='removeitem-${itm.id}' title='Delete item type' name='trash3' style='color:red;' data-id='${itm.id}'></sl-icon-button>` +
+        `<wa-button appearance='plain' size='small' title='Edit'><wa-icon id='edititem-${itm.id}' name='edit' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button appearance='plain' size='small' title='Delete'><wa-icon id='removeitem-${itm.id}' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon></wa-button>` +
         '</td>' +
         `<td>${JH.sanitize(itm.description)}</td>` +
         `<td>${JH.sanitize(itm.icon)}</td>` +
-        `<td><sl-icon name='${itm.icon}'></sl-icon></td>` +
+        `<td><wa-icon name='${itm.icon}'></wa-icon></td>` +
         '</tr>'
     }
     domCache.itemsTableBody.innerHTML = row
@@ -64,7 +64,7 @@ async function itemSave () {
     icon: JH.value(domCache.dialogIcon)
   }
 
-  domCache.itemDialog.hide()
+  domCache.itemDialog.open = false
   let resp
   const itemid = JH.value(domCache.dialogItemId)
   if (itemid) {
@@ -83,14 +83,14 @@ async function itemSave () {
 }
 
 async function itemDialogShow (id) {
-  JH.value('#itemtypedialog sl-input,sl-textarea,sl-select', '')
+  JH.value('#itemtypedialog wa-input,wa-textarea,wa-select', '')
   JH.value(domCache.dialogItemId, id || '')
 
   if (id) {
     itemEditFill(id)
   }
 
-  domCache.itemDialog.show()
+  domCache.itemDialog.open = true
   dialogSaveEnable()
 }
 
@@ -132,14 +132,14 @@ await fillItems()
 
 // Event handlers
 JH.event(domCache.dialogCancel, 'click', (ev) => {
-  domCache.itemDialog.hide()
+  domCache.itemDialog.open = false
 })
 
 JH.event(domCache.dialogSave, 'click', (ev) => {
   itemSave()
 })
 
-JH.event(domCache.itemsSearch, 'sl-input', (ev) => {
+JH.event(domCache.itemsSearch, 'input', (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }

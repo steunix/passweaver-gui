@@ -33,10 +33,8 @@ const domCache = {
   personalPasswordNewButton: JH.query('#personalpasswordcreate'),
   personalPasswordNew: JH.query('#newpersonalpassword'),
   personalPasswordNewConfirm: JH.query('#newpersonalpasswordconfirm'),
-  personalPasswordNewCancel: JH.query('#personalpasswordcancel'),
   personalPasswordSetDialog: JH.query('#personalpasswordset'),
   personalPasswordSetButton: JH.query('#personalpasswordsetbutton'),
-  personalPasswordSetCancel: JH.query('#personalpasswordsetcancel'),
   personalPasswordSetAlert: JH.query('#personalpasswordsetalert'),
   personalPasswordAsk: JH.query('#personalpasswordask'),
   foldersTree: JH.query('#folderstree'),
@@ -76,11 +74,11 @@ async function fillItemTypes () {
   itemTypesOptions = ''
   const body = await resp.json()
   for (const itm of body.data) {
-    itemTypesOptions += `<sl-option id='itemtype-${itm.id}' value='${itm.id}'>${itm.description}`
+    itemTypesOptions += `<wa-option id='itemtype-${itm.id}' value='${itm.id}'>${itm.description}`
     if (itm.icon) {
-      itemTypesOptions += `<sl-icon name='${itm.icon}' slot='prefix'>${itm.description}</sl-icon>`
+      itemTypesOptions += `<wa-icon name='${itm.icon}' slot='start'></wa-icon>`
     }
-    itemTypesOptions += '</sl-option>'
+    itemTypesOptions += '</wa-option>'
   }
 
   domCache.itemDialogType.innerHTML = itemTypesOptions
@@ -123,36 +121,29 @@ async function fillItems () {
   if (body.data.length) {
     let row = ''
     for (const itm of body.data) {
-      row += `<tr id='row-${itm.id}' data-id='${itm.id}'>`
+      row += `<tr id='row-${itm.id}' data-id='${itm.id}' draggable='true'>`
       row += '<td class="border-end">'
-      row += `<sl-icon-button id='fav-${itm.id}' name='${itm.favorite ? 'star-fill' : 'star'}' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' title='Favorite' data-id='${itm.id}'></sl-icon-button>`
+      row += `<wa-dropdown id="menu-${itm.id}" data-id='${itm.id}' data-linkeditemid='${itm.linkeditemid || ''}'><wa-button label="Menu" size="small" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical" label="Menu"></wa-icon></wa-button>`
+      row += '</wa-dropdown>'
+      row += `<wa-button size="small" id='fav-${itm.id}' data-id='${itm.id}' data-fav='${itm.favorite}' title="Favorite" appearance="plain"><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" label='Favorite'></wa-icon></wa-button>`
+      row += `<wa-button size="small" id='link-${itm.id}' title='Copy item link' appearance="plain" data-id='${itm.id}'><wa-icon label="Copy item link" name='link'></wa-icon></wa-button>`
       if (itm.linkeditemid) {
-        row += '<sl-icon name="arrow-90deg-right" style="color: green;" title="Linked item"></sl-icon>'
+        row += `<wa-button size="small" title='Linked item' appearance="plain" data-id='${itm.id}'><wa-icon label="Linked item" style="color: green;" name='right-to-bracket'></wa-icon></wa-button>`
       }
-      row += `<sl-icon-button id='view-${itm.id}' name='file-earmark' title='View item' data-id='${itm.id}'></sl-icon-button>`
-      if (Folders.currentPermissions.write) {
-        if (!itm.linkeditemid) {
-          row += `<sl-icon-button id='edit-${itm.id}' title='Edit item' name='pencil' data-id='${itm.id}'></sl-icon-button>`
-        }
-        row += `<sl-icon-button id='remove-${itm.id}' title='Remove item' name='trash3' style="color:red;" data-id='${itm.id}'></sl-icon-button>`
-        row += `<sl-icon-button id='clone-${itm.id}' title='Clone item' name='journal-plus' data-id='${itm.id}'></sl-icon-button>`
-      }
-      row += `<sl-icon-button id='link-${itm.id}' title='Copy item link' name='link-45deg' data-id='${itm.id}'></sl-icon-button>`
-      if (!itm.personal) {
-        row += `<sl-icon-button id='onetime-${itm.id}' title='One time share' name='1-circle' data-id='${itm.id}'></sl-icon-button>`
-      }
-      row += `<sl-icon-button id='activity-${itm.id}' title='Activity' name='clock-history' data-id='${itm.id}'></sl-icon-button>`
       row += '</td>'
       row += '<td class="border-end">'
       if (itm.type) {
-        row += `<sl-icon name='${itm.itemtype.icon}' title='${JH.sanitize(itm.itemtype.description)}'></sl-icon>`
+        row += `<wa-badge appearance='outlined' variant='neutral'><wa-icon name='${itm.itemtype.icon}'></wa-icon>${JH.sanitize(itm.itemtype.description)}</wa-badge>`
       }
-      row += `<td id='title-${itm.id}' data-id='${itm.id}' class='border-start border-end itemtitle'>${JH.sanitize(itm.title)}</td>`
-      row += `<td id='user-${itm.id}'>${JH.sanitize(itm.metadata)}</td>`
-      row += `<td class='border-end'><sl-copy-button title='Copy user to clipboard' from='user-${itm.id}'></sl-copy-button></td>`
-      row += `<td id='password-${itm.id}'>****</td>`
-      row += `<td><sl-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></sl-copy-button></td>`
-      row += `<td><sl-icon-button id='passwordshow-${itm.id}' title='Show/hide password' data-id='${itm.id}' name='eye'></sl-icon-button></td>`
+      row += '<td class="border-start border-end itemtitle">'
+      row += `<a id='title-${itm.id}' data-id='${itm.id}' >${JH.sanitize(itm.title)}</a>`
+      row += '</td>'
+      row += `<td class='border-end' id='user-${itm.id}'><wa-copy-button title='Copy user to clipboard' from='user-${itm.id}'></wa-copy-button>${JH.sanitize(itm.metadata)}</td>`
+      row += '<td>'
+      row += `<wa-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></wa-copy-button>`
+      row += `<wa-button size="small" appearance="plain"><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' label='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></wa-button>`
+      row += `<span style='margin-left:5px; margin-right:5px;' id='password-${itm.id}'>****</span>`
+      row += '</td>'
       row += '</tr>'
     }
     domCache.itemsTableBody.innerHTML = row
@@ -165,29 +156,14 @@ async function fillItems () {
     await Items.setFavorite(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-fav') === 'false')
     await fillItems()
   })
-  JH.event('#itemstable tbody [id^=view]', 'click', (ev) => {
+  JH.event('#itemstable tbody [id^=menu]', 'click', (ev) => {
+    itemDropDown(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-linkeditemid'))
+  })
+  JH.event('#itemstable tbody [id^=title]', 'click', (ev) => {
     itemShow(ev.currentTarget.getAttribute('data-id'), true)
-  })
-  JH.event('#itemstable tbody [id^=edit]', 'click', (ev) => {
-    itemShow(ev.currentTarget.getAttribute('data-id'), false)
-  })
-  JH.event('#itemstable tbody [id^=title]', 'dblclick', (ev) => {
-    itemShow(ev.currentTarget.getAttribute('data-id'), true)
-  })
-  JH.event('#itemstable tbody [id^=remove]', 'click', (ev) => {
-    itemRemove(ev.currentTarget.getAttribute('data-id'))
-  })
-  JH.event('#itemstable tbody [id^=clone]', 'click', (ev) => {
-    itemClone(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=link]', 'click', (ev) => {
     Items.itemCopyLink(ev.currentTarget.getAttribute('data-id'))
-  })
-  JH.event('#itemstable tbody [id^=activity]', 'click', (ev) => {
-    Items.itemActivityShow(ev.currentTarget.getAttribute('data-id'))
-  })
-  JH.event('#itemstable tbody [id^=onetime]', 'click', (ev) => {
-    itemOneTimeShareDialog(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=passwordcopy]', 'click', (ev) => {
     passwordCopy(ev)
@@ -198,6 +174,51 @@ async function fillItems () {
 
   // Setup drag'n'drop
   JH.draggable("#itemstable [id^='row-']", 'item')
+}
+
+function itemDropDown (id, linkeditemid) {
+  if (!JH.query(`#menu-${id}`).open) {
+    return
+  }
+  if (JH.query(`#menu-${id} wa-dropdown-item`) !== null) {
+    return
+  }
+
+  let row = ''
+  if (Folders.currentPermissions.write) {
+    if (!linkeditemid) {
+      row += `<wa-dropdown-item id='edit-${id}' title='Edit item' data-id='${id}'><wa-icon label="Edit item" name='edit' slot='icon'></wa-icon>Edit</wa-dropdown-item>`
+    } else {
+      row += `<wa-dropdown-item disabled="disabled"title='Edit item' data-id='${id}'><wa-icon label="Edit item" name='edit' slot='icon'></wa-icon>Edit</wa-dropdown-item>`
+    }
+    row += `<wa-dropdown-item id='clone-${id}' title='Clone item' data-id='${id}'><wa-icon label="Clone" name='clone' slot='icon'></wa-icon>Clone</wa-dropdown-item>`
+  }
+  if (!Folders.currentPermissions.personal) {
+    row += `<wa-dropdown-item id='onetime-${id}' title='One time share' data-id='${id}'><wa-icon label="One time share" name='1' slot='icon'></wa-icon>One time share</wa-dropdown-item>`
+  }
+  row += `<wa-dropdown-item id='activity-${id}' title='Activity' data-id='${id}'><wa-icon label="Activity" name='clock' slot='icon'></wa-icon>Activity</wa-dropdown-item>`
+
+  if (Folders.currentPermissions.write) {
+    row += `<wa-dropdown-item id='remove-${id}' title='Delete item' data-id='${id}'><wa-icon label="Delete" name='trash' slot='icon' style="color:red;"></wa-icon>Delete</wa-dropdown-item>`
+  }
+
+  JH.query(`#menu-${id}`).insertAdjacentHTML('beforeend', row)
+
+  JH.event(`#edit-${id}`, 'click', (ev) => {
+    itemShow(id, false)
+  })
+  JH.event(`#clone-${id}`, 'click', (ev) => {
+    itemClone(id)
+  })
+  JH.event(`#activity-${id}`, 'click', (ev) => {
+    Items.itemActivityShow(id)
+  })
+  JH.event(`#onetime-${id}`, 'click', (ev) => {
+    itemOneTimeShareDialog(id)
+  })
+  JH.event(`#remove-${id}`, 'click', (ev) => {
+    itemRemove(id)
+  })
 }
 
 async function folderClicked () {
@@ -222,6 +243,7 @@ async function folderClicked () {
     Folders.currentPermissions.write = false
     domCache.sectionTitle.innerHTML = 'Items'
   }
+  Folders.currentPermissions.personal = body.data.personal
 
   let cp = ['danger', 'No access', 'No access']
   if (Folders.currentPermissions.read) {
@@ -262,12 +284,12 @@ async function folderClicked () {
 
 function itemDialogEnable (enable) {
   if (enable) {
-    JH.removeAttribute('#itemdialog sl-input,sl-textarea', 'readonly')
+    JH.removeAttribute('#itemdialog wa-input,wa-textarea', 'readonly')
     JH.removeAttribute(domCache.itemDialogType, 'disabled')
     JH.show([domCache.itemDialogSave, domCache.itemDialogGenerate])
   } else {
-    JH.attribute('#itemdialog sl-input,sl-textarea,sl-select', 'readonly', 'readonly')
-    JH.attribute(domCache.itemDialogType, 'disabled', 'disabled')
+    JH.attribute('#itemdialog wa-input,wa-textarea,wa-select', 'readonly', 'readonly')
+    JH.attribute(domCache.itemDialogType, 'disabled', true)
     JH.hide([domCache.itemDialogSave, domCache.itemDialogGenerate])
   }
 }
@@ -294,11 +316,11 @@ async function itemDialogShow (id, readonly, gotofolder) {
 }
 
 function itemDialogHide () {
-  domCache.itemDialog.hide()
+  domCache.itemDialog.open = false
 }
 
 function itemDialogReset () {
-  JH.value('#itemdialog sl-input,sl-textarea,sl-select', '')
+  JH.value('#itemdialog wa-input,wa-textarea,wa-select', '')
 }
 
 function itemSaveEnable () {
@@ -474,8 +496,8 @@ async function itemOneTimeShare () {
   const body = await resp.json()
   navigator.clipboard.writeText(body.data.link)
 
-  PW.showToast('primary', 'One time share link copied to clipboard')
-  domCache.scopeSelect.hide()
+  PW.showToast('success', 'One time share link copied to clipboard')
+  domCache.scopeSelect.open = false
 }
 
 function findAndShowItem (itm) {
@@ -487,7 +509,7 @@ function personalPasswordCreateDialog () {
 }
 
 function personalPasswordAskDialog () {
-  domCache.personalPasswordSetAlert.open = false
+  JH.hide(domCache.personalPasswordSetAlert)
   domCache.personalPasswordAsk.value = ''
   domCache.personalPasswordSetDialog.show()
 }
@@ -513,7 +535,7 @@ async function personalPasswordCreate () {
     return
   }
 
-  domCache.personalPasswordNewDialog.hide()
+  domCache.personalPasswordNewDialog.open = false
 
   PW.showToast('success', 'Personal password saved')
   await fillItems()
@@ -527,13 +549,13 @@ async function personalPasswordSet () {
 
   const resp = await JH.http('/api/personalunlock', data)
   if (!await PW.checkResponse(resp, null, false)) {
-    domCache.personalPasswordSetAlert.open = true
+    JH.show(domCache.personalPasswordSetAlert)
     domCache.personalPasswordAsk.focus()
     return
   }
 
   PW.showToast('success', 'Personal folder unlocked')
-  domCache.personalPasswordSetDialog.hide()
+  domCache.personalPasswordSetDialog.open = false
   await fillFolders()
   await folderClicked()
 }
@@ -633,7 +655,7 @@ async function itemDropped (itemid, folderid) {
   domCache.itemDropFolderId.value = folderid
   domCache.itemDropItemId.value = itemid
   domCache.itemDropAction.value = 'move'
-  domCache.itemDropDialog.show()
+  domCache.itemDropDialog.open = true
 }
 
 async function itemDroppedDo () {
@@ -647,7 +669,7 @@ async function itemDroppedDo () {
     await itemLink(itemid, folderid)
   }
 
-  domCache.itemDropDialog.hide()
+  domCache.itemDropDialog.open = false
 }
 
 JH.event(domCache.itemDialogActivity, 'click', (ev) => {
@@ -656,8 +678,8 @@ JH.event(domCache.itemDialogActivity, 'click', (ev) => {
 
 // Drag'n'drop
 async function dndSetup () {
-  JH.draggable('sl-tree-item', 'folder')
-  JH.dropTarget('sl-tree-item', async (ev, data) => {
+  JH.draggable('wa-tree-item', 'folder')
+  JH.dropTarget('wa-tree-item', async (ev, data) => {
     const newparent = ev.target.getAttribute('data-id')
 
     if (data.type === 'folder') {
@@ -672,27 +694,18 @@ async function dndSetup () {
 }
 
 // Search
-JH.event(domCache.searchTypeSelect, 'sl-change', fillItems)
+JH.event(domCache.searchTypeSelect, 'change', fillItems)
 
 // Create
 JH.event(domCache.newItemButton, 'click', (ev) => {
   itemDialogShow(undefined, false, false)
 })
 
-JH.event(domCache.itemDialogCancel, 'click', (ev) => {
-  domCache.itemDialog.hide()
-})
 JH.event(domCache.itemDialogSave, 'click', itemSave)
 
 JH.event(domCache.itemDialogTitle, 'keyup', itemSaveEnable)
 
 // Personal
-JH.event(domCache.personalPasswordNewCancel, 'click', (ev) => {
-  domCache.personalPasswordNewDialog.hide()
-})
-JH.event(domCache.personalPasswordSetCancel, 'click', (ev) => {
-  domCache.personalPasswordSetDialog.hide()
-})
 JH.event(domCache.personalPasswordNewButton, 'click', personalPasswordCreate)
 
 JH.event([domCache.personalPasswordNew, domCache.personalPasswordNewConfirm], 'keyup', personalPasswordCreateEnable)
@@ -704,14 +717,14 @@ JH.event(domCache.personalPasswordAsk, 'keydown', (ev) => {
   }
 })
 
-JH.event(domCache.itemSearchText, 'sl-input', (ev) => {
+JH.event(domCache.itemSearchText, 'input', (ev) => {
   if (itemSearchTimeout) {
     clearTimeout(itemSearchTimeout)
   }
   itemSearchTimeout = setTimeout(async () => { fillItems() }, 250)
 })
 
-JH.event(domCache.itemDialogCopyPassword, 'sl-copy', (ev) => {
+JH.event(domCache.itemDialogCopyPassword, 'wa-copy', (ev) => {
   passwordCopied(JH.value(domCache.itemDialogId))
 })
 
@@ -721,7 +734,7 @@ JH.event(domCache.itemDialogCopyLink, 'click', (ev) => {
 
 JH.event(domCache.itemDialogGenerate, 'click', itemDialogGeneratePassword)
 
-JH.event(domCache.searchFavorite, 'sl-change', fillItems)
+JH.event(domCache.searchFavorite, 'change', fillItems)
 
 if (domCache.viewItem) {
   setTimeout(() => {
@@ -747,7 +760,7 @@ await fillFolders()
 await fillItemTypes()
 
 domCache.itemDialogPassword.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-  const el = domCache.itemDialogPassword.shadowRoot.querySelector('[part=input]')
+  const el = domCache.itemDialogPassword.shadowRoot.querySelector('[part=input] input')
   if (el.getAttribute('type') === 'text') {
     passwordAccessed(JH.value(domCache.itemDialogId))
   }
@@ -763,7 +776,7 @@ function showScopeUser () {
   }
 }
 
-JH.event(domCache.scope, 'sl-change', (ev) => {
+JH.event(domCache.scope, 'change', (ev) => {
   showScopeUser()
   enableShareSave()
 })

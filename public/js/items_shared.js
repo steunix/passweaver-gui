@@ -21,7 +21,7 @@ export async function itemCopyLink (itm) {
   const body = await resp.json()
   if (body?.data?.link) {
     navigator.clipboard.writeText(body.data.link)
-    PW.showToast('primary', 'Item link copied to clipboard')
+    PW.showToast('success', 'Item link copied to clipboard')
   }
 }
 

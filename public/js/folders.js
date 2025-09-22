@@ -34,16 +34,17 @@ async function fillGroups () {
     let row = '<tr>'
     for (const itm of body.data) {
       if (itm.inherited) {
-        row += '<td colspan="2">Inherited</td>'
+        row += '<td>Inherited</td>'
       } else {
         if (itm.canmodify) {
-          row += `<td><sl-icon-button id='removegroup-${itm.id}' data-id='${itm.id}' name='trash3' title='Remove' style='color:red;'></sl-icon-button></td>`
-          row += `<td><sl-icon-button id='togglegroup-${itm.id}' data-id='${itm.id}' name='shield-lock' title='Toggle permissions'></sl-icon-button></td>`
+          row += `<td><wa-button appearance='plain' size='small' title='Remove group'><wa-icon id='removegroup-${itm.id}' data-id='${itm.id}' name='trash' label='Remove group' style='color:red;'></wa-icon></wa-button>`
+          row += `<wa-button appearance='plain' size='small' title='Toggle permissions'><wa-icon id='togglegroup-${itm.id}' data-id='${itm.id}' name='repeat' label='Toggle permissions'></wa-icon></wa-button></td>`
         } else {
           row += '<td></td><td></td>'
         }
       }
-      row += '<td class="border-start border-end">' + (itm.write ? 'Read + write' : 'Read only') + '</td>'
+      row += '<td class="border-start border-end">'
+      row += `<wa-badge variant="${itm.write ? 'success' : 'warning'}">${(itm.write ? 'Read + write' : 'Read only')}</wa-badge></td>`
       row += `<td>${itm.description}</td></tr>`
 
       // Check if groups can be added
@@ -79,6 +80,7 @@ async function folderClicked () {
     Folders.currentPermissions.write = true
     Folders.currentPermissions.read = true
   }
+  Folders.currentPermissions.personal = body.data.personal
 
   if (Folders.currentPermissions.write) {
     JH.enable(domCache.folderCreateButton)
@@ -148,8 +150,8 @@ await fillFolders()
 
 // Drag'n'drop
 async function dndSetup () {
-  JH.draggable('sl-tree-item')
-  JH.dropTarget('sl-tree-item', async (ev, data) => {
+  JH.draggable('wa-tree-item')
+  JH.dropTarget('wa-tree-item', async (ev, data) => {
     const folder = data.data
     const newparent = ev.target.getAttribute('data-id')
 

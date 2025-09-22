@@ -94,6 +94,23 @@ export function event (query, event, callback) {
 }
 
 /**
+ * Toggle enabled/disabled state
+ * @param {any} query Query
+ * @returns
+ */
+export function toggleEnabled (query, enabled) {
+  const el = resolveQuery(query)
+
+  if (el === null) {
+    return
+  }
+
+  for (const e of el) {
+    enabled ? enable(e) : disable(e)
+  }
+}
+
+/**
  * Enable elements
  * @param {any} query Query
  * @param {boolean} enabled Enable if true, disable if false

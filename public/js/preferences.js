@@ -88,7 +88,7 @@ JH.event(domCache.persPasswordResetButton, 'click', async (ev) => {
   )
 })
 
-JH.event(domCache.persPasswordResetSwitch, 'sl-change', async (ev) => {
+JH.event(domCache.persPasswordResetSwitch, 'change', async (ev) => {
   JH.enable(domCache.persPasswordResetButton, domCache.persPasswordResetSwitch.checked)
 })
 

@@ -1,7 +1,11 @@
-<sl-dialog id="itemtypedialog" label="Item type" class="dialog-deny-close">
-  <sl-input type="hidden" id="itdid" style="display:none;"></sl-input>
-  <sl-input id="itddescription" label="Description" required autofocus maxlength="20"></sl-input>
-  <sl-input id="itdicon" label="Icon" maxlength="50"></sl-input>
-  <sl-button id="itdsave" slot="footer" variant="primary" disabled="disabled">Save</sl-button>
-  <sl-button id="itdcancel" slot="footer">Cancel</sl-button>
-</sl-dialog>
+<wa-dialog id="itemtypedialog" label="Item type" light-dismiss class="dialog-deny-close">
+  <wa-input type="hidden" id="itdid" style="display:none;"></wa-input>
+  <div class="wa-stack">
+    <wa-input id="itddescription" label="Description" required autofocus maxlength="20"></wa-input>
+    <wa-input id="itdicon" label="Icon" maxlength="50">
+      <a href="https://fontawesome.com/search?o=r" target="_blank" slot="hint">Select an icon from FontAwesome website</a>
+    </wa-input>
+  </div>
+  <wa-button id="itdsave" slot="footer" variant="brand" disabled="disabled">Save</wa-button>
+  <wa-button id="itdcancel" slot="footer" appearance="outlined">Cancel</wa-button>
+</wa-dialog>

@@ -23,12 +23,13 @@ export class Picker {
   show () {
     this.domCache.search.value = ''
     this.domCache.tableBody.innerHTML = ''
+    this.domCache.dialog.label = this.mode === 'groups' ? 'Select group' : 'Select user'
     this.domCache.dialog.show()
     this.search()
   }
 
   hide () {
-    this.domCache.dialog.hide()
+    this.domCache.dialog.open = false
   }
 
   async search () {
@@ -56,8 +57,10 @@ export class Picker {
           desc = itm.lastname + ' ' + itm.firstname
         }
         row += `<tr id='row-${itm.id}' data-id='${itm.id}' data-desc='${itm.lastname} ${itm.firstname}' style='cursor:pointer;'>`
-        row += `<td><sl-icon-button id='itm-${itm.id}' data-id='${itm.id}' data-desc='${itm.lastname} ${itm.firstname}' name='arrow-right-circle'></sl-icon-button></td>`
-        row += `<td>${JH.sanitize(itm.login)}</td>`
+        row += `<td style="width:1px;"><wa-button title="Choose" appearance="plain" size="small"><wa-icon id='itm-${itm.id}' data-id='${itm.id}' data-desc='${itm.lastname} ${itm.firstname}' name='check' label="Choose"></wa-icon></wa-button></td>`
+        if (this.mode === 'users') {
+          row += `<td style="width:1px;">${JH.sanitize(itm.login)}</td>`
+        }
         row += `<td>${JH.sanitize(desc)}</td>`
         row += '</tr>'
       }
@@ -68,13 +71,13 @@ export class Picker {
     JH.event('#pickertable tbody tr[id^=row]', 'dblclick', (ev) => {
       this.clientCallback(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-desc'))
     })
-    JH.event('#pickertable tbody sl-icon-button[id^=itm]', 'click', (ev) => {
+    JH.event('#pickertable tbody wa-icon[id^=itm]', 'click', (ev) => {
       this.clientCallback(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-desc'))
     })
   }
 
   installEvents () {
-    JH.event(this.domCache.search, 'sl-input', (ev) => {
+    JH.event(this.domCache.search, 'input', (ev) => {
       if (this.pickerTimeout) {
         clearTimeout(this.pickerTimeout)
       }

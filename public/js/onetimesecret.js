@@ -8,7 +8,7 @@ const domCache = {
   userDescInput: JH.query('#scopeuserdesc'),
   userSelectButton: JH.query('#searchuser'),
   userSelectDiv: JH.query('#selectuser'),
-  saveButton: JH.query('#save'),
+  createLinkButton: JH.query('#save'),
   dataInput: JH.query('#data'),
   link: JH.query('#link'),
   resultDiv: JH.query('#result')
@@ -16,14 +16,14 @@ const domCache = {
 
 function enableSave () {
   if (JH.value(domCache.dataInput) === '') {
-    JH.disable(domCache.saveButton)
+    JH.disable(domCache.createLinkButton)
     return
   }
   if (JH.value(domCache.scopeInput) === '2' && JH.value(domCache.scopeUserInput) === '') {
-    JH.disable(domCache.saveButton)
+    JH.disable(domCache.createLinkButton)
     return
   }
-  JH.enable(domCache.saveButton)
+  JH.enable(domCache.createLinkButton)
 }
 
 function userChoosen (userid, userdesc) {
@@ -33,26 +33,15 @@ function userChoosen (userid, userdesc) {
   enableSave()
 }
 
-JH.event(domCache.dataInput, 'keyup', async (ev) => {
-  enableSave()
-})
+function linkShow () {
+  domCache.resultDiv.style.display = 'block'
+}
 
-JH.event(domCache.userSelectButton, 'click', (ev) => {
-  UPicker.show()
-})
+function linkHide () {
+  domCache.resultDiv.style.display = 'none'
+}
 
-JH.event(domCache.scopeInput, 'sl-change', (ev) => {
-  if (JH.value(domCache.scopeInput) === '2') {
-    domCache.userSelectDiv.style.visibility = 'visible'
-  } else {
-    domCache.userSelectDiv.style.visibility = 'hidden'
-    JH.value(domCache.scopeUserInput, '')
-    JH.value(domCache.userDescInput, '')
-  }
-  enableSave()
-})
-
-JH.event(domCache.saveButton, 'click', async (ev) => {
+async function createLink () {
   const data = {
     _csrf: PW.getCSRFToken(),
     data: JH.value(domCache.dataInput),
@@ -67,10 +56,34 @@ JH.event(domCache.saveButton, 'click', async (ev) => {
 
   const body = await resp.json()
   JH.value(domCache.link, body.data.link)
+  linkShow()
 
-  domCache.resultDiv.style.visibility = 'visible'
   PW.showToast('success', 'Link created')
+}
+
+JH.event(domCache.dataInput, 'keyup', async (ev) => {
+  enableSave()
 })
+
+JH.event(domCache.userSelectButton, 'click', (ev) => {
+  UPicker.show()
+})
+
+JH.event(domCache.scopeInput, 'change', (ev) => {
+  if (JH.value(domCache.scopeInput) === '2') {
+    domCache.userSelectDiv.style.display = 'flex'
+  } else {
+    domCache.userSelectDiv.style.display = 'none'
+    JH.value(domCache.scopeUserInput, '')
+    JH.value(domCache.userDescInput, '')
+  }
+  linkHide()
+  enableSave()
+})
+
+JH.event(domCache.createLinkButton, 'click', createLink)
+
+linkHide()
 
 setTimeout(enableSave, 100)
 

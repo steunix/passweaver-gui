@@ -1,14 +1,15 @@
-<sl-dialog id="pickerdialog" label="Choose">
-  <sl-input autofocus id="pickersearch" name="pickersearch" placeholder="Search " clearable>
-    <sl-icon slot="prefix" name="search"></sl-icon>
-  </sl-input>
-  <sl-divider></sl-divider>
-  <div style="height:20em;max-height:20em;">
-    <table id="pickertable">
-      <thead>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+<wa-dialog id="pickerdialog"  light-dismiss label="Choose">
+  <div class="wa-stack">
+    <wa-input autofocus id="pickersearch" name="pickersearch" placeholder="Search " with-clear>
+      <wa-icon slot="start" name="search"></wa-icon>
+    </wa-input>
+    <div style="height:20em;max-height:20em;">
+      <table id="pickertable">
+        <thead>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
   </div>
-</sl-dialog>
+</wa-dialog>
