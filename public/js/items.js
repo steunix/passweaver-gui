@@ -138,7 +138,11 @@ async function fillItems () {
       row += '<td class="border-start border-end itemtitle">'
       row += `<a id='title-${itm.id}' data-id='${itm.id}' >${JH.sanitize(itm.title)}</a>`
       row += '</td>'
-      row += `<td class='border-end' id='user-${itm.id}'><wa-copy-button title='Copy user to clipboard' from='user-${itm.id}'></wa-copy-button>${JH.sanitize(itm.metadata)}</td>`
+      row += `<td class='border-end' id='user-${itm.id}'>`
+      if (itm.metadata) {
+        row += `<wa-copy-button title='Copy user to clipboard' from='user-${itm.id}'></wa-copy-button>`
+      }
+      row += `${JH.sanitize(itm.metadata)}</td>`
       row += '<td>'
       row += `<wa-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></wa-copy-button>`
       row += `<wa-button size="small" appearance="plain"><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' label='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></wa-button>`
