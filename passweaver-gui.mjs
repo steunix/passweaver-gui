@@ -184,6 +184,7 @@ function commonParams (req) {
     admin: req.session.admin,
     viewitem: req.query?.viewitem ?? '',
     theme: req?.session?.theme ?? 'light',
+    font: req?.session?.font ?? 'normal',
     version: Config.packageJson().version,
     manage_folders: req.session.admin || Config.get().folders.user_managed,
     waversion: Config.webawesomePackageJson().version
@@ -244,12 +245,9 @@ app.post('/access', async (req, res) => {
   // Get user preferences
   const prefs = await PassWeaver.preferencesGet(req.session)
   const theme = prefs.data.find((el) => { return el.setting === 'theme' })
-  if (theme) {
-    req.session.theme = theme.value
-  } else {
-    req.session.theme = 'light'
-  }
-
+  req.session.theme = theme.value || 'light'
+  const font = prefs.data.find((el) => { return el.setting === 'font' })
+  req.session.font = font.value || 'normal'
   req.session.save()
 
   if (req.session.admin) {
@@ -753,8 +751,13 @@ app.post('/api/preferences', async (req, res) => {
 
   // Reapply theme
   const theme = req?.body?.theme
+  const font = req?.body?.font
   if (theme) {
     req.session.theme = theme
+    req.session.save()
+  }
+  if (font) {
+    req.session.font = font
     req.session.save()
   }
   res.json(resp)
