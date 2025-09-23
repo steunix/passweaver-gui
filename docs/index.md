@@ -53,7 +53,7 @@ In a few words:
 
 Access the site using your credentials:
 
-![Items page](assets/passweavergui-login-000.jpeg)
+![Items page](assets/passweavergui-login-001.jpeg)
 
 ## Searchbox
 
@@ -112,7 +112,7 @@ You can link an item many times, but when you delete the original item, *all lin
 
 By clicking the "One time share" icon (the circled 1) in item list, you can share this item with someone who normally does not have access to the folder (or even to the application itself): you'll be prompted with a dialog to choose the type of "peer" you are willing to share with:
 
-![Item dialog](assets/passweavergui-onetimeshare-1-000.jpeg)
+![Item dialog](assets/passweavergui-onetimeshare-1-001.jpeg)
 
 By clicking "Share" button, a link will be copied in your clipboard: share this link with your peer and he will be able to show this item, only once.
 
@@ -147,7 +147,7 @@ In the actions column, you have buttons to toggle favorite, view the item, copy 
 This page lets you generate a random secure password both with symbols or without. You can copy it or generate another one by clicking on the wand button.
 By clicking the circled "1" icon, you can rapidly create a one time token (see below).
 
-![Generator page](assets/passweavergui-generator-004.jpeg)
+![Generator page](assets/passweavergui-generator-005.jpeg)
 
 ## One time secret
 
@@ -155,7 +155,7 @@ With one-time-secret you can share a secret information by creating a public lin
 
 Type the secret and then press the "Create link" button:
 
-![One time secret 1](assets/passweavergui-onetimesecret-1-001.jpeg)
+![One time secret 1](assets/passweavergui-onetimesecret-1-002.jpeg)
 
 You can decide who is authorized to read this secret:
 - Anyone: anyone who has the link, logged in or not in PassWeaver (public links)
@@ -164,11 +164,11 @@ You can decide who is authorized to read this secret:
 
 You can then share the link with your peer: the link is public and will be usable only once.
 
-![One time secret 2](assets/passweavergui-onetimesecret-2-000.jpeg)
+![One time secret 2](assets/passweavergui-onetimesecret-2-001.jpeg)
 
 By clicking the "Show secret" button, the secret will be displayed, and the link will be "burnt":
 
-![One time secret 3](assets/passweavergui-onetimesecret-3-000.jpeg)
+![One time secret 3](assets/passweavergui-onetimesecret-3-001.jpeg)
 
 ## Alternative server name for public links
 
@@ -260,11 +260,11 @@ You can also copy all users of a group and paste/replace into another, as alread
 
 In this page you can manage API keys access. API keys are bound to a user and inherit their permissions.
 
-![API keys page](assets/passweavergui-apikeys-1-001.jpeg)
+![API keys page](assets/passweavergui-apikeys-1-002.jpeg)
 
 To create a new API key, click on "New API key" button and fill in the form:
 
-![New API key](assets/passweavergui-apikeys-2-002.jpeg)
+![New API key](assets/passweavergui-apikeys-2-003.jpeg)
 
 The required fields are:
 
@@ -281,7 +281,7 @@ The required fields are:
 
 Once the key is created, you are given the API key data:
 
-![New API key data](assets/passweavergui-apikeys-3-001.jpeg)
+![New API key data](assets/passweavergui-apikeys-3-002.jpeg)
 
 - The API key ID
 - The API key secret: note that this secret **won't be show again**, so copy it before closing the dialog
@@ -292,14 +292,14 @@ You can edit the description, the expiring date and active status of any existin
 
 From this page you can create, delete and activate or disactivate KMS (Key management service)
 
-![KMS page](assets/passweavergui-kms-1-001.jpeg)
+![KMS page](assets/passweavergui-kms-1-002.jpeg)
 
 When creating a KMS you need to input:
 - a description
 - a configuration, in JSON format
 - the "active" flag.
 
-![KMS page](assets/passweavergui-kms-2-001.jpeg)
+![KMS page](assets/passweavergui-kms-2-002.jpeg)
 
 The 'Active' flag means that - starting from that precise moment - every new and updated item will use this KMS for encryption.
 
