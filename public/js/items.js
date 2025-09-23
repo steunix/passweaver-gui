@@ -85,7 +85,7 @@ async function fillItemTypes () {
   domCache.searchTypeSelect.innerHTML = itemTypesOptions
 }
 
-async function fillItems () {
+async function fillItems (highlightedId) {
   const search = JH.value(domCache.itemSearchText)
   const type = JH.value(domCache.searchTypeSelect)
   const fav = JH.query(domCache.searchFavorite).checked ? 'true' : ''
@@ -121,7 +121,7 @@ async function fillItems () {
   if (body.data.length) {
     let row = ''
     for (const itm of body.data) {
-      row += `<tr id='row-${itm.id}' data-id='${itm.id}' draggable='true'>`
+      row += `<tr id='row-${itm.id}' data-id='${itm.id}' draggable='true' class="${highlightedId === itm.id ? 'rowselected' : ''}">`
       row += '<td class="border-end">'
       row += `<wa-dropdown id="menu-${itm.id}" data-id='${itm.id}' data-linkeditemid='${itm.linkeditemid || ''}'><wa-button label="Menu" size="small" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical" label="Menu"></wa-icon></wa-button>`
       row += '</wa-dropdown>'
@@ -364,7 +364,14 @@ async function itemSave () {
     return
   }
 
-  await fillItems()
+  const body = await resp.json()
+  const newid = body.data.id
+
+  if (newid) {
+    Items.itemCopyLink(newid)
+  }
+
+  await fillItems(newid)
   PW.showToast('success', id ? 'Item updated' : 'Item created')
 }
 
