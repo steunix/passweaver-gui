@@ -59,13 +59,13 @@ Access the site using your credentials:
 
 In the top bar you can fast search items: the top 10 results will be shown:
 
-![Items page](assets/passweavergui-searchbox-001.jpeg)
+![Items page](assets/passweavergui-searchbox-002.jpeg)
 
 ## Items
 
 This is what the items page looks like:
 
-![Items page](assets/passweavergui-items-003.jpeg)
+![Items page](assets/passweavergui-items-004.jpeg)
 
 In "Folders" left pane you can create a subfolder, modify or delete a folder, if you have write permissions. You can also search for a folder and use the previous/next buttons to navigate the tree.
 
@@ -140,7 +140,7 @@ You can search items by using the left pane menu or by clicking `Ctrl+\` as a sh
 
 You can search items with a matching title, username or folder name (parents included) within all the folders you have access to. Items can be filtered by type and favorite flag.
 
-![Search page](assets/passweavergui-search-001.jpeg)
+![Search page](assets/passweavergui-search-002.jpeg)
 
 In the actions column, you have buttons to toggle favorite, view the item, copy the permalink or access the folder.
 
@@ -210,7 +210,7 @@ In this page you can assign/remove groups to a given folder, and you can toggle 
 
 Inherited permissions from parent folders cannot be modified.
 
-![Folders page](assets/passweavergui-folders-000.jpeg)
+![Folders page](assets/passweavergui-folders-001.jpeg)
 
 Admins can create or rename folders and also delete folders, if empty.
 
@@ -218,7 +218,7 @@ Admins can create or rename folders and also delete folders, if empty.
 
 From this page you can add or delete users, and assign/remove the groups membership.
 
-![Users page](assets/passweavergui-users-003.jpeg)
+![Users page](assets/passweavergui-users-004.jpeg)
 
 ### Activity
 
@@ -232,7 +232,7 @@ Only more recent events are shown, click on "Load more" button in order to load 
 
 By clicking the folder icon in user list, you can see what folders he has access to:
 
-![User folders visibility](assets/passweavergui-users-folders-000.jpeg)
+![User folders visibility](assets/passweavergui-users-folders-001.jpeg)
 
 ### User groups
 
@@ -260,9 +260,11 @@ When creating a new user you're prompted with this dialog:
 
 From this page you can create or delete groups, and add/remove members. You can nest groups, but membership is NOT inherited: the user is only member of explicitly assigned groups.
 
-![Groups page](assets/passweavergui-groups-002.jpeg)
+![Groups page](assets/passweavergui-groups-003.jpeg)
 
 You can also copy all users of a group and paste/replace into another, as already explained for users.
+
+![Groups page](assets/passweavergui-groups-folders-000.jpeg)
 
 ## Item types
 
