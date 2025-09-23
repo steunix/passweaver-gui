@@ -11,7 +11,7 @@ PassWeaver GUI is a simple yet functional UI for PassWeaver API, see https://git
 PassWeaver GUI is a NodeJS application, released under MIT license, and it uses these (great) opensource libraries, among several others:
 - Express
 - EJS
-- Shoelace
+- WebAwesome
 
 # Documentation
 

@@ -53,19 +53,19 @@ In a few words:
 
 Access the site using your credentials:
 
-![Items page](assets/passweavergui-login-000.jpeg)
+![Items page](assets/passweavergui-login-001.jpeg)
 
 ## Searchbox
 
 In the top bar you can fast search items: the top 10 results will be shown:
 
-![Items page](assets/passweavergui-searchbox-001.jpeg)
+![Items page](assets/passweavergui-searchbox-002.jpeg)
 
 ## Items
 
 This is what the items page looks like:
 
-![Items page](assets/passweavergui-items-003.jpeg)
+![Items page](assets/passweavergui-items-004.jpeg)
 
 In "Folders" left pane you can create a subfolder, modify or delete a folder, if you have write permissions. You can also search for a folder and use the previous/next buttons to navigate the tree.
 
@@ -87,7 +87,7 @@ Some actions may be unavailable if you don't have write permissions on the folde
 
 By double clicking the item title, or by clicking on details or edit buttons, the following popup is shown.
 
-![Item dialog](assets/passweavergui-item-002.jpeg)
+![Item dialog](assets/passweavergui-item-003.jpeg)
 
 In the header, you have a button to copy the item permalink and to show the item history.
 
@@ -98,6 +98,8 @@ When creating a new item, only the "Title" field is mandatory, all the remaining
 Items can be dragged and dropped to another folder you have write access to, and then you can choose:
  - to move it
  - to link it. See below
+
+![Item drag and drop](assets/passweavergui-itemdnd-000.jpeg)
 
 ### Linked items
 
@@ -112,7 +114,7 @@ You can link an item many times, but when you delete the original item, *all lin
 
 By clicking the "One time share" icon (the circled 1) in item list, you can share this item with someone who normally does not have access to the folder (or even to the application itself): you'll be prompted with a dialog to choose the type of "peer" you are willing to share with:
 
-![Item dialog](assets/passweavergui-onetimeshare-1-000.jpeg)
+![Item dialog](assets/passweavergui-onetimeshare-1-001.jpeg)
 
 By clicking "Share" button, a link will be copied in your clipboard: share this link with your peer and he will be able to show this item, only once.
 
@@ -122,13 +124,13 @@ For public links (items shared with anyone) you can also specify an alternative 
 
 Each user has a personal folder named after its login. Only the user can unlock this folder because it's protected with an additional password that is set the first time the user clicks on the folder:
 
-![Set personal password](assets/passweavergui-personal-1-001.jpeg)
+![Set personal password](assets/passweavergui-personal-1-002.jpeg)
 
 Note that this password is used to further encrypt user's personal items, so if it get lost **it will not be possible** to decrypt them anymore!
 
 The password will be asked again at every new login:
 
-![Ask personal password](assets/passweavergui-personal-2-000.jpeg)
+![Ask personal password](assets/passweavergui-personal-2-001.jpeg)
 
 Once unlocked, the personal folder will work as any other folder.
 
@@ -138,7 +140,7 @@ You can search items by using the left pane menu or by clicking `Ctrl+\` as a sh
 
 You can search items with a matching title, username or folder name (parents included) within all the folders you have access to. Items can be filtered by type and favorite flag.
 
-![Search page](assets/passweavergui-search-001.jpeg)
+![Search page](assets/passweavergui-search-002.jpeg)
 
 In the actions column, you have buttons to toggle favorite, view the item, copy the permalink or access the folder.
 
@@ -147,7 +149,7 @@ In the actions column, you have buttons to toggle favorite, view the item, copy 
 This page lets you generate a random secure password both with symbols or without. You can copy it or generate another one by clicking on the wand button.
 By clicking the circled "1" icon, you can rapidly create a one time token (see below).
 
-![Generator page](assets/passweavergui-generator-004.jpeg)
+![Generator page](assets/passweavergui-generator-005.jpeg)
 
 ## One time secret
 
@@ -155,7 +157,7 @@ With one-time-secret you can share a secret information by creating a public lin
 
 Type the secret and then press the "Create link" button:
 
-![One time secret 1](assets/passweavergui-onetimesecret-1-001.jpeg)
+![One time secret 1](assets/passweavergui-onetimesecret-1-002.jpeg)
 
 You can decide who is authorized to read this secret:
 - Anyone: anyone who has the link, logged in or not in PassWeaver (public links)
@@ -164,11 +166,11 @@ You can decide who is authorized to read this secret:
 
 You can then share the link with your peer: the link is public and will be usable only once.
 
-![One time secret 2](assets/passweavergui-onetimesecret-2-000.jpeg)
+![One time secret 2](assets/passweavergui-onetimesecret-2-001.jpeg)
 
 By clicking the "Show secret" button, the secret will be displayed, and the link will be "burnt":
 
-![One time secret 3](assets/passweavergui-onetimesecret-3-000.jpeg)
+![One time secret 3](assets/passweavergui-onetimesecret-3-001.jpeg)
 
 ## Alternative server name for public links
 
@@ -180,15 +182,21 @@ want to publish on the Internet only the page that allows anyone to see public s
 
 In the "Preferences" page, you can:
 
-- Choose your theme (light or dark)
+- Choose your theme (light or dark) and your font
+
+![Preferences](assets/passweavergui-preferences-1-002.jpeg)
+
 - Change your login password (if Authentication is `local`, see [Users](#Users) )
+
+![Password](assets/passweavergui-preferences-2-002.jpeg)
+
 - Change your personal folder password (if you have unlocked the personal folder)
+
+![Personal folder password change](assets/passweavergui-preferences-3-002.jpeg)
+
 - Reset your personal folder (if you have not unlocked the personal folder)
 
-![Preferences](assets/passweavergui-preferences-1-001.jpeg)
-![Password](assets/passweavergui-preferences-2-001.jpeg)
-![Personal folder password change](assets/passweavergui-preferences-3-001.jpeg)
-![Personal folder password reset](assets/passweavergui-preferences-4-001.jpeg)
+![Personal folder password reset](assets/passweavergui-preferences-4-002.jpeg)
 
 Note that resetting the personal folder password will require you a couple of confirmation steps, because doing so will cause ALL YOUR PERSONAL ITEMS WILL BECOME UNREADABLE, being encrypted with the old password.
 
@@ -202,7 +210,7 @@ In this page you can assign/remove groups to a given folder, and you can toggle 
 
 Inherited permissions from parent folders cannot be modified.
 
-![Folders page](assets/passweavergui-folders-000.jpeg)
+![Folders page](assets/passweavergui-folders-001.jpeg)
 
 Admins can create or rename folders and also delete folders, if empty.
 
@@ -210,13 +218,13 @@ Admins can create or rename folders and also delete folders, if empty.
 
 From this page you can add or delete users, and assign/remove the groups membership.
 
-![Users page](assets/passweavergui-users-002.jpeg)
+![Users page](assets/passweavergui-users-004.jpeg)
 
 ### Activity
 
 By clicking the history button (the clock icon) in user list you can access a history of user's activity:
 
-![User activity](assets/passweavergui-users-activity-000.jpeg)
+![User activity](assets/passweavergui-users-activity-001.jpeg)
 
 Only more recent events are shown, click on "Load more" button in order to load more activity.
 
@@ -224,7 +232,7 @@ Only more recent events are shown, click on "Load more" button in order to load 
 
 By clicking the folder icon in user list, you can see what folders he has access to:
 
-![User folders visibility](assets/passweavergui-users-folders-000.jpeg)
+![User folders visibility](assets/passweavergui-users-folders-001.jpeg)
 
 ### User groups
 
@@ -238,7 +246,7 @@ You can copy the current users groups in order to assign them to another user:
 
 When creating a new user you're prompted with this dialog:
 
-![Users page](assets/passweavergui-users-create-000.jpeg)
+![Users page](assets/passweavergui-users-create-001.jpeg)
 
 - Login: mandatory
 - Email: mandatory
@@ -252,19 +260,33 @@ When creating a new user you're prompted with this dialog:
 
 From this page you can create or delete groups, and add/remove members. You can nest groups, but membership is NOT inherited: the user is only member of explicitly assigned groups.
 
-![Groups page](assets/passweavergui-groups-002.jpeg)
+![Groups page](assets/passweavergui-groups-003.jpeg)
 
 You can also copy all users of a group and paste/replace into another, as already explained for users.
+
+![Groups page](assets/passweavergui-groups-folders-000.jpeg)
+
+## Item types
+
+From this page you can manage item types:
+
+![Item types](assets/passweavergui-itemtypes-1-000.jpeg)
+
+Note that when you delete and item types, every item that used that type will be reset to 'null'.
+
+When creating an item type, you have to set a name and and optional icon (FontAwesome 7):
+
+![New item type](assets/passweavergui-itemtypes-2-000.jpeg)
 
 ## API keys
 
 In this page you can manage API keys access. API keys are bound to a user and inherit their permissions.
 
-![API keys page](assets/passweavergui-apikeys-1-001.jpeg)
+![API keys page](assets/passweavergui-apikeys-1-002.jpeg)
 
 To create a new API key, click on "New API key" button and fill in the form:
 
-![New API key](assets/passweavergui-apikeys-2-002.jpeg)
+![New API key](assets/passweavergui-apikeys-2-003.jpeg)
 
 The required fields are:
 
@@ -281,7 +303,7 @@ The required fields are:
 
 Once the key is created, you are given the API key data:
 
-![New API key data](assets/passweavergui-apikeys-3-001.jpeg)
+![New API key data](assets/passweavergui-apikeys-3-002.jpeg)
 
 - The API key ID
 - The API key secret: note that this secret **won't be show again**, so copy it before closing the dialog
@@ -292,14 +314,14 @@ You can edit the description, the expiring date and active status of any existin
 
 From this page you can create, delete and activate or disactivate KMS (Key management service)
 
-![KMS page](assets/passweavergui-kms-1-001.jpeg)
+![KMS page](assets/passweavergui-kms-1-002.jpeg)
 
 When creating a KMS you need to input:
 - a description
 - a configuration, in JSON format
 - the "active" flag.
 
-![KMS page](assets/passweavergui-kms-2-001.jpeg)
+![KMS page](assets/passweavergui-kms-2-002.jpeg)
 
 The 'Active' flag means that - starting from that precise moment - every new and updated item will use this KMS for encryption.
 
@@ -309,23 +331,15 @@ More details about how KMS work and their configuration can be found at [Passwea
 
 This page displays some information about API and GUI status:
 
-![Info page](assets/passweavergui-info-002.jpeg)
+![Info page](assets/passweavergui-info-003.jpeg)
 
 ## Settings
-
-### Item types
-
-From this page you can manage item types:
-
-![Item types](assets/passweavergui-settings-1-001.jpeg)
-
-Note that when you delete and item types, every item that used that type will be reset to 'null'.
 
 ### Clear cache
 
 In the "Cache" tab, you can reset the API cache causing it to reload users permissions and visible folders.
 
-![Clear cache](assets/passweavergui-settings-2-001.jpeg)
+![Clear cache](assets/passweavergui-settings-2-002.jpeg)
 
 Clearing the cache is needed only after directly operating on the database... which is not advisable anyway.
 
@@ -333,7 +347,7 @@ Clearing the cache is needed only after directly operating on the database... wh
 
 Admins can set the system in a read-only status: this will make all write operations (even admin ones like creating new users) result in an error.
 
-![Read only](assets/passweavergui-settings-3-000.jpeg)
+![Read only](assets/passweavergui-settings-3-001.jpeg)
 
 ### Lock system
 
@@ -341,7 +355,7 @@ When locking the system, only admins will be able to login; all currently logged
 
 Note that when you click the "Lock system", you will be logged out as well (but being an admin, you will be able to log back in).
 
-![System lock](assets/passweavergui-settings-4-000.jpeg)
+![System lock](assets/passweavergui-settings-4-001.jpeg)
 
 # Install and run
 
@@ -408,6 +422,6 @@ You can run PassWeaver GUI by executing:
 Passweaver-GUI is developed in NodeJS and uses these great libs (among others):
 - `ExpressJS` (v5)
 - `EJS` for HTML templating
-- `Shoelace` WEB components
+- `WebAwesome` WEB components
 - `Morgan` for logging
 - `Helmet` and `Lusca` for CSFR and CSP compliance
