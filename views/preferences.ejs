@@ -14,10 +14,16 @@
 
       <wa-tab-panel name="preferences">
         <h4>Change theme</h4>
-        <wa-select id='theme' label="Choose a theme">
-          <wa-option value="light">Light</wa-option>
-          <wa-option value="dark">Dark</wa-option>
-        </wa-select>
+        <div class="wa-stack">
+          <wa-select id='theme' label="Choose a theme">
+            <wa-option value="light">Light</wa-option>
+            <wa-option value="dark">Dark</wa-option>
+          </wa-select>
+          <wa-select id="font" label="Choose a font">
+            <wa-option value="normal">Normal</wa-option>
+            <wa-option value="condensed">Condensed</wa-option>
+          </wa-select>
+        </div>
         <br/>
         <wa-button id='save' variant="brand">Save</wa-button>
       </wa-tab-panel>

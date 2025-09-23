@@ -1,12 +1,9 @@
-@import url('https://fonts.bunny.net/css2?family=Ubuntu&display=swap');
-
 :not(:defined) {
   visibility: hidden;
 }
 
 :root {
   font-size: 14px;
-  --wa-font-family-body: "Ubuntu";
   --theme-color: #ea9e34;
   --theme-sidebar-bgcolor: #1a1c20;
   --theme-sidebar-color: rgb(255, 255, 255);

@@ -5,6 +5,7 @@ import * as PW from './passweaver-gui.js'
 
 const domCache = {
   themeInput: JH.query('#theme'),
+  fontInput: JH.query('#font'),
   savePrefButton: JH.query('#save'),
   newPassword1: JH.query('#newpassword1'),
   newPassword2: JH.query('#newpassword2'),
@@ -23,14 +24,17 @@ const body = await resp.json()
 for (const setting of body.data) {
   if (setting.setting === 'theme') {
     JH.value(domCache.themeInput, setting.value)
-    break
+  }
+  if (setting.setting === 'font') {
+    JH.value(domCache.fontInput, setting.value)
   }
 }
 
 JH.event(domCache.savePrefButton, 'click', async (ev) => {
   const data = {
     _csrf: PW.getCSRFToken(),
-    theme: JH.value(domCache.themeInput)
+    theme: JH.value(domCache.themeInput),
+    font: JH.value(domCache.fontInput)
   }
   const resp = await JH.http('/api/preferences', data)
   if (!await PW.checkResponse(resp)) {

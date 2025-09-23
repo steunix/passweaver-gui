@@ -1068,7 +1068,8 @@ export async function preferencesGet (session) {
  */
 export async function preferencesSet (req, session) {
   const prefs = [
-    { setting: 'theme', value: req.body.theme }
+    { setting: 'theme', value: req.body.theme },
+    { setting: 'font', value: req.body.font }
   ]
 
   const resp = await passWeaverAPI(session, METHOD.post, `/users/${session.user}/settings`, prefs)
