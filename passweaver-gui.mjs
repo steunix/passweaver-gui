@@ -245,9 +245,9 @@ app.post('/access', async (req, res) => {
   // Get user preferences
   const prefs = await PassWeaver.preferencesGet(req.session)
   const theme = prefs.data.find((el) => { return el.setting === 'theme' })
-  req.session.theme = theme.value || 'light'
+  req.session.theme = theme?.value || 'light'
   const font = prefs.data.find((el) => { return el.setting === 'font' })
-  req.session.font = font.value || 'normal'
+  req.session.font = font?.value || 'normal'
   req.session.save()
 
   if (req.session.admin) {
