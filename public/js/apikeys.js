@@ -57,8 +57,8 @@ async function fillItems () {
       row +=
         `<tr data-id='${itm.id}'>` +
         '<td>' +
-        `<wa-button appearance='plain' size='small' title='Edit'><wa-icon id='edititem-${itm.id}' label='Edit API key' name='edit' data-id='${itm.id}'></wa-icon></wa-button>` +
-        `<wa-button appearance='plain' size='small' title='Delete'><wa-icon id='removeitem-${itm.id}' label='Delete API key' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button id='edititem-${itm.id}' data-id='${itm.id}' appearance='plain' size='small' title='Edit'><wa-icon label='Edit API key' name='edit'></wa-icon></wa-button>` +
+        `<wa-button id='removeitem-${itm.id}' data-id='${itm.id}' appearance='plain' size='small' title='Delete'><wa-icon label='Delete API key' name='trash' style='color:red;'></wa-icon></wa-button>` +
         '</td>' +
         `<td id='id-${itm.id}'><wa-copy-button from='id-${itm.id}'></wa-copy-button>${itm.id}</td>` +
         `<td>${JH.sanitize(itm.description)}</td>` +

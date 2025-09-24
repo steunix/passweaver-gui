@@ -35,8 +35,8 @@ async function fillItems () {
       row +=
         `<tr data-id='${itm.id}' style='cursor:pointer'>` +
         '<td>' +
-        `<wa-button appearance='plain' size='small' title='Edit'><wa-icon id='edititem-${itm.id}' name='edit' data-id='${itm.id}'></wa-icon></wa-button>` +
-        `<wa-button appearance='plain' size='small' title='Delete'><wa-icon id='removeitem-${itm.id}' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button id='edititem-${itm.id}' data-id='${itm.id}' appearance='plain' size='small' title='Edit'><wa-icon name='edit'></wa-icon></wa-button>` +
+        `<wa-button id='removeitem-${itm.id}' data-id='${itm.id}' appearance='plain' size='small' title='Delete'><wa-icon name='trash' style='color:red;'></wa-icon></wa-button>` +
         '</td>' +
         `<td>${JH.sanitize(itm.description)}</td>` +
         `<td>${JH.sanitize(itm.icon)}</td>` +

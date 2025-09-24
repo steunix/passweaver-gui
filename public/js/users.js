@@ -68,10 +68,10 @@ async function fillUsers () {
       row +=
         `<tr data-id='${itm.id}' style='cursor:pointer'>` +
         '<td>' +
-        `<wa-button title='Edit user' appearance='plain' size='small'><wa-icon id='edituser-${itm.id}' label='Edit user' name='edit' data-id='${itm.id}'></wa-icon></wa-button>` +
-        `<wa-button title='User activity' appearance='plain' size='small'><wa-icon id='activity-${itm.id}' label='User activity' name='clock' data-id='${itm.id}'></wa-icon></wa-button>` +
-        `<wa-button title='Visible folders' appearance='plain' size='small'><wa-icon id='folders-${itm.id}' label='Visible folders' name='folder-tree' data-id='${itm.id}'></wa-icon></wa-button>` +
-        `<wa-button title='Delete user' appearance='plain' size='small'><wa-icon id='removeuser-${itm.id}' label='Delete user' name='trash' style='color:red;' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button id='edituser-${itm.id}' data-id='${itm.id}' title='Edit user' appearance='plain' size='small'><wa-icon label='Edit user' name='edit'></wa-icon></wa-button>` +
+        `<wa-button id='activity-${itm.id}' data-id='${itm.id}' title='User activity' appearance='plain' size='small'><wa-icon label='User activity' name='clock'></wa-icon></wa-button>` +
+        `<wa-button id='folders-${itm.id}' data-id='${itm.id}' title='Visible folders' appearance='plain' size='small'><wa-icon label='Visible folders' name='folder-tree'></wa-icon></wa-button>` +
+        `<wa-button id='removeuser-${itm.id}' data-id='${itm.id}' title='Delete user' appearance='plain' size='small'><wa-icon label='Delete user' name='trash' style='color:red;'></wa-icon></wa-button>` +
         '</td>' +
         `<td class='border-start'>${JH.sanitize(itm.login)}</td>` +
         `<td>${JH.sanitize(itm.lastname)}</td>` +
@@ -165,7 +165,7 @@ async function fillGroups () {
     for (const itm of body.data) {
       row += `<tr data-id='${itm.id}'>`
       if (itm.id !== 'E') {
-        row += `<td><wa-button appearance='plain' size='small'><wa-icon id='removegroup-${itm.id}' data-id='${itm.id}' name='trash' style='color:red;' label='Remove group'></wa-icon></wa-button></td>`
+        row += `<td><wa-button id='removegroup-${itm.id}' data-id='${itm.id}' appearance='plain' size='small'><wa-icon name='trash' style='color:red;' label='Remove group'></wa-icon></wa-button></td>`
       } else {
         row += '<td></td>'
       }
