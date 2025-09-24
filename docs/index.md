@@ -99,7 +99,7 @@ Items can be dragged and dropped to another folder you have write access to, and
  - to move it
  - to link it. See below
 
-![Item drag and drop](assets/passweavergui-itemdnd-000.jpeg)
+![Item drag and drop](assets/passweavergui-itemdnd-001.jpeg)
 
 ### Linked items
 
