@@ -62,9 +62,9 @@ async function fillItems () {
       row +=
         `<tr id='row-${itm.id}' data-id='${itm.id}'>` +
         '<td>' +
-        `<wa-button appearance='plain' size='small'><wa-icon id='fav-${itm.id}' name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' label='Favorite' data-id='${itm.id}'></wa-icon></wa-button>` +
-        `<wa-button appearance='plain' size='small'><wa-icon id='link-${itm.id}' label='Copy item link' name='link' data-id='${itm.id}'></wa-icon></wa-button>` +
-        `<wa-button appearance='plain' size='small'><wa-icon id='folder-${itm.id}' label='Open folder' name='folder-open' data-id='${itm.id}'></wa-icon></wa-button>` +
+        `<wa-button appearance='plain' size='small' id='fav-${itm.id}' data-id='${itm.id}'><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" data-fav='${itm.favorite}' label='Favorite'></wa-icon></wa-button>` +
+        `<wa-button appearance='plain' size='small' id='link-${itm.id}' data-id='${itm.id}'><wa-icon label='Copy item link' name='link'></wa-icon></wa-button>` +
+        `<wa-button appearance='plain' size='small' id='folder-${itm.id}' data-id='${itm.id}'><wa-icon label='Open folder' name='folder-open'></wa-icon></wa-button>` +
         '</td>' +
         `<td class='border-start border-end'>${JH.sanitize(itm.folder.description)}</td>` +
         '<td class="border-end">'
