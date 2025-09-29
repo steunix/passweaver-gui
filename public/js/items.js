@@ -55,6 +55,7 @@ const domCache = {
   itemDialogGenerate: JH.query('#idgenerate'),
   itemDialogCopyPassword: JH.query('#idcopypassword'),
   itemDialogOpenUrl: JH.query('#idopenurl'),
+  itemDialogEdit: JH.query('#idedit'),
   itemDialogSave: JH.query('#idsave'),
   itemDialogCancel: JH.query('#idcancel'),
   itemDropDialog: JH.query('#itemdropdialog'),
@@ -294,10 +295,15 @@ function itemDialogEnable (enable) {
     JH.removeAttribute('#itemdialog wa-input,wa-textarea', 'readonly')
     JH.removeAttribute(domCache.itemDialogType, 'disabled')
     JH.show([domCache.itemDialogSave, domCache.itemDialogGenerate])
+    JH.hide(domCache.itemDialogEdit)
   } else {
     JH.attribute('#itemdialog wa-input,wa-textarea,wa-select', 'readonly', 'readonly')
     JH.attribute(domCache.itemDialogType, 'disabled', true)
     JH.hide([domCache.itemDialogSave, domCache.itemDialogGenerate])
+
+    if (Folders.currentPermissions.write) {
+      JH.show(domCache.itemDialogEdit)
+    }
   }
 }
 
@@ -423,6 +429,10 @@ async function itemDialogFill (item, gotofolder) {
   }
 
   itemSaveEnable()
+}
+
+function itemEdit () {
+  itemShow(JH.value(domCache.itemDialogId), false)
 }
 
 function itemShow (item, readonly) {
@@ -727,7 +737,7 @@ JH.event(domCache.newItemButton, 'click', (ev) => {
 })
 
 JH.event(domCache.itemDialogSave, 'click', itemSave)
-
+JH.event(domCache.itemDialogEdit, 'click', itemEdit)
 JH.event(domCache.itemDialogTitle, 'keyup', itemSaveEnable)
 
 // Personal

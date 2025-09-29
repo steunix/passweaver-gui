@@ -1,4 +1,4 @@
-<wa-dialog id="itemviewdialog" light-dismiss label="Item details">
+<wa-dialog id="itemviewdialog" style="--width:25vw" light-dismiss label="Item details">
   <wa-button slot="header-actions" appearance="plain" title="Copy item link" id="itemviewcopylink"><wa-icon name="link" label="Copy item link"></wa-icon></wa-button>
   <wa-button slot="header-actions" appearance="plain" title="Item activity" id="itemviewactivity"><wa-icon name="clock" label="Item activity"></wa-icon></wa-button>
   <div class="wa-stack">
@@ -19,5 +19,5 @@
       <wa-copy-button slot="end" title='Copy to clipboard' id="itemviewcopypassword" from="viewpassword.value"></wa-copy-button>
     </wa-input>
   </div>
-  <wa-button slot="footer" appearance="brand" data-dialog="close">Close</wa-button>
+  <wa-button slot="footer" data-dialog="close" slot="footer" appearance="outlined">Cancel</wa-button>
 </wa-dialog>
