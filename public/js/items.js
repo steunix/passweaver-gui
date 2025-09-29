@@ -140,11 +140,11 @@ async function fillItems (highlightedId) {
       row += '</td>'
       row += `<td class='border-end' id='user-${itm.id}'>`
       if (itm.metadata) {
-        row += `<wa-copy-button title='Copy user to clipboard' from='user-${itm.id}'></wa-copy-button>`
+        row += `<wa-button size="small" appearance="plain" title="Copy user to clipboard" data-id="${itm.id}" id='usercopy-${itm.id}'><wa-icon name="copy" variant="regular" label="Copy user to clipboard"></wa-icon></wa-button>`
       }
       row += `${JH.sanitize(itm.metadata)}</td>`
       row += '<td>'
-      row += `<wa-copy-button id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}' from='password-${itm.id}'></wa-copy-button>`
+      row += `<wa-button size='small' appearance='plain' id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}'><wa-icon name='copy' variant='regular' label="Copy password to clipboard"></wa-icon></wa-button>`
       row += `<wa-button size="small" appearance="plain"><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' label='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></wa-button>`
       row += `<span style='margin-left:5px; margin-right:5px;' id='password-${itm.id}'>****</span>`
       row += '</td>'
@@ -171,6 +171,9 @@ async function fillItems (highlightedId) {
   })
   JH.event('#itemstable tbody [id^=passwordcopy]', 'click', (ev) => {
     passwordCopy(ev)
+  })
+  JH.event('#itemstable tbody [id^=usercopy]', 'click', (ev) => {
+    userCopy(ev)
   })
   JH.event('#itemstable tbody [id^=passwordshow]', 'click', (ev) => {
     passwordShow(ev)
@@ -587,7 +590,18 @@ async function passwordCopy (ev) {
 
   navigator.clipboard.writeText(decrypted.password)
 
+  PW.showToast('success', 'Password copied to clipboard')
+
   passwordCopied(item)
+}
+
+async function userCopy (ev) {
+  const item = ev.currentTarget.getAttribute('data-id')
+  const user = JH.query(`#user-${item}`).innerText
+
+  navigator.clipboard.writeText(user)
+
+  PW.showToast('success', 'User copied to clipboard')
 }
 
 async function passwordShow (ev) {
