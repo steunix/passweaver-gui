@@ -37,8 +37,8 @@ async function fillGroups () {
         row += '<td>Inherited</td>'
       } else {
         if (itm.canmodify) {
-          row += `<td><wa-button appearance='plain' size='small' title='Remove group'><wa-icon id='removegroup-${itm.id}' data-id='${itm.id}' name='trash' label='Remove group' style='color:red;'></wa-icon></wa-button>`
-          row += `<wa-button appearance='plain' size='small' title='Toggle permissions'><wa-icon id='togglegroup-${itm.id}' data-id='${itm.id}' name='repeat' label='Toggle permissions'></wa-icon></wa-button></td>`
+          row += `<td><wa-button appearance='plain' id='removegroup-${itm.id}' data-id='${itm.id}' title='Remove group'><wa-icon name='trash' label='Remove group' style='color:red;'></wa-icon></wa-button>`
+          row += `<wa-button appearance='plain' id='togglegroup-${itm.id}' data-id='${itm.id}' size='small' title='Toggle permissions'><wa-icon name='repeat' label='Toggle permissions'></wa-icon></wa-button></td>`
         } else {
           row += '<td></td><td></td>'
         }
