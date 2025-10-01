@@ -56,22 +56,18 @@ export class Picker {
         if (this.mode === 'users') {
           desc = itm.lastname + ' ' + itm.firstname
         }
-        row += `<tr id='row-${itm.id}' data-id='${itm.id}' data-desc='${itm.lastname} ${itm.firstname}' style='cursor:pointer;'>`
-        row += `<td style="width:1px;"><wa-button id='itm-${itm.id}' data-id='${itm.id}' title="Choose" appearance="plain" size="small"><wa-icon data-desc='${itm.lastname} ${itm.firstname}' name='check' label="Choose"></wa-icon></wa-button></td>`
+        row += '<tr>'
+        row += `<td><a href="#" id='choose-${itm.id}' data-id='${itm.id}' data-desc='${JH.sanitize(itm.lastname + ' ' + itm.firstname)}' title="Choose">${JH.sanitize(desc)}</a></td>`
         if (this.mode === 'users') {
           row += `<td style="width:1px;">${JH.sanitize(itm.login)}</td>`
         }
-        row += `<td>${JH.sanitize(desc)}</td>`
         row += '</tr>'
       }
       this.domCache.tableBody.innerHTML = row
     }
 
     // Event handlers
-    JH.event('#pickertable tbody tr[id^=row]', 'dblclick', (ev) => {
-      this.clientCallback(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-desc'))
-    })
-    JH.event('#pickertable tbody wa-button[id^=itm]', 'click', (ev) => {
+    JH.event('#pickertable tbody a[id^=choose-]', 'click', (ev) => {
       this.clientCallback(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-desc'))
     })
   }
