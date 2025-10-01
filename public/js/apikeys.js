@@ -2,6 +2,7 @@
 
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
+import * as CPicker from './picker.js'
 
 let itemSearchTimeout
 
@@ -18,26 +19,14 @@ const domCache = {
   dialogItemId: JH.query('#apikeyid'),
   dialogDescription: JH.query('#apikeydescription'),
   dialogUserId: JH.query('#apikeyuserid'),
+  dialogUserSearch: JH.query('#apikeysearchuser'),
+  dialogUserDesc: JH.query('#apikeyuserdesc'),
   dialogIpWhitelist: JH.query('#apikeyipwhitelist'),
   dialogTimeWhitelist: JH.query('#apikeytimewhitelist'),
   dialogExpiresAt: JH.query('#apikeyexpiresat'),
   dialogActive: JH.query('#apikeyactive'),
   dialogSave: JH.query('#apikeysave'),
   dialogCancel: JH.query('#apikeycancel')
-}
-
-async function usersSelectOptions () {
-  const resp = await JH.http('/api/userslist')
-  if (!await PW.checkResponse(resp)) {
-    return
-  }
-
-  const body = await resp.json()
-  let options = ''
-  for (const usr of body.data) {
-    options += `<wa-option value="${usr.id}">${JH.sanitize(usr.lastname + ' ' + usr.firstname)}</wa-option>`
-  }
-  domCache.dialogUserId.innerHTML = options
 }
 
 async function fillItems () {
@@ -160,11 +149,17 @@ async function itemEditFill (id) {
   if (!await PW.checkResponse(resp)) {
     return
   }
-
   const body = await resp.json()
+
+  const resp2 = await JH.http(`/api/users/${body.data.userid}`)
+  if (!await PW.checkResponse(resp2)) {
+    return
+  }
+  const body2 = await resp2.json()
 
   JH.value(domCache.dialogDescription, body.data.description)
   JH.value(domCache.dialogUserId, body.data.userid)
+  JH.value(domCache.dialogUserDesc, JH.sanitize(body2.data.lastname + ' ' + body2.data.firstname))
   JH.value(domCache.dialogExpiresAt, body.data.expiresat)
   JH.value(domCache.dialogActive, body.data.active ? 'A' : 'I')
   JH.value(domCache.dialogIpWhitelist, body.data.ipwhitelist)
@@ -173,8 +168,14 @@ async function itemEditFill (id) {
   dialogSaveEnable()
 }
 
+function userChoosen (userid, userdesc) {
+  JH.value(domCache.dialogUserId, userid)
+  JH.value(domCache.dialogUserDesc, userdesc)
+  UPicker.hide()
+  dialogSaveEnable()
+}
+
 await fillItems()
-await usersSelectOptions()
 
 // Event handlers
 JH.event(domCache.dialogCancel, 'click', (ev) => {
@@ -206,3 +207,10 @@ JH.event([
 JH.event(domCache.dialogSecretClose, 'click', (ev) => {
   domCache.itemSecretDialog.open = false
 })
+
+JH.event(domCache.dialogUserSearch, 'click', (ev) => {
+  UPicker.show()
+})
+
+// Picker
+const UPicker = new CPicker.Picker('users', userChoosen)

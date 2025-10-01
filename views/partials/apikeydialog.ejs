@@ -2,7 +2,11 @@
   <div class="wa-stack">
     <wa-input id="apikeyid" style="display: none;"></wa-input>
     <wa-input id="apikeydescription" label="Description" required autofocus maxlength="50"></wa-input>
-    <wa-select id="apikeyuserid" label="User" required></wa-select>
+    <div id="apikeyselectuser" class="wa-flank">
+      <wa-input style="display: none;" id="apikeyuserid"></wa-input>
+      <wa-button id="apikeysearchuser" variant="warning">Select user</wa-button>
+      <wa-input id="apikeyuserdesc" readonly></wa-input>
+    </div>
     <wa-input id="apikeytimewhitelist" label="Time whitelist" placeholder="DDD:HHMM-HHMM"></wa-input>
     <wa-input id="apikeyipwhitelist" label="IP whitelist" placeholder="192.168.1.1/32,10.0.0.0/24"></wa-input>
     <wa-input id="apikeyexpiresat" label="Expire date" required placeholder="YYYY-MM-DD"></wa-input>
