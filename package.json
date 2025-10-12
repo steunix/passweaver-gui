@@ -34,6 +34,7 @@
     "redis": "5.8.3",
     "rotating-file-stream": "3.2.7",
     "semver": "7.7.2",
-    "serve-favicon": "2.5.1"
+    "serve-favicon": "2.5.1",
+    "undici": "7.16.0"
   }
 }
