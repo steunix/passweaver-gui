@@ -41,7 +41,7 @@ try {
     process.exit(1)
   }
 } catch (err) {
-  console.error('Cannot connect to PassWaver API. Verify your settings and PassWeaver API is up and running.')
+  console.error('Cannot connect to PassWaver API. Verify your settings and check that PassWeaver API is up and running.')
   process.exit(1)
 }
 
@@ -364,6 +364,7 @@ app.get('/pages/info', async (req, res) => {
   page.items = resp.data.items
   page.cacheProvider = resp.data.cacheProvider
   page.cacheSize = resp.data.cacheSize ?? 0
+  page.undiciCacheSize = await PassWeaver.getUndiciCacheSize()
 
   res.render('info', { ...page, ...commonParams(req) })
 })

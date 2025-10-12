@@ -7,6 +7,7 @@
 
 import * as Config from './config.mjs'
 import * as Crypt from './crypt.mjs'
+import * as UNDICI from 'undici'
 
 const cfg = Config.get()
 
@@ -15,6 +16,27 @@ const METHOD = {
   post: 'POST',
   patch: 'PATCH',
   delete: 'DELETE'
+}
+
+const CACHE = new UNDICI.cacheStores.MemoryCacheStore({
+  maxSize: 100 * 1024 * 1024,
+  maxCount: 1000,
+  maxEntrySize: 5 * 1024 * 1024
+})
+
+UNDICI.setGlobalDispatcher(UNDICI.getGlobalDispatcher().compose(
+  UNDICI.interceptors.cache({
+    store: CACHE,
+    methods: ['GET', 'HEAD']
+  })
+))
+
+/**
+ * Get Undici cache size
+ * @returns Undici cache in bytes
+ */
+export async function getUndiciCacheSize () {
+  return CACHE.size
 }
 
 /**
@@ -41,26 +63,27 @@ async function passWeaverAPI (session, method, path, data) {
       signal: AbortSignal.timeout(10000),
       headers: {
         'User-Agent': 'passweaver-gui',
-        'Content-Type': 'application/json'
+        'Accept-Encoding': 'gzip, deflate, br'
       },
       method
     }
 
-    if (data) {
+    if (data && method !== 'GET' && method !== 'HEAD') {
       options.body = JSON.stringify(data)
+      options.headers['Content-Type'] = 'application/json'
     }
 
     if (session && session.jwt) {
       options.headers.authorization = `Bearer ${session.jwt}`
     }
-    const resp = await fetch(cfg.passweaverapi_url + path, options)
-    const body = await resp.json()
 
-    ret.httpStatusCode = resp.status
-    ret.data = body?.data
+    const { statusCode, body } = await UNDICI.request(cfg.passweaverapi_url + path, options)
+    const payload = await body.json()
+    ret.httpStatusCode = statusCode
+    ret.data = payload?.data
 
     // OK response
-    if (resp.ok) {
+    if (statusCode >= 200 && statusCode < 400) {
       return ret
     }
 
@@ -68,30 +91,30 @@ async function passWeaverAPI (session, method, path, data) {
     ret.status = 'failed'
     ret.data = {}
 
-    if (resp.status === 500) {
+    if (statusCode === 500) {
       ret.fatal = true
       ret.message = 'Bad request to PassWeaver API.'
     }
 
     // Error 401 may be expired token or bad personal password
-    if (resp.status === 401) {
+    if (statusCode === 401) {
       // Invalid password
-      if (body.message === 'Unauthorized') {
+      if (payload.message === 'Unauthorized') {
         ret.fatal = false
         ret.message = 'Invalid password'
       }
-      if (body.message === 'Invalid token') {
+      if (payload.message === 'Invalid token') {
         ret.fatal = true
         ret.message = 'Invalid token, you need to login'
       }
-      if (body.message === 'Token expired') {
+      if (payload.message === 'Token expired') {
         ret.fatal = true
         ret.message = 'Session token expired, you need to login'
       }
     }
 
     // Other response (404, 422, et al) or generic error
-    ret.message = body?.message
+    ret.message = payload?.message
 
     return ret
   } catch (err) {
