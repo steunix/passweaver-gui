@@ -26,6 +26,7 @@ import jsonwebtoken from 'jsonwebtoken'
 import rateLimitMiddleware from './src/ratelimiter.mjs'
 import lusca from 'lusca'
 import * as Semver from 'semver'
+import * as GOAuth2 from 'google-auth-library'
 
 export const app = Express()
 
@@ -141,6 +142,8 @@ app.set('view engine', 'ejs')
 
 // Rate limiter
 app.use('/access', rateLimitMiddleware)
+app.use('/login/google/url', rateLimitMiddleware)
+app.use('/login/google/callback', rateLimitMiddleware)
 app.use('/noauth/onetimesecretget', rateLimitMiddleware)
 app.use('/noauth/onetimesecret', rateLimitMiddleware)
 
@@ -191,6 +194,16 @@ function commonParams (req) {
   }
 }
 
+// Google OAuth2 setup
+let GOAuth2Client = null
+if (cfg?.auth?.google_oauth2?.enabled === true) {
+  GOAuth2Client = new GOAuth2.OAuth2Client(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.REDIRECT_URI
+  )
+}
+
 /**
  * Pages
  */
@@ -199,7 +212,8 @@ function commonParams (req) {
 app.get(['/login', '/'], (req, res) => {
   if (req?.session?.user === undefined) {
     req.locals = {
-      error: req.query.error
+      error: req.query.error,
+      google_oauth2_enabled: (cfg?.auth?.google_oauth2?.enabled === true)
     }
     res.render('login', { ...req.locals, ...commonParams(req) })
   } else {
@@ -207,15 +221,52 @@ app.get(['/login', '/'], (req, res) => {
   }
 })
 
-// Logout page
-app.get('/logout', (req, res) => {
-  req.session.destroy()
-  if (req.query?.error) {
-    res.redirect('/login?error=' + encodeURIComponent(req.query.error))
-  } else {
-    res.redirect('/login')
-  }
-})
+// Setup Google OAuth2 routes if enabled
+if (GOAuth2Client !== null) {
+  // Get Google OAuth2 URL
+  app.get('/login/google/url', async (req, res) => {
+    const scopes = [
+      'https://www.googleapis.com/auth/userinfo.email',
+      'https://www.googleapis.com/auth/userinfo.profile'
+    ]
+
+    const authUrl = GOAuth2Client.generateAuthUrl({
+      access_type: 'offline', // Richiede il refresh token
+      scope: scopes.join(' '),
+      state: 'abcd'
+    })
+
+    res.json({ url: authUrl })
+  })
+
+  // Google OAuth2 callback
+  app.get('/login/google/callback', async (req, res) => {
+    const { code } = req.query
+
+    if (!code) {
+      res.redirect('/login?error=' + encodeURIComponent('Google authentication failed'))
+      return
+    }
+
+    const { tokens } = await GOAuth2Client.getToken(code)
+    GOAuth2Client.setCredentials(tokens)
+
+    // Verifica e estrazione dei dati utente dal token ID
+    await GOAuth2Client.verifyIdToken({
+      idToken: tokens.id_token,
+      audience: process.env.GOOGLE_CLIENT_ID
+    })
+
+    // Send user info to PassWeaver API for login
+    const resp = await PassWeaver.login(null, null, tokens.id_token)
+    if (resp.status !== 'success') {
+      res.redirect('/login?error=' + encodeURIComponent(resp.message))
+      return
+    }
+
+    await processLogin(req, res, resp)
+  })
+}
 
 // Access page
 app.post('/access', async (req, res) => {
@@ -230,6 +281,11 @@ app.post('/access', async (req, res) => {
     return
   }
 
+  await processLogin(req, res, resp)
+})
+
+// Process login
+async function processLogin (req, res, resp) {
   // Get user name
   req.session.jwt = resp.data.jwt
   const jwt = jsonwebtoken.decode(req.session.jwt)
@@ -258,6 +314,16 @@ app.post('/access', async (req, res) => {
     } else {
       res.redirect('/pages/items')
     }
+  }
+}
+
+// Logout page
+app.get('/logout', (req, res) => {
+  req.session.destroy()
+  if (req.query?.error) {
+    res.redirect('/login?error=' + encodeURIComponent(req.query.error))
+  } else {
+    res.redirect('/login')
   }
 })
 

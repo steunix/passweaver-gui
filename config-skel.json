@@ -32,5 +32,10 @@
   "folders": {
     "user_managed": true
   },
-  "generate_password_length": 15
+  "generate_password_length": 15,
+  "auth": {
+    "google_oauth2": {
+      "enabled": false
+    }
+  }
 }

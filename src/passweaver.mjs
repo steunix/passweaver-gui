@@ -62,8 +62,7 @@ async function passWeaverAPI (session, method, path, data) {
     const options = {
       signal: AbortSignal.timeout(10000),
       headers: {
-        'User-Agent': 'passweaver-gui',
-        'Accept-Encoding': 'gzip, deflate, br'
+        'User-Agent': 'passweaver-gui'
       },
       method
     }
@@ -133,12 +132,14 @@ async function passWeaverAPI (session, method, path, data) {
  * Login
  * @param {string} username User name
  * @param {string} password Password
+ * @param {string} googleoauth2token Google OAuth2 token
  * @returns
  */
-export async function login (username, password) {
+export async function login (username, password, googleoauth2token) {
   const resp = await passWeaverAPI(null, METHOD.post, '/login', {
     username,
-    password
+    password,
+    googleoauth2token
   })
   return resp
 }
