@@ -17,6 +17,12 @@
         <% } %>
         <center>
           <wa-button id="login" type="submit" variant="brand" style="margin-top:1rem;">Login</wa-button>
+          <% if ( google_oauth2_enabled ) { %>
+            <br/>
+            <wa-button id="glogin" type="button" variant="brand" style="margin-top:1rem;">Login with Google
+              <wa-icon slot="start" family="brands" name="google"></wa-icon>
+            </wa-button>
+          <% } %>
           <% if ( error ) { %>
             <br/><br/>
             <wa-callout variant="danger" open>

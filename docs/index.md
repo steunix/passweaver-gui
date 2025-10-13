@@ -9,6 +9,7 @@ PassWeaver-GUI is an opensource project, released under MIT license. See [Techni
 These are PassWeaver GUI feature, in random order:
 
 - Personal folders for each user
+- Authentication with Google OAuth2
 - Favorite items
 - Link items in other folders
 - Share one-time secrets with anyone, even if they have not an account; an alternative server name can be specified in case of public shares
@@ -408,6 +409,12 @@ Copy `config-skel.json` to `config.json` and adjust the options; note that ALL c
   - `user_managed`: if true, non-admin can create and delete folders; false otherwise
 - `generate_password_length`: Generator password length (minimum is 8)
 - `http_cache_size_mb`: Internal HTTP cache size in MB (used by Undici lib); minimum is 1
+- `auth`:
+  - `google_oauth2`:
+    - `enabled`: if true, you can login with Google OAuth2. Keep in mind that in this case your environment needs to have these variables:
+      - `GOOGLE_CLIENT_ID`: Your Google Client ID
+      - `GOOGLE_CLIENT_SECRET`: Your Google Client secret
+      - `REDIRECT_URI`: The redirect URI Google has to call after authentication. It must be `https://yourserver`/login/google/callback
 
 ## Environment
 
