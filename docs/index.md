@@ -24,6 +24,7 @@ These are PassWeaver GUI feature, in random order:
 - CSP compliant pages
 - Quick and clean user interface
 - Light and dark theme setting for each user
+- Uses Undici library for maximum HTTP performance
 
 # Forewords
 
@@ -406,6 +407,7 @@ Copy `config-skel.json` to `config.json` and adjust the options; note that ALL c
 - `folders`:
   - `user_managed`: if true, non-admin can create and delete folders; false otherwise
 - `generate_password_length`: Generator password length (minimum is 8)
+- `http_cache_size_mb`: Internal HTTP cache size in MB (used by Undici lib); minimum is 1
 
 ## Environment
 
@@ -425,3 +427,4 @@ Passweaver-GUI is developed in NodeJS and uses these great libs (among others):
 - `WebAwesome` WEB components
 - `Morgan` for logging
 - `Helmet` and `Lusca` for CSFR and CSP compliance
+- `Undici` for HTTP requests to API and caching

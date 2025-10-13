@@ -6,7 +6,8 @@
   "server": {
     "onetimesecret_public_server": "",
     "item_link_server": "",
-    "rate_limit_max_requests": 100
+    "rate_limit_max_requests": 100,
+    "http_cache_size_mb": 50
   },
   "passweaverapi_url": "http://localhost:3000/api/v1",
   "company_name": "MyCompany",
