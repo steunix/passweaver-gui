@@ -142,6 +142,8 @@ app.set('view engine', 'ejs')
 
 // Rate limiter
 app.use('/access', rateLimitMiddleware)
+app.use('/login/google/url', rateLimitMiddleware)
+app.use('/login/google/callback', rateLimitMiddleware)
 app.use('/noauth/onetimesecretget', rateLimitMiddleware)
 app.use('/noauth/onetimesecret', rateLimitMiddleware)
 
