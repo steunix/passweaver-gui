@@ -26,9 +26,10 @@ const configSchema = {
       properties: {
         item_link_server: { type: 'string' },
         onetimesecret_public_server: { type: 'string' },
-        rate_limit_max_requests: { type: 'integer', minimum: 1 }
+        rate_limit_max_requests: { type: 'integer', minimum: 1 },
+        http_cache_size_mb: { type: 'integer', minimum: 1 }
       },
-      required: ['item_link_server', 'onetimesecret_public_server', 'rate_limit_max_requests']
+      required: ['item_link_server', 'onetimesecret_public_server', 'rate_limit_max_requests', 'http_cache_size_mb']
     },
     passweaverapi_url: { type: 'string' },
     company_name: { type: 'string' },

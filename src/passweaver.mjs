@@ -19,7 +19,7 @@ const METHOD = {
 }
 
 const CACHE = new UNDICI.cacheStores.MemoryCacheStore({
-  maxSize: 100 * 1024 * 1024,
+  maxSize: cfg.server.http_cache_size_mb * 1024 * 1024,
   maxCount: 1000,
   maxEntrySize: 5 * 1024 * 1024
 })
