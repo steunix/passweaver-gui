@@ -12,6 +12,7 @@ These are PassWeaver GUI feature, in random order:
 - Favorite items
 - Link items in other folders
 - Share one-time secrets with anyone, even if they have not an account; an alternative server name can be specified in case of public shares
+- Optionally expose anonymous page for one-time secrets generation
 - One-time share items (also with optional server name)
 - Share items through permalinks; an alternative server name can be specified for these links
 - External KMS integration (Google Cloud Key Management Service, at the moment)
@@ -172,6 +173,8 @@ You can then share the link with your peer: the link is public and will be usabl
 By clicking the "Show secret" button, the secret will be displayed, and the link will be "burnt":
 
 ![One time secret 3](assets/passweavergui-onetimesecret-3-001.jpeg)
+
+Note that you can expose the "anonymous" version of this page, so anyone can create one time secrets even if not authenticated. See `enable_public_creation` configuration below.
 
 ## Alternative server name for public links
 
@@ -401,6 +404,7 @@ Copy `config-skel.json` to `config.json` and adjust the options; note that ALL c
   - `hsts`: enable HSTS (true/false)
 - `onetimetokens`:
   - `default_hours`: Default one-time tokens expiration in hours
+  - `enable_public_creation`: if true, a '/noauth/onetimesecret' path is exposed: this will let unauthenticated users create one time secrets.
 - `redis`:
   - `enabled`: true or false; if false, internal cache is used (not good for production)
   - `url`: Redis url

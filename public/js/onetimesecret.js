@@ -49,7 +49,7 @@ async function createLink () {
     userid: JH.value(domCache.scopeUserInput)
   }
 
-  const resp = await JH.http('/api/onetimesecret', data)
+  const resp = await JH.http(`/${PW.getUser() === '' ? 'noauth' : 'api'}/onetimesecret`, data)
   if (!await PW.checkResponse(resp)) {
     return
   }

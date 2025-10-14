@@ -55,7 +55,8 @@ const configSchema = {
     onetimetokens: {
       type: 'object',
       properties: {
-        default_hours: { type: 'integer', minimum: 1 }
+        default_hours: { type: 'integer', minimum: 1 },
+        enable_public_creation: { type: 'boolean' }
       },
       required: ['default_hours']
     },
