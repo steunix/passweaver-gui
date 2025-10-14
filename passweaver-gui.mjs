@@ -230,10 +230,19 @@ if (GOAuth2Client !== null) {
       'https://www.googleapis.com/auth/userinfo.profile'
     ]
 
+    req.session.oauth_csrf = Crypt.createKey()
+    req.session.save()
+
+    const state = {
+      csrf: req.session.oauth_csrf,
+      viewitem: req.query?.viewitem || ''
+    }
+    const stateparam = Buffer.from(JSON.stringify(state)).toString('base64')
+
     const authUrl = GOAuth2Client.generateAuthUrl({
-      access_type: 'offline', // Richiede il refresh token
+      access_type: 'offline',
       scope: scopes.join(' '),
-      state: 'abcd'
+      state: stateparam
     })
 
     res.json({ url: authUrl })
@@ -241,7 +250,7 @@ if (GOAuth2Client !== null) {
 
   // Google OAuth2 callback
   app.get('/login/google/callback', async (req, res) => {
-    const { code } = req.query
+    const { code, state } = req.query
 
     if (!code) {
       res.redirect('/login?error=' + encodeURIComponent('Google authentication failed'))
@@ -251,7 +260,14 @@ if (GOAuth2Client !== null) {
     const { tokens } = await GOAuth2Client.getToken(code)
     GOAuth2Client.setCredentials(tokens)
 
-    // Verifica e estrazione dei dati utente dal token ID
+    // Unpack state parameter
+    const stateparam = JSON.parse(Buffer.from(state, 'base64').toString('utf-8'))
+    if (stateparam?.csrf !== req.session.oauth_csrf) {
+      res.redirect('/login?error=' + encodeURIComponent('Google authentication failed'))
+      return
+    }
+
+    // Verify ID token
     await GOAuth2Client.verifyIdToken({
       idToken: tokens.id_token,
       audience: process.env.GOOGLE_CLIENT_ID
@@ -264,7 +280,7 @@ if (GOAuth2Client !== null) {
       return
     }
 
-    await processLogin(req, res, resp)
+    await processLogin(req, res, resp, stateparam?.viewitem)
   })
 }
 
@@ -285,7 +301,7 @@ app.post('/access', async (req, res) => {
 })
 
 // Process login
-async function processLogin (req, res, resp) {
+async function processLogin (req, res, resp, viewitem) {
   // Get user name
   req.session.jwt = resp.data.jwt
   const jwt = jsonwebtoken.decode(req.session.jwt)
@@ -309,8 +325,9 @@ async function processLogin (req, res, resp) {
   if (req.session.admin) {
     res.redirect('/pages/folders')
   } else {
-    if (req.body?.viewitem) {
-      res.redirect('/pages/items?viewitem=' + encodeURIComponent(req.body.viewitem))
+    const rviewitem = req.body?.viewitem || viewitem
+    if (rviewitem) {
+      res.redirect('/pages/items?viewitem=' + encodeURIComponent(rviewitem))
     } else {
       res.redirect('/pages/items')
     }
