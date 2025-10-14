@@ -481,6 +481,25 @@ app.get('/pages/onetimesecret', async (req, res) => {
   res.render('onetimesecret', { ...req.locals, ...commonParams(req) })
 })
 
+// One time secret create (no auth)
+if (Config.get().onetimetokens.enable_public_creation) {
+  app.get('/noauth/onetimesecret', async (req, res) => {
+    const defaultHours = Config.get().onetimetokens.default_hours
+    const days = Math.floor(defaultHours / 24)
+    const hours = defaultHours % (days * 24)
+    const expireHuman = `${days} days and ${hours} hours`
+
+    req.locals = {
+      pagetitle: 'One time secret',
+      pageid: 'onetimesecret',
+      expire_human: expireHuman,
+      data: req?.query?.data || ''
+    }
+
+    res.render('onetimesecret', { ...req.locals, ...commonParams(req) })
+  })
+}
+
 // One time secret display
 app.get('/onetimesecret/:token', async (req, res) => {
   req.locals = {
@@ -931,6 +950,14 @@ app.post('/api/onetimesecret', async (req, res) => {
   const resp = await PassWeaver.oneTimeSecretCreate(req, req.session, req.body.data, req.body.scope, req.body.userid)
   res.json(resp)
 })
+
+// Create one time secret (no auth)
+if (Config.get().onetimetokens.enable_public_creation) {
+  app.post('/noauth/onetimesecret', async (req, res) => {
+    const resp = await PassWeaver.oneTimeSecretCreate(req, null, req.body.data, req.body.scope, req.body.userid)
+    res.json(resp)
+  })
+}
 
 // Create one time item share
 app.post('/api/onetimeshare', async (req, res) => {

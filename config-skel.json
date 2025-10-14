@@ -27,7 +27,8 @@
     "url": "redis://localhost:6379"
   },
   "onetimetokens": {
-    "default_hours": 168
+    "default_hours": 168,
+    "enable_public_creation": true
   },
   "folders": {
     "user_managed": true
