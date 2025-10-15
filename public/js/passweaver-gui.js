@@ -112,9 +112,23 @@ export async function checkResponse (resp, ignoreStatus, showDialog) {
   }
 }
 
-export async function treeFill (id, data, callback, uselocalstorage) {
+export async function treeFill (id, data, callback, setlastopened) {
+  const user = getUser()
+
   JH.query(`#${id}`).innerHTML = ''
-  treeFillItems(id, data, null)
+
+  treeFillItems(user, id, data, null)
+
+  const expanded = Object.entries(localStorage).filter(([key]) => key.startsWith(`${user}_${id}_expanded_`))
+  for (const exp of expanded) {
+    const itemid = exp[0].split(`${user}_${id}_expanded_`)[1]
+    const item = JH.query(`#${itemid}`)
+    if (item) {
+      item.setAttribute('expanded', 'expanded')
+    } else {
+      localStorage.removeItem(exp[0])
+    }
+  }
 
   if (!JH.attribute(`#${id}`, 'evt-wa-selection-change')) {
     JH.event(`#${id}`, 'wa-selection-change', (ev) => {
@@ -123,16 +137,14 @@ export async function treeFill (id, data, callback, uselocalstorage) {
       callback(id)
 
       // Save last item
-      const user = getUser()
       const lskey = `${user}_${ev.target.id}_selected`
       localStorage.setItem(lskey, sel.id)
     })
     JH.attribute(`#${id}`, 'evt-wa-selection-change', '1')
   }
 
-  const user = getUser()
   const last = localStorage.getItem(`${user}_${id}_selected`)
-  if (uselocalstorage && last) {
+  if (setlastopened && last) {
     // Select last item
     const lastelem = JH.query(`#${last}`)
     if (lastelem) {
@@ -145,38 +157,31 @@ export async function treeFill (id, data, callback, uselocalstorage) {
   }
 }
 
-export function treeFillItems (id, data, mainid) {
-  const user = getUser()
-
+export function treeFillItems (user, id, data, mainid) {
   const parent = JH.query(`#${id}`)
   const root = mainid || id
 
   for (const item of data) {
     const newid = `item-${item.id}`
 
-    const lskey = `${user}_${root}_expanded_${newid}`
-    let props = ''
-    if (localStorage.getItem(lskey) === '1') {
-      props += ' expanded'
-    }
-
-    const html = `<wa-tree-item id='${newid}' data-id='${item.id}' ${props} data-description='${JH.sanitize(item.description)}'>${JH.sanitize(item.description)}</wa-tree-item>`
+    const html = `<wa-tree-item id='${newid}' data-id='${item.id}' data-description='${JH.sanitize(item.description)}'>${JH.sanitize(item.description)}</wa-tree-item>`
     const cont = new DOMParser().parseFromString(html, 'text/html')
     const newitem = cont.querySelector('body').firstChild
 
     parent.append(newitem)
-    JH.event(`#${newid}`, 'wa-collapse', (ev) => {
-      const lskey = `${user}_${root}_expanded_${ev.target.id}`
-      localStorage.removeItem(lskey)
-    })
-    JH.event(`#${newid}`, 'wa-expand', (ev) => {
-      const lskey = `${user}_${root}_expanded_${ev.target.id}`
-      localStorage.setItem(lskey, '1')
-    })
 
     // Recurse with children
     if (item?.children.length) {
-      treeFillItems(newid, item.children, root)
+      JH.event(`#${newid}`, 'wa-collapse', (ev) => {
+        const lskey = `${user}_${root}_expanded_${ev.target.id}`
+        localStorage.removeItem(lskey)
+      })
+      JH.event(`#${newid}`, 'wa-expand', (ev) => {
+        const lskey = `${user}_${root}_expanded_${ev.target.id}`
+        localStorage.setItem(lskey, '1')
+      })
+
+      treeFillItems(user, newid, item.children, root)
     }
   }
 }
