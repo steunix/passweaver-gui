@@ -6,6 +6,7 @@ JH.event('#loginForm', 'submit', () => {
 })
 
 JH.event('#glogin', 'click', async () => {
-  const resp = await JH.http(`/login/google/url?viewitem=${JH.value('#viewitem')}`)
+  const viewitem = JH.value('#viewitem')
+  const resp = await JH.http(`/login/google/url?${viewitem ? `viewitem=${encodeURIComponent(viewitem)}` : ''}`)
   window.location.href = (await resp.json()).url
 })

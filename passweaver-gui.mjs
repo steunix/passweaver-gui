@@ -234,9 +234,12 @@ if (GOAuth2Client !== null) {
     req.session.save()
 
     const state = {
-      csrf: req.session.oauth_csrf,
-      viewitem: req.query?.viewitem || ''
+      csrf: req.session.oauth_csrf
     }
+    if (req.query?.viewitem) {
+      state.viewitem = req.query.viewitem
+    }
+
     const stateparam = Buffer.from(JSON.stringify(state)).toString('base64')
 
     const authUrl = GOAuth2Client.generateAuthUrl({
