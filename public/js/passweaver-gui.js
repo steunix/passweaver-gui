@@ -172,18 +172,20 @@ export function treeFillItems (user, id, data, mainid) {
 
     // Recurse with children
     if (item?.children.length) {
-      JH.event(`#${newid}`, 'wa-collapse', (ev) => {
-        const lskey = `${user}_${root}_expanded_${ev.target.id}`
-        localStorage.removeItem(lskey)
-      })
-      JH.event(`#${newid}`, 'wa-expand', (ev) => {
-        const lskey = `${user}_${root}_expanded_${ev.target.id}`
-        localStorage.setItem(lskey, '1')
-      })
-
       treeFillItems(user, newid, item.children, root)
     }
   }
+
+  JH.event(`#${id}`, 'wa-collapse', (ev) => {
+    const lskey = `${user}_${root}_expanded_${ev.target.id}`
+    console.log(lskey)
+    localStorage.removeItem(lskey)
+  })
+  JH.event(`#${id}`, 'wa-expand', (ev) => {
+    const lskey = `${user}_${root}_expanded_${ev.target.id}`
+    console.log(lskey)
+    localStorage.setItem(lskey, '1')
+  })
 }
 
 export function treeItemSelect (elemid) {
