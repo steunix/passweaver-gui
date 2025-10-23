@@ -122,9 +122,9 @@ async function fillItems (highlightedId) {
   if (body.data.length) {
     let row = ''
     for (const itm of body.data) {
-      row += `<tr id='row-${itm.id}' data-id='${itm.id}' draggable='true' class="${highlightedId === itm.id ? 'rowselected' : ''}">`
+      row += `<tr id='row-${itm.id}' data-id='${itm.id}' draggable='true'>`
       row += '<td class="border-end">'
-      row += `<wa-dropdown id="menu-${itm.id}" data-id='${itm.id}' data-linkeditemid='${itm.linkeditemid || ''}'><wa-button label="Menu" size="small" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical" label="Menu"></wa-icon></wa-button>`
+      row += `<wa-dropdown id="menu-${itm.id}" style="font-weight:normal;" data-id='${itm.id}' data-linkeditemid='${itm.linkeditemid || ''}'><wa-button label="Menu" size="small" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical" label="Menu"></wa-icon></wa-button>`
       row += '</wa-dropdown>'
       row += `<wa-button size="small" id='fav-${itm.id}' data-id='${itm.id}' data-fav='${itm.favorite}' title="Favorite" appearance="plain"><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" label='Favorite'></wa-icon></wa-button>`
       row += `<wa-button size="small" id='link-${itm.id}' title='Copy item link' appearance="plain" data-id='${itm.id}'><wa-icon label="Copy item link" name='link'></wa-icon></wa-button>`
@@ -152,6 +152,10 @@ async function fillItems (highlightedId) {
       row += '</tr>'
     }
     domCache.itemsTableBody.innerHTML = row
+
+    if (highlightedId) {
+      itemHighlight(highlightedId)
+    }
   } else {
     domCache.itemsTableBody.innerHTML = '<tr><td colspan="99">No item found</td></tr>'
   }
@@ -178,6 +182,9 @@ async function fillItems (highlightedId) {
   })
   JH.event('#itemstable tbody [id^=passwordshow]', 'click', (ev) => {
     passwordShow(ev)
+  })
+  JH.event('#itemstable tbody tr', 'click', (ev) => {
+    itemHighlight(ev.currentTarget.getAttribute('data-id'))
   })
 
   // Setup drag'n'drop
@@ -453,7 +460,7 @@ async function itemClone (itm) {
     const body = await resp.json()
 
     PW.showToast('success', 'Item successfully cloned')
-    await fillItems()
+    await fillItems(body.data.id)
     itemDialogShow(body.data.id, false)
   })
 }
@@ -710,6 +717,14 @@ async function itemDroppedDo () {
 JH.event(domCache.itemDialogActivity, 'click', (ev) => {
   Items.itemActivityShow(JH.value(domCache.itemDialogId))
 })
+
+function itemHighlight (id) {
+  JH.removeClass('#itemstable tbody tr', 'rowselected')
+  const row = JH.query(`#row-${id}`)
+  if (row) {
+    JH.addClass(row, 'rowselected')
+  }
+}
 
 // Drag'n'drop
 async function dndSetup () {

@@ -204,6 +204,36 @@ export function removeAttribute (query, attr) {
 }
 
 /**
+ * Wrapper for Element.classList.add
+ * @param {string} query Query
+ * @param {string} className Class name
+ */
+export function addClass (query, className) {
+  const el = resolveQuery(query)
+
+  for (const e of el) {
+    if (e) {
+      e.classList.add(className)
+    }
+  }
+}
+
+/**
+ * Wrapper for Element.classList.remove
+ * @param {string} query Query
+ * @param {string} className Class name
+ */
+export function removeClass (query, className) {
+  const el = resolveQuery(query)
+
+  for (const e of el) {
+    if (e) {
+      e.classList.remove(className)
+    }
+  }
+}
+
+/**
  * Makes elements draggable
  * @param {string} query Query
  * @param {string} type Item type
