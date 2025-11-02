@@ -101,7 +101,6 @@ async function fillItems () {
 
     // Install event handlers
     JH.event('#searchbox tbody [id^=sbrow]', 'mousedown', (ev) => {
-      console.log('redirecting')
       window.location = `/pages/items?viewitem=${ev.currentTarget.getAttribute('data-id')}`
     })
   } else {
