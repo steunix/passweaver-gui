@@ -387,7 +387,7 @@ async function itemSave () {
     Items.itemCopyLink(newid)
   }
 
-  await fillItems(newid)
+  await fillItems(id || newid)
   PW.showToast('success', id ? 'Item updated' : 'Item created')
 }
 
