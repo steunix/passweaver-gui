@@ -53,6 +53,7 @@ const domCache = {
   itemDialogUser: JH.query('#iduser'),
   itemDialogPassword: JH.query('#idpassword'),
   itemDialogGenerate: JH.query('#idgenerate'),
+  itemDialogGenerateNoSymbols: JH.query('#idgeneratens'),
   itemDialogCopyPassword: JH.query('#idcopypassword'),
   itemDialogOpenUrl: JH.query('#idopenurl'),
   itemDialogEdit: JH.query('#idedit'),
@@ -301,12 +302,12 @@ function itemDialogEnable (enable) {
   if (enable) {
     JH.removeAttribute('#itemdialog wa-input,wa-textarea', 'readonly')
     JH.removeAttribute(domCache.itemDialogType, 'disabled')
-    JH.show([domCache.itemDialogSave, domCache.itemDialogGenerate])
+    JH.show([domCache.itemDialogSave, domCache.itemDialogGenerate, domCache.itemDialogGenerateNoSymbols])
     JH.hide(domCache.itemDialogEdit)
   } else {
     JH.attribute('#itemdialog wa-input,wa-textarea,wa-select', 'readonly', 'readonly')
     JH.attribute(domCache.itemDialogType, 'disabled', true)
-    JH.hide([domCache.itemDialogSave, domCache.itemDialogGenerate])
+    JH.hide([domCache.itemDialogSave, domCache.itemDialogGenerate, domCache.itemDialogGenerateNoSymbols])
 
     if (Folders.currentPermissions.write) {
       JH.show(domCache.itemDialogEdit)
@@ -681,8 +682,8 @@ async function fillFolders () {
   await dndSetup()
 }
 
-async function itemDialogGeneratePassword () {
-  const resp = await JH.http('/api/generatepassword')
+async function itemDialogGeneratePassword (symbols = true) {
+  const resp = await JH.http('/api/generatepassword?symbols=' + (symbols ? 'true' : 'false'))
   if (!await PW.checkResponse(resp)) {
     return
   }
@@ -783,6 +784,9 @@ JH.event(domCache.itemDialogCopyLink, 'click', (ev) => {
 })
 
 JH.event(domCache.itemDialogGenerate, 'click', itemDialogGeneratePassword)
+JH.event(domCache.itemDialogGenerateNoSymbols, 'click', () => {
+  itemDialogGeneratePassword(false)
+})
 
 JH.event(domCache.searchFavorite, 'change', fillItems)
 
