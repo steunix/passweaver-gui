@@ -745,7 +745,7 @@ async function dndSetup () {
 }
 
 // Search
-JH.event(domCache.searchTypeSelect, 'change', fillItems)
+JH.event(domCache.searchTypeSelect, 'change', () => fillItems())
 
 // Create
 JH.event(domCache.newItemButton, 'click', (ev) => {
@@ -788,7 +788,7 @@ JH.event(domCache.itemDialogGenerateNoSymbols, 'click', () => {
   itemDialogGeneratePassword(false)
 })
 
-JH.event(domCache.searchFavorite, 'change', fillItems)
+JH.event(domCache.searchFavorite, 'change', () => fillItems())
 
 if (domCache.viewItem) {
   setTimeout(() => {
