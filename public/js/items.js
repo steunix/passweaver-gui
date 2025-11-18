@@ -154,7 +154,7 @@ async function fillItems (highlightedId) {
     }
     domCache.itemsTableBody.innerHTML = row
 
-    if (highlightedId) {
+    if (highlightedId && typeof highlightedId === 'string') {
       itemHighlight(highlightedId)
     }
   } else {
