@@ -14,7 +14,7 @@
   "author": "Stefano Rivoir",
   "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "1.56.1",
+    "@playwright/test": "1.57.0",
     "@types/node": "24.10.1",
     "standard": "17.1.2"
   },
