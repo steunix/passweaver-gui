@@ -23,7 +23,7 @@
     "compression": "1.8.1",
     "connect-redis": "9.0.0",
     "ejs": "3.1.10",
-    "express": "5.1.0",
+    "express": "5.2.1",
     "express-rate-limit": "8.2.1",
     "express-session": "1.18.2",
     "google-auth-library": "10.5.0",
