@@ -112,6 +112,16 @@ export async function checkResponse (resp, ignoreStatus, showDialog) {
   }
 }
 
+export async function treeCollapseAll (id) {
+  const treeitems = JH.queryAll(`#${id} wa-tree-item[expanded]`)
+  for (const treeitem of treeitems) {
+    if (treeitem.getAttribute('data-id') === '0') {
+      continue
+    }
+    treeitem.removeAttribute('expanded')
+  }
+}
+
 export async function treeFill (id, data, callback, setlastopened) {
   const user = getUser()
 

@@ -16,6 +16,7 @@ const domCache = {
   groupCreateButton: JH.query('#groupcreate'),
   groupRemoveButton: JH.query('#groupremove'),
   groupEditButton: JH.query('#groupedit'),
+  groupCollapseButton: JH.query('#groupcollapse'),
   newMemberButton: JH.query('#newmember'),
   removeAllMembersButton: JH.query('#removeallmembers'),
   groupSearch: JH.query('#groupsearch'),
@@ -374,6 +375,10 @@ addEventListener('pw-item-found', async (ev) => {
 JH.event(domCache.usersCopyButton, 'click', usersCopy)
 JH.event(domCache.usersPasteButton, 'click', usersPaste)
 JH.event(domCache.usersReplaceButton, 'click', groupsReplace)
+
+JH.event(domCache.groupCollapseButton, 'click', (ev) => {
+  PW.treeCollapseAll('groupstree')
+})
 
 // Picker
 const UPicker = new CPicker.Picker('users', userPickerChoosen)
