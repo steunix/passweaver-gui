@@ -46,6 +46,7 @@ const domCache = {
   itemDialogCopyLink: JH.query('#idcopylink'),
   itemDialogActivity: JH.query('#idactivity'),
   itemDialogId: JH.query('#idid'),
+  itemDialogLinkedItem: JH.query('#idlinkeditem'),
   itemDialogTitle: JH.query('#idtitle'),
   itemDialogType: JH.query('#idtype'),
   itemDialogDescription: JH.query('#iddescription'),
@@ -314,8 +315,10 @@ function itemDialogEnable (enable) {
     JH.attribute(domCache.itemDialogType, 'disabled', true)
     JH.hide([domCache.itemDialogSave, domCache.itemDialogGenerate, domCache.itemDialogGenerateNoSymbols])
 
-    if (Folders.currentPermissions.write) {
+    if (Folders.currentPermissions.write && JH.value(domCache.itemDialogLinkedItem).length === 0) {
       JH.show(domCache.itemDialogEdit)
+    } else {
+      JH.hide(domCache.itemDialogEdit)
     }
   }
 }
@@ -327,7 +330,7 @@ async function itemDialogShow (id, readonly, gotofolder) {
 
   if (id?.length) {
     JH.value(domCache.itemDialogId, id)
-    itemDialogFill(id, gotofolder)
+    await itemDialogFill(id, gotofolder)
     JH.show(domCache.itemDialogCopyLink)
     JH.show(domCache.itemDialogActivity)
   } else {
@@ -427,6 +430,7 @@ async function itemDialogFill (item, gotofolder) {
 
   if (body.status === 'success') {
     JH.value(domCache.itemDialogId, item)
+    JH.value(domCache.itemDialogLinkedItem, body.data.linkeditemid)
     JH.value(domCache.itemDialogType, body.data.type)
     JH.value(domCache.itemDialogTitle, body.data.title)
     JH.value(domCache.itemDialogEmail, decrypted.email)
