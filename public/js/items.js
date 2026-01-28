@@ -130,7 +130,7 @@ async function fillItems (highlightedId) {
       row += `<wa-button size="small" id='fav-${itm.id}' data-id='${itm.id}' data-fav='${itm.favorite}' title="Favorite" appearance="plain"><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" label='Favorite'></wa-icon></wa-button>`
       row += `<wa-button size="small" id='link-${itm.id}' title='Copy item link' appearance="plain" data-id='${itm.id}'><wa-icon label="Copy item link" name='link'></wa-icon></wa-button>`
       if (itm.linkeditemid) {
-        row += `<wa-button size="small" title='Linked item' appearance="plain" data-id='${itm.id}'><wa-icon label="Linked item" style="color: green;" name='right-to-bracket'></wa-icon></wa-button>`
+        row += `<wa-button id="linked-${itm.id}" size="small" title='Linked item' appearance="plain" data-linkedid='${itm.linkeditemid}'><wa-icon label="Linked item" style="color: green;" name='right-to-bracket'></wa-icon></wa-button>`
       }
       row += '</td>'
       row += '<td class="border-end">'
@@ -184,6 +184,10 @@ async function fillItems (highlightedId) {
   JH.event('#itemstable tbody [id^=passwordshow]', 'click', (ev) => {
     passwordShow(ev)
   })
+  JH.event('#itemstable tbody [id^=linked]', 'click', (ev) => {
+    window.location.href = `/pages/items?viewitem=${ev.currentTarget.getAttribute('data-linkedid')}`
+  })
+
   JH.event('#itemstable tbody tr', 'click', (ev) => {
     itemHighlight(ev.currentTarget.getAttribute('data-id'))
   })
