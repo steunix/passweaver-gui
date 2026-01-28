@@ -22,6 +22,7 @@ const domCache = {
   folderCreateButton: JH.query('#foldercreate'),
   folderEditButton: JH.query('#folderedit'),
   folderRemoveButton: JH.query('#folderremove'),
+  folderCollapseButton: JH.query('#foldercollapse'),
   itemCreateDialog: JH.query('#itemcreatedialog'),
   scopeSelect: JH.query('#scopeselect'),
   scopeUser: JH.query('#scopeuser'),
@@ -848,6 +849,10 @@ function userChoosen (userid, userdesc) {
 
 JH.event(domCache.userSearch, 'click', (ev) => {
   UPicker.show()
+})
+
+JH.event(domCache.folderCollapseButton, 'click', (ev) => {
+  PW.treeCollapseAll('folderstree')
 })
 
 JH.event(domCache.itemDialogOpenUrl, 'click', (ev) => {

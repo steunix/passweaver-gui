@@ -22,6 +22,7 @@ const domCache = {
   folderRemoveButton: JH.query('#folderremove'),
   folderCreateButton: JH.query('#foldercreate'),
   folderEditButton: JH.query('#folderedit'),
+  folderCollapseButton: JH.query('#foldercollapse'),
   folderSearch: JH.query('#foldersearch'),
   folderSearchNext: JH.query('#foldersearchnext'),
   folderSearchPrevious: JH.query('#foldersearchprevious')
@@ -159,4 +160,8 @@ JH.event(domCache.folderSearchNext, 'click', (ev) => {
 JH.event(domCache.folderSearchPrevious, 'click', (ev) => {
   const search = JH.value(domCache.folderSearch)
   PW.treeSearchPrevious('folderstree', search)
+})
+
+JH.event(domCache.folderCollapseButton, 'click', (ev) => {
+  PW.treeCollapseAll('folderstree')
 })
