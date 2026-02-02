@@ -659,6 +659,18 @@ app.get('/api/items/:item/activity', async (req, res) => {
   res.json(resp)
 })
 
+// Password accessed event
+app.post('/api/items/:item/passwordread', async (req, res) => {
+  const resp = await PassWeaver.itemPasswordRead(req.session, req.params.item)
+  res.json(resp)
+})
+
+// Password copied event
+app.post('/api/items/:item/passwordcopied', async (req, res) => {
+  const resp = await PassWeaver.itemPasswordCopied(req.session, req.params.item)
+  res.json(resp)
+})
+
 // Get folders tree for user
 app.get('/api/users/:user/folders', async (req, res) => {
   const resp = await PassWeaver.userFoldersTree(req.session, req.params.user, req?.query?.permissions || false)
