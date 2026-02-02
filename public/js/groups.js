@@ -43,7 +43,7 @@ function currentGroup () {
 
 function currentGroupDescription () {
   try {
-    return JH.query('wa-tree-item[selected]').getAttribute('data-description')
+    return decodeURIComponent(JH.query('wa-tree-item[selected]').getAttribute('data-description'))
   } catch (err) {
     return ''
   }

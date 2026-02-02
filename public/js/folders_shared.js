@@ -39,7 +39,7 @@ export function currentFolder () {
 
 export function currentFolderDescription () {
   try {
-    return JH.query('wa-tree-item[selected]').getAttribute('data-description')
+    return decodeURIComponent(JH.query('wa-tree-item[selected]').getAttribute('data-description'))
   } catch (err) {
     return ''
   }
