@@ -9,25 +9,25 @@
   <div class="main1">
     <h4>Groups</h4>
     <div class="wa-flank:end" style="margin-bottom:1rem;">
-      <wa-input id="groupsearch" type="text" placeholder="Search group" autofocus="autofocus" with-clear>
+      <wa-input id="groupsearch" type="text" placeholder="Search group" autofocus="autofocus" with-clear size="small">
         <wa-icon slot="start" name="search"></wa-icon>
         <wa-icon slot="end" title="Search previous" id="groupsearchprevious" name="angle-left"></wa-icon>
         <wa-icon slot="end" title="Search next" id="groupsearchnext" name="angle-right"></wa-icon>
       </wa-input>
       <wa-button-group>
-        <wa-button id="groupcreate" appearance="filled" title="New group" variant="brand">
+        <wa-button id="groupcreate" appearance="filled" title="New group" variant="brand" size="small">
           <wa-icon name="plus" label="Create group"></wa-icon>
         </wa-button>
-        <wa-button id="groupedit" appearance="filled" title="Edit group">
+        <wa-button id="groupedit" appearance="filled" title="Edit group" size="small">
           <wa-icon name="edit" label="Edit group"></wa-icon>
         </wa-button>
-        <wa-button id="groupfolders" appearance="filled" title="Show folders" variant="success">
+        <wa-button id="groupfolders" appearance="filled" title="Show folders" variant="success" size="small">
           <wa-icon name="folder-tree" label="Show folders"></wa-icon>
         </wa-button>
-        <wa-button id="groupremove" appearance="filled" variant="danger" title="Remove group">
+        <wa-button id="groupremove" appearance="filled" variant="danger" title="Remove group" size="small">
           <wa-icon name="trash" label="Remove group"></wa-icon>
         </wa-button>
-        <wa-button id="groupcollapse" type="button" appearance="filled" title="Collapse all groups">
+        <wa-button id="groupcollapse" type="button" appearance="filled" title="Collapse all groups" size="small">
           <wa-icon name="minimize" label="Collapse all groups"></wa-icon>
         </wa-button>
       </wa-button-group>
@@ -39,23 +39,23 @@
     <h4><span id="sectiontitle">Members</span></h4>
     <div class="wa-flank:end" style="margin-bottom:1rem;">
       <wa-button-group>
-        <wa-button id="newmember" appearance="outlined">
+        <wa-button id="newmember" appearance="outlined" size="small" title="Add member">
           <wa-icon slot="start" name="plus" label="Add member"></wa-icon>
           Add member
         </wa-button>
-        <wa-button id="copyusers" type="button" appearance="outlined" title="Copy users">
+        <wa-button id="copyusers" type="button" appearance="outlined" title="Copy users" size="small">
           <wa-icon slot="start" name="copy" label="Copy users"></wa-icon>
           Copy users
         </wa-button>
-        <wa-button id="pasteusers" type="button" appearance="outlined" title="Paste users" style="display: none;">
+        <wa-button id="pasteusers" type="button" appearance="outlined" title="Paste users" style="display: none;" size="small">
           <wa-icon slot="start" name="paste" label="Paste users"></wa-icon>
           Paste users
         </wa-button>
-        <wa-button id="replaceusers" type="button" appearance="outlined" title="Replace users" style="display: none;">
+        <wa-button id="replaceusers" type="button" appearance="outlined" title="Replace users" style="display: none;" size="small">
           <wa-icon slot="start" name="clipboard-check" label="Replace users"></wa-icon>
           Replace users
         </wa-button>
-        <wa-button id="removeallmembers" appearance="outlined" variant="danger">
+        <wa-button id="removeallmembers" appearance="outlined" variant="danger" size="small">
           <wa-icon slot="start" name="trash" label="Remove all members"></wa-icon>
           Remove all members
         </wa-button>

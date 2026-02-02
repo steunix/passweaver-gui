@@ -12,23 +12,23 @@
   <div class="main1">
     <h4>Folders</h4>
     <div class="wa-flank:end" style="margin-bottom:1rem;">
-      <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" with-clear>
+      <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" size="small" with-clear>
         <wa-icon slot="start" name="search"></wa-icon>
         <wa-icon slot="end" title="Search previous" id="foldersearchprevious" name="angle-left"></wa-icon>
         <wa-icon slot="end" title="Search next" id="foldersearchnext" name="angle-right"></wa-icon>
       </wa-input>
       <% if ( manage_folders ) { %>
         <wa-button-group>
-          <wa-button id="foldercreate" type="button" variant="brand" appearance="filled" title="New folder">
+          <wa-button id="foldercreate" type="button" variant="brand" appearance="filled" title="New folder" size="small">
             <wa-icon name="plus" label="Create folder"></wa-icon>
           </wa-button>
-          <wa-button id="folderedit" type="button" appearance="filled" title="Edit folder">
+          <wa-button id="folderedit" type="button" appearance="filled" title="Edit folder" size="small">
             <wa-icon name="edit" label="Edit folder"></wa-icon>
           </wa-button>
-          <wa-button id="folderremove" type="button" variant="danger" appearance="filled" title="Remove folder">
+          <wa-button id="folderremove" type="button" variant="danger" appearance="filled" title="Remove folder" size="small">
             <wa-icon name="trash" label="Remove folder"></wa-icon>
           </wa-button>
-          <wa-button id="foldercollapse" type="button" appearance="filled" title="Collapse all folders">
+          <wa-button id="foldercollapse" type="button" appearance="filled" title="Collapse all folders" size="small">
             <wa-icon name="minimize" label="Collapse all folders"></wa-icon>
           </wa-button>
         </wa-button-group>
@@ -40,15 +40,15 @@
   <div class="main2">
     <h4><wa-badge id="currentpermissions" pill style="vertical-align: middle; margin-right: 0.5em; padding-bottom: 0.2rem; padding-top: 0.2rem;"></wa-badge><span id="sectiontitle">Items</span></h4>
     <div style="display:flex; margin-bottom: 1rem; align-items:center;">
-      <wa-button id="newitem" title="New item" variant="brand" pill disabled>
+      <wa-button id="newitem" title="New item" variant="brand" pill disabled size="small">
         <wa-icon slot="start" name="plus"></wa-icon>
         New item
       </wa-button>
-      <wa-input id="itemsearch" style="margin-left:1em;width:20rem;" placeholder="Filter items" with-clear>
+      <wa-input id="itemsearch" style="margin-left:1em;width:20rem;" placeholder="Filter items" with-clear size="small">
         <wa-icon slot="start" name="search"></wa-icon>
       </wa-input>
-      <wa-select id="typesearch" style="margin-left:1em;" name="typesearch" placeholder="Filter type" with-clear></wa-select>
-      <wa-switch id="favorite" style="margin-left:1em;" label="Favorites only">Favorites only</wa-switch>
+      <wa-select id="typesearch" style="margin-left:1em;" name="typesearch" placeholder="Filter type" with-clear size="small"></wa-select>
+      <wa-switch id="favorite" style="margin-left:1em;" label="Favorites only" size="small">Favorites only</wa-switch>
     </div>
     <table id="itemstable" style="display:inline-block; max-height: calc(100vh - var(--bottom-margin)); width: auto; overflow-y: auto;">
       <thead>

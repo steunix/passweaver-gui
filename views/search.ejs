@@ -9,11 +9,11 @@
   <div class="main1">
     <h4>Search items</h4>
     <div style="display:flex; align-items: center; margin-bottom: 1rem;">
-      <wa-input id="itemsearch" type="text" placeholder="Search items" autofocus="autofocus" with-clear style="width:20rem;" value="<%= search %>">
+      <wa-input id="itemsearch" type="text" placeholder="Search items" autofocus="autofocus" with-clear style="width:20rem;" value="<%= search %>" size="small">
         <wa-icon slot="start" name="search"></wa-icon>
       </wa-input>
-      <wa-select id="typesearch" style="margin-left:1em;" name="typesearch" placeholder="Filter type" with-clear></wa-select>
-      <wa-switch id="favorite" style="margin-left:1em;" label="Favorites only">Favorites only</wa-switch>
+      <wa-select id="typesearch" style="margin-left:1em;" name="typesearch" placeholder="Filter type" with-clear size="small"></wa-select>
+      <wa-switch id="favorite" style="margin-left:1em;" label="Favorites only" size="small">Favorites only</wa-switch>
     </div>
     <table id="itemstable" style="display:block; max-height: calc(100vh - var(--bottom-margin)); overflow-y: auto;">
       <thead>
