@@ -134,6 +134,9 @@ async function fillItems (highlightedId) {
       if (itm.linkeditemid) {
         row += `<wa-button id="linked-${itm.id}" size="small" title='Linked item' appearance="plain" data-linkedid='${itm.linkeditemid}'><wa-icon label="Linked item" style="color: green;" name='right-to-bracket'></wa-icon></wa-button>`
       }
+      if (itm.childrenlinkeditems && itm.childrenlinkeditems.length > 0) {
+        row += '<wa-button size="small" title="Item has linked items" appearance="plain"><wa-icon label="Linked item" style="color: green;" name="right-from-bracket"></wa-icon></wa-button>'
+      }
       row += '</td>'
       row += '<td class="border-end">'
       if (itm.type) {
