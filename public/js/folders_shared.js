@@ -16,6 +16,7 @@ export const currentPermissions = {
 const domCache = {
   sectionTitle: JH.query('#sectiontitle'),
   folderDialog: JH.query('#folderdialog'),
+  folderDialogLabel: JH.query('#folderdialoglabel'),
   folderDialogId: JH.query('#folderdialogid'),
   folderDialogDescription: JH.query('#folderdescription'),
   folderDialogSave: JH.query('#foldersave'),
@@ -36,8 +37,18 @@ export function currentFolder () {
   }
 }
 
+export function currentFolderDescription () {
+  try {
+    return JH.query('wa-tree-item[selected]').getAttribute('data-description')
+  } catch (err) {
+    return ''
+  }
+}
+
 function folderDialogShow (id) {
   JH.value(JH.query(domCache.folderDialog).querySelectorAll('wa-input'), '')
+
+  domCache.folderDialogLabel.innerHTML = (id?.length ? 'Edit folder ' : 'Create a new folder in ') + currentFolderDescription()
 
   if (id?.length) {
     folderEditFill(id)

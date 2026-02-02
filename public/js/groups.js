@@ -9,6 +9,7 @@ let groupSearchTimeout
 const domCache = {
   sectionTitle: JH.query('#sectiontitle'),
   groupDialog: JH.query('#groupdialog'),
+  groupDialogLabel: JH.query('#groupdialoglabel'),
   groupDialogDescription: JH.query('#groupdescription'),
   groupDialogSave: JH.query('#groupsave'),
   groupDialogId: JH.query('#groupdialogid'),
@@ -35,6 +36,14 @@ const domCache = {
 function currentGroup () {
   try {
     return JH.query('wa-tree-item[selected]').getAttribute('data-id')
+  } catch (err) {
+    return ''
+  }
+}
+
+function currentGroupDescription () {
+  try {
+    return JH.query('wa-tree-item[selected]').getAttribute('data-description')
   } catch (err) {
     return ''
   }
@@ -83,6 +92,7 @@ async function fillUsers () {
 
 function groupDialogShow (id) {
   JH.value(JH.query(domCache.groupDialog).querySelectorAll('wa-input'), '')
+  domCache.groupDialogLabel.innerText = (id?.length ? 'Edit group ' : 'New group in ') + currentGroupDescription()
 
   if (id?.length) {
     groupEditFill(id)
