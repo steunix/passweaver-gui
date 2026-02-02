@@ -659,20 +659,14 @@ async function passwordShow (ev) {
 }
 
 async function passwordAccessed (item) {
-  await JH.http('/api/events', {
-    _csrf: PW.getCSRFToken(),
-    event: 80,
-    entity: 30,
-    entityid: item
+  await JH.http(`/api/items/${item}/passwordread`, {
+    _csrf: PW.getCSRFToken()
   })
 }
 
 async function passwordCopied (item) {
-  await JH.http('/api/events', {
-    _csrf: PW.getCSRFToken(),
-    event: 81,
-    entity: 30,
-    entityid: item
+  await JH.http(`/api/items/${item}/passwordcopied`, {
+    _csrf: PW.getCSRFToken()
   })
 }
 
