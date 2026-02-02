@@ -399,6 +399,28 @@ export async function itemLink (req, session, item, lastid) {
 }
 
 /**
+ * Read item password event
+ * @param {Object} session
+ * @param {string} item
+ * @returns
+ */
+export async function itemPasswordRead (session, item) {
+  const resp = await passWeaverAPI(session, METHOD.post, `/items/${item}/passwordread`, {})
+  return resp
+}
+
+/**
+ * Copied item password event
+ * @param {Object} session
+ * @param {string} item
+ * @returns
+ */
+export async function itemPasswordCopied (session, item) {
+  const resp = await passWeaverAPI(session, METHOD.post, `/items/${item}/passwordcopied`, {})
+  return resp
+}
+
+/**
  * Create a new folder
  * @param {Object} session
  * @param {string} folder
