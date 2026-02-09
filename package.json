@@ -19,7 +19,7 @@
     "standard": "17.1.2"
   },
   "dependencies": {
-    "@awesome.me/webawesome": "3.1.0",
+    "@awesome.me/webawesome": "3.2.1",
     "compression": "1.8.1",
     "connect-redis": "9.0.0",
     "ejs": "4.0.1",
