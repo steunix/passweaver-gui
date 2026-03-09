@@ -24,7 +24,7 @@
     "connect-redis": "9.0.0",
     "ejs": "4.0.1",
     "express": "5.2.1",
-    "express-rate-limit": "8.2.1",
+    "express-rate-limit": "8.2.2",
     "express-session": "1.19.0",
     "google-auth-library": "10.5.0",
     "helmet": "8.1.0",
