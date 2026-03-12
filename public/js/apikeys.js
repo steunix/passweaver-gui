@@ -124,7 +124,8 @@ async function dialogSaveEnable () {
   if (JH.value(domCache.dialogDescription) === '' ||
       JH.value(domCache.dialogUserId) === '' ||
       JH.value(domCache.dialogExpiresAt) === '' ||
-      JH.value(domCache.dialogActive) === ''
+      JH.value(domCache.dialogActive) === '' ||
+      !JH.value(domCache.dialogExpiresAt).match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)
   ) {
     JH.disable(domCache.dialogSave)
   } else {
