@@ -204,6 +204,8 @@ JH.event([
   domCache.dialogDescription, domCache.dialogExpiresAt
 ], 'keyup', dialogSaveEnable)
 
+JH.event(domCache.dialogActive, 'change', dialogSaveEnable)
+
 JH.event(domCache.dialogSecretClose, 'click', (ev) => {
   domCache.itemSecretDialog.open = false
 })
