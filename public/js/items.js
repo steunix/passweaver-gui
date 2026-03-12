@@ -284,7 +284,8 @@ async function folderClicked () {
 
   // Load items
   if (Folders.currentPermissions.read) {
-    await fillItems()
+    await fillItems(domCache.viewItem ? JH.value(domCache.viewItem) : undefined)
+    JH.value(domCache.viewItem, '')
   } else {
     domCache.itemsTableBody.innerHTML = '<tr><td colspan="99">No item found</td></tr>'
   }
@@ -868,5 +869,6 @@ JH.event(domCache.itemDialogOpenUrl, 'click', (ev) => {
     PW.showToast('danger', 'Invalid URL')
   }
 })
+
 // Picker
 const UPicker = new CPicker.Picker('users', userChoosen)
