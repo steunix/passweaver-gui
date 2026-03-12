@@ -45,6 +45,7 @@ const domCache = {
   itemDialog: JH.query('#itemdialog'),
   itemDialogCopyLink: JH.query('#idcopylink'),
   itemDialogActivity: JH.query('#idactivity'),
+  itemDialogOneTime: JH.query('#idonetime'),
   itemDialogId: JH.query('#idid'),
   itemDialogLinkedItem: JH.query('#idlinkeditem'),
   itemDialogTitle: JH.query('#idtitle'),
@@ -337,9 +338,11 @@ async function itemDialogShow (id, readonly, gotofolder) {
     await itemDialogFill(id, gotofolder)
     JH.show(domCache.itemDialogCopyLink)
     JH.show(domCache.itemDialogActivity)
+    JH.show(domCache.itemDialogOneTime)
   } else {
     JH.hide(domCache.itemDialogCopyLink)
     JH.hide(domCache.itemDialogActivity)
+    JH.hide(domCache.itemDialogOneTime)
   }
 
   itemDialogEnable(!readonly)
@@ -788,6 +791,10 @@ JH.event(domCache.itemDialogCopyPassword, 'wa-copy', (ev) => {
 
 JH.event(domCache.itemDialogCopyLink, 'click', (ev) => {
   Items.itemCopyLink(JH.value(domCache.itemDialogId))
+})
+
+JH.event(domCache.itemDialogOneTime, 'click', (ev) => {
+  itemOneTimeShareDialog(JH.value(domCache.itemDialogId))
 })
 
 JH.event(domCache.itemDialogGenerate, 'click', itemDialogGeneratePassword)
