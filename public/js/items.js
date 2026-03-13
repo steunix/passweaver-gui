@@ -170,7 +170,7 @@ async function fillItems (highlightedId) {
   // Install event handlers
   JH.event('#itemstable tbody [id^=fav]', 'click', async (ev) => {
     await Items.setFavorite(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-fav') === 'false')
-    await fillItems()
+    fillItems()
   })
   JH.event('#itemstable tbody [id^=menu]', 'click', (ev) => {
     itemDropDown(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-linkeditemid'))
@@ -285,7 +285,7 @@ async function folderClicked () {
 
   // Load items
   if (Folders.currentPermissions.read) {
-    await fillItems(domCache.viewItem ? JH.value(domCache.viewItem) : undefined)
+    fillItems(domCache.viewItem ? JH.value(domCache.viewItem) : undefined)
     JH.value(domCache.viewItem, '')
   } else {
     domCache.itemsTableBody.innerHTML = '<tr><td colspan="99">No item found</td></tr>'
@@ -403,7 +403,7 @@ async function itemSave () {
     Items.itemCopyLink(newid)
   }
 
-  await fillItems(id || newid)
+  fillItems(id || newid)
   PW.showToast('success', id ? 'Item updated' : 'Item created')
 }
 
@@ -414,7 +414,7 @@ async function itemRemove (itm) {
       return
     }
 
-    await fillItems()
+    fillItems()
     PW.showToast('success', 'Item deleted')
   }, 'Delete', 'danger')
 }
@@ -477,7 +477,7 @@ async function itemClone (itm) {
     const body = await resp.json()
 
     PW.showToast('success', 'Item successfully cloned')
-    await fillItems(body.data.id)
+    fillItems(body.data.id)
     itemDialogShow(body.data.id, false)
   })
 }
@@ -494,7 +494,7 @@ async function itemMove (id, folder) {
   }
 
   PW.showToast('success', 'Item moved')
-  await fillItems()
+  fillItems()
 }
 
 async function itemLink (itemid, folderid) {
@@ -510,7 +510,7 @@ async function itemLink (itemid, folderid) {
   }
 
   PW.showToast('success', 'Item linked')
-  await fillItems()
+  fillItems()
 }
 
 function enableShareSave () {
@@ -586,7 +586,7 @@ async function personalPasswordCreate () {
   domCache.personalPasswordNewDialog.open = false
 
   PW.showToast('success', 'Personal password saved')
-  await fillItems()
+  fillItems()
 }
 
 async function personalPasswordSet () {
@@ -824,8 +824,8 @@ JH.event(domCache.itemDropCancel, 'click', (ev) => {
 
 JH.event(domCache.itemDropSave, 'click', itemDroppedDo)
 
-await fillFolders()
-await fillItemTypes()
+fillItemTypes()
+fillFolders()
 
 domCache.itemDialogPassword.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
   const el = domCache.itemDialogPassword.shadowRoot.querySelector('[part=input] input')
