@@ -174,7 +174,8 @@ export function treeFillItems (user, id, data, mainid) {
   for (const item of data) {
     const newid = `item-${item.id}`
 
-    const html = `<wa-tree-item id='${newid}' data-id='${item.id}' data-description='${JH.sanitize(item.description)}'>${JH.sanitize(item.description)}</wa-tree-item>`
+    const des = JH.sanitize(item.description)
+    const html = `<wa-tree-item id='${newid}' data-id='${item.id}' data-description='${des}'>${des}</wa-tree-item>`
     const cont = new DOMParser().parseFromString(html, 'text/html')
     const newitem = cont.querySelector('body').firstChild
 

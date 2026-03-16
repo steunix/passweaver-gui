@@ -689,7 +689,8 @@ async function fillFolders () {
   } else {
     PW.treeFill('folderstree', body.data, folderClicked, true)
   }
-  await dndSetup()
+
+  dndSetup()
 }
 
 async function itemDialogGeneratePassword (symbols = true) {
