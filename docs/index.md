@@ -68,7 +68,7 @@ In the top bar you can fast search items: the top 10 results will be shown:
 
 This is what the items page looks like:
 
-![Items page](assets/passweavergui-items-004.jpeg)
+![Items page](assets/passweavergui-items-005.jpeg)
 
 In "Folders" left pane you can create a subfolder, modify or delete a folder, if you have write permissions. You can also search for a folder and use the previous/next buttons to navigate the tree.
 
@@ -90,9 +90,12 @@ Some actions may be unavailable if you don't have write permissions on the folde
 
 By double clicking the item title, or by clicking on details or edit buttons, the following popup is shown.
 
-![Item dialog](assets/passweavergui-item-003.jpeg)
+![Item dialog](assets/passweavergui-item-004.jpeg)
 
-In the header, you have a button to copy the item permalink and to show the item history.
+In the header, you have buttons to:
+ - copy the item permalink and to show the item history
+ - one-time share the item
+ - see item activity
 
 When creating a new item, only the "Title" field is mandatory, all the remaining fields are optional.
 
@@ -215,7 +218,7 @@ In this page you can assign/remove groups to a given folder, and you can toggle 
 
 Inherited permissions from parent folders cannot be modified.
 
-![Folders page](assets/passweavergui-folders-001.jpeg)
+![Folders page](assets/passweavergui-folders-002.jpeg)
 
 Admins can create or rename folders and also delete folders, if empty.
 
@@ -265,7 +268,7 @@ When creating a new user you're prompted with this dialog:
 
 From this page you can create or delete groups, and add/remove members. You can nest groups, but membership is NOT inherited: the user is only member of explicitly assigned groups.
 
-![Groups page](assets/passweavergui-groups-003.jpeg)
+![Groups page](assets/passweavergui-groups-004.jpeg)
 
 You can also copy all users of a group and paste/replace into another, as already explained for users.
 
