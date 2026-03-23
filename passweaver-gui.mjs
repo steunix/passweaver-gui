@@ -190,7 +190,8 @@ function commonParams (req) {
     font: req?.session?.font ?? 'normal',
     version: Config.packageJson().version,
     manage_folders: req.session.admin || Config.get().folders.user_managed,
-    waversion: Config.webawesomePackageJson().version
+    waversion: Config.webawesomePackageJson().version,
+    passwordlength: Config.get().generate_password_length || 15
   }
 }
 
@@ -415,16 +416,6 @@ app.get('/pages/search', async (req, res) => {
     search: req.query.search || ''
   }
   res.render('search', { ...req.locals, ...commonParams(req) })
-})
-
-// Generate password
-app.get('/pages/generate', async (req, res) => {
-  req.locals = {
-    pagetitle: 'Password generator',
-    pageid: 'generate',
-    passwordlength: Config.get().generate_password_length || 15
-  }
-  res.render('generate', { ...req.locals, ...commonParams(req) })
 })
 
 // Info
