@@ -1,4 +1,4 @@
-/* global dispatchEvent, DOMParser, localStorage, Toastify */
+/* global dispatchEvent, localStorage, Toastify */
 
 import * as JH from './jh.js'
 
@@ -167,34 +167,48 @@ export async function treeFill (id, data, callback, setlastopened) {
   }
 }
 
-export function treeFillItems (user, id, data, mainid) {
-  const parent = JH.query(`#${id}`)
+export function treeFillItems (user, id, data, mainid, parentElem) {
+  const parent = parentElem || JH.query(`#${id}`)
   const root = mainid || id
+  const fragment = document.createDocumentFragment()
 
   for (const item of data) {
     const newid = `item-${item.id}`
 
     const des = JH.sanitize(item.description)
-    const html = `<wa-tree-item id='${newid}' data-id='${item.id}' data-description='${des}'>${des}</wa-tree-item>`
-    const cont = new DOMParser().parseFromString(html, 'text/html')
-    const newitem = cont.querySelector('body').firstChild
-
-    parent.append(newitem)
+    const newitem = document.createElement('wa-tree-item')
+    newitem.id = newid
+    newitem.setAttribute('data-id', item.id)
+    newitem.setAttribute('data-description', des)
+    newitem.textContent = des
 
     // Recurse with children
-    if (item?.children.length) {
-      treeFillItems(user, newid, item.children, root)
+    if (item?.children?.length) {
+      treeFillItems(user, newid, item.children, root, newitem)
     }
+
+    fragment.append(newitem)
   }
 
-  JH.event(`#${id}`, 'wa-collapse', (ev) => {
-    const lskey = `${user}_${root}_expanded_${ev.target.id}`
-    localStorage.removeItem(lskey)
-  })
-  JH.event(`#${id}`, 'wa-expand', (ev) => {
-    const lskey = `${user}_${root}_expanded_${ev.target.id}`
-    localStorage.setItem(lskey, '1')
-  })
+  parent.append(fragment)
+
+  if (root === id && !JH.attribute(`#${id}`, 'evt-wa-tree-expand-state')) {
+    JH.event(`#${id}`, 'wa-collapse', (ev) => {
+      if (!ev.target.id) {
+        return
+      }
+      const lskey = `${user}_${root}_expanded_${ev.target.id}`
+      localStorage.removeItem(lskey)
+    })
+    JH.event(`#${id}`, 'wa-expand', (ev) => {
+      if (!ev.target.id) {
+        return
+      }
+      const lskey = `${user}_${root}_expanded_${ev.target.id}`
+      localStorage.setItem(lskey, '1')
+    })
+    JH.attribute(`#${id}`, 'evt-wa-tree-expand-state', '1')
+  }
 }
 
 export function treeItemSelect (elemid) {
@@ -320,31 +334,46 @@ export function simpleTreeFill (id, data) {
   }
 }
 
-export function simpleTreeFillItems (id, data) {
-  const parent = JH.query(`#${id}`)
+export function simpleTreeFillItems (id, data, parentElem) {
+  const parent = parentElem || JH.query(`#${id}`)
+  const fragment = document.createDocumentFragment()
 
   for (const item of data) {
     const newid = `item-${id}-${item.id}`
 
-    let badge = '<wa-badge style="margin-left:0.5em;" pill variant="danger">No access</wa-badge>'
+    const description = JH.sanitize(item.description)
+    const newitem = document.createElement('wa-tree-item')
+    newitem.id = newid
+    newitem.setAttribute('data-id', item.id)
+    newitem.setAttribute('data-description', description)
+    newitem.setAttribute('expanded', '')
+    newitem.append(document.createTextNode(description))
+
+    const badge = document.createElement('wa-badge')
+    badge.style.marginLeft = '0.5em'
+    badge.setAttribute('pill', '')
+    badge.setAttribute('variant', 'danger')
+    badge.textContent = 'No access'
+
     if (item?.permissions?.read) {
-      badge = '<wa-badge style="margin-left:0.5em;" pill variant="warning">R</wa-badge>'
+      badge.setAttribute('variant', 'warning')
+      badge.textContent = 'R'
     }
     if (item?.permissions?.write) {
-      badge = '<wa-badge style="margin-left:0.5em;" pill variant="success">RW</wa-badge>'
+      badge.setAttribute('variant', 'success')
+      badge.textContent = 'RW'
     }
-
-    const html = `<wa-tree-item id='${newid}' data-id='${item.id}' expanded data-description='${JH.sanitize(item.description)}'>${JH.sanitize(item.description)}${badge}</wa-tree-item>`
-    const cont = new DOMParser().parseFromString(html, 'text/html')
-    const newitem = cont.querySelector('body').firstChild
-
-    parent.append(newitem)
+    newitem.append(badge)
 
     // Recurse with children
-    if (item?.children.length) {
-      simpleTreeFillItems(newid, item.children)
+    if (item?.children?.length) {
+      simpleTreeFillItems(newid, item.children, newitem)
     }
+
+    fragment.append(newitem)
   }
+
+  parent.append(fragment)
 }
 
 export function escapeHTML (str) {
