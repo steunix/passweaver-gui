@@ -1,63 +1,81 @@
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 
-const domCache = {
-  passwordLength: JH.query('#passwordlength'),
-  passwordInput: JH.query('#generatedpassword'),
-  noSymPasswordInput: JH.query('#generatedpasswordns'),
-  generateButton: JH.query('#generate'),
-  noSymGenerateButton: JH.query('#generatens'),
-  onetimeCreate: JH.query('#onetime'),
-  noSymOnetimeCreate: JH.query('#onetimens'),
-  generatedPasswordInput: JH.query('#generatedpassword'),
-  noSymGeneratedPasswordInput: JH.query('#generatedpasswordns')
-}
-
-async function generatePassword (symbols = true) {
-  const passwordInput = symbols ? domCache.passwordInput : domCache.noSymPasswordInput
-  JH.value(passwordInput, 'Generating...')
-  let url = symbols ? '/api/generatepassword?' : '/api/generatepassword?symbols=false'
-  url += `&length=${JH.value(domCache.passwordLength)}`
-
-  const resp = await JH.http(url)
-  if (!await PW.checkResponse(resp)) {
-    return
+export class Generator {
+  domCache = {
+    generateDialog: JH.query('#generatedialog'),
+    passwordLength: JH.query('#passwordlength'),
+    passwordInput: JH.query('#generatedpassword'),
+    noSymPasswordInput: JH.query('#generatedpasswordns'),
+    generateButton: JH.query('#generate'),
+    noSymGenerateButton: JH.query('#generatens'),
+    onetimeCreate: JH.query('#onetime'),
+    noSymOnetimeCreate: JH.query('#onetimens'),
+    generatedPasswordInput: JH.query('#generatedpassword'),
+    noSymGeneratedPasswordInput: JH.query('#generatedpasswordns')
   }
 
-  const body = await resp.json()
-  if (body.status === 'success') {
-    JH.value(passwordInput, body.data.password)
+  constructor () {
+    this.installEvents()
+  }
+
+  async generatePassword (symbols = true) {
+    const passwordInput = symbols ? this.domCache.passwordInput : this.domCache.noSymPasswordInput
+    JH.value(passwordInput, 'Generating...')
+    let url = symbols ? '/api/generatepassword?' : '/api/generatepassword?symbols=false'
+    url += `&length=${JH.value(this.domCache.passwordLength)}`
+
+    const resp = await JH.http(url)
+    if (!await PW.checkResponse(resp)) {
+      return
+    }
+
+    const body = await resp.json()
+    if (body.status === 'success') {
+      JH.value(passwordInput, body.data.password)
+    }
+  }
+
+  tokenGenerate (data) {
+    window.location = `/pages/onetimesecret?data=${encodeURIComponent(data)}`
+  }
+
+  show () {
+    this.domCache.generateDialog.show()
+    this.generatePassword()
+    this.generatePassword(false)
+  }
+
+  installEvents () {
+    JH.event(this.domCache.generateButton, 'click', async () => {
+      await this.generatePassword()
+    })
+
+    JH.event(this.domCache.noSymGenerateButton, 'click', async () => {
+      await this.generatePassword(false)
+    })
+
+    JH.event(this.domCache.onetimeCreate, 'click', () => {
+      this.tokenGenerate(JH.value(this.domCache.generatedPasswordInput))
+    })
+
+    JH.event(this.domCache.noSymOnetimeCreate, 'click', () => {
+      this.tokenGenerate(JH.value(this.domCache.noSymGeneratedPasswordInput))
+    })
+
+    JH.event(this.domCache.passwordLength, 'change', async () => {
+      this.domCache.passwordInput.style.width = `${JH.value(this.domCache.passwordLength) + 8}em`
+      this.domCache.noSymPasswordInput.style.width = `${JH.value(this.domCache.passwordLength) + 8}em`
+      await this.generatePassword()
+      await this.generatePassword(false)
+    })
+
+    JH.event('#menu-generator', 'click', (ev) => {
+      ev.preventDefault()
+      PWDGenerator.show()
+      return false
+    })
   }
 }
 
-function tokenGenerate (data) {
-  window.location = `/pages/onetimesecret?data=${encodeURIComponent(data)}`
-}
-
-// Initial password generation
-await generatePassword()
-await generatePassword(false)
-
-// Event listeners
-JH.event(domCache.generateButton, 'click', async () => {
-  await generatePassword()
-})
-
-JH.event(domCache.noSymGenerateButton, 'click', async () => {
-  await generatePassword(false)
-})
-
-JH.event(domCache.onetimeCreate, 'click', () => {
-  tokenGenerate(JH.value(domCache.generatedPasswordInput))
-})
-
-JH.event(domCache.noSymOnetimeCreate, 'click', () => {
-  tokenGenerate(JH.value(domCache.noSymGeneratedPasswordInput))
-})
-
-JH.event(domCache.passwordLength, 'change', async () => {
-  domCache.passwordInput.style.width = `${JH.value(domCache.passwordLength) + 8}em`
-  domCache.noSymPasswordInput.style.width = `${JH.value(domCache.passwordLength) + 8}em`
-  await generatePassword()
-  await generatePassword(false)
-})
+const PWDGenerator = new Generator()
