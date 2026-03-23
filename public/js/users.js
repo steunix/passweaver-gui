@@ -329,11 +329,14 @@ async function groupRemove (ev) {
   }, 'Remove', 'danger')
 }
 
-async function groupPickerChoosen (group) {
+async function groupPickerChoosen (selected) {
   GPicker.hide()
-  const resp = await JH.http(`/api/groupadduser/${group}/${currentUser}`, { _csrf: PW.getCSRFToken() })
-  if (!await PW.checkResponse(resp)) {
-    return
+
+  for (const sel of selected) {
+    const resp = await JH.http(`/api/groupadduser/${sel.id}/${currentUser}`, { _csrf: PW.getCSRFToken() })
+    if (!await PW.checkResponse(resp)) {
+      return
+    }
   }
 
   fillGroups()
@@ -470,4 +473,4 @@ JH.event(domCache.groupsPasteButton, 'click', groupsPaste)
 JH.event(domCache.groupsReplaceButton, 'click', groupsReplace)
 
 // Picker
-const GPicker = new CPicker.Picker('groups', groupPickerChoosen)
+const GPicker = new CPicker.Picker('groups', true, groupPickerChoosen)

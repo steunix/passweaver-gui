@@ -169,9 +169,9 @@ async function itemEditFill (id) {
   dialogSaveEnable()
 }
 
-function userChoosen (userid, userdesc) {
-  JH.value(domCache.dialogUserId, userid)
-  JH.value(domCache.dialogUserDesc, userdesc)
+function userChoosen (selected) {
+  JH.value(domCache.dialogUserId, selected[0].id)
+  JH.value(domCache.dialogUserDesc, selected[0].desc)
   UPicker.hide()
   dialogSaveEnable()
 }
@@ -216,4 +216,4 @@ JH.event(domCache.dialogUserSearch, 'click', (ev) => {
 })
 
 // Picker
-const UPicker = new CPicker.Picker('users', userChoosen)
+const UPicker = new CPicker.Picker('users', false, userChoosen)

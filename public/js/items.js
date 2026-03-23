@@ -829,7 +829,7 @@ fillItemTypes()
 fillFolders()
 
 domCache.itemDialogPassword.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-  const el = domCache.itemDialogPassword.shadowRoot.querySelector('[part=input] input')
+  const el = domCache.itemDialogPassword.shadowRoot.querySelector('[part=input]')
   if (el.getAttribute('type') === 'text') {
     passwordAccessed(JH.value(domCache.itemDialogId))
   }
@@ -854,9 +854,9 @@ JH.event(domCache.shareSaveButton, 'click', (ev) => {
   itemOneTimeShare()
 })
 
-function userChoosen (userid, userdesc) {
-  JH.value(domCache.scopeUser, userid)
-  JH.value(domCache.scopeUserDescription, userdesc)
+function userChoosen (selected) {
+  JH.value(domCache.scopeUser, selected[0].id)
+  JH.value(domCache.scopeUserDescription, selected[0].desc)
   UPicker.hide()
   enableShareSave()
 }
@@ -879,4 +879,4 @@ JH.event(domCache.itemDialogOpenUrl, 'click', (ev) => {
 })
 
 // Picker
-const UPicker = new CPicker.Picker('users', userChoosen)
+const UPicker = new CPicker.Picker('users', false, userChoosen)

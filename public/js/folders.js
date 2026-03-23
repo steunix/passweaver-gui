@@ -122,11 +122,14 @@ async function groupToggle (ev) {
   PW.showToast('success', 'Group permissions changed')
 }
 
-async function groupPickerChoosen (group) {
+async function groupPickerChoosen (selected) {
   GPicker.hide()
-  const resp = await JH.http(`/api/folders/${Folders.currentFolder()}/groups/${group}`, { _csrf: PW.getCSRFToken() })
-  if (!await PW.checkResponse(resp)) {
-    return
+
+  for (const sel of selected) {
+    const resp = await JH.http(`/api/folders/${Folders.currentFolder()}/groups/${sel.id}`, { _csrf: PW.getCSRFToken() })
+    if (!await PW.checkResponse(resp)) {
+      return
+    }
   }
 
   await fillGroups()
@@ -170,4 +173,4 @@ addEventListener('pw-item-found', async (ev) => {
 })
 
 // Picker
-const GPicker = new CPicker.Picker('groups', groupPickerChoosen)
+const GPicker = new CPicker.Picker('groups', true, groupPickerChoosen)
