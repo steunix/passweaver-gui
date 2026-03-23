@@ -26,9 +26,9 @@ function enableSave () {
   JH.enable(domCache.createLinkButton)
 }
 
-function userChoosen (userid, userdesc) {
-  JH.value(domCache.scopeUserInput, userid)
-  JH.value(domCache.userDescInput, userdesc)
+function userChoosen (selected) {
+  JH.value(domCache.scopeUserInput, selected[0].id)
+  JH.value(domCache.userDescInput, selected[0].desc)
   UPicker.hide()
   enableSave()
 }
@@ -88,4 +88,4 @@ linkHide()
 setTimeout(enableSave, 100)
 
 // Picker
-const UPicker = new CPicker.Picker('users', userChoosen)
+const UPicker = new CPicker.Picker('users', false, userChoosen)

@@ -10,13 +10,16 @@ export class Picker {
     dialog: JH.query('#pickerdialog'),
     search: JH.query('#pickersearch'),
     table: JH.query('#pickertable'),
-    tableBody: JH.query('#pickertable tbody')
+    tableBody: JH.query('#pickertable tbody'),
+    okButton: JH.query('#pickerok')
   }
 
-  constructor (mode, callback) {
+  constructor (mode, multiple, callback) {
     this.clientCallback = callback
     this.mode = mode
+    this.multiple = multiple
 
+    this.domCache.okButton.style.display = this.multiple ? 'block' : 'none'
     this.installEvents()
   }
 
@@ -57,9 +60,12 @@ export class Picker {
           desc = itm.lastname + ' ' + itm.firstname
         }
         row += '<tr>'
+        if (this.multiple) {
+          row += `<td style='width:40px;'><wa-checkbox id='check-${itm.id}' data-id='${itm.id}' data-desc='${JH.sanitize(desc)}'></wa-checkbox></td>`
+        }
         row += `<td><a href="#" id='choose-${itm.id}' data-id='${itm.id}' data-desc='${JH.sanitize(itm.lastname + ' ' + itm.firstname)}' title="Choose">${JH.sanitize(desc)}</a></td>`
         if (this.mode === 'users') {
-          row += `<td style="width:1px;">${JH.sanitize(itm.login)}</td>`
+          row += `<td>${JH.sanitize(itm.login)}</td>`
         }
         row += '</tr>'
       }
@@ -68,7 +74,7 @@ export class Picker {
 
     // Event handlers
     JH.event('#pickertable tbody a[id^=choose-]', 'click', (ev) => {
-      this.clientCallback(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-desc'))
+      this.clientCallback([{ id: ev.currentTarget.getAttribute('data-id'), desc: ev.currentTarget.getAttribute('data-desc') }])
     })
   }
 
@@ -79,5 +85,18 @@ export class Picker {
       }
       this.pickerTimeout = setTimeout(async () => { await this.search() }, 250)
     })
+
+    if (this.multiple) {
+      JH.event(this.domCache.okButton, 'click', (ev) => {
+        const checks = JH.queryAll('#pickertable tbody wa-checkbox')
+        const selected = []
+        for (const check of checks) {
+          if (check.checked) {
+            selected.push({ id: check.getAttribute('data-id'), desc: check.getAttribute('data-desc') })
+          }
+        }
+        this.clientCallback(selected)
+      })
+    }
   }
 }

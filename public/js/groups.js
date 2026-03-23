@@ -178,11 +178,14 @@ function groupSaveEnable () {
   }
 }
 
-async function userPickerChoosen (id) {
+async function userPickerChoosen (selected) {
   UPicker.hide()
-  const resp = await JH.http(`/api/groupadduser/${currentGroup()}/${id}`, { _csrf: PW.getCSRFToken() })
-  if (!await PW.checkResponse(resp)) {
-    return
+
+  for (const sel of selected) {
+    const resp = await JH.http(`/api/groupadduser/${currentGroup()}/${sel.id}`, { _csrf: PW.getCSRFToken() })
+    if (!await PW.checkResponse(resp)) {
+      return
+    }
   }
 
   fillUsers()
@@ -391,4 +394,4 @@ JH.event(domCache.groupCollapseButton, 'click', (ev) => {
 })
 
 // Picker
-const UPicker = new CPicker.Picker('users', userPickerChoosen)
+const UPicker = new CPicker.Picker('users', true, userPickerChoosen)
