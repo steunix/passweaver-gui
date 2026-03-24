@@ -828,12 +828,14 @@ JH.event(domCache.itemDropSave, 'click', itemDroppedDo)
 fillItemTypes()
 fillFolders()
 
-domCache.itemDialogPassword.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-  const el = domCache.itemDialogPassword.shadowRoot.querySelector('[part=input]')
-  if (el.getAttribute('type') === 'text') {
-    passwordAccessed(JH.value(domCache.itemDialogId))
-  }
-})
+setTimeout(() => {
+  domCache.itemDialogPassword.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
+    const el = domCache.itemDialogPassword.shadowRoot.querySelector('[part=input]')
+    if (el.getAttribute('type') === 'text') {
+      passwordAccessed(JH.value(domCache.itemDialogId))
+    }
+  })
+}, 200)
 
 function showScopeUser () {
   if (JH.value(domCache.scope) === '2') {
