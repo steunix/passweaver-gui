@@ -175,7 +175,7 @@ export function treeFillItems (user, id, data, mainid, parentElem) {
   for (const item of data) {
     const newid = `item-${item.id}`
 
-    const des = JH.sanitize(item.description)
+    const des = item.description
     const newitem = document.createElement('wa-tree-item')
     newitem.id = newid
     newitem.setAttribute('data-id', item.id)
@@ -341,7 +341,7 @@ export function simpleTreeFillItems (id, data, parentElem) {
   for (const item of data) {
     const newid = `item-${id}-${item.id}`
 
-    const description = JH.sanitize(item.description)
+    const description = item.description
     const newitem = document.createElement('wa-tree-item')
     newitem.id = newid
     newitem.setAttribute('data-id', item.id)
