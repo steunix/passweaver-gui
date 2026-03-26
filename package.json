@@ -19,7 +19,7 @@
     "standard": "17.1.2"
   },
   "dependencies": {
-    "@awesome.me/webawesome": "3.3.1",
+    "@awesome.me/webawesome": "3.4.0",
     "compression": "1.8.1",
     "connect-redis": "9.0.0",
     "ejs": "5.0.1",
@@ -36,6 +36,6 @@
     "rotating-file-stream": "3.2.9",
     "semver": "7.7.4",
     "serve-favicon": "2.5.1",
-    "undici": "7.24.5"
+    "undici": "7.24.6"
   }
 }
