@@ -408,7 +408,8 @@ async function itemSave () {
 }
 
 async function itemRemove (itm) {
-  PW.confirmDialog('Delete item', 'Are you sure you want to delete this item? If linked items exist, they will also be deleted.', async () => {
+  const desc = JH.query(`#title-${itm}`).innerHTML || 'this item'
+  PW.confirmDialog('Delete item', `Are you sure you want to delete the item <b>'${desc}'</b>? If linked items exist, they will also be deleted.`, async () => {
     const resp = await JH.http(`/api/itemremove/${itm}`, { _csrf: PW.getCSRFToken() })
     if (!await PW.checkResponse(resp)) {
       return

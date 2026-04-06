@@ -38,7 +38,7 @@ async function fillItems () {
         `<wa-button id='edititem-${itm.id}' data-id='${itm.id}' appearance='plain' size='small' title='Edit'><wa-icon name='edit'></wa-icon></wa-button>` +
         `<wa-button id='removeitem-${itm.id}' data-id='${itm.id}' appearance='plain' size='small' title='Delete'><wa-icon name='trash' style='color:red;'></wa-icon></wa-button>` +
         '</td>' +
-        `<td>${JH.sanitize(itm.description)}</td>` +
+        `<td id='description-${itm.id}'>${JH.sanitize(itm.description)}</td>` +
         `<td>${JH.sanitize(itm.icon)}</td>` +
         `<td><wa-icon name='${itm.icon}'></wa-icon></td>` +
         '</tr>'
@@ -103,7 +103,8 @@ async function dialogSaveEnable () {
 }
 
 async function itemRemove (id) {
-  PW.confirmDialog('Delete item type', 'Do you want to delete this item type? All items having this type will be reset to null item type', async () => {
+  const description = JH.query(`#description-${id}`).innerHTML || 'this item type'
+  PW.confirmDialog('Delete item type', `Do you want to delete the item type <b>'${description}'</b>? All items having this type will be reset to null item type`, async () => {
     const resp = await JH.http(`/api/itemtypes/${id}`, { _csrf: PW.getCSRFToken() }, 'DELETE')
     if (!await PW.checkResponse(resp)) {
       return

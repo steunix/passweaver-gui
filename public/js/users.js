@@ -73,7 +73,7 @@ async function fillUsers () {
         `<wa-button id='folders-${itm.id}' data-id='${itm.id}' title='Visible folders' appearance='plain' size='small'><wa-icon label='Visible folders' name='folder-tree'></wa-icon></wa-button>` +
         `<wa-button id='removeuser-${itm.id}' data-id='${itm.id}' title='Delete user' appearance='plain' size='small'><wa-icon label='Delete user' name='trash' style='color:red;'></wa-icon></wa-button>` +
         '</td>' +
-        `<td class='border-start'>${JH.sanitize(itm.login)}</td>` +
+        `<td class='border-start' id='login-${itm.id}'>${JH.sanitize(itm.login)}</td>` +
         `<td>${JH.sanitize(itm.lastname)}</td>` +
         `<td>${JH.sanitize(itm.firstname)}</td>` +
         `<td>${JH.sanitize(itm.email)}</td>` +
@@ -240,7 +240,8 @@ async function userCreateEnable () {
 }
 
 async function userRemove (usr) {
-  PW.confirmDialog('Delete user', '<strong><span style="color:red;">Are you sure you want to delete this user? Also his personal folder and contained items will be deleted!</span></strong>', async () => {
+  const login = JH.query(`#login-${usr}`).innerHTML || 'this user'
+  PW.confirmDialog('Delete user', `<strong><span style="color:red;">Are you sure you want to delete the user with login <b>'${login}'</b>? Also his personal folder and contained items will be deleted!</span></strong>`, async () => {
     const resp = await JH.http(`/api/userremove/${usr}`, { _csrf: PW.getCSRFToken() })
     if (!await PW.checkResponse(resp)) {
       return

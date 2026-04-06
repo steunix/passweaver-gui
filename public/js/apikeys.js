@@ -50,7 +50,7 @@ async function fillItems () {
         `<wa-button id='removeitem-${itm.id}' data-id='${itm.id}' appearance='plain' size='small' title='Delete'><wa-icon label='Delete API key' name='trash' style='color:red;'></wa-icon></wa-button>` +
         '</td>' +
         `<td id='id-${itm.id}'><wa-copy-button from='id-${itm.id}'></wa-copy-button>${itm.id}</td>` +
-        `<td>${JH.sanitize(itm.description)}</td>` +
+        `<td id='description-${itm.id}'>${JH.sanitize(itm.description)}</td>` +
         `<td>${itm.expiresat}&nbsp;(<wa-relative-time date='${itm.expiresat}'></wa-relative-time>)</td>` +
         `<td>${itm.lastusedat || 'Never'}</td>` +
         (itm.active
@@ -134,7 +134,8 @@ async function dialogSaveEnable () {
 }
 
 async function itemRemove (id) {
-  PW.confirmDialog('Delete API key', 'Are you sure you want to delete this API key?', async () => {
+  const description = JH.query(`#description-${id}`).innerHTML || 'this API key'
+  PW.confirmDialog('Delete API key', `Are you sure you want to delete the API key <b>'${description}'</b>?`, async () => {
     const resp = await JH.http(`/api/apikeys/${id}`, { _csrf: PW.getCSRFToken() }, 'DELETE')
     if (!await PW.checkResponse(resp)) {
       return

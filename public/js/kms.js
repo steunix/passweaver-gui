@@ -45,7 +45,7 @@ async function fillItems () {
         `<wa-button id='edititem-${itm.id}' data-id='${itm.id}' appearance='plain' size='small' title='Edit'><wa-icon label='Edit KMS' name='edit'></wa-icon></wa-button>` +
         `<wa-button id='removeitem-${itm.id}' data-id='${itm.id}' appearance='plain' size='small' title='Delete'><wa-icon label='Delete KMS' name='trash' style='color:red;'></wa-icon></wa-button>` +
         '</td>' +
-        `<td>${JH.sanitize(itm.description)}</td>` +
+        `<td id='description-${itm.id}'>${JH.sanitize(itm.description)}</td>` +
         `<td>${kmsTypes[itm.type]}</td>` +
         (itm.active ? "<td><wa-badge variant='success'>Active</wa-badge></td>" : '<td></td>') +
         '</tr>'
@@ -118,7 +118,8 @@ async function kmsSaveEnable () {
 }
 
 async function kmsRemove (kmsid) {
-  PW.confirmDialog('Delete KMS', 'Are you sure you want to delete this KMS?', async () => {
+  const description = JH.query(`#description-${kmsid}`).innerHTML || 'this KMS'
+  PW.confirmDialog('Delete KMS', `Are you sure you want to delete the KMS <b>'${description}'</b>?`, async () => {
     const resp = await JH.http(`/api/kms/${kmsid}`, { _csrf: PW.getCSRFToken() }, 'DELETE')
     if (!await PW.checkResponse(resp)) {
       return
