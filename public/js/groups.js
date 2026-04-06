@@ -146,7 +146,8 @@ async function groupSave () {
 }
 
 async function groupRemove () {
-  PW.confirmDialog('Remove group', 'Are you sure you want to remove this group?', async () => {
+  const description = currentGroupDescription() || 'this group'
+  PW.confirmDialog('Remove group', `Are you sure you want to remove the group <b>'${description}'</b>?`, async () => {
     const resp = await JH.http(`/api/groupremove/${currentGroup()}`, { _csrf: PW.getCSRFToken() })
 
     if (!await PW.checkResponse(resp)) {

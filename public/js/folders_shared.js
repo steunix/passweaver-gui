@@ -91,7 +91,8 @@ async function folderSave () {
 }
 
 async function folderRemove () {
-  PW.confirmDialog('Delete folder', 'Are you sure you want to delete this folder?', async () => {
+  const desc = currentFolderDescription() || 'this folder'
+  PW.confirmDialog('Delete folder', `Are you sure you want to delete the folder <b>'${desc}'</b>?`, async () => {
     const resp = await JH.http(`/api/folderremove/${currentFolder()}`, { _csrf: PW.getCSRFToken() })
     if (!await PW.checkResponse(resp)) {
       return
