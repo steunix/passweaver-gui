@@ -1,3 +1,5 @@
+/* global customElements */
+
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
 import * as Items from './items_shared.js'
@@ -168,15 +170,17 @@ JH.event(domCache.passwordCopy, 'wa-copy', (ev) => {
   passwordCopied(JH.value(domCache.itemViewId))
 })
 
+await customElements.whenDefined('wa-input')
+
 setTimeout(() => {
+  if (JH.value(domCache.search).length) {
+    fillItems()
+  }
+
   domCache.passwordView.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
-    const el = domCache.passwordView.shadowRoot.querySelector('[part=input] input')
+    const el = domCache.passwordView.shadowRoot.querySelector('[part=input]')
     if (el.getAttribute('type') === 'text') {
       passwordAccessed(JH.value(domCache.itemViewId))
     }
   })
-
-  if (JH.value(domCache.search).length) {
-    fillItems()
-  }
 }, 200)

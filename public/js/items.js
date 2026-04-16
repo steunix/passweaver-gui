@@ -1,4 +1,4 @@
-/* global addEventListener */
+/* global addEventListener customElements */
 
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
@@ -828,6 +828,8 @@ JH.event(domCache.itemDropSave, 'click', itemDroppedDo)
 
 fillItemTypes()
 fillFolders()
+
+await customElements.whenDefined('wa-input')
 
 setTimeout(() => {
   domCache.itemDialogPassword.shadowRoot.querySelector('[part=password-toggle-button]').addEventListener('click', (ev) => {
