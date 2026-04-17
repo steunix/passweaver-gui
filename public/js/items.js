@@ -58,6 +58,7 @@ const domCache = {
   itemDialogGenerate: JH.query('#idgenerate'),
   itemDialogGenerateNoSymbols: JH.query('#idgeneratens'),
   itemDialogCopyPassword: JH.query('#idcopypassword'),
+  itemDialogSharePassword: JH.query('#idsharepassword'),
   itemDialogOpenUrl: JH.query('#idopenurl'),
   itemDialogEdit: JH.query('#idedit'),
   itemDialogSave: JH.query('#idsave'),
@@ -153,6 +154,7 @@ async function fillItems (highlightedId) {
       row += `${JH.sanitize(itm.metadata)}</td>`
       row += '<td>'
       row += `<wa-button size='small' appearance='plain' id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}'><wa-icon name='copy' variant='regular' label="Copy password to clipboard"></wa-icon></wa-button>`
+      row += `<wa-button size='small' appearance='plain' id='passwordshare-${itm.id}' title='Share password' data-id='${itm.id}'><wa-icon name='1' label='Share password'></wa-icon></wa-button>`
       row += `<wa-button size="small" appearance="plain"><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' label='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></wa-button>`
       row += `<span style='margin-left:5px; margin-right:5px;' id='password-${itm.id}'>****</span>`
       row += '</td>'
@@ -189,6 +191,9 @@ async function fillItems (highlightedId) {
   })
   JH.event('#itemstable tbody [id^=passwordshow]', 'click', (ev) => {
     passwordShow(ev)
+  })
+  JH.event('#itemstable tbody [id^=passwordshare]', 'click', (ev) => {
+    itemSharePasswordList(ev.currentTarget.getAttribute('data-id'))
   })
   JH.event('#itemstable tbody [id^=linked]', 'click', (ev) => {
     window.location.href = `/pages/items?viewitem=${ev.currentTarget.getAttribute('data-linkedid')}`
@@ -522,6 +527,30 @@ function enableShareSave () {
   JH.enable(domCache.shareSaveButton)
 }
 
+async function itemSharePasswordList (itemid) {
+  const key = Crypt.createKey()
+
+  const resp = await JH.http(`/api/items/${itemid}?key=${encodeURIComponent(key)}`)
+  if (!await PW.checkResponse(resp)) {
+    return
+  }
+
+  const body = await resp.json()
+
+  passwordAccessed(itemid)
+
+  // Decrypt data using token
+  const decrypted = JSON.parse(await Crypt.decryptBlock(body.data.data, key))
+
+  window.location.href = '/pages/onetimesecret?data=' + encodeURIComponent(decrypted.password)
+}
+
+function itemSharePasswordDialog () {
+  passwordAccessed(JH.value(domCache.itemDialogId))
+  const pwd = JH.value(domCache.itemDialogPassword)
+  window.location.href = '/pages/onetimesecret?data=' + encodeURIComponent(pwd)
+}
+
 async function itemOneTimeShareDialog (itm) {
   domCache.scopeSelect.show()
   JH.value(domCache.scope, '1')
@@ -805,6 +834,8 @@ JH.event(domCache.itemDialogGenerateNoSymbols, 'click', () => {
 })
 
 JH.event(domCache.searchFavorite, 'change', fillItems)
+
+JH.event(domCache.itemDialogSharePassword, 'click', itemSharePasswordDialog)
 
 if (domCache.viewItem) {
   setTimeout(() => {

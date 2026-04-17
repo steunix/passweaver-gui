@@ -19,6 +19,7 @@ const domCache = {
   itemViewId: JH.query('#itemviewid'),
   passwordCopy: JH.query('#itemviewcopypassword'),
   passwordView: JH.query('#viewpassword'),
+  passwordShare: JH.query('#idsharepassword'),
   itemViewActivity: JH.query('#itemviewactivity'),
   itemViewCopyLink: JH.query('#itemviewcopylink')
 }
@@ -146,6 +147,12 @@ async function passwordCopied (item) {
   })
 }
 
+function itemSharePasswordDialog () {
+  passwordAccessed(JH.value(domCache.itemDialogId))
+  const pwd = JH.value(domCache.passwordView)
+  window.location.href = '/pages/onetimesecret?data=' + encodeURIComponent(pwd)
+}
+
 await fillItemTypes()
 
 JH.event(domCache.itemViewActivity, 'click', (ev) => {
@@ -169,6 +176,8 @@ JH.event(domCache.searchFavorite, 'change', fillItems)
 JH.event(domCache.passwordCopy, 'wa-copy', (ev) => {
   passwordCopied(JH.value(domCache.itemViewId))
 })
+
+JH.event(domCache.passwordShare, 'click', itemSharePasswordDialog)
 
 await customElements.whenDefined('wa-input')
 
