@@ -268,7 +268,8 @@ async function folderClicked () {
   if (body.data && body.data.permissions) {
     Folders.currentPermissions.read = body.data.permissions.read
     Folders.currentPermissions.write = body.data.permissions.write
-    domCache.sectionTitle.innerHTML = `${body.data.description} - Items`
+    const breadCrumb = await Folders.getBreadCrumb(Folders.currentFolder())
+    domCache.sectionTitle.innerHTML = breadCrumb
   } else {
     Folders.currentPermissions.read = false
     Folders.currentPermissions.write = false

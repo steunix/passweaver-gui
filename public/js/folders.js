@@ -92,7 +92,8 @@ async function folderClicked () {
     JH.disable(domCache.folderEditButton)
   }
 
-  domCache.sectionTitle.innerHTML = `${body.data.description} - Groups`
+  const breadCrumb = await Folders.getBreadCrumb(Folders.currentFolder(), 'Groups for')
+  domCache.sectionTitle.innerHTML = `${breadCrumb}`
 
   // Load groups
   await fillGroups()
