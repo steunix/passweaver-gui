@@ -45,6 +45,24 @@ export function currentFolderDescription () {
   }
 }
 
+export async function getBreadCrumb (id, prefix = '') {
+  let bc = `<wa-breadcrumb><span slot="separator">/</span><span style='margin-right: 0.5em;'>${JH.sanitize(prefix)}</span>`
+  let pid = id
+  let parents = []
+  
+  while (pid !== '0') {
+    const itm = await JH.http(`/api/folders/${pid}`)
+    const body = await itm.json()
+    if (!body.data) {
+      break
+    }
+    parents.push(`<wa-breadcrumb-item>${JH.sanitize(body.data.description)}</wa-breadcrumb-item>`)
+    pid = body.data.parent
+  }
+  bc += parents.reverse().join('') + '</wa-breadcrumb>'
+  return bc
+}
+
 function folderDialogShow (id) {
   JH.value(JH.query(domCache.folderDialog).querySelectorAll('wa-input'), '')
 
