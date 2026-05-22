@@ -13,7 +13,8 @@ const domCache = {
   groupsTable: JH.query('#groupstable'),
   groupsTableBody: JH.query('#groupstable tbody'),
   groupsAddButton: JH.query('#addgroup'),
-  foldersTree: JH.query('#folderstree')
+  foldersTree: JH.query('#folderstree'),
+  viewFolder: JH.query('#viewfolder')
 }
 
 async function fillGroups () {
@@ -92,7 +93,7 @@ async function folderClicked () {
     JH.disable(domCache.folderEditButton)
   }
 
-  const breadCrumb = await Folders.getBreadCrumb(Folders.currentFolder(), 'Groups for')
+  const breadCrumb = await Folders.getBreadCrumb(Folders.currentFolder(), 'folders', 'Permissions for')
   domCache.sectionTitle.innerHTML = `${breadCrumb}`
 
   // Load groups
@@ -146,7 +147,17 @@ async function fillFolders () {
   }
 
   const body = await resp.json()
-  PW.treeFill('folderstree', body.data, folderClicked, true)
+
+  if (JH.value(domCache.viewFolder)) {
+    debugger
+    PW.treeFill('folderstree', body.data, folderClicked, false)
+    PW.treeItemSelect(`item-${JH.value(domCache.viewFolder)}`)
+    await folderClicked()
+    JH.value(domCache.viewFolder, '')
+  } else {
+    PW.treeFill('folderstree', body.data, folderClicked, true)
+  }
+
   await dndSetup()
 }
 
