@@ -60,7 +60,7 @@ export async function folderCopyLink (folder) {
   }
 }
 
-export async function getBreadCrumb (id, prefix = '') {
+export async function getBreadCrumb (id, page, prefix = '') {
   let bc = `<wa-breadcrumb style="display:block"><span slot="separator">/</span><span style='margin-right: 0.5em;'>${JH.sanitize(prefix)}</span>`
   let pid = id
   let parents = []
@@ -71,11 +71,8 @@ export async function getBreadCrumb (id, prefix = '') {
     if (!body.data) {
       break
     }
-    if (parents.length === 0) {
-      parents.push(`<wa-breadcrumb-item href="/pages/items?viewfolder=${body.data.id}">${JH.sanitize(body.data.description)}</wa-breadcrumb-item>`)
-    } else {
-      parents.push(`<wa-breadcrumb-item style="font-size: 75%"href="/pages/folders?viewfolder=${body.data.id}">${JH.sanitize(body.data.description)}</wa-breadcrumb-item>`)
-    }
+    let fstyle = parents.length === 0 ? '' : 'font-size: 75%;'
+    parents.push(`<wa-breadcrumb-item style="${fstyle}" href="/pages/${page}?viewfolder=${body.data.id}">${JH.sanitize(body.data.description)}</wa-breadcrumb-item>`)
     pid = body.data.parent
   }
   bc += parents.reverse().join('')

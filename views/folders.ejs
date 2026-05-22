@@ -70,3 +70,7 @@
 <script defer type="module" src="/public/v<%= version %>/js/generate.js"></script>
 
 <%- include('partials/footer.ejs') %>
+
+<% if ( viewfolder ) { %>
+<input type="hidden" id="viewfolder" value="<%= viewfolder %>"/>
+<% } %>
