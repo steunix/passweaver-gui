@@ -116,6 +116,9 @@ app.use('/pages', function (req, res, next) {
     if (req.query?.viewitem) {
       link += '&viewitem=' + encodeURIComponent(req.query.viewitem)
     }
+    if (req.query?.viewfolder) {
+      link += '&viewfolder=' + encodeURIComponent(req.query.viewfolder)
+    }
     res.redirect(link)
     return
   }
@@ -186,6 +189,7 @@ function commonParams (req) {
     userdescription: req.session.userdescription,
     admin: req.session.admin,
     viewitem: req.query?.viewitem ?? '',
+    viewfolder: req.query?.viewfolder ?? '',
     theme: req?.session?.theme ?? 'light',
     font: req?.session?.font ?? 'normal',
     version: Config.packageJson().version,
@@ -240,6 +244,9 @@ if (GOAuth2Client !== null) {
     if (req.query?.viewitem) {
       state.viewitem = req.query.viewitem
     }
+    if (req.query?.viewfolder) {
+      state.viewfolder = req.query.viewfolder
+    }
 
     const stateparam = Buffer.from(JSON.stringify(state)).toString('base64')
 
@@ -284,7 +291,7 @@ if (GOAuth2Client !== null) {
       return
     }
 
-    await processLogin(req, res, resp, stateparam?.viewitem)
+    await processLogin(req, res, resp, stateparam?.viewitem, stateparam?.viewfolder)
   })
 }
 
@@ -297,15 +304,18 @@ app.post('/access', async (req, res) => {
     if (req.body?.viewitem) {
       link += '&viewitem=' + encodeURIComponent(req.body.viewitem)
     }
+    if (req.body?.viewfolder) {
+      link += '&viewfolder=' + encodeURIComponent(req.body.viewfolder)
+    }
     res.redirect(link)
     return
   }
 
-  await processLogin(req, res, resp)
+  await processLogin(req, res, resp, req.body?.viewitem, req.body?.viewfolder)
 })
 
 // Process login
-async function processLogin (req, res, resp, viewitem) {
+async function processLogin (req, res, resp, viewitem, viewfolder) {
   // Get user name
   req.session.jwt = resp.data.jwt
   const jwt = jsonwebtoken.decode(req.session.jwt)
@@ -330,8 +340,11 @@ async function processLogin (req, res, resp, viewitem) {
     res.redirect('/pages/folders')
   } else {
     const rviewitem = req.body?.viewitem || viewitem
+    const rviewfolder = req.body?.viewfolder || viewfolder
     if (rviewitem) {
       res.redirect('/pages/items?viewitem=' + encodeURIComponent(rviewitem))
+    } else if (rviewfolder) {
+      res.redirect('/pages/items?viewfolder=' + encodeURIComponent(rviewfolder))
     } else {
       res.redirect('/pages/items')
     }
@@ -583,6 +596,12 @@ app.get('/api/items/:item/link', async (req, res) => {
 app.get('/api/folders/:folder', async (req, res) => {
   const info = await PassWeaver.getFolder(req.session, req.params.folder)
   res.json(info)
+})
+
+// Folder link
+app.get('/api/folders/:folder/link', async (req, res) => {
+  const data = await PassWeaver.folderLink(req, req.session, req.params.folder)
+  res.json(data)
 })
 
 // Get item

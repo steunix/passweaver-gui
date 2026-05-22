@@ -263,10 +263,6 @@ wa-copy-button {
   position: relative;
 }
 
-wa-breadcrumb-item:not(:last-child) {
-  font-size: 75%;
-}
-
 wa-breadcrumb-item::part(separator) {
   margin: 0.4em;
 }
