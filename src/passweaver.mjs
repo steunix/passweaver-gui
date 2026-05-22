@@ -399,6 +399,31 @@ export async function itemLink (req, session, item, lastid) {
 }
 
 /**
+ * Get folder link
+ * @param {Object} req Request
+ * @param {Object} session Session
+ * @param {string} folder Folder ID
+ */
+export async function folderLink (req, session, folder) {
+  const resp = {
+    httpStatusCode: '200',
+    fatal: false,
+    status: 'success',
+    message: '',
+    data: {}
+  }
+  
+  resp.data.link = `${req.protocol + '://' + req.host}/pages/items?viewfolder=${folder}`
+
+  // If no public URL is set, use the local one
+  if (Config.get().server.folder_link_server) {
+    resp.data.link = `${Config.get().server.folder_link_server}/pages/items?viewfolder=${folder}`
+  }
+
+  return resp
+}
+
+/**
  * Read item password event
  * @param {Object} session
  * @param {string} item

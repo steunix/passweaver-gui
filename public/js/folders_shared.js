@@ -45,8 +45,23 @@ export function currentFolderDescription () {
   }
 }
 
+export async function folderCopyLink (folder) {
+  const resp = await JH.http(`/api/folders/${folder}/link`)
+
+  // Check response
+  if (!await PW.checkResponse(resp)) {
+    return
+  }
+
+  const body = await resp.json()
+  if (body?.data?.link) {
+    navigator.clipboard.writeText(body.data.link)
+    PW.showToast('success', 'Folder link copied to clipboard')
+  }
+}
+
 export async function getBreadCrumb (id, prefix = '') {
-  let bc = `<wa-breadcrumb><span slot="separator">/</span><span style='margin-right: 0.5em;'>${JH.sanitize(prefix)}</span>`
+  let bc = `<wa-breadcrumb style="display:block"><span slot="separator">/</span><span style='margin-right: 0.5em;'>${JH.sanitize(prefix)}</span>`
   let pid = id
   let parents = []
   
@@ -56,10 +71,16 @@ export async function getBreadCrumb (id, prefix = '') {
     if (!body.data) {
       break
     }
-    parents.push(`<wa-breadcrumb-item>${JH.sanitize(body.data.description)}</wa-breadcrumb-item>`)
+    if (parents.length === 0) {
+      parents.push(`<wa-breadcrumb-item href="/pages/items?viewfolder=${body.data.id}">${JH.sanitize(body.data.description)}</wa-breadcrumb-item>`)
+    } else {
+      parents.push(`<wa-breadcrumb-item style="font-size: 75%"href="/pages/folders?viewfolder=${body.data.id}">${JH.sanitize(body.data.description)}</wa-breadcrumb-item>`)
+    }
     pid = body.data.parent
   }
-  bc += parents.reverse().join('') + '</wa-breadcrumb>'
+  bc += parents.reverse().join('')
+  bc += `<wa-button id="folder-copy-link" data-id="${id}" size="small" appearance="plain" value="" label="Copy folder link"><wa-icon name="copy" variant="regular"></wa-icon></wa-button>`
+  bc += `</wa-breadcrumb>`
   return bc
 }
 

@@ -15,6 +15,9 @@
         <% if ( viewitem ) { %>
           <input id="viewitem" name="viewitem" type="hidden" value="<%= viewitem %>"></input>
         <% } %>
+        <% if ( viewfolder ) { %>
+          <input id="viewfolder" name="viewfolder" type="hidden" value="<%= viewfolder %>"></input>
+        <% } %>
         <center>
           <wa-button id="login" type="submit" variant="brand" style="margin-top:1rem;">Login</wa-button>
           <% if ( google_oauth2_enabled ) { %>

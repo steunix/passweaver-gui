@@ -40,6 +40,7 @@ const domCache = {
   personalPasswordAsk: JH.query('#personalpasswordask'),
   foldersTree: JH.query('#folderstree'),
   viewItem: JH.query('#viewitem'),
+  viewFolder: JH.query('#viewfolder'),
   userSearch: JH.query('#searchuser'),
   selectUser: JH.query('#selectuser'),
   itemDialog: JH.query('#itemdialog'),
@@ -270,6 +271,9 @@ async function folderClicked () {
     Folders.currentPermissions.write = body.data.permissions.write
     const breadCrumb = await Folders.getBreadCrumb(Folders.currentFolder())
     domCache.sectionTitle.innerHTML = breadCrumb
+    JH.event('#folder-copy-link', 'click', (ev) => {
+      Folders.folderCopyLink(ev.currentTarget.getAttribute('data-id'))
+    })
   } else {
     Folders.currentPermissions.read = false
     Folders.currentPermissions.write = false
@@ -714,11 +718,17 @@ async function fillFolders () {
   }
 
   const body = await resp.json()
-  if (domCache.viewItem) {
+  if (domCache.viewItem || domCache.viewFolder) {
     // Avoid loading from local.storage if viewitem exists
-    PW.treeFill('folderstree', body.data, folderClicked, false)
+    await PW.treeFill('folderstree', body.data, folderClicked, false)
   } else {
-    PW.treeFill('folderstree', body.data, folderClicked, true)
+    await PW.treeFill('folderstree', body.data, folderClicked, true)
+  }
+
+  if (domCache.viewFolder) {
+    PW.treeItemSelect(`item-${JH.value(domCache.viewFolder)}`)
+    JH.value(domCache.viewFolder, '')
+    folderClicked()
   }
 
   dndSetup()
