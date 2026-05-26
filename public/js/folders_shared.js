@@ -65,17 +65,26 @@ export async function getBreadCrumb (id, page, prefix = '') {
   let pid = id
   let parents = []
   
-  // maximum 20 levels of parents to prevent infinite loops in case of circular references
   let level = 0
-  while (pid !== '0' && pid !== undefined && level < 10) {
-    const itm = await JH.http(`/api/folders/${pid}`)
-    const body = await itm.json()
-    if (!body.data) {
+  let current = JH.query(`wa-tree-item[data-id="${id}"]`)
+  let pdesc = current.getAttribute('data-description')
+  if (!current) {
+    return bc
+  }
+  parents.push(`<wa-breadcrumb-item href="/pages/${page}?viewfolder=${current.getAttribute('data-id')}">${JH.sanitize(pdesc)}</wa-breadcrumb-item>`)
+
+  while (current && level < 10) {
+    let parent = current.parentElement.closest('wa-tree-item')
+    if (!parent) {
       break
     }
-    let fstyle = parents.length === 0 ? '' : 'font-size: 75%;'
-    parents.push(`<wa-breadcrumb-item style="${fstyle}" href="/pages/${page}?viewfolder=${body.data.id}">${JH.sanitize(body.data.description)}</wa-breadcrumb-item>`)
-    pid = body.data.parent
+    if (parent.getAttribute('data-id') === '0') {
+      break
+    }
+
+    let pdesc = parent.getAttribute('data-description')
+    parents.push(`<wa-breadcrumb-item style="font-size:75%;" href="/pages/${page}?viewfolder=${parent.getAttribute('data-id')}">${JH.sanitize(pdesc)}</wa-breadcrumb-item>`)
+    current = parent
     level++
   }
 
