@@ -1,4 +1,4 @@
-/* global location, dispatchEvent */
+/* global location, dispatchEvent, DOMParser */
 
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
@@ -62,19 +62,19 @@ export async function folderCopyLink (folder) {
 
 export async function getBreadCrumb (id, page, prefix = '') {
   let bc = `<wa-breadcrumb style="display:block"><span slot="separator">/</span><span style='margin-right: 0.5em;'>${JH.sanitize(prefix)}</span>`
-  let pid = id
-  let parents = []
-  
+  const parents = []
+
   let level = 0
   let current = JH.query(`wa-tree-item[data-id="${id}"]`)
-  let pdesc = current.getAttribute('data-description')
+
+  const pdesc = current.getAttribute('data-description')
   if (!current) {
     return bc
   }
   parents.push(`<wa-breadcrumb-item href="/pages/${page}?viewfolder=${current.getAttribute('data-id')}">${JH.sanitize(pdesc)}</wa-breadcrumb-item>`)
 
   while (current && level < 10) {
-    let parent = current.parentElement.closest('wa-tree-item')
+    const parent = current.parentElement.closest('wa-tree-item')
     if (!parent) {
       break
     }
@@ -82,7 +82,7 @@ export async function getBreadCrumb (id, page, prefix = '') {
       break
     }
 
-    let pdesc = parent.getAttribute('data-description')
+    const pdesc = parent.getAttribute('data-description')
     parents.push(`<wa-breadcrumb-item style="font-size:75%;" href="/pages/${page}?viewfolder=${parent.getAttribute('data-id')}">${JH.sanitize(pdesc)}</wa-breadcrumb-item>`)
     current = parent
     level++
@@ -90,8 +90,12 @@ export async function getBreadCrumb (id, page, prefix = '') {
 
   bc += parents.reverse().join('')
   bc += `<wa-button id="folder-copy-link" data-id="${id}" size="small" appearance="plain" value="" label="Copy folder link"><wa-icon name="copy" variant="regular"></wa-icon></wa-button>`
-  bc += `</wa-breadcrumb>`
-  return bc
+  bc += '</wa-breadcrumb>'
+
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(bc, 'text/html')
+
+  return doc
 }
 
 function folderDialogShow (id) {

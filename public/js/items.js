@@ -270,7 +270,8 @@ async function folderClicked () {
     Folders.currentPermissions.read = body.data.permissions.read
     Folders.currentPermissions.write = body.data.permissions.write
     const breadCrumb = await Folders.getBreadCrumb(Folders.currentFolder(), 'items')
-    domCache.sectionTitle.innerHTML = breadCrumb
+    domCache.sectionTitle.replaceChildren(breadCrumb.body.firstChild)
+
     JH.event('#folder-copy-link', 'click', (ev) => {
       Folders.folderCopyLink(ev.currentTarget.getAttribute('data-id'))
     })
