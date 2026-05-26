@@ -289,25 +289,6 @@ export function showToast (variant, text) {
     stopOnFocus: true, // Prevents dismissing of toast on hover
     oldestFirst: false
   }).showToast()
-  // TODO: Toast is not yet implemented in WebAwesome
-  /*
-  const icon = {
-    success: 'check2-circle',
-    primary: 'info-circle',
-    danger: 'exclamation-octagon',
-    warning: 'exclamation-triangle'
-  }
-
-  const alert = Object.assign(document.createElement('wa-alert'), {
-    variant,
-    closable: true,
-    duration: 3000,
-    innerHTML: `<wa-icon name="${icon[variant]}" slot="icon"></wa-icon>${text}`
-  })
-
-  document.body.append(alert)
-  alert.toast()
-  */
 }
 
 export function getUser () {
