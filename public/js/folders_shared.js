@@ -31,7 +31,15 @@ const domCache = {
 
 export function currentFolder () {
   try {
-    return JH.query('wa-tree-item[selected]').getAttribute('data-id')
+    const ret = JH.query('wa-tree-item[selected]').getAttribute('data-id')
+    if (ret === 'undefined') {
+      console.warn('currentFolder: got "undefined" as folder id, returning empty string instead')
+      return ''
+    }
+    if (ret === undefined || ret === null) {
+      return ''
+    }
+    return ret
   } catch (err) {
     return ''
   }
@@ -64,7 +72,7 @@ export async function getBreadCrumb (id, page, prefix = '') {
   let bc = `<wa-breadcrumb style="display:block"><span slot="separator">/</span><span style='margin-right: 0.5em;'>${JH.sanitize(prefix)}</span>`
   let pid = id
   let parents = []
-  
+
   let level = 0
   let current = JH.query(`wa-tree-item[data-id="${id}"]`)
   let pdesc = current.getAttribute('data-description')

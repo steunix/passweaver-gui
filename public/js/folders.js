@@ -19,7 +19,7 @@ const domCache = {
 
 async function fillGroups () {
   domCache.groupsTableBody.innerHTML = ''
-  if (!Folders.currentFolder()) {
+  if (Folders.currentFolder() === '') {
     return
   }
 
@@ -64,6 +64,10 @@ async function fillGroups () {
 }
 
 async function folderClicked () {
+  if (Folders.currentFolder() === '') {
+    return
+  }
+
   PW.setTableLoading(domCache.groupsTable)
 
   const resp = await JH.http(`/api/folders/${Folders.currentFolder()}`)
