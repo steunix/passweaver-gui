@@ -42,8 +42,8 @@ async function fillItems () {
       row +=
         `<tr data-id='${itm.id}'>` +
         '<td>' +
-        `<wa-button id='edititem-${itm.id}' data-id='${itm.id}' appearance='plain' size='small' title='Edit'><wa-icon label='Edit KMS' name='edit'></wa-icon></wa-button>` +
-        `<wa-button id='removeitem-${itm.id}' data-id='${itm.id}' appearance='plain' size='small' title='Delete'><wa-icon label='Delete KMS' name='trash' style='color:red;'></wa-icon></wa-button>` +
+        `<wa-button id='edititem-${itm.id}' data-id='${itm.id}' appearance='plain' size='s' title='Edit'><wa-icon label='Edit KMS' name='edit'></wa-icon></wa-button>` +
+        `<wa-button id='removeitem-${itm.id}' data-id='${itm.id}' appearance='plain' size='s' title='Delete'><wa-icon label='Delete KMS' name='trash' style='color:red;'></wa-icon></wa-button>` +
         '</td>' +
         `<td id='description-${itm.id}'>${JH.sanitize(itm.description)}</td>` +
         `<td>${kmsTypes[itm.type]}</td>` +

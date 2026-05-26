@@ -134,15 +134,15 @@ async function fillItems (highlightedId) {
     for (const itm of body.data) {
       row += `<tr id='row-${itm.id}' data-id='${itm.id}' draggable='true'>`
       row += '<td class="border-end">'
-      row += `<wa-dropdown id="menu-${itm.id}" style="font-weight:normal;" data-id='${itm.id}' data-linkeditemid='${itm.linkeditemid || ''}'><wa-button label="Menu" size="small" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical" label="Menu"></wa-icon></wa-button>`
+      row += `<wa-dropdown id="menu-${itm.id}" style="font-weight:normal;" data-id='${itm.id}' data-linkeditemid='${itm.linkeditemid || ''}'><wa-button label="Menu" size="s" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical" label="Menu"></wa-icon></wa-button>`
       row += '</wa-dropdown>'
-      row += `<wa-button size="small" id='fav-${itm.id}' data-id='${itm.id}' data-fav='${itm.favorite}' title="Favorite" appearance="plain"><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" label='Favorite'></wa-icon></wa-button>`
-      row += `<wa-button size="small" id='link-${itm.id}' title='Copy item link' appearance="plain" data-id='${itm.id}'><wa-icon label="Copy item link" name='link'></wa-icon></wa-button>`
+      row += `<wa-button size="s" id='fav-${itm.id}' data-id='${itm.id}' data-fav='${itm.favorite}' title="Favorite" appearance="plain"><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" label='Favorite'></wa-icon></wa-button>`
+      row += `<wa-button size="s" id='link-${itm.id}' title='Copy item link' appearance="plain" data-id='${itm.id}'><wa-icon label="Copy item link" name='link'></wa-icon></wa-button>`
       if (itm.linkeditemid) {
-        row += `<wa-button id="linked-${itm.id}" size="small" title='Linked item' appearance="plain" data-linkedid='${itm.linkeditemid}'><wa-icon label="Linked item" style="color: green;" name='right-to-bracket'></wa-icon></wa-button>`
+        row += `<wa-button id="linked-${itm.id}" size="s" title='Linked item' appearance="plain" data-linkedid='${itm.linkeditemid}'><wa-icon label="Linked item" style="color: green;" name='right-to-bracket'></wa-icon></wa-button>`
       }
       if (itm.childrenlinkeditems && itm.childrenlinkeditems.length > 0) {
-        row += '<wa-button size="small" title="Item has linked items" appearance="plain"><wa-icon label="Linked item" style="color: green;" name="right-from-bracket"></wa-icon></wa-button>'
+        row += '<wa-button size="s" title="Item has linked items" appearance="plain"><wa-icon label="Linked item" style="color: green;" name="right-from-bracket"></wa-icon></wa-button>'
       }
       row += '</td>'
       row += '<td class="border-end">'
@@ -154,13 +154,13 @@ async function fillItems (highlightedId) {
       row += '</td>'
       row += `<td class='border-end' id='user-${itm.id}'>`
       if (itm.metadata) {
-        row += `<wa-button size="small" appearance="plain" title="Copy user to clipboard" data-id="${itm.id}" id='usercopy-${itm.id}'><wa-icon name="copy" variant="regular" label="Copy user to clipboard"></wa-icon></wa-button>`
+        row += `<wa-button size="s" appearance="plain" title="Copy user to clipboard" data-id="${itm.id}" id='usercopy-${itm.id}'><wa-icon name="copy" variant="regular" label="Copy user to clipboard"></wa-icon></wa-button>`
       }
       row += `${JH.sanitize(itm.metadata)}</td>`
       row += '<td>'
-      row += `<wa-button size='small' appearance='plain' id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}'><wa-icon name='copy' variant='regular' label="Copy password to clipboard"></wa-icon></wa-button>`
-      row += `<wa-button size='small' appearance='plain' id='passwordshare-${itm.id}' title='Share password' data-id='${itm.id}'><wa-icon name='1' label='Share password'></wa-icon></wa-button>`
-      row += `<wa-button size="small" appearance="plain"><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' label='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></wa-button>`
+      row += `<wa-button size='s' appearance='plain' id='passwordcopy-${itm.id}' title='Copy password to clipboard' data-id='${itm.id}'><wa-icon name='copy' variant='regular' label="Copy password to clipboard"></wa-icon></wa-button>`
+      row += `<wa-button size='s' appearance='plain' id='passwordshare-${itm.id}' title='Share password' data-id='${itm.id}'><wa-icon name='1' label='Share password'></wa-icon></wa-button>`
+      row += `<wa-button size="s" appearance="plain"><wa-icon id='passwordshow-${itm.id}' title='Show/hide password' label='Show/hide password' data-id='${itm.id}' name='eye'></wa-icon></wa-button>`
       row += `<span style='margin-left:5px; margin-right:5px;' id='password-${itm.id}'>****</span>`
       row += '</td>'
       row += '</tr>'
@@ -278,7 +278,7 @@ async function folderClicked () {
     Folders.currentPermissions.read = body.data.permissions.read
     Folders.currentPermissions.write = body.data.permissions.write
     const breadCrumb = await Folders.getBreadCrumb(Folders.currentFolder(), 'items')
-    domCache.sectionTitle.replaceChildren(breadCrumb.body.firstChild)
+    domCache.sectionTitle.replaceChildren(breadCrumb)
 
     JH.event('#folder-copy-link', 'click', (ev) => {
       Folders.folderCopyLink(ev.currentTarget.getAttribute('data-id'))

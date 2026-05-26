@@ -1,4 +1,4 @@
-/* global location, dispatchEvent, DOMParser */
+/* global location, dispatchEvent */
 
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
@@ -69,7 +69,6 @@ export async function folderCopyLink (folder) {
 }
 
 export async function getBreadCrumb (id, page, prefix = '') {
-  const doc = document.implementation.createHTMLDocument('')
   const breadcrumb = document.createElement('wa-breadcrumb')
   breadcrumb.setAttribute('style', 'display:block')
 
@@ -87,8 +86,7 @@ export async function getBreadCrumb (id, page, prefix = '') {
   let current = JH.query(`wa-tree-item[data-id="${id}"]`)
 
   if (!current) {
-    doc.body.appendChild(breadcrumb)
-    return doc
+    return breadcrumb
   }
 
   const parents = []
@@ -121,7 +119,7 @@ export async function getBreadCrumb (id, page, prefix = '') {
   const copyButton = document.createElement('wa-button')
   copyButton.setAttribute('id', 'folder-copy-link')
   copyButton.setAttribute('data-id', id || '')
-  copyButton.setAttribute('size', 'small')
+  copyButton.setAttribute('size', 's')
   copyButton.setAttribute('appearance', 'plain')
   copyButton.setAttribute('value', '')
   copyButton.setAttribute('label', 'Copy folder link')
@@ -132,9 +130,8 @@ export async function getBreadCrumb (id, page, prefix = '') {
   copyButton.appendChild(copyIcon)
 
   breadcrumb.appendChild(copyButton)
-  doc.body.appendChild(breadcrumb)
 
-  return doc
+  return breadcrumb
 }
 
 function folderDialogShow (id) {
