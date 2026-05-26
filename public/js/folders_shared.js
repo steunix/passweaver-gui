@@ -65,7 +65,9 @@ export async function getBreadCrumb (id, page, prefix = '') {
   let pid = id
   let parents = []
   
-  while (pid !== '0') {
+  // maximum 20 levels of parents to prevent infinite loops in case of circular references
+  let level = 0
+  while (pid !== '0' && pid !== undefined && level < 10) {
     const itm = await JH.http(`/api/folders/${pid}`)
     const body = await itm.json()
     if (!body.data) {
@@ -74,7 +76,9 @@ export async function getBreadCrumb (id, page, prefix = '') {
     let fstyle = parents.length === 0 ? '' : 'font-size: 75%;'
     parents.push(`<wa-breadcrumb-item style="${fstyle}" href="/pages/${page}?viewfolder=${body.data.id}">${JH.sanitize(body.data.description)}</wa-breadcrumb-item>`)
     pid = body.data.parent
+    level++
   }
+
   bc += parents.reverse().join('')
   bc += `<wa-button id="folder-copy-link" data-id="${id}" size="small" appearance="plain" value="" label="Copy folder link"><wa-icon name="copy" variant="regular"></wa-icon></wa-button>`
   bc += `</wa-breadcrumb>`
