@@ -1,4 +1,4 @@
-/* global location, dispatchEvent */
+/* global location, dispatchEvent, DOMParser */
 
 import * as JH from './jh.js'
 import * as PW from './passweaver-gui.js'
@@ -61,20 +61,36 @@ export async function folderCopyLink (folder) {
 }
 
 export async function getBreadCrumb (id, page, prefix = '') {
-  let bc = `<wa-breadcrumb style="display:block"><span slot="separator">/</span><span style='margin-right: 0.5em;'>${JH.sanitize(prefix)}</span>`
-  let pid = id
-  let parents = []
-  
+  const doc = document.implementation.createHTMLDocument('')
+  const breadcrumb = document.createElement('wa-breadcrumb')
+  breadcrumb.setAttribute('style', 'display:block')
+
+  const separator = document.createElement('span')
+  separator.setAttribute('slot', 'separator')
+  separator.textContent = '/'
+
+  const prefixSpan = document.createElement('span')
+  prefixSpan.setAttribute('style', 'margin-right: 0.5em;')
+  prefixSpan.textContent = prefix
+
+  breadcrumb.append(separator, prefixSpan)
+
   let level = 0
   let current = JH.query(`wa-tree-item[data-id="${id}"]`)
-  let pdesc = current.getAttribute('data-description')
+
   if (!current) {
-    return bc
+    doc.body.appendChild(breadcrumb)
+    return doc
   }
-  parents.push(`<wa-breadcrumb-item href="/pages/${page}?viewfolder=${current.getAttribute('data-id')}">${JH.sanitize(pdesc)}</wa-breadcrumb-item>`)
+
+  const parents = []
+  const currentItem = document.createElement('wa-breadcrumb-item')
+  currentItem.setAttribute('href', `/pages/${encodeURIComponent(page)}?viewfolder=${encodeURIComponent(current.getAttribute('data-id') || '')}`)
+  currentItem.textContent = current.getAttribute('data-description') || ''
+  parents.push(currentItem)
 
   while (current && level < 10) {
-    let parent = current.parentElement.closest('wa-tree-item')
+    const parent = current.parentElement.closest('wa-tree-item')
     if (!parent) {
       break
     }
@@ -82,16 +98,35 @@ export async function getBreadCrumb (id, page, prefix = '') {
       break
     }
 
-    let pdesc = parent.getAttribute('data-description')
-    parents.push(`<wa-breadcrumb-item style="font-size:75%;" href="/pages/${page}?viewfolder=${parent.getAttribute('data-id')}">${JH.sanitize(pdesc)}</wa-breadcrumb-item>`)
+    const parentItem = document.createElement('wa-breadcrumb-item')
+    parentItem.setAttribute('style', 'font-size:75%;')
+    parentItem.setAttribute('href', `/pages/${encodeURIComponent(page)}?viewfolder=${encodeURIComponent(parent.getAttribute('data-id') || '')}`)
+    parentItem.textContent = parent.getAttribute('data-description') || ''
+    parents.push(parentItem)
+
     current = parent
     level++
   }
 
-  bc += parents.reverse().join('')
-  bc += `<wa-button id="folder-copy-link" data-id="${id}" size="small" appearance="plain" value="" label="Copy folder link"><wa-icon name="copy" variant="regular"></wa-icon></wa-button>`
-  bc += `</wa-breadcrumb>`
-  return bc
+  parents.reverse().forEach(item => breadcrumb.appendChild(item))
+
+  const copyButton = document.createElement('wa-button')
+  copyButton.setAttribute('id', 'folder-copy-link')
+  copyButton.setAttribute('data-id', id || '')
+  copyButton.setAttribute('size', 'small')
+  copyButton.setAttribute('appearance', 'plain')
+  copyButton.setAttribute('value', '')
+  copyButton.setAttribute('label', 'Copy folder link')
+
+  const copyIcon = document.createElement('wa-icon')
+  copyIcon.setAttribute('name', 'copy')
+  copyIcon.setAttribute('variant', 'regular')
+  copyButton.appendChild(copyIcon)
+
+  breadcrumb.appendChild(copyButton)
+  doc.body.appendChild(breadcrumb)
+
+  return doc
 }
 
 function folderDialogShow (id) {
