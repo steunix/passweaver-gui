@@ -67,7 +67,8 @@ export async function getBreadCrumb (id, page, prefix = '') {
   
   // maximum 20 levels of parents to prevent infinite loops in case of circular references
   let level = 0
-  while (pid !== '0' && pid !== undefined && level < 10) {
+  debugger
+  while (pid !== '0' && pid !== undefined && level < 20) {
     const itm = await JH.http(`/api/folders/${pid}`)
     const body = await itm.json()
     if (!body.data) {
@@ -76,6 +77,11 @@ export async function getBreadCrumb (id, page, prefix = '') {
     let fstyle = parents.length === 0 ? '' : 'font-size: 75%;'
     parents.push(`<wa-breadcrumb-item style="${fstyle}" href="/pages/${page}?viewfolder=${body.data.id}">${JH.sanitize(body.data.description)}</wa-breadcrumb-item>`)
     pid = body.data.parent
+
+    if (pid === undefined || pid === null) {
+      break
+    }
+
     level++
   }
 
