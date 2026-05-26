@@ -93,6 +93,10 @@ async function fillItemTypes () {
 }
 
 async function fillItems (highlightedId) {
+  if (Folders.currentFolder() === '') {
+    return
+  }
+
   const search = JH.value(domCache.itemSearchText)
   const type = JH.value(domCache.searchTypeSelect)
   const fav = JH.query(domCache.searchFavorite).checked ? 'true' : ''
@@ -254,6 +258,10 @@ function itemDropDown (id, linkeditemid) {
 }
 
 async function folderClicked () {
+  if (Folders.currentFolder() === '') {
+    return
+  }
+
   PW.setTableLoading(domCache.itemsTable)
 
   // Read folder info

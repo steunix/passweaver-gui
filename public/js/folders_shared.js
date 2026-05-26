@@ -31,7 +31,15 @@ const domCache = {
 
 export function currentFolder () {
   try {
-    return JH.query('wa-tree-item[selected]').getAttribute('data-id')
+    const ret = JH.query('wa-tree-item[selected]').getAttribute('data-id')
+    if (ret === 'undefined') {
+      console.warn('currentFolder: got "undefined" as folder id, returning empty string instead')
+      return ''
+    }
+    if (ret === undefined || ret === null) {
+      return ''
+    }
+    return ret
   } catch (err) {
     return ''
   }
