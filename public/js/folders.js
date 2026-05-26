@@ -98,7 +98,7 @@ async function folderClicked () {
   }
 
   const breadCrumb = await Folders.getBreadCrumb(Folders.currentFolder(), 'folders', 'Permissions for')
-  domCache.sectionTitle.innerHTML = `${breadCrumb}`
+  domCache.sectionTitle.replaceChildren(breadCrumb.body.firstChild)
 
   // Load groups
   await fillGroups()
@@ -153,7 +153,6 @@ async function fillFolders () {
   const body = await resp.json()
 
   if (JH.value(domCache.viewFolder)) {
-    debugger
     PW.treeFill('folderstree', body.data, folderClicked, false)
     PW.treeItemSelect(`item-${JH.value(domCache.viewFolder)}`)
     await folderClicked()
