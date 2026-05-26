@@ -9,23 +9,23 @@
   <div class="main1">
     <h4>Folders</h4>
     <div class="wa-flank:end" style="margin-bottom:1rem;">
-      <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" with-clear size="small" autocomplete="off">
+      <wa-input id="foldersearch" type="text" placeholder="Search folder" autofocus="autofocus" with-clear size="s" autocomplete="off">
         <wa-icon slot="start" name="search"></wa-icon>
         <wa-icon slot="end" title="Search previous" id="foldersearchprevious" name="angle-left"></wa-icon>
         <wa-icon slot="end" title="Search next" id="foldersearchnext" name="angle-right"></wa-icon>
       </wa-input>
       <% if ( manage_folders ) { %>
         <wa-button-group>
-          <wa-button id="foldercreate" appearance="filled" variant="brand" title="New subfolder" size="small">
+          <wa-button id="foldercreate" appearance="filled" variant="brand" title="New subfolder" size="s">
             <wa-icon name="plus" label="New subfolder"></wa-icon>
           </wa-button>
-          <wa-button id="folderedit" appearance="filled" title="Edit folder" size="small">
+          <wa-button id="folderedit" appearance="filled" title="Edit folder" size="s">
             <wa-icon name="edit" label="Edit folder"></wa-icon>
           </wa-button>
-          <wa-button id="folderremove" appearance="filled" variant="danger" title="Delete folder" size="small">
+          <wa-button id="folderremove" appearance="filled" variant="danger" title="Delete folder" size="s">
             <wa-icon name="trash" label="Delete folder"></wa-icon>
           </wa-button>
-          <wa-button id="foldercollapse" type="button" appearance="filled" title="Collapse all folders" size="small">
+          <wa-button id="foldercollapse" type="button" appearance="filled" title="Collapse all folders" size="s">
             <wa-icon name="minimize" label="Collapse all folders"></wa-icon>
           </wa-button>
         </wa-button-group>
@@ -41,7 +41,7 @@
       </div>
     </h4>
     <div style="display:flex; margin-bottom: 1rem;">
-      <wa-button id="addgroup" title="Add a group to a folder" variant="brand" size="small">
+      <wa-button id="addgroup" title="Add a group to a folder" variant="brand" size="s">
         <wa-icon slot="start" name="plus"></wa-icon>
         Add group
       </wa-button>

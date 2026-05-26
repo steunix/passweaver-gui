@@ -39,7 +39,7 @@ async function fillGroups () {
       } else {
         if (itm.canmodify) {
           row += `<td><wa-button appearance='plain' id='removegroup-${itm.id}' data-id='${itm.id}' title='Remove group'><wa-icon name='trash' label='Remove group' style='color:red;'></wa-icon></wa-button>`
-          row += `<wa-button appearance='plain' id='togglegroup-${itm.id}' data-id='${itm.id}' size='small' title='Toggle permissions'><wa-icon name='repeat' label='Toggle permissions'></wa-icon></wa-button></td>`
+          row += `<wa-button appearance='plain' id='togglegroup-${itm.id}' data-id='${itm.id}' size='s' title='Toggle permissions'><wa-icon name='repeat' label='Toggle permissions'></wa-icon></wa-button></td>`
         } else {
           row += '<td></td><td></td>'
         }
@@ -98,7 +98,7 @@ async function folderClicked () {
   }
 
   const breadCrumb = await Folders.getBreadCrumb(Folders.currentFolder(), 'folders', 'Permissions for')
-  domCache.sectionTitle.replaceChildren(breadCrumb.body.firstChild)
+  domCache.sectionTitle.replaceChildren(breadCrumb)
 
   // Load groups
   await fillGroups()
