@@ -137,6 +137,9 @@ async function fillItems (highlightedId) {
       row += `<wa-dropdown id="menu-${itm.id}" style="font-weight:normal;" data-id='${itm.id}' data-linkeditemid='${itm.linkeditemid || ''}'><wa-button label="Menu" size="s" pill appearance="plain" slot="trigger"><wa-icon name="ellipsis-vertical" label="Menu"></wa-icon></wa-button>`
       row += '</wa-dropdown>'
       row += `<wa-button size="s" id='fav-${itm.id}' data-id='${itm.id}' data-fav='${itm.favorite}' title="Favorite" appearance="plain"><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" label='Favorite'></wa-icon></wa-button>`
+      if (Folders.currentPermissions.personal) {
+        row += `<wa-button size="s" id='enterprise-${itm.id}' data-id='${itm.id}' data-enterprise='${itm.enterprise}' title='Make enterprise' appearance="plain" data-id='${itm.id}'><wa-icon label="Make enterprise" style="color:${itm.enterprise ? 'gold' : 'gainsboro'};" name='industry'></wa-icon></wa-button>`
+      }
       row += `<wa-button size="s" id='link-${itm.id}' title='Copy item link' appearance="plain" data-id='${itm.id}'><wa-icon label="Copy item link" name='link'></wa-icon></wa-button>`
       if (itm.linkeditemid) {
         row += `<wa-button id="linked-${itm.id}" size="s" title='Linked item' appearance="plain" data-linkedid='${itm.linkeditemid}'><wa-icon label="Linked item" style="color: green;" name='right-to-bracket'></wa-icon></wa-button>`
@@ -177,6 +180,10 @@ async function fillItems (highlightedId) {
   // Install event handlers
   JH.event('#itemstable tbody [id^=fav]', 'click', async (ev) => {
     await Items.setFavorite(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-fav') === 'false')
+    fillItems()
+  })
+  JH.event('#itemstable tbody [id^=enterprise]', 'click', async (ev) => {
+    await Items.setEnterprise(ev.currentTarget.getAttribute('data-id'), ev.currentTarget.getAttribute('data-enterprise') === 'false')
     fillItems()
   })
   JH.event('#itemstable tbody [id^=menu]', 'click', (ev) => {
@@ -277,6 +284,7 @@ async function folderClicked () {
   if (body.data && body.data.permissions) {
     Folders.currentPermissions.read = body.data.permissions.read
     Folders.currentPermissions.write = body.data.permissions.write
+    Folders.currentPermissions.Personal = body.data.personal
     const breadCrumb = await Folders.getBreadCrumb(Folders.currentFolder(), 'items')
     domCache.sectionTitle.replaceChildren(breadCrumb)
 
