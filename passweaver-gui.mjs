@@ -651,6 +651,18 @@ app.post('/api/itemfavorite/:item', async (req, res) => {
   res.json(resp)
 })
 
+// Set enterprise flag
+app.post('/api/itementerprise/:item', async (req, res) => {
+  const resp = await PassWeaver.itemSetEnterprise(req.session, req.params.item, req.body)
+  res.json(resp)
+})
+
+// Set enterprise data
+app.post('/api/itementerprisedata/:item', async (req, res) => {
+  const resp = await PassWeaver.itemSetEnterpriseData(req.session, req.params.item, req.body)
+  res.json(resp)
+})
+
 // Move item
 app.post('/api/itemmove/:item', async (req, res) => {
   const resp = await PassWeaver.itemMove(req.session, req.params.item, req.body)

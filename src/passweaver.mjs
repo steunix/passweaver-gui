@@ -344,6 +344,38 @@ export async function itemSetFavorite (session, itemid, body) {
 }
 
 /**
+ * Set item enterprise flag
+ * @param {Object} session
+ * @param {string} itemid
+ * @param {boolean} enterprise
+ */
+export async function itemSetEnterprise (session, itemid, body) {
+  const resp = await passWeaverAPI(session, METHOD.patch, `/items/${itemid}`, { enterprise: body.enterprise })
+  return resp
+}
+
+/**
+ * Set item enterprise data
+ * @param {Object} session
+ * @param {string} itemid
+ * @param {Object} data
+ */
+export async function itemSetEnterpriseData (session, itemid, body) {
+  const resp = await passWeaverAPI(session, METHOD.post, `/items/${itemid}/edata`, { data: body.data })
+  return resp
+}
+
+/**
+ * Remove item enterprise data
+ * @param {Object} session
+ * @param {string} itemid
+ */
+export async function itemRemoveEnterpriseData (session, itemid, body) {
+  const resp = await passWeaverAPI(session, METHOD.delete, `/items/${itemid}/edata`)
+  return resp
+}
+
+/**
  * Move an item into another folder
  * @param {Object} session
  * @param {string} folder
@@ -412,7 +444,7 @@ export async function folderLink (req, session, folder) {
     message: '',
     data: {}
   }
-  
+
   resp.data.link = `${req.protocol + '://' + req.host}/pages/items?viewfolder=${folder}`
 
   // If no public URL is set, use the local one

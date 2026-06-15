@@ -1,5 +1,6 @@
 import * as PW from './passweaver-gui.js'
 import * as JH from './jh.js'
+import * as Crypt from './crypt.js'
 
 const domCache = {
   itemActivityDialog: JH.query('#itemactivitydialog'),
@@ -92,5 +93,59 @@ export async function setFavorite (itm, favorite) {
   if (!await PW.checkResponse(resp)) {
     return false
   }
+  return true
+}
+
+/**
+ * Set enterprise flag for item
+ * @param {string} itm Item id
+ */
+export async function setEnterprise (itm, enterprise) {
+  const resp = await JH.http(`/api/itementerprise/${itm}`, {
+    _csrf: PW.getCSRFToken(),
+    enterprise
+  })
+
+  // Check response
+  if (!await PW.checkResponse(resp)) {
+    return false
+  }
+
+  if (!enterprise) {
+    return true
+  }
+
+  const key = Crypt.createKey()
+
+  const resp2 = await JH.http(`/api/items/${itm}?key=${encodeURIComponent(key)}`)
+  if (!await PW.checkResponse(resp2)) {
+    return false
+  }
+
+  const body = await resp2.json()
+
+  // Decrypt data using token
+  const decrypted = JSON.parse(await Crypt.decryptBlock(body.data.data, key))
+
+  if (body.status === 'success') {
+    const edata = {
+      title: body.data.title,
+      type: body.data.type,
+      description: decrypted.description,
+      email: decrypted.email,
+      url: decrypted.url,
+      user: decrypted.user
+    }
+
+    const resp3 = await JH.http(`/api/itementerprisedata/${itm}`, {
+      _csrf: PW.getCSRFToken(),
+      data: JSON.stringify(edata)
+    })
+    if (!await PW.checkResponse(resp3)) {
+      PW.showToast('danger', 'Failed to set enterprise data')
+      return false
+    }
+  }
+
   return true
 }
