@@ -266,3 +266,15 @@ wa-copy-button {
 wa-breadcrumb-item::part(separator) {
   margin: 0.4em;
 }
+
+.toastify.on {
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+  padding: 2em;
+  min-width: 20rem;
+}
+
+.toastify .toast-close {
+  display: none;
+}
