@@ -279,14 +279,21 @@ export function treeSearchPrevious (elemid, searchstring) {
 }
 
 export function showToast (variant, text) {
+  const variantColors = {
+    success: 'var(--wa-color-success-50)',
+    danger: 'var(--wa-color-danger-50)',
+    warning: 'var(--wa-color-warning-50)',
+    info: 'var(--wa-color-info-50)'
+  }
+
   Toastify({
     text,
     duration: 3000,
     close: true,
-    gravity: 'top', // `top` or `bottom`
-    position: 'right', // `left`, `center` or `right`
-    backgroundColor: variant === 'success' ? 'green' : variant === 'danger' ? 'red' : variant === 'warning' ? 'orange' : 'blue',
-    stopOnFocus: true, // Prevents dismissing of toast on hover
+    gravity: 'top',
+    position: 'center',
+    backgroundColor: variantColors[variant] || variantColors.info,
+    stopOnFocus: true,
     oldestFirst: false
   }).showToast()
 }
