@@ -42,6 +42,8 @@ const domCache = {
   userEditDialog: JH.query('#edituserdialog'),
   genericTree: JH.query('#generictree'),
   foldersTreeDialog: JH.query('#folderstreedialog'),
+  foldersTreeExpandButton: JH.query('#ftdexpand'),
+  foldersTreeCollapseButton: JH.query('#ftdcollapse'),
   groupsAddButton: JH.query('#addgroup'),
   groupsCopyButton: JH.query('#copygroups'),
   groupsPasteButton: JH.query('#pastegroups'),
@@ -472,6 +474,14 @@ JH.event(domCache.editActive, 'change', async () => {
 JH.event(domCache.groupsCopyButton, 'click', groupsCopy)
 JH.event(domCache.groupsPasteButton, 'click', groupsPaste)
 JH.event(domCache.groupsReplaceButton, 'click', groupsReplace)
+
+JH.event(domCache.foldersTreeExpandButton, 'click', (ev) => {
+  PW.treeExpandAll('generictree')
+})
+
+JH.event(domCache.foldersTreeCollapseButton, 'click', (ev) => {
+  PW.treeCollapseAll('generictree')
+})
 
 // Picker
 const GPicker = new CPicker.Picker('groups', true, groupPickerChoosen)

@@ -113,12 +113,16 @@ export async function checkResponse (resp, ignoreStatus, showDialog) {
 }
 
 export async function treeCollapseAll (id) {
-  const treeitems = JH.queryAll(`#${id} wa-tree-item[expanded]`)
+  const treeitems = JH.queryAll(`#${id} wa-tree-item[expanded]:not([data-id="0"])`)
   for (const treeitem of treeitems) {
-    if (treeitem.getAttribute('data-id') === '0') {
-      continue
-    }
     treeitem.removeAttribute('expanded')
+  }
+}
+
+export async function treeExpandAll (id) {
+  const treeitems = JH.queryAll(`#${id} wa-tree-item:not([expanded]):has(> wa-tree-item)`)
+  for (const treeitem of treeitems) {
+    treeitem.setAttribute('expanded', 'expanded')
   }
 }
 
@@ -180,6 +184,8 @@ export function treeFillItems (user, id, data, mainid, parentElem) {
     newitem.id = newid
     newitem.setAttribute('data-id', item.id)
     newitem.setAttribute('data-description', des)
+    newitem.style.setProperty('--show-duration', '0s')
+    newitem.style.setProperty('--hide-duration', '0s')
     newitem.textContent = des
 
     // Recurse with children
@@ -335,6 +341,8 @@ export function simpleTreeFillItems (id, data, parentElem) {
     newitem.setAttribute('data-id', item.id)
     newitem.setAttribute('data-description', description)
     newitem.setAttribute('expanded', '')
+    newitem.style.setProperty('--show-duration', '0s')
+    newitem.style.setProperty('--hide-duration', '0s')
     newitem.append(document.createTextNode(description))
 
     const badge = document.createElement('wa-badge')
