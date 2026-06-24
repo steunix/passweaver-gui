@@ -68,7 +68,7 @@ In the top bar you can fast search items: the top 10 results will be shown:
 
 This is what the items page looks like:
 
-![Items page](assets/passweavergui-items-005.jpeg)
+![Items page](assets/passweavergui-items-006.jpeg)
 
 In "Folders" left pane you can create a subfolder, modify or delete a folder, if you have write permissions. You can also search for a folder and use the previous/next buttons to navigate the tree.
 
@@ -90,7 +90,7 @@ Some actions may be unavailable if you don't have write permissions on the folde
 
 By double clicking the item title, or by clicking on details or edit buttons, the following popup is shown.
 
-![Item dialog](assets/passweavergui-item-004.jpeg)
+![Item dialog](assets/passweavergui-item-005.jpeg)
 
 In the header, you have buttons to:
  - copy the item permalink and to show the item history
@@ -139,6 +139,16 @@ The password will be asked again at every new login:
 ![Ask personal password](assets/passweavergui-personal-2-001.jpeg)
 
 Once unlocked, the personal folder will work as any other folder.
+
+### Enterprise personal items
+
+On personal item, you can set an "enterprise" flag. This allow to share a subset of informations with your enterprise, in case for example you leave the company and your management needs to delete your credentials.
+
+Consider for example you have a private account to access a Customer VPN: you won't share your password with your organization, but you can let your enterprise know that you do have that account so it can communicate the Customer to delete it when you leave your company.
+
+Enterprise flag (the "factory" icon) of course must not be set on your very personal items that are not used for enterprise tasks.
+
+![Enterprise flag](assets/passweavergui-items-edata-001.jpeg)
 
 ## Search
 
@@ -240,7 +250,7 @@ Only more recent events are shown, click on "Load more" button in order to load 
 
 By clicking the folder icon in user list, you can see what folders he has access to:
 
-![User folders visibility](assets/passweavergui-users-folders-001.jpeg)
+![User folders visibility](assets/passweavergui-users-folders-002.jpeg)
 
 ### User groups
 
@@ -272,7 +282,7 @@ From this page you can create or delete groups, and add/remove members. You can 
 
 You can also copy all users of a group and paste/replace into another, as already explained for users.
 
-![Groups page](assets/passweavergui-groups-folders-000.jpeg)
+![Groups page](assets/passweavergui-groups-folders-001.jpeg)
 
 ## Item types
 
@@ -339,7 +349,7 @@ More details about how KMS work and their configuration can be found at [Passwea
 
 This page displays some information about API and GUI status:
 
-![Info page](assets/passweavergui-info-003.jpeg)
+![Info page](assets/passweavergui-info-004.jpeg)
 
 ## Settings
 
