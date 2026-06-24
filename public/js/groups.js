@@ -28,6 +28,8 @@ const domCache = {
   usersTableBody: JH.query('#userstable tbody'),
   genericTree: JH.query('#generictree'),
   foldersTreeDialog: JH.query('#folderstreedialog'),
+  foldersTreeCollapseButton: JH.query('#ftdcollapse'),
+  foldersTreeExpandButton: JH.query('#ftdexpand'),
   usersCopyButton: JH.query('#copyusers'),
   usersPasteButton: JH.query('#pasteusers'),
   usersReplaceButton: JH.query('#replaceusers')
@@ -392,6 +394,14 @@ JH.event(domCache.usersReplaceButton, 'click', groupsReplace)
 
 JH.event(domCache.groupCollapseButton, 'click', (ev) => {
   PW.treeCollapseAll('groupstree')
+})
+
+JH.event(domCache.foldersTreeExpandButton, 'click', (ev) => {
+  PW.treeExpandAll('generictree')
+})
+
+JH.event(domCache.foldersTreeCollapseButton, 'click', (ev) => {
+  PW.treeCollapseAll('generictree')
 })
 
 // Picker
