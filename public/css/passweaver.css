@@ -154,9 +154,8 @@ body {
 
 /** Customization */
 ::-webkit-scrollbar {
-  height: 16px;
-  width: 16px;
-  background: transparent;
+  background-color: var(--wa-color-surface-lowered);  
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
