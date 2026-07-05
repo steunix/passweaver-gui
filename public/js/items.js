@@ -48,6 +48,7 @@ const domCache = {
   itemDialogActivity: JH.query('#idactivity'),
   itemDialogOneTime: JH.query('#idonetime'),
   itemDialogId: JH.query('#idid'),
+  itemDialogEnterprise: JH.query('#identerprise'),
   itemDialogLinkedItem: JH.query('#idlinkeditem'),
   itemDialogTitle: JH.query('#idtitle'),
   itemDialogType: JH.query('#idtype'),
@@ -423,6 +424,28 @@ async function itemSave () {
     return
   }
 
+  // Update enterprise data if item is enterprise
+  if (id.length && JH.value(domCache.itemDialogEnterprise) === '1') {
+    const edata = {
+      title: itemdata.title,
+      type: itemdata.type,
+      description: itemdata.data.description,
+      email: itemdata.data.email,
+      url: itemdata.data.url,
+      user: itemdata.data.user
+    }
+
+    const resp3 = await JH.http(`/api/itementerprisedata/${id}`, {
+      _csrf: PW.getCSRFToken(),
+      data: JSON.stringify(edata)
+    })
+    if (!await PW.checkResponse(resp3)) {
+      PW.showToast('danger', 'Failed to set enterprise data')
+      return false
+    }
+
+    return
+  }
   const body = await resp.json()
   const newid = body.data.id
 
@@ -465,6 +488,7 @@ async function itemDialogFill (item, gotofolder) {
 
   if (body.status === 'success') {
     JH.value(domCache.itemDialogId, item)
+    JH.value(domCache.itemDialogEnterprise, body.data.enterprise ? '1' : '0')
     JH.value(domCache.itemDialogLinkedItem, body.data.linkeditemid)
     JH.value(domCache.itemDialogType, body.data.type)
     JH.value(domCache.itemDialogTitle, body.data.title)
