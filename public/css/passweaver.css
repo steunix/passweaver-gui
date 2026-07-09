@@ -154,8 +154,8 @@ body {
 
 /** Customization */
 ::-webkit-scrollbar {
-  background-color: var(--wa-color-surface-lowered);  
   border-radius: 4px;
+  border: 1px solid var(--wa-color-border-quiet);
 }
 
 ::-webkit-scrollbar-thumb {
