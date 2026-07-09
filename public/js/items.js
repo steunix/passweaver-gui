@@ -139,7 +139,7 @@ async function fillItems (highlightedId) {
       row += '</wa-dropdown>'
       row += `<wa-button size="s" id='fav-${itm.id}' data-id='${itm.id}' data-fav='${itm.favorite}' title="Favorite" appearance="plain"><wa-icon name='star' style="color:${itm.favorite ? 'gold' : 'gainsboro'};" label='Favorite'></wa-icon></wa-button>`
       if (Folders.currentPermissions.personal) {
-        row += `<wa-button size="s" id='enterprise-${itm.id}' data-id='${itm.id}' data-enterprise='${itm.enterprise}' title='Make enterprise' appearance="plain" data-id='${itm.id}'><wa-icon label="Make enterprise" style="color:${itm.enterprise ? 'gold' : 'gainsboro'};" name='industry'></wa-icon></wa-button>`
+        row += `<wa-button size="s" id='enterprise-${itm.id}' data-id='${itm.id}' data-enterprise='${itm.enterprise}' title='Enterprise' appearance="plain" data-id='${itm.id}'><wa-icon label="Enterprise" style="color:${itm.enterprise ? 'green' : 'gainsboro'};" name='industry'></wa-icon></wa-button>`
       }
       row += `<wa-button size="s" id='link-${itm.id}' title='Copy item link' appearance="plain" data-id='${itm.id}'><wa-icon label="Copy item link" name='link'></wa-icon></wa-button>`
       if (itm.linkeditemid) {
