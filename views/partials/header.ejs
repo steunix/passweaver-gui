@@ -7,10 +7,9 @@
   <link rel="stylesheet" href="/public/webawesome/v<%= waversion %>/dist-cdn/styles/webawesome.css" />
   <link rel="stylesheet" href="/public/v<%= version%>/css/passweaver-<%- font %>.css">
   <link rel="stylesheet" href="/public/v<%= version%>/css/passweaver.css">
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <title>PassWeaver</title>
 </head>
 <body>
   <script type="module" src="/public/webawesome/v<%= waversion %>/dist-cdn/webawesome.loader.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <input type="hidden" id="v-user" value="<%= user %>" />
+  <wa-toast id="toast" placement="top-center"></wa-toast>
