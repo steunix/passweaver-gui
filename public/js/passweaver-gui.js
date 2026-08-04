@@ -1,4 +1,4 @@
-/* global dispatchEvent, localStorage, Toastify */
+/* global dispatchEvent, localStorage */
 
 import * as JH from './jh.js'
 
@@ -285,23 +285,20 @@ export function treeSearchPrevious (elemid, searchstring) {
 }
 
 export function showToast (variant, text) {
-  const variantColors = {
-    success: 'var(--wa-color-success-50)',
-    danger: 'var(--wa-color-danger-50)',
-    warning: 'var(--wa-color-warning-50)',
-    info: 'var(--wa-color-info-50)'
+  const toastElem = JH.query('#toast')
+  const icon = {
+    success: "check",
+    warning: "circle-exclamation",
+    danger: "triangle-exclamation",
+    info: "circle-info"
   }
-
-  Toastify({
-    text,
-    duration: 3000,
-    close: true,
-    gravity: 'top',
-    position: 'center',
-    backgroundColor: variantColors[variant] || variantColors.info,
-    stopOnFocus: true,
-    oldestFirst: false
-  }).showToast()
+  if (toastElem) {
+    toastElem.create(text, {
+      variant,
+      icon: icon[variant] || "circle-info",
+      duration: 3000}
+    )
+  }
 }
 
 export function getUser () {
