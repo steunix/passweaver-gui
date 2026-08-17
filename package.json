@@ -33,7 +33,7 @@
     "lusca": "1.7.0",
     "morgan": "1.11.0",
     "redis": "6.2.0",
-    "rotating-file-stream": "3.2.9",
+    "rotating-file-stream": "3.2.10",
     "semver": "7.8.5",
     "serve-favicon": "2.5.1",
     "undici": "8.10.0"
