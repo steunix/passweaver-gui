@@ -34,7 +34,7 @@
     "morgan": "1.12.1",
     "redis": "6.3.0",
     "rotating-file-stream": "3.2.10",
-    "semver": "7.8.5",
+    "semver": "7.8.6",
     "serve-favicon": "2.5.1",
     "undici": "8.12.4"
   }
